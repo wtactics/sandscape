@@ -1,0 +1,28 @@
+Sandscape README
+================
+
+Sandscape is a browser-based implementation of a CCG. 
+
+This is created using asciidoc syntax and can be converted to any supported format.
+
+Repository Struture
+-------------------
+
+The Git repository is divided in three simple folders: 
+
+[horizontal]
+dev:: Stores any development related file, from design docs, diagrams, UI sketches and spike solutions.
+sandscape:: Contains the PHP base system that powers Sandscape.
+www:: Contains any public resources like imagens, CSS files and every JavaScript file needed to run Sandscape.
+
+There is no other file in the root directory, either than this README file you are seeing.
+
+Tools
+-----
+
+//TODO:...
+
+Instalation
+-----------
+
+//TODO:...
