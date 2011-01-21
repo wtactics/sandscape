@@ -3,7 +3,7 @@
 -- implemented.
 CREATE TABLE `User` (
  `userId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
- `name` VARCHAR( 50 ) NOT NULL ,
+ `name` VARCHAR( 50 ) NOT NULL UNIQUE ,
  `email` VARCHAR ( 150 ) NOT NULL UNIQUE ,
  `password` VARCHAR ( 40 ) NOT NULL ,
  `active` TINYINT NOT NULL DEFAULT 1
@@ -24,7 +24,7 @@ CREATE TABLE `Card` (
 CREATE TABLE `Deck` (
  `deckId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
  `name` VARCHAR( 50 ) NOT NULL ,
- `creationDate` DATE NOT NULL ,
+ `created` DATE NOT NULL ,
  `active` TINYINT NOT NULL DEFAULT 1 ,
  `userId` INT UNSIGNED NOT NULL ,
  CONSTRAINT `fkDeckUser` FOREIGN KEY (`userId`) REFERENCES `User`(`userId`)
@@ -34,9 +34,8 @@ CREATE TABLE `Deck` (
 -- start and end time and associated log file with all game actions
 CREATE TABLE `Game` (
  `gameId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
- `runningDate` DATETIME NOT NULL ,
- `start` TIME NOT NULL ,
- `end` TIME NOT NULL ,
+ `start` DATETIME NOT NULL ,
+ `end` DATETIME NULL ,
  `log` VARCHAR( 255 ) NULL ,
  `active` TINYINT NOT NULL DEFAULT 1 ,
  `deckIdPlayerA` INT UNSIGNED NOT NULL ,
@@ -61,7 +60,7 @@ CREATE TABLE `DeckCard` (
 -- Stores messages from chat sessions.
 -- Messages should be deleted after the game is over.
 CREATE TABLE `Message` (
- `messageId` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+ `messageId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
  `message` VARCHAR( 255 ) NOT NULL ,
  `stamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
  `gameId` INT UNSIGNED NOT NULL ,
