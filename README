@@ -3,7 +3,7 @@ Sandscape README
 
 Sandscape is a browser-based implementation of a CCG. 
 
-This is created using asciidoc syntax and can be converted to any supported format.
+This README file is created using asciidoc syntax and can be converted to any supported format.
 
 Repository Struture
 -------------------
@@ -20,9 +20,11 @@ There is no other file in the root directory, either than this README file you a
 Tools
 -----
 
-//TODO:...
+- Apache Web Server
+- PHP 5.2.9
+- Browser: Firefox 3.5, Opera 11 and Google Chrome 5
 
 Instalation
 -----------
 
-//TODO:...
+//TODO: ...
