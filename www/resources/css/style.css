@@ -1,0 +1,65 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: green;
+}
+
+/*RIGHT SIDE SYS AND CHAT*/
+#system {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 300px;
+    height: 400px;
+    border: solid 1px #ACD8F0;
+}
+
+#system-events {
+    border: solid 1px #ACD8F0;
+    height: 100px;
+    width: 290px;
+    margin: 5px auto;
+}
+
+#chat {
+}
+
+#messages {
+    width: 290px;
+    margin: 5px auto;
+    height: 255px;
+    border: solid 1px #ACD8F0;
+}
+
+#chat input {
+    margin: 0 0 0 5px;
+    width: 250px;
+    border: solid 1px #ACD8F0;
+}
+
+#chat button {
+    border: solid 1px #ACD8F0;
+}
+
+/*LEFT SLIDE*/
+#stats-slide {
+    /*display: none;*/
+    width: 200px;
+    height: 250px;
+    border: solid 1px #ACD8F0;
+    position: absolute;
+    left: 0;
+    top: 300px;
+}
+
+#stats-slide p {
+    text-align: right;
+}
+
+#stats-slide p a {
+    text-decoration: none;
+    color: #ACD8F0;
+}
