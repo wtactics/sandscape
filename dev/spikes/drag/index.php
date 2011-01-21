@@ -56,10 +56,10 @@
     <body>
         <p id="stats">&nbsp;</p>
 
-        <span class="drags"><img src="DonationsforRecovery.png" class="cards" name="1"/></span>
-        <span class="drags"><img src="DoubttheViolence.png" class="cards" name="2"/></span>
-        <span class="drags"><img src="ElvishArcher.png" class="cards" name="3"/></span>
-        <span class="drags"><img src="ElvishFighter.png" class="cards" name="4"/></span>
-        <span class="drags"><img src="ElvishMarksman.png" class="cards" name="5"/></span>
+        <span class="drags"><img src="../card-images/DonationsforRecovery.png" class="cards" name="1"/></span>
+        <span class="drags"><img src="../card-images/DoubttheViolence.png" class="cards" name="2"/></span>
+        <span class="drags"><img src="../card-images/ElvishArcher.png" class="cards" name="3"/></span>
+        <span class="drags"><img src="../card-images/ElvishFighter.png" class="cards" name="4"/></span>
+        <span class="drags"><img src="../card-images/ElvishMarksman.png" class="cards" name="5"/></span>
     </body>
 </html>
