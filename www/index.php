@@ -1,34 +1,13 @@
 <?php
 
-error_reporting(E_ALL);
+// change the following paths if necessary
+$yii = dirname(__FILE__) . '/../yii/yii.php';
+$config = dirname(__FILE__) . '/../sandscape/config/main.php';
 
-$sandscape = '../sandscape/';
+// remove the following lines when in production mode
+defined('YII_DEBUG') or define('YII_DEBUG', true);
+// specify how many levels of call stack should be shown in each log message
+defined('YII_TRACE_LEVEL') or define('YII_TRACE_LEVEL', 3);
 
-if (strpos($sandscape, '/') === FALSE) {
-    if (function_exists('realpath') AND realpath(dirname(__FILE__)) !== FALSE) {
-        $sandscape = realpath(dirname(__FILE__)) . '/' . $sandscape;
-    }
-} else {
-    $sandscape = str_replace("\\", "/", $sandscape);
-}
-
-define('DATAPATH', $sandscape . 'data/');
-define('SYSTEMPATH', $sandscape . 'system/');
-define('VIEWSPATH', $sandscape . 'views/');
-define('LANGPATH', $sandscape . 'lang/');
-
-function __autoload($class) {
-    include SYSTEMPATH . strtolower($class) . '.php';
-}
-
-function app() {
-    global $controller;
-    return $controller;
-}
-
-function url() {
-    return 'http://localhost/sandscape/';
-}
-
-$controller = new SandController();
-$controller->doRequest();
+require_once($yii);
+Yii::createWebApplication($config)->run();
