@@ -39,9 +39,9 @@ CREATE TABLE `Game` (
  `log` VARCHAR( 255 ) NULL ,
  `active` TINYINT NOT NULL DEFAULT 1 ,
  `deckIdPlayerA` INT UNSIGNED NOT NULL ,
- `deckIdPlayerB` INT UNSIGNED NOT NULL ,
- `userIdPlayerA` INT UNSIGNED NOT NULL ,
- `userIdPlayerB` INT UNSIGNED NOT NULL ,
+ `deckIdPlayerB` INT UNSIGNED NULL ,
+ `userIdPlayerA` INT UNSIGNED NULL ,
+ `userIdPlayerB` INT UNSIGNED NULL ,
  CONSTRAINT `fkGameDeckA` FOREIGN KEY (`deckIdPlayerA`) REFERENCES `Deck`(`deckId`) ,
  CONSTRAINT `fkGameDeckB` FOREIGN KEY (`deckIdPlayerB`) REFERENCES `Deck`(`deckId`) ,
  CONSTRAINT `fkGameUserA` FOREIGN KEY (`userIdPlayerA`) REFERENCES `User`(`userId`) ,
@@ -57,6 +57,12 @@ CREATE TABLE `DeckCard` (
  CONSTRAINT `fkDeckCardCard` FOREIGN KEY (`cardId`) REFERENCES `Card`(`cardId`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
+--
+-- 
+CREATE TABLE `ChatSession` (
+`sessionId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
 -- Stores messages from chat sessions.
 -- Messages should be deleted after the game is over.
 CREATE TABLE `Message` (
@@ -67,4 +73,10 @@ CREATE TABLE `Message` (
  `userId` INT UNSIGNED NOT NULL ,
  CONSTRAINT `fkMessageGame` FOREIGN KEY (`gameId`) REFERENCES `Game`(`gameId`) ,
  CONSTRAINT `fkMessageUser` FOREIGN KEY (`userId`) REFERENCES `User`(`userId`)
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+--
+-- 
+CREATE TABLE `Lobby` (
+ `lobbyId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
