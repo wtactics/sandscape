@@ -1,6 +1,6 @@
 <?php
 
-class LobbyController extends CController {
+class StatsController extends CController {
 
     public function __construct($id, $module=null) {
         parent::__construct($id, $module);
