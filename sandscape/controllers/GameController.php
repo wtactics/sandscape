@@ -7,6 +7,7 @@ class GameController extends CController {
         $this->layout = '//layouts/game';
 
     }
+    
     public function actionIndex() {
         $this->render('index');
     }

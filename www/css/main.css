@@ -1,0 +1,57 @@
+body {
+    text-align: justify;
+}
+
+/*SITE STRUCTURE*/
+#site {
+    width: 900px;
+    margin: 0 auto;
+}
+#header {
+    border-bottom: dashed 1px gray;
+}
+
+#logo {
+    width: 200px;
+    height: 100px;
+    float: left;
+}
+
+#menu {
+    float: left;
+    height: 100px;
+}
+
+#center {
+}
+
+#content {
+}
+
+#footer {
+    border-top: dashed 1px gray;
+}
+
+.clear {
+    clear: both;
+}
+
+/*MAIN MENU*/
+#menu ul {
+    margin-top: 70px;
+}
+
+#menu li {
+    display: inline;
+    list-style: none;
+    margin: 0 0.5em 0 0.5em;
+}
+
+/*GENERAL CSS*/
+a, img {
+    border: none;
+}
+
+a {
+    text-decoration: none;
+}

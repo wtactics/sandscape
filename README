@@ -1,30 +1,72 @@
 Sandscape README
 ================
 
-Sandscape is a browser-based implementation of a CCG. 
+Intro
+-----
 
-This README file is created using asciidoc syntax and can be converted to any supported format.
+Sandscape is a browser-based implementation of a CCG being developed as part of
+the Wtactics project (wtactics.org). It offers the player the basic tools for
+creating a CCG game, without forcing any rules on the actual game being played.
+
+Along side the basic playing field, Sandscape has the usual user management
+system, which requires valid authentication in order to play, a lobby system
+where players can see each other and arrange games and simple statistics
+recording.
+
+No artificial intelligence was implemented in the game.
+
+About this README file
+~~~~~~~~~~~~~~~~~~~~~~
+
+This README file is created using asciidoc syntax and can be converted to any
+supported format, such as PDF, HTML or manpage.
 
 Repository Struture
 -------------------
 
-The Git repository is divided in three simple folders: 
+The Git repository is divided in four simple folders:
 
 [horizontal]
-dev:: Stores any development related file, from design docs, diagrams, UI sketches and spike solutions.
+_dev:: Stores any development related file, from design docs, diagrams, UI
+sketches and spike solutions.
 sandscape:: Contains the PHP base system that powers Sandscape.
-www:: Contains any public resources like imagens, CSS files and every JavaScript file needed to run Sandscape.
+www:: Contains any public resources like imagens, CSS files and every
+JavaScript file needed to run Sandscape.
+yii:: Houses the yii framework files, used by Sandscape.
 
-There is no other file in the root directory, either than this README file you are seeing.
+There are no other files in the root directory, aside from this README file you
+are seeing.
 
 Tools
 -----
 
+To create a server:
 - Apache Web Server
 - PHP 5.2.9
+- MySQL 5.0
+- Apache's mod-rewrite
+
+To play a game:
 - Browser: Firefox 3.5, Opera 11 and Google Chrome 5
 
-Instalation
+Installation
 -----------
 
-//TODO: ...
+Installing Sandscape is a step only users interested in having their own server
+instance should take. You *don't* need to have Sandscape installed in order to 
+play, the software is installed in a server and accessed using a browser.
+
+.Steps
+1. Please have Apache Web Server, PHP and MySQL installed.
+2. Place the contents of the folder *www* in a public accessible place, normally 
+this is a folder named *htdocs*, *www* or *public_html*.
+3. Place the *sandscape* and *yii* folders outside the public accessible folder.
+These two folder contain the application's main files, configurations and many
+private informations, it is a security risk to have these files in a place
+where every browser can access.
+4. Create the correct .htaccess file. TODO: describe how....
+
+Version history
+---------------
+
+No public version has been released yet.

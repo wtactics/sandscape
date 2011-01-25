@@ -137,3 +137,38 @@ Stack trace:
 #1 /Users/sergiolopes/Working/OpenSource/sandscape/yii/base/CApplication.php(155): CWebApplication->processRequest()
 #2 /Users/sergiolopes/Working/OpenSource/sandscape/www/index.php(13): CApplication->run()
 #3 {main} REQUEST_URI=/sandscape/index.php?r=game/index
+2011/01/25 19:06:32 [error] [php] include(SiteController.php): failed to open stream: No such file or directory (/Users/sergiolopes/Working/OpenSource/sandscape/yii/YiiBase.php:395)
+Stack trace:
+#0 /Users/sergiolopes/Working/OpenSource/sandscape/sandscape/controllers/LobbyController.php(3): spl_autoload_call()
+#1 /Users/sergiolopes/Working/OpenSource/sandscape/yii/web/CWebApplication.php(396): require()
+#2 /Users/sergiolopes/Working/OpenSource/sandscape/yii/web/CWebApplication.php(322): CWebApplication->createController()
+#3 /Users/sergiolopes/Working/OpenSource/sandscape/yii/web/CWebApplication.php(121): CWebApplication->runController()
+#4 /Users/sergiolopes/Working/OpenSource/sandscape/yii/base/CApplication.php(155): CWebApplication->processRequest()
+#5 /Users/sergiolopes/Working/OpenSource/sandscape/www/index.php(13): CWebApplication->run()
+REQUEST_URI=/sandscape/index.php/lobby
+in /Users/sergiolopes/Working/OpenSource/sandscape/sandscape/controllers/LobbyController.php (3)
+in /Users/sergiolopes/Working/OpenSource/sandscape/www/index.php (13)
+2011/01/25 19:07:09 [error] [php] include(SiteController.php): failed to open stream: No such file or directory (/Users/sergiolopes/Working/OpenSource/sandscape/yii/YiiBase.php:395)
+Stack trace:
+#0 /Users/sergiolopes/Working/OpenSource/sandscape/sandscape/controllers/LobbyController.php(3): spl_autoload_call()
+#1 /Users/sergiolopes/Working/OpenSource/sandscape/yii/web/CWebApplication.php(396): require()
+#2 /Users/sergiolopes/Working/OpenSource/sandscape/yii/web/CWebApplication.php(322): CWebApplication->createController()
+#3 /Users/sergiolopes/Working/OpenSource/sandscape/yii/web/CWebApplication.php(121): CWebApplication->runController()
+#4 /Users/sergiolopes/Working/OpenSource/sandscape/yii/base/CApplication.php(155): CWebApplication->processRequest()
+#5 /Users/sergiolopes/Working/OpenSource/sandscape/www/index.php(13): CWebApplication->run()
+REQUEST_URI=/sandscape/index.php/lobby
+in /Users/sergiolopes/Working/OpenSource/sandscape/sandscape/controllers/LobbyController.php (3)
+in /Users/sergiolopes/Working/OpenSource/sandscape/www/index.php (13)
+2011/01/25 19:08:23 [error] [exception.CException] exception 'CException' with message 'LobbyController cannot find the requested view "index".' in /Users/sergiolopes/Working/OpenSource/sandscape/yii/web/CController.php:842
+Stack trace:
+#0 /Users/sergiolopes/Working/OpenSource/sandscape/yii/web/CController.php(746): CController->renderPartial('index', NULL, true)
+#1 /Users/sergiolopes/Working/OpenSource/sandscape/sandscape/controllers/LobbyController.php(10): CController->render('index')
+#2 /Users/sergiolopes/Working/OpenSource/sandscape/yii/web/actions/CInlineAction.php(57): LobbyController->actionIndex()
+#3 /Users/sergiolopes/Working/OpenSource/sandscape/yii/web/CController.php(300): CInlineAction->run()
+#4 /Users/sergiolopes/Working/OpenSource/sandscape/yii/web/CController.php(278): CController->runAction(Object(CInlineAction))
+#5 /Users/sergiolopes/Working/OpenSource/sandscape/yii/web/CController.php(257): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 /Users/sergiolopes/Working/OpenSource/sandscape/yii/web/CWebApplication.php(328): CController->run('')
+#7 /Users/sergiolopes/Working/OpenSource/sandscape/yii/web/CWebApplication.php(121): CWebApplication->runController('lobby')
+#8 /Users/sergiolopes/Working/OpenSource/sandscape/yii/base/CApplication.php(155): CWebApplication->processRequest()
+#9 /Users/sergiolopes/Working/OpenSource/sandscape/www/index.php(13): CApplication->run()
+#10 {main} REQUEST_URI=/sandscape/index.php/lobby
