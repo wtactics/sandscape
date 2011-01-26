@@ -57,26 +57,14 @@ CREATE TABLE `DeckCard` (
  CONSTRAINT `fkDeckCardCard` FOREIGN KEY (`cardId`) REFERENCES `Card`(`cardId`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
---
--- 
-CREATE TABLE `ChatSession` (
-`sessionId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
-) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
-
--- Stores messages from chat sessions.
--- Messages should be deleted after the game is over.
+-- Stores messages from sent into game chats or the lobby.
+-- Game messages should be deleted after the game is over.
 CREATE TABLE `Message` (
  `messageId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
  `message` VARCHAR( 255 ) NOT NULL ,
  `stamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
- `gameId` INT UNSIGNED NOT NULL ,
+ `gameId` INT UNSIGNED NULL ,
  `userId` INT UNSIGNED NOT NULL ,
  CONSTRAINT `fkMessageGame` FOREIGN KEY (`gameId`) REFERENCES `Game`(`gameId`) ,
  CONSTRAINT `fkMessageUser` FOREIGN KEY (`userId`) REFERENCES `User`(`userId`)
-) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
-
---
--- 
-CREATE TABLE `Lobby` (
- `lobbyId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;

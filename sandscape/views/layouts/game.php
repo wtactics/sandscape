@@ -37,5 +37,49 @@
                 <button id="send" name="send" type="button">OK</button>
             </div>
         </div>
+
+        <div>
+            <ul style="margin: 0 0 5px 0; padding: 0;">
+                <li style="display: inline;list-style: none; margin-right: 1em;"><a href="#">op1</a></li>
+                <li style="display: inline;list-style: none; margin-right: 1em;"><a href="#">op1</a></li>
+                <li style="display: inline;list-style: none; margin-right: 1em;"><a href="#">op1</a></li>
+                <li style="display: inline;list-style: none; margin-right: 1em;"><a href="#">op1</a></li>
+            </ul>
+        </div>
+
+        <!-- IN DEV... -->
+        <!-- TOP PLAYER DIV -->
+        <div style="margin: 0 auto; background-color: yellow;height: 350px;">
+            <!-- TOP LEFT DECKS -->
+            <div style="float: left; width: 100px; background-color: red">
+                <div style="border: dashed 1px blue;height: 100px; width: 95px;margin: 0 auto; background-color: white;"></div>
+                <div style="border: dashed 1px blue;height: 100px; width: 95px;margin: 10px auto;background-color: white;"></div>
+            </div>
+            <!-- TOP CARD ROWS -->
+            <div style="float: left;background-color: gray;height: 100%;width: 800px;margin-left: 10px;">
+                <div style="border: dashed 2px white; height: 100px; margin-bottom: 10px;"></div>
+                <div style="border: dashed 2px white; height: 100px; margin-bottom: 10px;"></div>
+                <div style="border: dashed 2px white; height: 100px;"></div>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+        
+        <hr style="margin: 5px 0 5px 0;"/>
+
+        <!-- BOTTOM PLAYER DIV -->
+        <div style="margin: 0 auto; background-color: pink;height: 350px;">
+            <!-- TOP CARD ROWS -->
+            <div style="float: left;background-color: gray;height: 100%;width: 800px;margin-left: 110px;">
+                <div style="border: dashed 2px white; height: 100px; margin-bottom: 10px;"></div>
+                <div style="border: dashed 2px white; height: 100px; margin-bottom: 10px;"></div>
+                <div style="border: dashed 2px white; height: 100px;"></div>
+            </div>
+            <!-- BOTTOM RIGHT DECKS -->
+            <div style="float: left; width: 100px; background-color: red;margin-left: 10px;">
+                <div style="border: dashed 1px blue;height: 100px; width: 95px;margin: 0 auto; background-color: white;"></div>
+                <div style="border: dashed 1px blue;height: 100px; width: 95px;margin: 10px auto;background-color: white;"></div>
+            </div>
+            <div style="clear:both"></div>
+        </div>
     </body>
 </html>
