@@ -47,6 +47,10 @@ body {
     margin: 0 0.5em 0 0.5em;
 }
 
+#profile {
+    text-align: right;
+}
+
 /*GENERAL CSS*/
 a, img {
     border: none;
@@ -78,7 +82,6 @@ a {
 }
 
 #lobby-users {
-
     height: 100%;
     float: left;
     width: 30%;
