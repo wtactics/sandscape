@@ -1,5 +1,5 @@
 /*
- * SandscapeEntryPoint.java
+ * StatsPage.java
  *
  * This file is part of SandScape, http://sourceforge.net/p/sandscape/.
  *
@@ -18,28 +18,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.wtactics.sandscape.client;
-
-import com.google.gwt.core.client.EntryPoint;
-import org.wtactics.sandscape.client.layout.HomePage;
+package org.wtactics.sandscape.client.layout;
 
 /**
+ * Creates the layout for the statistics page.
+ * 
  * @see Page
  * @since 1.0
  */
-public class SandscapeEntryPoint implements EntryPoint {
-
-    public SandscapeEntryPoint() {
-    }
+public class StatsPage extends Page {
 
     @Override
-    public void onModuleLoad() {
-        //TODO: //NOTE: testing code...
-        //
-        new HomePage().doLayout();
-        //new StatsPage().doLayout();
-        //new LobbyPage().doLayout();
-        //new GamePage().doLayout();
+    public void doLayout() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
 //TODO: implement

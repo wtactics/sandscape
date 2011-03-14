@@ -2,8 +2,11 @@
 
 class SiteController extends CController {
 
+    public function __construct($id, $module=null) {
+        parent::__construct($id, $module);
+    }
+
     public function actionIndex() {
-        $this->render('index');
     }
 
     public function actionAbout() {
@@ -11,11 +14,11 @@ class SiteController extends CController {
     }
 
     public function actionLogin() {
-
+        
     }
 
     public function actionLogout() {
-
+        
     }
 
 }

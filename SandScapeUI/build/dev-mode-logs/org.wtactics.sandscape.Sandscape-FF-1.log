@@ -1,0 +1,52 @@
+Validating newly compiled units
+   [ERROR] Errors in 'file:/Users/sergiolopes/Working/OpenSource/sandscape/SandScapeUI/src/java/org/wtactics/sandscape/client/model/Chat.java'
+      [ERROR] Line 5: Constructors must be 'protected' in subclasses of JavaScriptObject
+      For additional info see: file:/Users/sergiolopes/Tools/local/gwt-2.1.1/doc/helpInfo/jsoRestrictions.html
+   [ERROR] Errors in 'file:/Users/sergiolopes/Working/OpenSource/sandscape/SandScapeUI/src/java/org/wtactics/sandscape/client/model/Game.java'
+      [ERROR] Line 5: Constructors must be 'protected' in subclasses of JavaScriptObject
+      For additional info see: file:/Users/sergiolopes/Tools/local/gwt-2.1.1/doc/helpInfo/jsoRestrictions.html
+   [ERROR] Errors in 'file:/Users/sergiolopes/Working/OpenSource/sandscape/SandScapeUI/src/java/org/wtactics/sandscape/client/model/User.java'
+      [ERROR] Line 5: Constructors must be 'protected' in subclasses of JavaScriptObject
+      For additional info see: file:/Users/sergiolopes/Tools/local/gwt-2.1.1/doc/helpInfo/jsoRestrictions.html
+[ERROR] Uncaught exception escaped
+java.lang.NullPointerException
+	at com.google.gwt.user.client.ui.DockLayoutPanel.doLayout(DockLayoutPanel.java:480)
+	at com.google.gwt.user.client.ui.DockLayoutPanel.access$0(DockLayoutPanel.java:472)
+	at com.google.gwt.user.client.ui.DockLayoutPanel$DockAnimateCommand.doBeforeLayout(DockLayoutPanel.java:119)
+	at com.google.gwt.user.client.ui.LayoutCommand.execute(LayoutCommand.java:64)
+	at com.google.gwt.core.client.impl.SchedulerImpl$Task$.executeScheduled$(SchedulerImpl.java:50)
+	at com.google.gwt.core.client.impl.SchedulerImpl.runScheduledTasks(SchedulerImpl.java:229)
+	at com.google.gwt.core.client.impl.SchedulerImpl.flushFinallyCommands(SchedulerImpl.java:328)
+	at com.google.gwt.core.client.impl.Impl.exit(Impl.java:238)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at com.google.gwt.dev.shell.ModuleSpace.onLoad(ModuleSpace.java:409)
+	at com.google.gwt.dev.shell.OophmSessionHandler.loadModule(OophmSessionHandler.java:183)
+	at com.google.gwt.dev.shell.BrowserChannelServer.processConnection(BrowserChannelServer.java:510)
+	at com.google.gwt.dev.shell.BrowserChannelServer.run(BrowserChannelServer.java:352)
+	at java.lang.Thread.run(Thread.java:680)
+[ERROR] Unable to load module entry point class org.wtactics.sandscape.client.SandscapeEntryPoint (see associated exception for details)
+java.lang.AssertionError: This UIObject's element is not set; you may be missing a call to either Composite.initWidget() or UIObject.setElement()
+	at com.google.gwt.user.client.ui.UIObject.getElement(UIObject.java:528)
+	at com.google.gwt.user.client.ui.DockLayoutPanel.insert(DockLayoutPanel.java:446)
+	at com.google.gwt.user.client.ui.DockLayoutPanel.addSouth(DockLayoutPanel.java:201)
+	at org.wtactics.sandscape.client.layout.HomePage.doLayout(HomePage.java:40)
+	at org.wtactics.sandscape.client.SandscapeEntryPoint.onModuleLoad(SandscapeEntryPoint.java:39)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at com.google.gwt.dev.shell.ModuleSpace.onLoad(ModuleSpace.java:396)
+	at com.google.gwt.dev.shell.OophmSessionHandler.loadModule(OophmSessionHandler.java:183)
+	at com.google.gwt.dev.shell.BrowserChannelServer.processConnection(BrowserChannelServer.java:510)
+	at com.google.gwt.dev.shell.BrowserChannelServer.run(BrowserChannelServer.java:352)
+	at java.lang.Thread.run(Thread.java:680)
+[ERROR] Failed to load module 'org.wtactics.sandscape.Sandscape' from user agent 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; en-US; rv:1.9.2.15) Gecko/20110303 Firefox/3.6.15' at localhost:53795
+com.google.gwt.core.ext.UnableToCompleteException: (see previous log entries)
+	at com.google.gwt.dev.shell.ModuleSpace.onLoad(ModuleSpace.java:434)
+	at com.google.gwt.dev.shell.OophmSessionHandler.loadModule(OophmSessionHandler.java:183)
+	at com.google.gwt.dev.shell.BrowserChannelServer.processConnection(BrowserChannelServer.java:510)
+	at com.google.gwt.dev.shell.BrowserChannelServer.run(BrowserChannelServer.java:352)
+	at java.lang.Thread.run(Thread.java:680)

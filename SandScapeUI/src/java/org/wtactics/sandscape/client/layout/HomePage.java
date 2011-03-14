@@ -1,5 +1,5 @@
 /*
- * SandscapeEntryPoint.java
+ * HomePage.java
  *
  * This file is part of SandScape, http://sourceforge.net/p/sandscape/.
  *
@@ -18,28 +18,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.wtactics.sandscape.client;
+package org.wtactics.sandscape.client.layout;
 
-import com.google.gwt.core.client.EntryPoint;
-import org.wtactics.sandscape.client.layout.HomePage;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 /**
+ * Creates the main site's page layout.
+ * 
  * @see Page
  * @since 1.0
  */
-public class SandscapeEntryPoint implements EntryPoint {
+public class HomePage extends Page {
 
-    public SandscapeEntryPoint() {
-    }
+    public void doLayout() {
+        DockLayoutPanel root = new DockLayoutPanel(Unit.PCT);
 
-    @Override
-    public void onModuleLoad() {
-        //TODO: //NOTE: testing code...
-        //
-        new HomePage().doLayout();
-        //new StatsPage().doLayout();
-        //new LobbyPage().doLayout();
-        //new GamePage().doLayout();
+        root.addNorth(new Header(), 10);
+        root.addSouth(new Footer(), 10);
+        root.add(new HTML(""));
+
+        RootLayoutPanel.get().add(root);
+
     }
 }
 //TODO: implement

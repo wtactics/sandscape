@@ -1,5 +1,5 @@
 /*
- * SandscapeEntryPoint.java
+ * LobbyPage.java
  *
  * This file is part of SandScape, http://sourceforge.net/p/sandscape/.
  *
@@ -18,28 +18,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.wtactics.sandscape.client;
-
-import com.google.gwt.core.client.EntryPoint;
-import org.wtactics.sandscape.client.layout.HomePage;
+package org.wtactics.sandscape.client.layout;
 
 /**
  * @see Page
  * @since 1.0
  */
-public class SandscapeEntryPoint implements EntryPoint {
-
-    public SandscapeEntryPoint() {
-    }
+public class LobbyPage extends Page {
 
     @Override
-    public void onModuleLoad() {
-        //TODO: //NOTE: testing code...
-        //
-        new HomePage().doLayout();
-        //new StatsPage().doLayout();
-        //new LobbyPage().doLayout();
-        //new GamePage().doLayout();
+    public void doLayout() {
     }
 }
 //TODO: implement
