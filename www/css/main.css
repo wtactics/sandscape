@@ -78,32 +78,44 @@ a {
 #lobby-left {
     height: 90%;
     float: left;
-    width: 70%;
+    width: 78%;
 }
 
 #lobby-users {
     height: 100%;
     float: left;
-    width: 30%;
-    background-color: green;
+    width: 28%;
+    border: solid 1px gray;
+}
+
+#lobby-users a {
+    
 }
 
 #lobby-chat {
     height: 100%;
     float: left;
     width: 70%;
-    background-color: gray;
+    border: solid 1px gray;
+    margin-left: 2px;
 }
 
 #lobby-tools {
 }
 
+#lobby-tools button, #lobby-tools input{
+    border: solid 1px gray;
+}
+
 #lobby-right {
     height: 100%;
     float: left;
-    width: 30%;
-    background-color: yellow;
+    width: 21%;
+    border: solid 1px gray;
 }
 
+#lobby-right a {
+    
+}
 
 /*STATS PAGE*/
