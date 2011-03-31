@@ -23,7 +23,8 @@
                 </div>
                 <div id="profile">
                     <!-- //TODO: images... -->
-                    <a href="#">profile</a>
+                    <a href="<?php echo $this->createUrl('/admin'); ?>">administration</a>
+                    <a href="<?php echo $this->createUrl('/account'); ?>">profile</a>
                     <a href="#">logout</a>
                 </div>
                 <div class="clear"></div>

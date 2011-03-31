@@ -1,6 +1,6 @@
 <?php
 
-class Game extends CActiveRecord {
+class Chat extends CActiveRecord {
 
     public static function model($class = __CLASS__) {
         return parent::model($class);

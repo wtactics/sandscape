@@ -1,7 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title></title>
+        <!-- <?php //echo Yii::app()->request->baseUrl;      ?> -->
         <link type="text/css" rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/game.css" />
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
         <script type="text/javascript">
@@ -19,7 +20,22 @@
                         $('#stats-slide p a').html('&gt;&gt;&nbsp;');
                     }
                 });
+                
+                //var context = document.getElementById("drawarea").getContext("2d");
+                //context.fillRect(50, 25, 150, 100);
             });
+        </script>
+        <script type="text/javascript">
+            <!--
+            if (!window.CanvasRenderingContext2D)
+            {
+                //document.getElementById('loading').innerHTML = 'Your browser doesn\'t support canvas, if you are using IE then the <a href="v1/">older version</a> will likely work.<br>I suggest you download a standards compliant browser such as <a href="http://www.opera.com/">Opera</a>.';
+            }
+            else
+            {
+                //document.getElementById('loading').innerHTML = '<img src="img/loading.gif" alt="" style="width:16px;height:16px;vertical-align:top;"> Loading game...';
+            }
+            -->
         </script>
     </head>
     <body>
@@ -39,7 +55,7 @@
         </div>
 
         <div>
-            <ul style="margin: 0 0 5px 0; padding: 0;">
+            <ul style="margin: 0 0 5px 0; padding: 0;">     
                 <li style="display: inline;list-style: none; margin-right: 1em;"><a href="#">op1</a></li>
                 <li style="display: inline;list-style: none; margin-right: 1em;"><a href="#">op1</a></li>
                 <li style="display: inline;list-style: none; margin-right: 1em;"><a href="#">op1</a></li>
@@ -48,38 +64,9 @@
         </div>
 
         <!-- IN DEV... -->
-        <!-- TOP PLAYER DIV -->
-        <div style="margin: 0 auto; background-color: yellow;height: 350px;">
-            <!-- TOP LEFT DECKS -->
-            <div style="float: left; width: 100px; background-color: red">
-                <div style="border: dashed 1px blue;height: 100px; width: 95px;margin: 0 auto; background-color: white;"></div>
-                <div style="border: dashed 1px blue;height: 100px; width: 95px;margin: 10px auto;background-color: white;"></div>
-            </div>
-            <!-- TOP CARD ROWS -->
-            <div style="float: left;background-color: gray;height: 100%;width: 800px;margin-left: 10px;">
-                <div style="border: dashed 2px white; height: 100px; margin-bottom: 10px;"></div>
-                <div style="border: dashed 2px white; height: 100px; margin-bottom: 10px;"></div>
-                <div style="border: dashed 2px white; height: 100px;"></div>
-            </div>
-            <div style="clear:both"></div>
+        <div style="margin: 0 auto; width: 800px; height: 600px;">
+            <canvas width="600" height="400" id="drawarea"></canvas>
         </div>
-        
-        <hr style="margin: 5px 0 5px 0;"/>
 
-        <!-- BOTTOM PLAYER DIV -->
-        <div style="margin: 0 auto; background-color: pink;height: 350px;">
-            <!-- TOP CARD ROWS -->
-            <div style="float: left;background-color: gray;height: 100%;width: 800px;margin-left: 110px;">
-                <div style="border: dashed 2px white; height: 100px; margin-bottom: 10px;"></div>
-                <div style="border: dashed 2px white; height: 100px; margin-bottom: 10px;"></div>
-                <div style="border: dashed 2px white; height: 100px;"></div>
-            </div>
-            <!-- BOTTOM RIGHT DECKS -->
-            <div style="float: left; width: 100px; background-color: red;margin-left: 10px;">
-                <div style="border: dashed 1px blue;height: 100px; width: 95px;margin: 0 auto; background-color: white;"></div>
-                <div style="border: dashed 1px blue;height: 100px; width: 95px;margin: 10px auto;background-color: white;"></div>
-            </div>
-            <div style="clear:both"></div>
-        </div>
     </body>
 </html>

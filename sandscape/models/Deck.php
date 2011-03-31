@@ -6,13 +6,19 @@ class Deck extends CActiveRecord {
         return parent::model($class);
     }
 
-    public function relations() {
-        return array(
-            'cards' => array(self::MANY_MANY, 'Card', 'DeckCard(deckId, cardId)'),
-            'owner' => array(self::BELONGS_TO, 'User', 'userId'),
-            'gamesAsA' => array(self::HAS_MANY, 'Game', 'deckIdPlayerA'),
-            'gamesAsB' => array(self::HAS_MANY, 'Game', 'deckIdPlayerB')
-        );
-    }
-
+     public function relations() {
+      return array(
+      'cards' => array(self::HAS_MANY, 'Card', 'deckId'),
+      'messages' => array(self::HAS_MANY, 'Message', 'userId'),
+      'gamesAsA' => array(self::HAS_MANY, 'Game', 'userIdPlayerA'),
+      'gamesAsB' => array(self::HAS_MANY, 'Game', 'userIdPlayerB'),
+      );
+      }
 }
+
+
+
+
+
+
+
