@@ -9,9 +9,9 @@ class User extends CActiveRecord {
     public function relations() {
         return array(
             'decks' => array(self::HAS_MANY, 'Deck', 'userId'),
-            'messages' => array(self::HAS_MANY, 'Message', 'userId'),
-            'gamesAsA' => array(self::HAS_MANY, 'Game', 'userIdPlayerA'),
-            'gamesAsB' => array(self::HAS_MANY, 'Game', 'userIdPlayerB'),
+            'messages' => array(self::HAS_MANY, 'ChatMessage', 'userId'),
+            'gamesAsA' => array(self::HAS_MANY, 'Game', 'playerA'),
+            'gamesAsB' => array(self::HAS_MANY, 'Game', 'playerB'),
         );
     }
 

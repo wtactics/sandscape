@@ -1,0 +1,96 @@
+-- User table, stores basic user info
+CREATE TABLE `User` (
+`userId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
+`name` VARCHAR( 20 ) NOT NULL UNIQUE ,
+`password` VARCHAR( 40 ) NOT NULL ,
+`email` VARCHAR( 200 ) NOT NULL UNIQUE ,
+`key` VARCHAR( 40 ) NULL ,
+`visited` DATETIME NULL ,
+`active` TINYINT NOT NULL DEFAULT 1 
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+CREATE TABLE `Deck` (
+`deckId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
+`userId` INT UNSIGNED NOT NULL ,
+`created` DATETIME NOT NULL ,
+`selected` TINYINT NOT NULL DEFAULT 0 ,
+`active` TINYINT NOT NULL DEFAULT 1 ,
+CONSTRAINT `fkDeckUser` FOREIGN KEY (`userId`) REFERENCES `User`(`userId`)
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+-- //TODO//NOTE: Work in progress
+CREATE TABLE `CardImage` (
+`imageId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
+`filetype` VARCHAR( 200 ) NOT NULL ,
+`filename` VARCHAR( 200 ) NOT NULL ,
+`filesize` INT UNSIGNED NOT NULL ,
+`filedata` MEDIUMBLOB NOT NULL 
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+CREATE TABLE `Card` (
+`cardId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
+`faction` VARCHAR( 150 ) NOT NULL ,
+`type` VARCHAR( 150 ) NOT NULL ,
+`subtype` VARCHAR( 150 ) NOT NULL ,
+`cost` TINYINT NOT NULL ,
+`threshold` VARCHAR( 100 ) NOT NULL ,
+`attack` TINYINT NOT NULL ,
+`defense` TINYINT NOT NULL ,
+`rules` VARCHAR( 255 ) NOT NULL ,
+`author` VARCHAR( 100 ) NOT NULL ,
+`revision` DATETIME NOT NULL ,
+`cardscapeId` INT NOT NULL ,
+`imageId` INT UNSIGNED NOT NULL ,
+`active` TINYINT NOT NULL DEFAULT 1 ,
+CONSTRAINT `fkCardCardImage` FOREIGN KEY (`imageId`) REFERENCES `CardImage`(`imageId`)
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+-- //
+
+CREATE TABLE `DeckCard` (
+`cardId` INT UNSIGNED NOT NULL ,
+`deckId` INT UNSIGNED NOT NULL
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+CREATE TABLE `Game` (
+`gameId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
+`playerA` INT UNSIGNED NULL ,
+`playerB` INT UNSIGNED NULL ,
+`started` DATETIME NULL ,
+`ended` DATETIME NULL ,
+`running` TINYINT NOT NULL DEFAULT 0 ,
+`winner` INT UNSIGNED NULL ,
+`deckA` INT UNSIGNED NULL ,
+`deckB` INT UNSIGNED NULL ,
+CONSTRAINT `fkGameUserA` FOREIGN KEY (`playerA`) REFERENCES `User`(`userId`) ,
+CONSTRAINT `fkGameUserB` FOREIGN KEY (`playerB`) REFERENCES `User`(`userId`) ,
+CONSTRAINT `fkGameUserWinner` FOREIGN KEY (`winner`) REFERENCES `User`(`userId`) ,
+CONSTRAINT `fkGameDeckA` FOREIGN KEY (`deckA`) REFERENCES `Deck`(`deckId`) ,
+CONSTRAINT `fkGameDeckB` FOREIGN KEY (`deckB`) REFERENCES `Deck`(`deckId`)
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+CREATE TABLE `Chat` (
+`chatId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
+`started` DATETIME NOT NULL ,
+CONSTRAINT `fkChatGame` FOREIGN KEY (`gameId`) REFERENCES `Game`(`gameId`)
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+CREATE TABLE `GameChat` (
+`chatId` INT UNSIGNED NOT NULL ,
+`gameId` INT UNSIGNED NOT NULL ,
+PRIMARY KEY(`chatId`, `gameId`) ,
+-- CONSTRAINT `fkGameUserA` FOREIGN KEY (`playerA`) REFERENCES `User`(`userId`) ,
+-- CONSTRAINT `fkGameUserB` FOREIGN KEY (`playerB`) REFERENCES `User`(`userId`) ,
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+CREATE TABLE `ChatMessage` (
+`messageId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
+`message` VARCHAR( 255 ) NOT NULL ,
+`sent` DATETIME NOT NULL ,
+`userId` INT UNSIGNED NOT NULL ,
+`chatId` INT UNSIGNED NOT NULL ,
+CONSTRAINT `fkChatMessageUser` FOREIGN KEY (`userId`) REFERENCES `User`(`userId`) ,
+CONSTRAINT `fkChatMessageChat` FOREIGN KEY (`chatId`) REFERENCES `Chat`(`chatId`)
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+CREATE TABLE `UserChat` (
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
