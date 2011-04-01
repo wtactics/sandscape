@@ -1,24 +1,12 @@
 <?php
 
-class SiteController extends CController {
+class SiteController extends Controller {
 
-    public function __construct($id, $module=null) {
-        parent::__construct($id, $module);
-    }
-
+    /**
+     * Lists all models.
+     */
     public function actionIndex() {
-    }
-
-    public function actionAbout() {
-        
-    }
-
-    public function actionLogin() {
-        
-    }
-
-    public function actionLogout() {
-        
+        $this->render('index');
     }
 
 }

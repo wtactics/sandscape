@@ -8,6 +8,12 @@ return array(
         'application.models.*',
         'application.components.*',
     ),
+    'modules' => array(
+        'gii' => array(
+            'class' => 'system.gii.GiiModule',
+            'password' => 'admin',
+        )
+    ),
     'components' => array(
         'db' => array(
             'connectionString' => 'mysql:host=localhost;dbname=sandscape',
