@@ -2,11 +2,8 @@
 
 class SiteController extends Controller {
 
-    /**
-     * Lists all models.
-     */
     public function actionIndex() {
-        $this->render('index');
+        $this->render('index', array('page' => Page::model()->find('pageId = :id', array(':id' => 'about'))));
     }
 
 }

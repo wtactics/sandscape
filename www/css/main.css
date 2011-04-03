@@ -89,7 +89,7 @@ a {
 }
 
 #lobby-users a {
-    
+
 }
 
 #lobby-chat {
@@ -115,7 +115,73 @@ a {
 }
 
 #lobby-right a {
-    
+
 }
 
 /*STATS PAGE*/
+
+
+
+/*MISC*/
+/*#panel {
+    text-align: center;
+}
+
+div.cpbutton {
+    float: left;
+    margin: 0 3px 0 0;
+}
+
+#panel div.cpbutton a {
+    border: 1px solid #DDDDDD;
+    display: block;
+    height: 97px !important;
+    padding: 2px 5px 1px;
+    text-decoration: none;
+    vertical-align: middle;
+    width: 108px !important;
+    text-decoration: none;
+    margin-top: 3px;
+}
+
+#panel div.cpbutton a:hover {
+    background-color: #D0E2E6;
+    border: 1px solid #72B1B8;
+    color: #333333;
+    padding: 3px 4px 0 6px;
+}
+
+#panel div.cpbutton img {
+    margin-top: 13px;
+    border: none;
+    vertical-align: middle;
+}
+
+#panel div.cpbutton span {
+    display: block;
+    padding-top: 3px;
+}
+
+div.line {
+    padding-top: 10px;
+    border-bottom: 1px solid #767676;
+    clear: both;
+    margin-bottom: 3px;
+    text-align: left;
+    font-size: 12pt;
+    color: #767676;
+    font-weight: bold;
+}*/
+
+
+#submenu ul{list-style-type:none;margin:0; padding:0}
+#submenu li {float:left;display:inline;margin-right:20px;}
+#submenu li.active a{color:#f00}
+
+#profile ul{list-style-type:none;margin:0; padding:0}
+#profile li {float:left;display:inline;margin-right:20px;}
+#profile li.active a{color:#f00}
+
+.clear {
+    clear: both;
+}

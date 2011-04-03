@@ -1,14 +1,15 @@
-Sandscape README
+SandScape README
 ================
 
 Intro
 -----
 
-Sandscape is a browser-based implementation of a CCG being developed as part of
-the Wtactics project (wtactics.org). It offers the player the basic tools for
-creating a CCG game, without forcing any rules on the actual game being played.
+*Sandscape* is a browser-based implementation of a CCG being developed as part 
+of the *Wtactics* project (http://www.wtactics.org). It offers the player the 
+basic tools for creating a CCG game, without forcing any rules on the actual 
+game being played.
 
-Along side the basic playing field, Sandscape has the usual user management
+Along side the basic playing field, *SandScape* has the usual user management
 system, which requires valid authentication in order to play, a lobby system
 where players can see each other and arrange games and simple statistics
 recording.
@@ -29,10 +30,10 @@ The Git repository is divided in four simple folders:
 [horizontal]
 _dev:: Stores any development related file, from design docs, diagrams, UI
 sketches and spike solutions.
-sandscape:: Contains the PHP base system that powers Sandscape.
+sandscape:: Contains the PHP base system that powers *SandScape*.
 www:: Contains any public resources like imagens, CSS files and every
-JavaScript file needed to run Sandscape.
-yii:: Houses the yii framework files, used by Sandscape.
+JavaScript file needed to run *SandScape*.
+yii:: Houses the yii framework files, used by *SandScape*.
 
 There are no other files in the root directory, aside from this README file you
 are seeing.
@@ -41,20 +42,22 @@ Tools
 -----
 
 To create a server:
+
 - Apache Web Server
 - PHP 5.2.9
 - MySQL 5.0
 - Apache's mod-rewrite
 
 To play a game:
-- Browser: Firefox 3.5, Opera 11 and Google Chrome 5
+
+- Browser: Firefox 3.5+, Opera 11+ and Google Chrome 5+
 
 Installation
 -----------
 
-Installing Sandscape is a step only users interested in having their own server
-instance should take. You *don't* need to have Sandscape installed in order to 
-play, the software is installed in a server and accessed using a browser.
+Installing *SandScape* is a step only users interested in having their own server
+instance should take. You *don't* need to have *SandScape* installed in order 
+to play, the software is installed in a server and accessed using a browser.
 
 .Steps
 1. Please have Apache Web Server, PHP and MySQL installed.

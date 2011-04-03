@@ -1,46 +1,52 @@
 <?php
 
-class ChatMessageController extends Controller {
+class CardsController extends Controller {
 
-    /**
-     * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-     * using two-column layout. See 'protected/views/layouts/column2.php'.
-     */
-    public $layout = '//layouts/column2';
+    private $menu;
 
-    /**
-     * @return array action filters
-     */
-    public function filters() {
+    function __construct($id, $module) {
+        parent::__construct($id, $module);
+
+        $this->menu = array(
+            array('label' => 'Cards', 'url' => array('/cards')),
+            array('label' => 'Cleanup', 'url' => array('/cleanup')),
+            array('label' => 'CMS', 'url' => array('/cms')),
+            array('label' => 'Logs', 'url' => array('/logs')),
+            array('label' => 'Options', 'url' => array('/options')),
+            array('label' => 'Users', 'url' => array('/users')),
+        );
+    }
+
+    /*public function filters() {
         return array(
             'accessControl', // perform access control for CRUD operations
         );
-    }
+    }*/
 
     /**
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
      */
-    public function accessRules() {
-        return array(
-            array('allow', // allow all users to perform 'index' and 'view' actions
-                'actions' => array('index', 'view'),
-                'users' => array('*'),
-            ),
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('create', 'update'),
-                'users' => array('@'),
-            ),
-            array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                'actions' => array('admin', 'delete'),
-                'users' => array('admin'),
-            ),
-            array('deny', // deny all users
-                'users' => array('*'),
-            ),
-        );
-    }
+    /* public function accessRules() {
+      return array(
+      array('allow', // allow all users to perform 'index' and 'view' actions
+      'actions' => array('index', 'view'),
+      'users' => array('*'),
+      ),
+      array('allow', // allow authenticated user to perform 'create' and 'update' actions
+      'actions' => array('create', 'update'),
+      'users' => array('@'),
+      ),
+      array('allow', // allow admin user to perform 'admin' and 'delete' actions
+      'actions' => array('admin', 'delete'),
+      'users' => array('admin'),
+      ),
+      array('deny', // deny all users
+      'users' => array('*'),
+      ),
+      );
+      } */
 
     /**
      * Displays a particular model.
@@ -57,15 +63,15 @@ class ChatMessageController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model = new ChatMessage;
+        $model = new Card;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['ChatMessage'])) {
-            $model->attributes = $_POST['ChatMessage'];
+        if (isset($_POST['Card'])) {
+            $model->attributes = $_POST['Card'];
             if ($model->save())
-                $this->redirect(array('view', 'id' => $model->messageId));
+                $this->redirect(array('view', 'id' => $model->cardId));
         }
 
         $this->render('create', array(
@@ -84,10 +90,10 @@ class ChatMessageController extends Controller {
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['ChatMessage'])) {
-            $model->attributes = $_POST['ChatMessage'];
+        if (isset($_POST['Card'])) {
+            $model->attributes = $_POST['Card'];
             if ($model->save())
-                $this->redirect(array('view', 'id' => $model->messageId));
+                $this->redirect(array('view', 'id' => $model->cardId));
         }
 
         $this->render('update', array(
@@ -117,7 +123,7 @@ class ChatMessageController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $dataProvider = new CActiveDataProvider('ChatMessage');
+        $dataProvider = new CActiveDataProvider('Card');
         $this->render('index', array(
             'dataProvider' => $dataProvider,
         ));
@@ -127,13 +133,13 @@ class ChatMessageController extends Controller {
      * Manages all models.
      */
     public function actionAdmin() {
-        $model = new ChatMessage('search');
-        $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['ChatMessage']))
-            $model->attributes = $_GET['ChatMessage'];
+        //$model = new Card('search');
+        //$model->unsetAttributes();  // clear any default values
+        //if (isset($_GET['Card']))
+        //    $model->attributes = $_GET['Card'];
 
         $this->render('admin', array(
-            'model' => $model,
+            'model' => new Card()//$model,
         ));
     }
 
@@ -143,7 +149,7 @@ class ChatMessageController extends Controller {
      * @param integer the ID of the model to be loaded
      */
     public function loadModel($id) {
-        $model = ChatMessage::model()->findByPk((int) $id);
+        $model = Card::model()->findByPk((int) $id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -154,7 +160,7 @@ class ChatMessageController extends Controller {
      * @param CModel the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'chat-message-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'card-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

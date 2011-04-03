@@ -1,24 +1,41 @@
 <?php
 
-/**
- * Controller is the customized base controller class.
- * All controller classes for this application should extend from this base class.
- */
 class Controller extends CController {
 
-    /**
-     * @var string the default layout for the controller view. Defaults to '//layouts/column1',
-     * meaning using a single column layout. See 'protected/views/layouts/column1.php'.
-     */
-    public $layout = '//layouts/column1';
-    /**
-     * @var array context menu items. This property will be assigned to {@link CMenu::items}.
-     */
-    public $menu = array();
-    /**
-     * @var array the breadcrumbs of the current page. The value of this property will
-     * be assigned to {@link CBreadcrumbs::links}. Please refer to {@link CBreadcrumbs::links}
-     * for more details on how to specify this property.
-     */
-    public $breadcrumbs = array();
+    private $menu;
+    private $sessionMenu;
+
+    function __construct($id, $module) {
+        parent::__construct($id, $module);
+
+        $this->layout = '//layouts/main';
+        $this->menu = array(
+            array('label' => 'About', 'url' => array('/site')),
+            array('label' => 'Lobby', 'url' => array('/lobby')),
+            array('label' => 'Statistics', 'url' => array('/stats')),
+        );
+        
+        $this->sessionMenu = array(
+            array('label' => 'administration', 'url' => array('/admin')),
+            array('label' => 'profile', 'url' => array('/account')),
+            array('label' => 'logout', 'url' => array('/site/logout')),
+        );
+    }
+
+    public function setActiveMenu($index) {
+        foreach ($this->menu as $m) {
+            $m[$index]['url']['active'] = false;
+        }
+
+        $this->menu[$index]['url']['active'] = true;
+    }
+
+    public function getMenu() {
+        return $this->menu;
+    }
+    
+    public function getSessionMenu() {
+        return $this->sessionMenu;
+    }
+
 }

@@ -1,0 +1,10 @@
+
+//card constructor
+Card = function () {
+    
+}
+
+
+
+
+

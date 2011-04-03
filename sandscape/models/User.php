@@ -82,16 +82,15 @@ class User extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'userId' => 'User',
+            'userId' => 'ID',
             'name' => 'Name',
             'password' => 'Password',
-            'email' => 'Email',
+            'email' => 'E-mail',
             'key' => 'Key',
-            'visited' => 'Visited',
-            'emailVisibility' => 'Email Visibility',
+            'visited' => 'Last Visit',
+            'emailVisibility' => 'E-mail Visibility',
             'acceptMessages' => 'Accept Messages',
-            'admin' => 'Admin',
-            'active' => 'Active',
+            'admin' => 'Type'
         );
     }
 
@@ -100,21 +99,10 @@ class User extends CActiveRecord {
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
      */
     public function search() {
-        // Warning: Please modify the following code to remove attributes that
-        // should not be searched.
-
         $criteria = new CDbCriteria;
-
-        $criteria->compare('userId', $this->userId, true);
         $criteria->compare('name', $this->name, true);
-        $criteria->compare('password', $this->password, true);
         $criteria->compare('email', $this->email, true);
-        $criteria->compare('key', $this->key, true);
-        $criteria->compare('visited', $this->visited, true);
-        $criteria->compare('emailVisibility', $this->emailVisibility);
-        $criteria->compare('acceptMessages', $this->acceptMessages);
         $criteria->compare('admin', $this->admin);
-        $criteria->compare('active', $this->active);
 
         return new CActiveDataProvider(get_class($this), array(
             'criteria' => $criteria,

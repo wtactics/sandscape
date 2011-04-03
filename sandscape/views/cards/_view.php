@@ -1,9 +1,4 @@
 <div class="view">
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('cardId')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->cardId), array('view', 'id'=>$data->cardId)); ?>
-	<br />
-
 	<b><?php echo CHtml::encode($data->getAttributeLabel('faction')); ?>:</b>
 	<?php echo CHtml::encode($data->faction); ?>
 	<br />
@@ -28,7 +23,6 @@
 	<?php echo CHtml::encode($data->attack); ?>
 	<br />
 
-	<?php /*
 	<b><?php echo CHtml::encode($data->getAttributeLabel('defense')); ?>:</b>
 	<?php echo CHtml::encode($data->defense); ?>
 	<br />
@@ -60,7 +54,4 @@
 	<b><?php echo CHtml::encode($data->getAttributeLabel('active')); ?>:</b>
 	<?php echo CHtml::encode($data->active); ?>
 	<br />
-
-	*/ ?>
-
 </div>
