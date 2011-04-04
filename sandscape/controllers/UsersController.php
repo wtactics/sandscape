@@ -10,7 +10,7 @@ class UsersController extends Controller {
         $this->menu = array(
             array('label' => 'Cards', 'url' => array('/cards')),
             array('label' => 'Cleanup', 'url' => array('/cleanup')),
-            array('label' => 'CMS', 'url' => array('/cms')),
+            array('label' => 'CMS', 'url' => array('/pages')),
             array('label' => 'Logs', 'url' => array('/logs')),
             array('label' => 'Options', 'url' => array('/options')),
             array('label' => 'Users', 'url' => array('/users'), 'active' => true),

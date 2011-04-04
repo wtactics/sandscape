@@ -7,7 +7,7 @@ class LobbyController extends Controller {
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
 
-        $this->chat = Chat::model()->find('');
+        //$this->chat = Chat::model()->find('');
     }
 
     public function actionIndex() {

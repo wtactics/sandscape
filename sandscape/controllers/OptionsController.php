@@ -1,6 +1,6 @@
 <?php
 
-class AdminController extends Controller {
+class OptionsController extends Controller {
 
     private $menu;
 
@@ -12,7 +12,7 @@ class AdminController extends Controller {
             array('label' => 'Cleanup', 'url' => array('/cleanup')),
             array('label' => 'CMS', 'url' => array('/pages')),
             array('label' => 'Logs', 'url' => array('/logs')),
-            array('label' => 'Options', 'url' => array('/options')),
+            array('label' => 'Options', 'url' => array('/options'), 'active' => true),
             array('label' => 'Users', 'url' => array('/users')),
         );
     }

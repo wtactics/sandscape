@@ -1,12 +1,11 @@
 <?php
-//$this->breadcrumbs=array(
-//	'Cards',
-//);
-//$this->menu=array(
-//	array('label'=>'Create Card', 'url'=>array('create')),
-//	array('label'=>'Manage Card', 'url'=>array('admin')),
-//);
+$this->widget('zii.widgets.CMenu', array(
+    'id' => 'submenu',
+    'items' => $menu,
+));
 ?>
+
+<div class="clear"></div>
 
 <h1>Cards</h1>
 
