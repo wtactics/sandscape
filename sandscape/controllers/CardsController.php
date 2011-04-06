@@ -1,53 +1,75 @@
 <?php
 
-class CardsController extends Controller {
+class CardsController extends GenericAdminController {
 
-    private $menu;
 
     function __construct($id, $module) {
         parent::__construct($id, $module);
-
-        $this->menu = array(
-            array('label' => 'Cards', 'url' => array('/cards'), 'active' => true),
-            array('label' => 'Cleanup', 'url' => array('/cleanup')),
-            array('label' => 'CMS', 'url' => array('/pages')),
-            array('label' => 'Logs', 'url' => array('/logs')),
-            array('label' => 'Options', 'url' => array('/options')),
-            array('label' => 'Users', 'url' => array('/users')),
-        );
+        $this->menu[0]['active'] = true;
     }
 
-    /* public function filters() {
-      return array(
-      'accessControl', // perform access control for CRUD operations
-      );
-      } */
+    public function actionIndex() {
+        $card = new Card('search');
+        $card->unsetAttributes();
+        if (isset($_GET['Card']))
+            $card->attributes = $_GET['Card'];
 
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
-    /* public function accessRules() {
-      return array(
-      array('allow', // allow all users to perform 'index' and 'view' actions
-      'actions' => array('index', 'view'),
-      'users' => array('*'),
-      ),
-      array('allow', // allow authenticated user to perform 'create' and 'update' actions
-      'actions' => array('create', 'update'),
-      'users' => array('@'),
-      ),
-      array('allow', // allow admin user to perform 'admin' and 'delete' actions
-      'actions' => array('admin', 'delete'),
-      'users' => array('admin'),
-      ),
-      array('deny', // deny all users
-      'users' => array('*'),
-      ),
-      );
-      } */
+        $viewData = array(
+            'menu' => $this->menu,
+            'grid' => array(
+                'id' => 'card-grid',
+                'dataProvider' => $card->search(),
+                'filter' => $card,
+                'columns' => array(
+                    'name',
+                    'faction',
+                    'type',
+                    'subtype',
+                    'author',
+                    'revision',
+                    'cardscapeId',
+                    'private',
+                    array(
+                        'class' => 'CButtonColumn'
+                    )
+                )
+            ),
+            'model' => $card
+        );
+        $this->render('index', $viewData);
+    }
 
+    public function actionCreate() {
+        $card = new Card();
+        $image = new CardImage();
+
+        if (isset($_POST['Card'])) {
+            $card->attributes = $_POST['Card'];
+
+            $upload = CUploadedFile::getInstance($image, 'file');
+
+            $image->filetype = $upload->type;
+            $image->filename = $upload->name;
+            $image->filesize = $upload->size;
+            $image->filedata = file_get_contents($upload->tempName);
+
+            if ($image->save()) {
+                $card->imageId = $image->imageId;
+                if ($card->save())
+                    $this->redirect(array('view', 'id' => $card->cardId));
+            }
+        }
+
+        $viewData = array(
+            'menu' => $this->menu,
+            'card' => $card,
+            'image' => $image
+        );
+
+        $this->render('create', $viewData);
+    }
+
+///////
     /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
@@ -55,27 +77,6 @@ class CardsController extends Controller {
     public function actionView($id) {
         $this->render('view', array(
             'model' => $this->loadModel($id),
-        ));
-    }
-
-    /**
-     * Creates a new model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     */
-    public function actionCreate() {
-        $model = new Card;
-
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
-        if (isset($_POST['Card'])) {
-            $model->attributes = $_POST['Card'];
-            if ($model->save())
-                $this->redirect(array('view', 'id' => $model->cardId));
-        }
-
-        $this->render('create', array(
-            'model' => $model,
         ));
     }
 
@@ -117,28 +118,6 @@ class CardsController extends Controller {
         }
         else
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
-    }
-
-    /**
-     * Lists all models.
-     */
-    public function actionIndex() {
-        $viewData = array('menu' => $this->menu, 'dataProvider' => new CActiveDataProvider('Card'));
-        $this->render('index', $viewData);
-    }
-
-    /**
-     * Manages all models.
-     */
-    public function actionAdmin() {
-        //$model = new Card('search');
-        //$model->unsetAttributes();  // clear any default values
-        //if (isset($_GET['Card']))
-        //    $model->attributes = $_GET['Card'];
-
-        $this->render('admin', array(
-            'model' => new Card()//$model,
-        ));
     }
 
     /**

@@ -21,18 +21,29 @@ return array(
             'username' => 'root',
             'password' => 'toor',
             'charset' => 'utf8',
+            'enableProfiling' => true
         ),
         'urlManager' => array(
             'urlFormat' => 'path'
         ),
-        //'log' => array(
-        //    'class' => 'CLogRouter',
-        //    'routes' => array(
-        //        array(
-        //            'class' => 'CFileLogRoute',
-        //            'levels' => 'error, warning',
-        //        ),
-        //    ),
-        //),
+        'log' => array(
+            'class' => 'CLogRouter',
+            'routes' => array(
+                array(
+                    'class' => 'CFileLogRoute',
+                    'levels' => 'trace, info, error, warning',
+                ),
+                array(
+                  'class' => 'CWebLogRoute',
+                    'levels' => 'trace, info, error, warning',
+                    'categories' => 'system.db.CDbCommand'
+                    
+                ),
+                array(
+                    'class' => 'CProfileLogRoute',
+                    'report' => 'summary',
+                ),
+            ),
+        ),
     ),
 );

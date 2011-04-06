@@ -15,10 +15,12 @@ class Controller extends CController {
             array('label' => 'Statistics', 'url' => array('/stats')),
         );
         
+        $url = Yii::app()->request->baseUrl .'/images/';
+        
         $this->sessionMenu = array(
-            array('label' => 'administration', 'url' => array('/admin')),
-            array('label' => 'profile', 'url' => array('/account')),
-            array('label' => 'logout', 'url' => array('/site/logout')),
+            array('label' => '<img src="'. $url .'widgets.png" title="Administration"/>', 'url' => array('/admin')),
+            array('label' => '<img src="'. $url .'vcard.png" title="Profile"/>', 'url' => array('/account')),
+            array('label' => '<img src="'. $url .'lock.png" title="Logout"/>', 'url' => array('/site/logout')),
         );
     }
 

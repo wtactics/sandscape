@@ -7,7 +7,7 @@ class StatsController extends Controller {
     }
 
     public function actionIndex() {
-        //$this->render('inde');
+        $this->render('index');
     }
 
 }

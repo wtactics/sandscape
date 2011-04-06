@@ -1,15 +1,12 @@
 <?php
-$this->breadcrumbs=array(
-	'Cards'=>array('index'),
-	'Create',
-);
-
-$this->menu=array(
-	array('label'=>'List Card', 'url'=>array('index')),
-	array('label'=>'Manage Card', 'url'=>array('admin')),
+$this->widget('zii.widgets.CMenu', array(
+    'id' => 'submenu',
+    'items' => $menu
+        )
 );
 ?>
 
+<div class="clear"></div>
 <h1>Create Card</h1>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('_form', array('model' => $card, 'image' => $image)); ?>

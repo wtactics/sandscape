@@ -30,20 +30,6 @@ class Chat extends CActiveRecord {
     }
 
     /**
-     * @return array validation rules for model attributes.
-     */
-    public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
-        return array(
-            array('started', 'required'),
-            // The following rule is used by search().
-            // Please remove those attributes that should not be searched.
-            array('chatId, started', 'safe', 'on' => 'search'),
-        );
-    }
-
-    /**
      * @return array relational rules.
      */
     public function relations() {

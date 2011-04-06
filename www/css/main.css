@@ -20,6 +20,7 @@ body {
 #menu {
     float: left;
     height: 100px;
+    width: 590px;
 }
 
 #center {
@@ -48,7 +49,12 @@ body {
 }
 
 #profile {
-    text-align: right;
+    float:left;
+    width: 110px;
+}
+
+#profile ul {
+
 }
 
 /*GENERAL CSS*/
@@ -184,4 +190,49 @@ div.line {
 
 .clear {
     clear: both;
+}
+
+
+.leftformcolum {
+    float: left;
+    width: 20%;
+    vertical-align: top;
+}
+
+.rightformcolum {
+    float: left;
+    width: 70%;
+}
+
+.formfielderror {
+    clear: both;    
+}
+
+span.required {
+    color: red;
+}
+
+.cardsmenu {
+    /*background: url(../images/) no-repeat;*/
+    padding-left: 1.3em;
+}
+
+.cleanupmenu {
+    background: url(../images/group.png) no-repeat;
+    padding-left: 1.3em;
+}
+
+.cmsmenu {
+    background: url(../images/page_white_stack.png) no-repeat;
+    padding-left: 1.3em;
+}
+
+.optionsmenu {
+    background: url(../images/setting_tools.png) no-repeat;
+    padding-left: 1.3em;
+}
+
+.usersmenu {
+    background: url(../images/group.png) no-repeat;
+    padding-left: 1.3em;
 }

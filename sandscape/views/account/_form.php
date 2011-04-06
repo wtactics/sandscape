@@ -12,49 +12,41 @@
     <?php echo $form->errorSummary($model); ?>
 
     <div class="row">
-        <?php echo $form->labelEx($model, 'name'); ?>
-        <?php echo $form->textField($model, 'name', array('size' => 20, 'maxlength' => 20)); ?>
-        <?php echo $form->error($model, 'name'); ?>
+        <div class="leftformcolum"><?php echo $form->labelEx($model, 'name'); ?></div>
+        <div class="rightformcolum"><?php echo $form->textField($model, 'name', array('size' => 20, 'maxlength' => 20)); ?></div>
+        <div class="formfielderror"><?php echo $form->error($model, 'name'); ?></div>
     </div>
 
     <div class="row">
-        <?php echo $form->labelEx($model, 'password'); ?>
-        <?php echo $form->passwordField($model, 'password', array('size' => 40, 'maxlength' => 40)); ?>
-        <?php echo $form->error($model, 'password'); ?>
+        <div class="leftformcolum"><?php echo $form->labelEx($model, 'email'); ?></div>
+        <div class="rightformcolum"><?php echo $form->textField($model, 'email', array('size' => 60, 'maxlength' => 200)); ?></div>
+        <div class="formfielderror"><?php echo $form->error($model, 'email'); ?></div>
+    </div>
+    
+    <div class="row">
+        <div class="leftformcolum"><?php echo CHtml::label('Password', 'password'); ?></div>
+        <div class="rightformcolum"><?php echo CHtml::passwordField('password'); ?></div>
+    </div>
+    
+    <div class="row">
+        <div class="leftformcolum"><?php echo CHtml::label('Repeat Password', 'passwordmatch'); ?></div>
+        <div class="rightformcolum"><?php echo CHtml::passwordField('password'); ?></div>
     </div>
 
     <div class="row">
-        <?php echo $form->labelEx($model, 'email'); ?>
-        <?php echo $form->textField($model, 'email', array('size' => 60, 'maxlength' => 200)); ?>
-        <?php echo $form->error($model, 'email'); ?>
+        <div class="leftformcolum"><?php echo $form->labelEx($model, 'emailVisibility'); ?></div>
+        <div class="rightformcolum"><?php echo $form->dropDownList($model, 'emailVisibility', array('Only administrators', 'Everyone')); ?></div>
+        <div class="formfielderror"><?php echo $form->error($model, 'emailVisibility'); ?></div>
     </div>
 
     <div class="row">
-        <?php echo $form->labelEx($model, 'key'); ?>
-        <?php echo $form->textField($model, 'key', array('size' => 40, 'maxlength' => 40)); ?>
-        <?php echo $form->error($model, 'key'); ?>
-    </div>
-
-    <div class="row">
-        <?php echo $form->labelEx($model, 'emailVisibility'); ?>
-        <?php echo $form->checkBox($model, 'emailVisibility'); ?>
-        <?php echo $form->error($model, 'emailVisibility'); ?>
-    </div>
-
-    <div class="row">
-        <?php echo $form->labelEx($model, 'acceptMessages'); ?>
-        <?php
+        <div class="leftformcolum"><?php echo $form->labelEx($model, 'acceptMessages'); ?></div>
+        <div class="rightformcolum"><?php
         echo $form->dropDownList($model, 'acceptMessages', array(
             'Don\'t send me e-mails', 'Only from administrators', 'Everyone can send me an e-mail'
         ));
-        ?>
-        <?php echo $form->error($model, 'acceptMessages'); ?>
-    </div>
-
-    <div class="row">
-        <?php echo $form->labelEx($model, 'admin'); ?>
-        <?php echo $form->textField($model, 'admin'); ?>
-        <?php echo $form->error($model, 'admin'); ?>
+        ?></div>
+        <div class="formfielderror"><?php echo $form->error($model, 'acceptMessages'); ?></div>
     </div>
 
     <div class="row buttons">

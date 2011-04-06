@@ -1,20 +1,11 @@
 <?php
 
-class PagesController extends Controller {
-
-    private $menu;
+class PagesController extends GenericAdminController {
     
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
 
-        $this->menu = array(
-            array('label' => 'Cards', 'url' => array('/cards')),
-            array('label' => 'Cleanup', 'url' => array('/cleanup')),
-            array('label' => 'CMS', 'url' => array('/pages'), 'active' => true),
-            array('label' => 'Logs', 'url' => array('/logs')),
-            array('label' => 'Options', 'url' => array('/options')),
-            array('label' => 'Users', 'url' => array('/users')),
-        );
+        $this->menu[2]['active'] = true;
     }
     /**
      * Displays a particular model.

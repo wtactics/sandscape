@@ -3,6 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
+        <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/js.js" type="text/javascript"></script>
         <title></title>
     </head>
 
@@ -24,9 +25,11 @@
                 <div id="profile">
                     <?php
                     $this->widget('zii.widgets.CMenu', array(
+                        'encodeLabel' => false,
                         'items' => $this->getSessionMenu(),
                     ));
                     ?>
+                    <div class="clear"></div>
                 </div>
                 <div class="clear"></div>
             </div>
@@ -37,7 +40,7 @@
             </div>
             <div id="footer">
                 <p>
-                    &copy; <?php echo date('Y'); ?> <a href="#">Sandscape</a> team. | <a href="http://wtactics.org">WTactics project</a>
+                    &copy; <?php echo date('Y'); ?> <a href="http://chaosrealm.net/wtactics/about/team/">Sandscape</a> team. | <a href="http://wtactics.org">WTactics project</a>
                     <span style="float: right">
                         <a href="<?php echo $this->createUrl('/site'); ?>">About</a> | <a href="<?php echo $this->createUrl('/lobby') ?>">Play</a> | <a href="<?php echo $this->createUrl('/stats'); ?>">Statistics</a> | <a href="<?php echo $this->createUrl('/site'); ?>">Top &uarr;</a>
                     </span>

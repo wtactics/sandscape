@@ -1,27 +1,51 @@
 <?php
 
-class CleanupController extends Controller {
-
-    private $menu;
+class CleanupController extends GenericAdminController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
 
-        $this->menu = array(
-            array('label' => 'Cards', 'url' => array('/cards')),
-            array('label' => 'Cleanup', 'url' => array('/cleanup'), 'active' => true),
-            array('label' => 'CMS', 'url' => array('/pages')),
-            array('label' => 'Logs', 'url' => array('/logs')),
-            array('label' => 'Options', 'url' => array('/options')),
-            array('label' => 'Users', 'url' => array('/users')),
-        );
+        $this->menu[1]['active'] = true;
     }
 
     public function actionIndex() {
-        $viewData = array('menu' => $this->menu);
+        $viewData = array(
+            'menu' => $this->menu,
+            'imageGrid' => array(
+                'id' => 'image-grid',
+                'dataProvider' => new CActiveDataProvider('CardImage', array(
+                    'criteria' => array(
+                        'select' => 't.imageId, t.filetype, t.filename, t.filesize',
+                        'join' => 'LEFT JOIN Card ON t.imageId = Card.imageId',
+                        'condition' => 'Card.imageId IS NULL'
+                        ))
+                ),
+                'columns' => array(
+                    'imageId',
+                    'filetype',
+                    'filename',
+                    'filesize',
+                    array(
+                        'class' => 'CButtonColumn'
+                    )
+                )
+            ),
+            //TODO:
+            //'chatGrid' => array(
+            //    'id' => 'chat-grid',
+            //    'dataProvider' => new CActiveDataProvider('Chat', array(
+            //        'criteria' => array(
+            //            'join'
+            //            'condition' => ''
+            //        )
+            //    ))
+            //),
+            //TODO:
+            'logGrid' => array(
+            )
+        );
+
         $this->render('index', $viewData);
     }
 
 }
-
-?>

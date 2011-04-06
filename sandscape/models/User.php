@@ -30,22 +30,16 @@ class User extends CActiveRecord {
         return parent::model($className);
     }
 
-    /**
-     * @return array validation rules for model attributes.
-     */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
-            array('name, password, email', 'required'),
+            array('name, email', 'required'),
+            array('name, email', 'unique'),
             array('emailVisibility, acceptMessages, admin, active', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 20),
-            array('password, key', 'length', 'max' => 40),
             array('email', 'length', 'max' => 200),
             array('visited', 'safe'),
-            // The following rule is used by search().
-            // Please remove those attributes that should not be searched.
-            array('userId, name, password, email, key, visited, emailVisibility, acceptMessages, admin, active', 'safe', 'on' => 'search'),
+            // search rule
+            array('name, email', 'safe', 'on' => 'search'),
         );
     }
 
@@ -63,36 +57,30 @@ class User extends CActiveRecord {
         );
     }
 
-    /**
-     * @return array customized attribute labels (name=>label)
-     */
     public function attributeLabels() {
         return array(
             'userId' => 'ID',
             'name' => 'Name',
             'password' => 'Password',
             'email' => 'E-mail',
-            'key' => 'Key',
+            'key' => 'Validation key',
             'visited' => 'Last Visit',
-            'emailVisibility' => 'E-mail Visibility',
-            'acceptMessages' => 'Accept Messages',
+            'emailVisibility' => 'E-mail visible to',
+            'acceptMessages' => 'Accept messages',
             'admin' => 'Type'
         );
     }
 
-    /**
-     * Retrieves a list of models based on the current search/filter conditions.
-     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-     */
     public function search() {
-        $criteria = new CDbCriteria;
+        $criteria = new CDbCriteria();
+        $criteria->order = 'name ASC';
+
         $criteria->compare('name', $this->name, true);
         $criteria->compare('email', $this->email, true);
         $criteria->compare('admin', $this->admin);
+        $criteria->compare('active', 1);
 
-        return new CActiveDataProvider(get_class($this), array(
-            'criteria' => $criteria,
-        ));
+        return new CActiveDataProvider(get_class($this), array('criteria' => $criteria));
     }
 
 }

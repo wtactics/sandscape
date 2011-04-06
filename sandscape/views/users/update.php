@@ -1,3 +1,7 @@
-<h1>Update User <?php echo $model->userId; ?></h1>
+<?php $this->widget('zii.widgets.CMenu', $menu); ?>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+<div class="clear"></div>
+
+<h1>Update <?php echo $model->name; ?></h1>
+
+<?php echo $this->renderPartial('_form', array('model' => $model)); ?>
