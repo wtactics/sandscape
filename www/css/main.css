@@ -120,13 +120,22 @@ a {
     border: solid 1px gray;
 }
 
-#lobby-right a {
+.game {
+    clear: both;
+}
 
+.gamehash {
+    float: left;
+    width: 75%;
+}
+
+.gameicons {
+    float: left;
+    width: 20%;
+    text-align: right;
 }
 
 /*STATS PAGE*/
-
-
 
 /*MISC*/
 /*#panel {
@@ -180,19 +189,44 @@ div.line {
 }*/
 
 
-#submenu ul{list-style-type:none;margin:0; padding:0}
-#submenu li {float:left;display:inline;margin-right:20px;}
-#submenu li.active a{color:#f00}
+#submenu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0
+}
 
-#profile ul{list-style-type:none;margin:0; padding:0}
-#profile li {float:left;display:inline;margin-right:20px;}
-#profile li.active a{color:#f00}
+#submenu li {
+    float: left;
+    display: inline;
+    margin-right: 20px;
+}
 
+#submenu li.active a {
+    color: #f00;
+}
+
+#profile ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0
+}
+
+#profile li {
+    float: left;
+    display: inline;
+    margin-right: 20px;
+}
+
+#profile li.active a {
+    color: #f00;
+}
+
+/* GENERAL CSS */
 .clear {
     clear: both;
 }
 
-
+/* FORMS */
 .leftformcolum {
     float: left;
     width: 20%;
@@ -212,6 +246,7 @@ span.required {
     color: red;
 }
 
+/* ADMINISTRATION */
 .cardsmenu {
     /*background: url(../images/) no-repeat;*/
     padding-left: 1.3em;

@@ -26,7 +26,7 @@ class LobbyController extends Controller {
         $viewData = array(
             'chat' => $this->chat,
             'games' => Game::model()->findAll($criteria),
-            //TODO: change this....
+            //TODO: change this to use the authenticated user....
             'decks' => Deck::model()->findAll('userId = :id', array(':id' => 2))
         );
 
@@ -45,23 +45,24 @@ class LobbyController extends Controller {
             $chat->started = $now;
             $chat->save();
 
-            $game->chat = $chat;
+            $game->chatId = $chat->chatId;
 
-            //TODO: change this....
+            //TODO: change this to use the authenticated user and correct deck ID....
             $deckId = (int) $_POST['deck'];
-            $game->playerA = 2;
-            $game->deckA = $deckId;
+            $creator = User::model()->findByPk(2);
+            $deck = Deck::model()->findByPk($deckId);
 
+            $game->playerA = $creator->userId;
+            $game->deckA = $deck->deckId;
             $game->created = $now;
 
             if (isset($_POST['private']) && (int) $_POST['private'])
                 $game->private = 1;
 
-            $game->hash = crc32(($now . 2 . $deckId . $game->private));
+            $game->hash = dechex(crc32(($now . 2 . $creator->name . $deck->name . $game->private)));
 
             //TODO: validation and messages...
             $game->save();
-            //TODO: SAVE THE GAME....
         }
     }
 
@@ -70,6 +71,8 @@ class LobbyController extends Controller {
     }
 
     public function actionJoin() {
+        var_dump($_POST);
+        die;
         
     }
 
