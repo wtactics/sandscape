@@ -16,7 +16,7 @@ return array(
     ),
     'components' => array(
         'db' => array(
-            'connectionString' => 'mysql:host=localhost;dbname=sandscape',
+            'connectionString' => 'mysql:host=127.0.0.1;dbname=sandscape',
             'emulatePrepare' => true,
             'username' => 'root',
             'password' => 'toor',
