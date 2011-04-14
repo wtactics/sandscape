@@ -10,6 +10,15 @@ class StatsController extends Controller {
         $this->render('index');
     }
 
+    public function accessRules() {
+        return array_merge(array(
+            array(
+                'allow',
+                'actions' => array('index'),
+                'users' => array('@')
+                )), parent::accessRules());
+    }
+
 }
 
 ?>

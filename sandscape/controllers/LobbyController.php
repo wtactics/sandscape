@@ -16,6 +16,15 @@ class LobbyController extends Controller {
         }
     }
 
+    public function accessRules() {
+        return array_merge(array(
+            array(
+                'allow',
+                'actions' => array('index', 'create', 'search', 'join', 'send'),
+                'users' => array('@')
+                )), parent::accessRules());
+    }
+
     public function actionIndex() {
 
         $criteria = new CDbCriteria();
@@ -73,7 +82,6 @@ class LobbyController extends Controller {
     public function actionJoin() {
         var_dump($_POST);
         die;
-        
     }
 
     public function actionSend() {

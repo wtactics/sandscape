@@ -50,7 +50,7 @@
             }
         </style>
     </head>
-    <body>
+    <body id="appendable">
         <!-- Left vertical area -->
         <div id="system">
             <!-- Bigger image -->
@@ -67,6 +67,10 @@
                 <input id="message" name="message" type="text" />
                 <button id="send" name="send" type="button" onclick="sendMessage();">OK</button>
             </div>
+            <!-- TODO: find hand size -->
+            <div class="hand" style="background-color: green;height: 303px">
+                
+            </div>
         </div>
         <!-- END: left vertical area -->
 
@@ -76,11 +80,12 @@
         </div>
         <!-- END: game area -->
         
-        <div id='radial_container'>
+        <!-- TODO: ... -->
+        <!-- <div id='radial_container'>
             <ul class='list'>
                 <li class='item'><div class='my_class'>8</div></li>
                 <li class='item'><div class='my_class'>9</div></li>
             </ul>
-        </div>
+        </div> -->
     </body>
 </html>

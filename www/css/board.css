@@ -29,7 +29,7 @@ body {
 }
 
 #chat {
-    
+
 }
 
 #chat input, #chat button {
@@ -41,7 +41,7 @@ body {
     /*border: solid 1px #CFCEC3;*/
     width: 290px;
     margin: 1em auto;
-    height: 300px;
+    height: 200px;
 
 }
 
@@ -49,35 +49,36 @@ body {
     float: left;
 }
 
-#opponent {
+/*UNIQUE CLASSES FOR JSONP/SERVER/WHATEVER/DOCUMENT LATER :) */
+.opponent {
     /*background-color: #CFCEC3;*/
     background-color: darkgreen;
 }
 
-#op-graveyard {
+.op-graveyard {
     position: absolute;
     left: 301px;
     bottom: 55%;
 }
 
-#op-deck {
+.op-deck {
     position: absolute;
     left: 301px;
     top: 1%;
 }
 
-#player {
+.player {
     /*background: #EDE6E1;*/
     background-color: green;
 }
 
-#graveyard {
+.graveyard {
     position: absolute;
     right: 1%;
     top: 55%;
 }
 
-#deck {
+.deck {
     position: absolute;
     right: 1%;
     bottom: 1%;

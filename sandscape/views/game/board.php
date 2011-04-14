@@ -1,20 +1,21 @@
-<div id="opponent">
-    <div id="op-graveyard">
+<div class="opponent">
+    <div class="op-graveyard">
         <!-- <img src="http://localhost/spikes/card-images/GraveCardBack.png" height="113" width="81" /> -->
         <img src="http://192.168.10.2/spikes/card-images/GraveCardBack.png" height="113" width="81" />
     </div>
-    <div id="op-deck">
+    <div class="op-deck">
         <!-- <img src="http://localhost/spikes/card-images/CardBack.png" height="113" width="81" /> -->
         <img src="http://192.168.10.2/spikes/card-images/CardBack.png" height="113" width="81" />
     </div>
 </div>
-<div id="player">
-    <div id="graveyard">
+<div class="player">
+    <div class="graveyard">
         <!-- <img src="http://localhost/spikes/card-images/GraveCardBack.png" height="113" width="81" /> -->
         <img src="http://192.168.10.2/spikes/card-images/GraveCardBack.png" height="113" width="81" />
     </div>
-    <div id="deck" onclick="drawCardFromDeck()">
+    <div class="deck" onclick="drawCardFromDeck()">
         <!-- <img src="http://localhost/spikes/card-images/CardBack.png" height="113" width="81" /> -->
         <img src="http://192.168.10.2/spikes/card-images/CardBack.png" height="113" width="81" />
     </div>
+    <button type="button" onclick="drawCardFromDeck()">ok</button>
 </div>

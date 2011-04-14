@@ -8,14 +8,23 @@ class GameController extends Controller {
         $this->layout = '//layouts/game';
     }
 
-    public function actionIndex() {
-       $this->render('board');
+    public function accessRules() {
+        return array_merge(array(
+            array(
+                'allow',
+                'actions' => array('index', 'send', 'pull'),
+                'users' => array('@')
+                )), parent::accessRules());
     }
-    
+
+    public function actionIndex() {
+        $this->render('board');
+    }
+
     //TODO: implement this
     public function actionSend() {
         $message = new ChatMessage();
-        
+
         //TODO: make safe?
         $message->message = $_POST['message'];
         $message->sent = date('Y-m-d H:m:s');
@@ -26,7 +35,7 @@ class GameController extends Controller {
 
         $message->save();
     }
-    
+
     //TODO: implement this
     public function actionPull($last) {
         
