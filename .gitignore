@@ -1,2 +1,4 @@
 nbproject/
-sandscape/config/
+sandscape/config/*.php
+sandscape/runtime/*
+www/assets/*
