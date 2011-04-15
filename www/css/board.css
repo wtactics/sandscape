@@ -52,6 +52,7 @@ body {
 /*UNIQUE CLASSES FOR JSONP/SERVER/WHATEVER/DOCUMENT LATER :) */
 .opponent {
     /*background-color: #CFCEC3;*/
+    padding-left: 100px;
     background-color: darkgreen;
 }
 
@@ -69,6 +70,7 @@ body {
 
 .player {
     /*background: #EDE6E1;*/
+    padding-right: 100px;
     background-color: green;
 }
 
@@ -82,4 +84,15 @@ body {
     position: absolute;
     right: 1%;
     bottom: 1%;
+}
+
+
+/*demo*/
+.grid * td {
+    border: solid 1px #000;
+}
+
+.grid {
+    width: 100%;
+    border-collapse: collapse;
 }

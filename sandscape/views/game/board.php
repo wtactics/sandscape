@@ -17,5 +17,4 @@
         <!-- <img src="http://localhost/spikes/card-images/CardBack.png" height="113" width="81" /> -->
         <img src="http://192.168.10.2/spikes/card-images/CardBack.png" height="113" width="81" />
     </div>
-    <button type="button" onclick="drawCardFromDeck()">ok</button>
 </div>

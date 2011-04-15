@@ -56,7 +56,9 @@
             <!-- Bigger image -->
             <div id="zoom">
                 <!-- <img src="http://localhost/spikes/card-images/CardBack.png" id="zoomedImage" /> -->
-                <img src="http://192.168.10.2/spikes/card-images/CardBack.png" id="zoomedImage" />
+                <!-- <img src="http://192.168.10.2/spikes/card-images/CardBack.png" id="zoomedImage" /> -->
+                
+                <button type="button" onclick="drawCardFromDeck()">ok</button>
             </div>
 
             <!-- Chat widget -->

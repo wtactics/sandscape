@@ -44,46 +44,6 @@ function reload() {
     }, 'json');
 }
 
-//Game functions
-function drawCardFromDeckOld() {
-    //debug
-    var base = 'http://192.168.10.2/spikes/card-images/';
-    //var base = 'http://localhost/spikes/card-images/';
-    //
-    var cards = ['DonationsforRecovery.png', 'DoubttheViolence.png', 'ElvishArcher.png', 
-    'ElvishFighter.png', 'ElvishRanger.png', 'ElvishMarksman.png', 'ElvishScout.png', 
-    'ElvishShaman.png', 'ElvishSharpshooter.png', 'ElvishShyde.png', 'MermanBrawler.png', 
-    'MermanHoplite.png'];
-    //end
-    var deck = $('.deck');
-    var img = $(document.createElement('img'));
-    img.attr('height', '113');
-    img.attr('width', '81');
-        
-    img.css('left', deck.css('left'));
-    img.css('top', deck.css('top'));
-    img.css('position', 'absolute');
-        
-    var path = base + cards[Math.floor(Math.random() * cards.length)];
-    img.attr('src', path);
-    img.addClass('card');
-    img.draggable();
-    img.click(function (event) {
-        //$('#zoomedImage').attr('src', path);
-        
-        //var off = $(this).offset();
-        
-        //see if the click was at the left top corner area (16 x 16 pixel) 
-        //if(event.pageX > (off.left + 81 - 16) && event.pageY < (off.top + 113 - 16)) {           
-        //    $('#radial_container').css('left', event.pageX);
-        //    $('#radial_container').css('top', event.pageY);
-        //    $('#radial_container').radmenu('show');
-        //}
-        });
-    
-    $('.player').append(img);    
-}
-
 function init() {
     $('#board').css('width', $(window).width() - 300);
     
@@ -108,12 +68,23 @@ function init() {
             //
             var player = $('.player').attr('id', json.playableArea.id);
             player.css('height', $(window).height() / 2);
+            
             player.append(json.playableArea.html);
-        
+            
+            $('#' + json.opponentArea.id + ' > table').css('height', $(window).height() / 2);
+            
+            $('#' + json.playableArea.id + ' > table').css('height', $(window).height() / 2);
+            $('#' + json.playableArea.id + ' > table td').addClass('dropzone');
+            
+            $('#' + json.hand.id + ' > table').css('height', '303');
+            $('#' + json.hand.id + ' > table td').addClass('dropzone');
+            
             var deck = $('.deck');
             deck.attr('id', json.deck.id);
             
             var grave = $('.graveyard').attr('id', json.graveyard.id);
+            grave.addClass('dropzone');
+            //
             grave.droppable({
                 accept: '.card',
                 drop: function(event, ui) {
@@ -123,17 +94,16 @@ function init() {
             $.each(json.update, function(index, elem) {
                 
                 if(elem.f == 'create') {
-                    create(elem.id, elem.idLocation);
+                    createCard(elem.id, elem.idLocation);
                 } else if(elem.f == 'image') {
-                    image(elem.id, elem.src);
+                    defineCardSource(elem.id, elem.src);
                 } else if(elem.f == 'move') {
-                    move(elem.id, elem.idDestination);
+                    moveCard(elem.id, elem.idDestination);
                 } else {
                     alert('Wrong function request');
-                }
-                
-            });
-        }
+                } 
+            });            
+        }//END: success
     });
 }
 
@@ -156,7 +126,7 @@ $(document).ready(function() {
 //    });
 });
 
-function create(id, location) {
+function createCard(id, location) {
     if( $('#' + id).length == 0) {
         var image = $(document.createElement('img'));
         $('#appendable').append(image);
@@ -166,18 +136,65 @@ function create(id, location) {
         //TODO: ....
         image.css('width', 81);
         image.css('height', 113);
-        image.attr('id', id); 
+        image.attr('id', id);
+       
+        image.draggable({
+            scroll: false,
+            containment: 'window',
+            stop: function (event, ui) {
+                //ui.offset;
+                var moved = false;
+                $('.dropzone').each(function(index, cell) {
+                    if(ui.offset.left > $(cell).offset().left && ui.offset.left < $(cell).offset().left + $(cell).width()
+                        && ui.offset.top > $(cell).offset().top && ui.offset.top < $(cell).offset().top + $(cell).height()) {
+                        //
+                        moved = true;
+                        $.ajax({
+                            url: 'http://192.168.10.3/wtserver/?quiet',
+                            dataType: 'jsonp',
+                            data: {
+                                'event' : 'moveCard',
+                                'id': ui.helper.attr('id'),
+                                'idDestination': cell.id
+                            },
+                            crossDomain: true,
+                            success: function(json) {
+                                $.each(json.update, function(index, elem){
+                                    if(elem.f == 'create') {
+                                        createCard(elem.id, elem.idLocation);
+                                    } else if(elem.f == 'image') {
+                                        defineCardSource(elem.id, elem.src);
+                                    } else if(elem.f == 'move') {
+                                        moveCard(elem.id, elem.idDestination);
+                                    } else {
+                                        alert('Wrong function request');
+                                    }
+                                });    
+                            }
+                        });
+                    //
+                    }
+                })
+                
+                if(!moved) {
+                    ui.helper.animate(ui.helper.data('originalPos'), 'fast');
+                }
+            },
+            //END: stop
+            start: function (event, ui) {
+                ui.helper.data('originalPos', ui.offset);
+            }
+        });
     }
 }
 
-function image(id, source) {
+function defineCardSource(id, source) {
     $('#' + id).attr('src', source);
 }
 
-function move(id, destination) {
+function moveCard(id, destination) {
     $('#' + id).animate($('#' + destination).position(), 'slow');
 }
-
 
 function drawCardFromDeck() {
     $.ajax({
@@ -190,16 +207,15 @@ function drawCardFromDeck() {
         success: function(json) {
             $.each(json.update, function(index, elem){
                 if(elem.f == 'create') {
-                    create(elem.id, elem.idLocation);
+                    createCard(elem.id, elem.idLocation);
                 } else if(elem.f == 'image') {
-                    image(elem.id, elem.src);
+                    defineCardSource(elem.id, elem.src);
                 } else if(elem.f == 'move') {
-                    move(elem.id, elem.idDestination);
+                    moveCard(elem.id, elem.idDestination);
                 } else {
                     alert('Wrong function request');
                 }
-            }); 
-            
+            });
         }
     });
 }
