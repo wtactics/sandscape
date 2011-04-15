@@ -45,15 +45,12 @@ function reload() {
 }
 
 function init() {
+    //TODO: 300...
     $('#board').css('width', $(window).width() - 300);
     
     $.ajax({
-        url: 'http://192.168.10.3/wtserver/?quiet',
-        dataType: 'jsonp',
-        data: {
-            'event' : 'startup'
-        },
-        crossDomain: true,
+        url: '/sandscape/index.php/game/startup/gameId/1/playerId/2',
+        dataType: 'json',
         success: function(json) {
             
             var opp = $('.opponent');

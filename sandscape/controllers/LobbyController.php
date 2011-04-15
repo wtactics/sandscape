@@ -48,6 +48,7 @@ class LobbyController extends Controller {
             $now = date('Y-m-d H:i:s');
 
             $game = new Game();
+            $game->currentState = serialize(new WTSGame());
 
             $chat = new Chat();
             $chat->lobby = 0;

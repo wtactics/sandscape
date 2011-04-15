@@ -1,5 +1,3 @@
--- //TODO//NOTE: Work in progress
-
 -- User table, stores basic user info
 CREATE TABLE `User` (
 `userId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,

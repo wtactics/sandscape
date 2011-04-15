@@ -6,6 +6,7 @@ return array(
     'preload' => array('log'),
     'import' => array(
         'application.models.*',
+        'application.models.wtsengine.*',
         'application.components.*',
     ),
     'modules' => array(
@@ -33,16 +34,15 @@ return array(
                     'class' => 'CFileLogRoute',
                     'levels' => 'trace, info, error, warning',
                 ),
-                array(
-                  'class' => 'CWebLogRoute',
-                    'levels' => 'trace, info, error, warning',
-                    'categories' => 'system.db.CDbCommand'
-                    
-                ),
-                array(
-                    'class' => 'CProfileLogRoute',
-                    'report' => 'summary',
-                ),
+                //array(
+                //  'class' => 'CWebLogRoute',
+                //    'levels' => 'trace, info, error, warning',
+                //    'categories' => 'system.db.CDbCommand'    
+                //),
+                //array(
+                //    'class' => 'CProfileLogRoute',
+                //    'report' => 'summary',
+                //),
             ),
         ),
     ),
