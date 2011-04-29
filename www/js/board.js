@@ -1,48 +1,23 @@
-//General functions
-var last = 0;
-
-/**
- * Sends a message to the server that can then be pulled by other clients. Part
- * of the chat system.
+/*
+ * board.js
+ * 
+ * This file is part of SandScape.
+ * 
+ * SandScape is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * SandScape is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Copyright (c) 2011, the SandScape team and WTactics project.
  */
-function sendMessage() {
-    var text = $('#message');
-    if(text.val() != '') {
-        $.post('', {
-            message: text.val()
-        });
-    
-        text.val('');
-    }
-}
-
-/**
- * Pulls messages from the server. All messages after a give message/time are 
- * pulled, even the ones posted by the current client.
- */
-function reload() {
-    $.get('', {
-        after: last
-    }, function(e) {
-        var chat = $('#chat');
-        var temp = '';
-        for(i = 0; i < e.length; i++) {
-            
-            if(e[i].system) {
-                temp += '<br /><span style="color: ' + e[i].color 
-                + '"><strong>&lt;&lt;</strong> ' + e[i].stamp 
-                + '<strong>&gt;&gt;:</strong>' + e[i].message + '</span>';
-            } else {
-                temp += '<br /><span style="color: ' + e[i].color 
-                + '"><strong>&lt;</strong> ' + e[i].stamp 
-                + '<strong>&gt;:</strong>' + e[i].message + '</span>';
-            }
-        
-            //TODO: //NOTE: will give all chat messages on refresh...
-            last = e[i].messageId;
-        }
-    }, 'json');
-}
 
 function init() {
     //TODO: 300...
@@ -105,7 +80,6 @@ function init() {
 }
 
 $(document).ready(function() {   
-    //setInterval(reload, 3000);
     init();
     
 //TODO: passar para o init   

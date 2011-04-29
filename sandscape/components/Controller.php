@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Controller.php
  * 
@@ -21,7 +22,7 @@
  */
 
 /**
- * 
+ * Base controller class for all controllers.
  */
 class Controller extends CController {
 
@@ -71,10 +72,15 @@ class Controller extends CController {
                 'label' => '<img src="' . $url . 'lock.png" title="Login"/>',
                 'url' => array('/site/login'),
                 'visible' => (Yii::app()->user->isGuest)
-            )   
+            )
         );
     }
 
+    /**
+     * Sets the current active menu, from the main menu.
+     * 
+     * @param type $index menu index, zero based.
+     */
     public function setActiveMenu($index) {
         foreach ($this->menu as $m) {
             $m[$index]['url']['active'] = false;

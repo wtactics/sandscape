@@ -46,8 +46,5 @@ class GenericAdminController extends Controller {
             array('label' => 'Users', 'url' => array('/users'), 'linkOptions' => array('class' => 'usersmenu')),
         );
     }
-    
-    
 
 }
-

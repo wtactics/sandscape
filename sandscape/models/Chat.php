@@ -1,5 +1,24 @@
 <?php
-
+/*
+ * Controller.php
+ * 
+ * This file is part of SandScape.
+ * 
+ * SandScape is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * SandScape is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Copyright (c) 2011, the SandScape team and WTactics project.
+ */
 /**
  * This is the model class for table "Chat".
  *
@@ -53,8 +72,10 @@ class Chat extends CActiveRecord {
     }
 
     /**
-     * Retrieves a list of models based on the current search/filter conditions.
-     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+     * Searches the database for records that match the given criteria. It is 
+     * used mainly in grids.
+     * 
+     * @return CActiveDataProvider with all the found records.
      */
     public function search() {
         // Warning: Please modify the following code to remove attributes that

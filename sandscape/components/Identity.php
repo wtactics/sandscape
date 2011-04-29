@@ -55,6 +55,4 @@ class Identity extends CUserIdentity {
     public function getId() {
         return $this->userId;
     }
-
-    //TODO: make login safer by implementing "random key in cookie" thingy...
 }

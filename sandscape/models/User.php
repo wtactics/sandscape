@@ -1,28 +1,48 @@
 <?php
 
+/*
+ * User.php
+ * 
+ * This file is part of SandScape.
+ * 
+ * SandScape is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * SandScape is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Copyright (c) 2011, the SandScape team and WTactics project.
+ */
+
 /**
- * This is the model class for table "User".
+ * 
+ * From the table 'User' and it's relationships we get:
  *
- * The followings are the available columns in table 'User':
- * @property string $userId
+ * @property int $userId
  * @property string $name
  * @property string $password
  * @property string $email
  * @property string $key
- * @property string $visited
+ * @property datetime $visited
  * @property integer $emailVisibility
  * @property integer $acceptMessages
  * @property integer $admin
  * @property integer $active
  *
- * The followings are the available model relations:
- * @property ChatMessage[] $chatMessages
  * @property Card[] $cards
  * @property Deck[] $decks
- * @property Game[] $games
- * @property Message[] $messages
+ * @property Game[] $gamesAsA
+ * @property Game[] $gamesAsB
+ * @property Message[] $privateMessages
  * @property Chat[] $chats
- * @property Win $win
+ * @property Game[] $wonGames
  */
 class User extends CActiveRecord {
 
@@ -34,26 +54,23 @@ class User extends CActiveRecord {
         return array(
             array('name, email', 'required'),
             array('name, email', 'unique'),
-            array('emailVisibility, acceptMessages, admin, active', 'numerical', 'integerOnly' => true),
+            array('emailVisibility, acceptMessages', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 20),
             array('email', 'length', 'max' => 200),
-            array('visited', 'safe'),
             // search rule
             array('name, email', 'safe', 'on' => 'search'),
         );
     }
 
     public function relations() {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
         return array(
-            'chatMessages' => array(self::HAS_MANY, 'ChatMessage', 'userId'),
             'cards' => array(self::MANY_MANY, 'Card', 'Create(userId, cardId)'),
             'decks' => array(self::HAS_MANY, 'Deck', 'userId'),
-            'games' => array(self::HAS_MANY, 'Game', 'playerB'),
-            'messages' => array(self::HAS_MANY, 'Message', 'sender'),
+            'gamesAsA' => array(self::HAS_MANY, 'Game', 'playerA'),
+            'gamesAsB' => array(self::HAS_MANY, 'Game', 'playerB'),
+            'privateMessages' => array(self::HAS_MANY, 'Message', 'sender'),
             'chats' => array(self::MANY_MANY, 'Chat', 'Participate(userId, chatId)'),
-            'win' => array(self::HAS_ONE, 'Win', 'userId'),
+            'wonGames' => array(self::HAS_MANY, 'Game', 'Win(userId, gameId)'),
         );
     }
 
@@ -71,6 +88,12 @@ class User extends CActiveRecord {
         );
     }
 
+    /**
+     * Searches the database for records that match the given criteria. It is 
+     * used mainly in grids.
+     * 
+     * @return CActiveDataProvider with all the found records.
+     */
     public function search() {
         $criteria = new CDbCriteria();
         $criteria->order = 'name ASC';
@@ -80,7 +103,12 @@ class User extends CActiveRecord {
         $criteria->compare('admin', $this->admin);
         $criteria->compare('active', 1);
 
-        return new CActiveDataProvider(get_class($this), array('criteria' => $criteria));
+        return new CActiveDataProvider(
+                get_class($this),
+                array(
+                    'criteria' => $criteria,
+                    'pagination' => array('pageSize' => 25)
+        ));
     }
 
 }

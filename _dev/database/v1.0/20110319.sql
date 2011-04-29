@@ -1,4 +1,25 @@
--- User table, stores basic user info
+-- --
+-- 20110319.sql
+-- 
+-- This file is part of SandScape.
+-- 
+-- SandScape is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+-- 
+-- SandScape is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+-- 
+-- You should have received a copy of the GNU General Public License
+-- along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
+-- 
+-- Copyright (c) 2011, the SandScape team and WTactics project.
+-- --
+
+-- User table, stores basic user info.
 CREATE TABLE `User` (
 `userId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `name` VARCHAR( 20 ) NOT NULL UNIQUE ,
@@ -12,7 +33,7 @@ CREATE TABLE `User` (
 `active` TINYINT NOT NULL DEFAULT 1 
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
--- Messages used in the PM system
+-- Messages used in the PM system.
 CREATE TABLE `Message` (
 `messageId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `subject` VARCHAR( 150 ) NOT NULL ,
@@ -23,6 +44,8 @@ CONSTRAINT `fkMessageUserSender` FOREIGN KEY (`sender`) REFERENCES `User`(`userI
 CONSTRAINT `fkMessageUserReceiver` FOREIGN KEY (`receiver`) REFERENCES `User`(`userId`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
+-- Decks created by users and used to play games.
+-- The deck is identified by a name only to ease it's use.
 CREATE TABLE `Deck` (
 `deckId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `name` VARCHAR( 100 ) NULL ,
@@ -32,7 +55,12 @@ CREATE TABLE `Deck` (
 CONSTRAINT `fkDeckUser` FOREIGN KEY (`userId`) REFERENCES `User`(`userId`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
-CREATE TABLE `CardImage` (
+-- Stores the image data for a card's image.
+-- There will be, mainly, 3 records for each card in this table, one for the 
+-- normal size image, one for the reduced size and a rotated reduced version.
+-- As opposed to other entities, an image is removed from the database if it's 
+-- deleted.
+CREATE TABLE `Image` (
 `imageId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `filetype` VARCHAR( 200 ) NOT NULL ,
 `filename` VARCHAR( 200 ) NOT NULL ,
@@ -40,6 +68,7 @@ CREATE TABLE `CardImage` (
 `filedata` MEDIUMBLOB NOT NULL 
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
+-- Represents a card, with all the necessary information.
 CREATE TABLE `Card` (
 `cardId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `name` VARCHAR( 150 ) NOT NULL ,
@@ -54,31 +83,48 @@ CREATE TABLE `Card` (
 `author` VARCHAR( 100 ) NOT NULL ,
 `revision` DATETIME NULL ,
 `cardscapeId` INT NULL ,
-`imageId` INT UNSIGNED NOT NULL ,
 `private` TINYINT NOT NULL DEFAULT 1 ,
 `active` TINYINT NOT NULL DEFAULT 1 ,
 CONSTRAINT `fkCardCardImage` FOREIGN KEY (`imageId`) REFERENCES `CardImage`(`imageId`) 
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
-CREATE TABLE `Create` (
+-- Relationship between a card an any of it's images.
+CREATE TABLE `Depict` (
 `cardId` INT UNSIGNED NOT NULL ,
+`imageId` INT UNSIGNED NOT NULL ,
+`type` TINYINT NOT NULL DEFAULT 1, -- 1 - normal size, 2 - reduced, 3 - rotated
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+-- Relationship between a card and the user that created it.
+-- A record will be available if the card was created by a user and didn't 
+-- originate in a sync with CardScape. If the card was imported by the admin 
+-- then a record is generated as if the card had been created by the admin user.
+CREATE TABLE `Create` (
+`cardId` INT UNSIGNED NOT NULL PRIMARY KEY,
 `userId` INT UNSIGNED NOT NULL ,
-PRIMARY KEY(`userId`, `cardId`) ,
 CONSTRAINT `fkCreateCard` FOREIGN KEY (`cardId`) REFERENCES `Card`(`cardId`) ,
 CONSTRAINT `fkCreateUser` FOREIGN KEY (`userId`) REFERENCES `User`(`userId`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
+-- Relationship between a card and a deck allowing users to create decks of 
+-- cards.
 CREATE TABLE `Have` (
 `cardId` INT UNSIGNED NOT NULL ,
 `deckId` INT UNSIGNED NOT NULL
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
+-- A chat session, used for both game chats and the lobby.
 CREATE TABLE `Chat` (
 `chatId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `started` DATETIME NOT NULL ,
 `lobby` TINYINT NOT NULL DEFAULT 0
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
+-- Represents an existing game, either running, finished or waithing for the 
+-- second player. Also stores the last state of the game if it's running.
+-- A game's state is a serialized version of the game engine classes when the 
+-- game is running.
+-- This table as been de-optimized.
 CREATE TABLE `Game` (
 `gameId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `playerA` INT UNSIGNED NOT NULL ,
@@ -92,6 +138,7 @@ CREATE TABLE `Game` (
 `hash` VARCHAR( 8 ) NOT NULL ,  
 `chatId` INT UNSIGNED NOT NULL ,
 `private` TINYINT NOT NULL DEFAULT 0,
+`currentState` TEXT NULL ,
 CONSTRAINT `fkGameUserA` FOREIGN KEY (`playerA`) REFERENCES `User`(`userId`) ,
 CONSTRAINT `fkGameUserB` FOREIGN KEY (`playerB`) REFERENCES `User`(`userId`) ,
 CONSTRAINT `fkGameDeckA` FOREIGN KEY (`deckA`) REFERENCES `Deck`(`deckId`) ,
@@ -99,13 +146,15 @@ CONSTRAINT `fkGameDeckB` FOREIGN KEY (`deckB`) REFERENCES `Deck`(`deckId`) ,
 CONSTRAINT `fkGameChat` FOREIGN KEY (`chatId`) REFERENCES `Chat`(`chatId`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
+-- Relationship that identifies the winner of a game.
 CREATE TABLE `Win` (
-`userId` INT UNSIGNED NOT NULL PRIMARY KEY,
-`gameId` INT UNSIGNED NOT NULL ,
+`userId` INT UNSIGNED NOT NULL ,
+`gameId` INT UNSIGNED NOT NULL PRIMARY KEY,
 CONSTRAINT `fkWinUser` FOREIGN KEY (`userId`) REFERENCES `User`(`userId`) ,
 CONSTRAINT `fkWinGame` FOREIGN KEY (`gameId`) REFERENCES `Game`(`gameId`) 
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
+-- A message sent in one of the chats.
 CREATE TABLE `ChatMessage` (
 `messageId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `message` VARCHAR( 255 ) NOT NULL ,
@@ -116,18 +165,11 @@ CONSTRAINT `fkChatMessageUser` FOREIGN KEY (`userId`) REFERENCES `User`(`userId`
 CONSTRAINT `fkChatMessageChat` FOREIGN KEY (`chatId`) REFERENCES `Chat`(`chatId`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
+-- Relationship identifying the users that are active in a chat.
 CREATE TABLE `Participate` (
 `userId` INT UNSIGNED NOT NULL ,
 `chatId` INT UNSIGNED NOT NULL ,
 PRIMARY KEY(`userId`, `chatId`) ,
 CONSTRAINT `fkParticipateUser` FOREIGN KEY (`userId`) REFERENCES `User`(`userId`) ,
 CONSTRAINT `fkParticipateChat` FOREIGN KEY (`chatId`) REFERENCES `Chat`(`chatId`)
-) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
-
-CREATE TABLE `Page` (
-`pageId` VARCHAR( 50 ) PRIMARY KEY ,
-`title` VARCHAR( 200 ) NOT NULL ,
-`body` TEXT NOT NULL ,
-`updated` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,
-`active` TINYINT NOT NULL DEFAULT 1
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
