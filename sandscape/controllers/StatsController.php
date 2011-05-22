@@ -1,6 +1,6 @@
 <?php
 /*
- * Controller.php
+ * controller/StatsController.php
  * 
  * This file is part of SandScape.
  * 

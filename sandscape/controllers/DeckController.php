@@ -1,6 +1,6 @@
 <?php
 /*
- * Controller.php
+ * controllers/DeckController.php
  * 
  * This file is part of SandScape.
  * 

@@ -1,6 +1,5 @@
-<?php
 /*
- * Controller.php
+ * js/js.js
  * 
  * This file is part of SandScape.
  * 
@@ -19,7 +18,6 @@
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
-?>
 function addGame(){
     $(this).dialog("close");
 

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * UsersController.php
+ * controllers/UsersController.php
  * 
  * This file is part of SandScape.
  * 
@@ -26,14 +26,14 @@ class UsersController extends GenericAdminController {
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
 
-        $this->menu[4]['active'] = true;
+        $this->menu[2]['active'] = true;
     }
 
     public function accessRules() {
         return array_merge(array(
             array(
                 'allow',
-                'actions' => array('index', 'update', 'delete'),
+                'actions' => array('index', 'update', 'delete', 'create'),
                 'expression' => function ($user, $rule) {
                     return (!Yii::app()->user->isGuest && Yii::app()->user->role === 'admin');
                 }
@@ -77,22 +77,22 @@ class UsersController extends GenericAdminController {
                             'view' => array('visible' => 'false'),
                             'resetKey' => array(
                                 'label' => 'Reset Act. Key',
-                                'url' => Yii::app()->createUrl("/users/resetKey/", array("id" => $data->userId)),
+                                'url' => Yii::app()->createUrl('/users/resetKey/', array('id' => '$data->userId')),
                                 'imageUrl' => '',
                                 'click' => ''
                             ),
-                            'resetPassword' => array('
-                                label' => 'Reset Password',
-                                'url' => Yii::app()->createUrl("/users/resetPassword/", array("id" => $data->userId)),
-                                'imageUrl' => '',
-                                'click' => ''
-                            ),
-                            'activate' => array(
-                                'label' => 'Activate user',
-                                'url' => Yii::app()->createUrl("/users/activate/", array("id" => $data->userId)),
-                                'imageUrl' => '',
-                                'click' => ''
-                            )
+                        //'resetPassword' => array('
+                        //    label' => 'Reset Password',
+                        //    'url' => Yii::app()->createUrl('/users/resetPassword/', array('id' => '$data->userId')),
+                        //    'imageUrl' => '',
+                        //    'click' => ''
+                        //),
+                        //'activate' => array(
+                        //    'label' => 'Activate user',
+                        //    'url' => Yii::app()->createUrl('/users/activate/', array('id' => '$data->userId')),
+                        //    'imageUrl' => '',
+                        //    'click' => ''
+                        //)
                         )
                     ),
                 ),
@@ -100,6 +100,30 @@ class UsersController extends GenericAdminController {
         );
 
         $this->render('index', $viewData);
+    }
+
+    public function actionCreate() {
+        $user = new User();
+
+        $this->performAjaxValidation($user);
+
+        if (isset($_POST['User'])) {
+            $user->attributes = $_POST['User'];
+            $user->password = sha1(User::generatePassword());
+            $user->generateKey();
+            if ($user->save())
+                $this->redirect(array('view', 'id' => $user->userId));
+        }
+
+        $viewData = array(
+            'menu' => array(
+                'id' => 'submenu',
+                'items' => $this->menu
+            ),
+            'model' => $user
+        );
+
+        $this->render('create', $viewData);
     }
 
     /**
@@ -110,19 +134,20 @@ class UsersController extends GenericAdminController {
     public function actionUpdate($id) {
         $user = $this->loadUser($id);
 
-        $viewData = array(
-            'menu' => array(
-                'id' => 'submenu',
-                'items' => $this->menu
-            )
-        );
-
         if (isset($_POST['User'])) {
             $user->attributes = $_POST['User'];
             $viewData['success'] = $user->save();
         }
 
-        $viewData['model'] = $user;
+        $viewData = array(
+            'menu' => array(
+                'id' => 'submenu',
+                'items' => $this->menu
+            ),
+            'model' => $user
+        );
+
+
         $this->render('update', $viewData);
     }
 
@@ -149,55 +174,45 @@ class UsersController extends GenericAdminController {
 
     //TODO: 
     public function actionResetKey($id) {
+        $user = $this->loadUser($id);
+        $user->generateKey();
         //$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
     }
 
     //TODO:
     public function actionResertPassword($id) {
+        $user = $this->loadUser($id);
+        
+        $user->password = User::generatePassword();
+        $user->save();
+        
         //$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
     }
 
     //TODO:
-    public function actionActivate() {
+    public function actionActivate($id) {
+        $user = $this->loadUser($id);
+        
+        $user->key = '';
+        $user->save();
+        
         //$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
     }
 
-    /*
-
-
-      public function actionCreate() {
-      $user = new User();
-      $this->performAjaxValidation($user);
-
-      //TODO: success message...
-      $success = false;
-      if (isset($_POST['User'])) {
-      $user->attributes = $_POST['User'];
-
-      //TODO: password, autentication key, so on...
-      //User::generatePassword();
-      //User::generateKey();
-      $success = $user->save();
-      }
-
-      $viewData = array(
-      'menu' => array(
-      'id' => 'submenu',
-      'items' => $this->menu
-      ),
-      'model' => $user
-      );
-
-      $this->render('create', $viewData);
-      } */
-
-    private function loadUser($userId) {
-        $user = User::model()->findByPk((int) $userId);
+    private function loadUser($id) {
+        $user = User::model()->findByPk((int) $id);
 
         if ($user === null)
-            throw new CHttpException(404, 'The requested page does not exist.');
+            throw new CHttpException(404, 'The requested user does not exist.');
 
         return $user;
+    }
+
+    protected function performAjaxValidation($user) {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'user-form') {
+            echo CActiveForm::validate($user);
+            Yii::app()->end();
+        }
     }
 
 }

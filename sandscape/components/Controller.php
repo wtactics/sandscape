@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Controller.php
+ * components/Controller.php
  * 
  * This file is part of SandScape.
  * 
@@ -47,17 +47,22 @@ class Controller extends CController {
                 'label' => 'Statistics',
                 'url' => array('/stats'),
                 'visible' => (!Yii::app()->user->isGuest)
+            ),
+            array(
+                'label' => 'My Cards',
+                'url' => array('/mycards'),
+                'visible' => (!Yii::app()->user->isGuest)
+            ),
+            array(
+                'label' => 'Administration',
+                'url' => array('/admin'),
+                'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role === 'admin')
             )
         );
 
         $url = Yii::app()->request->baseUrl . '/images/';
 
         $this->sessionMenu = array(
-            array(
-                'label' => '<img src="' . $url . 'widgets.png" title="Administration"/>',
-                'url' => array('/admin'),
-                'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role === 'admin')
-            ),
             array(
                 'label' => '<img src="' . $url . 'vcard.png" title="Profile"/>',
                 'url' => array('/account'),

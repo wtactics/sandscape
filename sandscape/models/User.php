@@ -21,29 +21,6 @@
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
 
-/**
- * 
- * From the table 'User' and it's relationships we get:
- *
- * @property int $userId
- * @property string $name
- * @property string $password
- * @property string $email
- * @property string $key
- * @property datetime $visited
- * @property integer $emailVisibility
- * @property integer $acceptMessages
- * @property integer $admin
- * @property integer $active
- *
- * @property Card[] $cards
- * @property Deck[] $decks
- * @property Game[] $gamesAsA
- * @property Game[] $gamesAsB
- * @property Message[] $privateMessages
- * @property Chat[] $chats
- * @property Game[] $wonGames
- */
 class User extends CActiveRecord {
 
     public static function model($className=__CLASS__) {
@@ -109,6 +86,37 @@ class User extends CActiveRecord {
                     'criteria' => $criteria,
                     'pagination' => array('pageSize' => 25)
         ));
+    }
+
+    /**
+     * Generates a random string with size between 8 and 12 characters long.
+     * 
+     * @return String a radom string that can be used as a password
+     */
+    public static final function generatePassword() {
+        $possible = "abcdefghijkmnopqrstuvwxyz0123456789!?=%$#@*+|\/()";
+        srand((double) microtime());
+
+        $i = 0;
+        $p = '';
+
+        $i = $max = mt_rand(8, 12);
+        while ($i-- > 0) {
+            $char = mt_rand(0, 48);
+            $p .= ( mt_rand(0, 1) ? mb_strtoupper($possible{$char}) : $possible{$char});
+        }
+
+        return $p;
+    }
+
+    /**
+     * Creates a string to be used as a validation key. The string is an SHA1 
+     * hash of the name, the e-mail and the name in uppercase.
+     * 
+     * @return String created by applying SHA1 to a combination of name and e-mail
+     */
+    public final function generateKey() {
+        $this->key = sha1($this->name . ',' . $this->email . ',' . mb_strtoupper($this->name));
     }
 
 }

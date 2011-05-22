@@ -1,6 +1,6 @@
 <?php
 /*
- * _form.php
+ * views/cards/_form.php
  * 
  * This file is part of SandScape.
  * 
@@ -100,7 +100,7 @@
     </div>
 
     <div class="row">
-        <div class="leftformcolum"><?php echo $form->labelEx($image, 'filename');  ?></div>
+        <div class="leftformcolum"><?php echo $form->labelEx($image, 'filename'); ?></div>
         <div class="rightformcolum"><?php echo CHtml::activeFileField($image, 'file'); ?></div>
         <div class="formfielderror"><?php echo $form->error($image, 'filename'); ?></div>
     </div>
@@ -112,4 +112,5 @@
 
     <?php $this->endWidget(); ?>
 
-</div><!-- form -->
+</div>
+<!-- form -->

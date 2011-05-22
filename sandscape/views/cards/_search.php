@@ -1,6 +1,6 @@
 <?php
 /*
- * Controller.php
+ * views/cards/_search.php
  * 
  * This file is part of SandScape.
  * 
@@ -94,4 +94,5 @@
 
     <?php $this->endWidget(); ?>
 
-</div><!-- search-form -->
+</div>
+<!-- search-form -->

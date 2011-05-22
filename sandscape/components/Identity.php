@@ -1,6 +1,6 @@
 <?php
 /*
- * Identity.php
+ * components/Identity.php
  * 
  * This file is part of SandScape.
  * 

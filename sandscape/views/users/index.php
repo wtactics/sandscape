@@ -1,6 +1,6 @@
 <?php
 /*
- * Controller.php
+ * views/users/index.php
  * 
  * This file is part of SandScape.
  * 
@@ -24,5 +24,9 @@
 <div class="clear"></div>
 
 <h1>Manage Users</h1>
+
+<div style="float: right"><?php echo CHtml::link('New', $this->createUrl('users/create')); ?></div>
+
+<div class="clear"></div>
 
 <?php $this->widget('zii.widgets.grid.CGridView', $grid); ?>

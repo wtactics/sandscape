@@ -1,6 +1,6 @@
 <?php
 /*
- * Controller.php
+ * controllers/AdminController.php
  * 
  * This file is part of SandScape.
  * 
@@ -23,6 +23,8 @@ class AdminController extends GenericAdminController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
+        
+        $this->menu[0]['active'] = true;
     }
 
     public function actionIndex() {

@@ -1,6 +1,6 @@
 <?php
 /*
- * Controller.php
+ * views/cards/create.php
  * 
  * This file is part of SandScape.
  * 
@@ -28,6 +28,7 @@ $this->widget('zii.widgets.CMenu', array(
 ?>
 
 <div class="clear"></div>
+
 <h1>Create Card</h1>
 
 <?php echo $this->renderPartial('_form', array('model' => $card, 'image' => $image)); ?>

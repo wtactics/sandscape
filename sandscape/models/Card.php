@@ -1,6 +1,7 @@
 <?php
+
 /*
- * Controller.php
+ * models/Card.php
  * 
  * This file is part of SandScape.
  * 
@@ -19,6 +20,7 @@
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
+
 class Card extends CActiveRecord {
 
     public static function model($className=__CLASS__) {
@@ -41,38 +43,31 @@ class Card extends CActiveRecord {
             'revision' => 'Revision',
             'cardscapeId' => 'Cardscape ID',
             'imageId' => 'Image ID',
-            'private' => 'Private',
-            'active' => 'Active'
+            'private' => 'Private'
         );
     }
 
     public function rules() {
-// NOTE: you should only define rules for those attributes that
-// will receive user inputs.
         return array(
             array('name, rules', 'required'),
-            array('cost, attack, defense, cardscapeId, private, active', 'numerical', 'integerOnly' => true),
+            array('cost, attack, defense, cardscapeId, private', 'numerical', 'integerOnly' => true),
             array('name, faction, type, subtype', 'length', 'max' => 150),
             array('threshold, author', 'length', 'max' => 100),
-            array('rules', 'length', 'max' => 255),
-            array('imageId', 'length', 'max' => 10),
-            array('revision', 'safe'),
-            // The following rule is used by search().
-// Please remove those attributes that should not be searched.
+            array('rules, revision', 'safe'),
             array('name, faction, type, subtype, cost, threshold, attack, defense, rules, author, cardscapeId, private', 'safe', 'on' => 'search'),
         );
     }
 
     public function relations() {
         return array(
-            'image' => array(self::BELONGS_TO, 'Cardimage', 'imageId'),
+            'images' => array(self::HAS_MANY, 'CardImage', 'cardId'),
             'users' => array(self::MANY_MANY, 'User', 'Create(cardId, userId)'),
         );
     }
 
     public function search() {
         $criteria = new CDbCriteria();
-        $criteria->order = 'name ASC';
+        $criteria->order = 'name, author';
 
         $criteria->compare('name', $this->name, true);
         $criteria->compare('faction', $this->faction, true);
@@ -90,4 +85,5 @@ class Card extends CActiveRecord {
 
         return new CActiveDataProvider(get_class($this), array('criteria' => $criteria));
     }
+
 }

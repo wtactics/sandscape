@@ -1,6 +1,6 @@
 <?php
 /*
- * index.php
+ * views/admin/index.php
  * 
  * This file is part of SandScape.
  * 
@@ -28,5 +28,10 @@ $this->widget('zii.widgets.CMenu', array(
 ?>
 
 <div class="clear"></div>
-
-//TODO: show info about the system
+<p>Show some stats about the system:</p>
+<ul>
+    <li>Users</li>
+    <li>Games run</li>
+    <li>Decks created</li>
+    <li>...</li>
+</ul>

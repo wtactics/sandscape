@@ -1,5 +1,5 @@
 /*
- * board.js
+ * js/board.js
  * 
  * This file is part of SandScape.
  * 

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * GenericAdminController.php
+ * components/GenericAdminController.php
  * 
  * This file is part of SandScape.
  * 
@@ -39,10 +39,8 @@ class GenericAdminController extends Controller {
         parent::__construct($id, $module);
 
         $this->menu = array(
+            array('label' => 'Dashboard', 'url' => array('/admin'), 'linkOptions' => array('class' => 'dashboardmenu')),
             array('label' => 'Cards', 'url' => array('/cards'), 'linkOptions' => array('class' => 'cardsmenu')),
-            array('label' => 'Cleanup', 'url' => array('/cleanup')),
-            array('label' => 'CMS', 'url' => array('/pages'), 'linkOptions' => array('class' => 'cmsmenu')),
-            array('label' => 'Options', 'url' => array('/options'), 'linkOptions' => array('class' => 'optionsmenu')),
             array('label' => 'Users', 'url' => array('/users'), 'linkOptions' => array('class' => 'usersmenu')),
         );
     }

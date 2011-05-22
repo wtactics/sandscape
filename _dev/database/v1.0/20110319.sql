@@ -33,17 +33,6 @@ CREATE TABLE `User` (
 `active` TINYINT NOT NULL DEFAULT 1 
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
--- Messages used in the PM system.
-CREATE TABLE `Message` (
-`messageId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
-`subject` VARCHAR( 150 ) NOT NULL ,
-`body` TEXT NOT NULL ,
-`sender` INT UNSIGNED NOT NULL ,
-`receiver` INT UNSIGNED NOT NULL ,
-CONSTRAINT `fkMessageUserSender` FOREIGN KEY (`sender`) REFERENCES `User`(`userId`) ,
-CONSTRAINT `fkMessageUserReceiver` FOREIGN KEY (`receiver`) REFERENCES `User`(`userId`)
-) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
-
 -- Decks created by users and used to play games.
 -- The deck is identified by a name only to ease it's use.
 CREATE TABLE `Deck` (
@@ -53,19 +42,6 @@ CREATE TABLE `Deck` (
 `created` DATETIME NOT NULL ,
 `active` TINYINT NOT NULL DEFAULT 1 ,
 CONSTRAINT `fkDeckUser` FOREIGN KEY (`userId`) REFERENCES `User`(`userId`)
-) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
-
--- Stores the image data for a card's image.
--- There will be, mainly, 3 records for each card in this table, one for the 
--- normal size image, one for the reduced size and a rotated reduced version.
--- As opposed to other entities, an image is removed from the database if it's 
--- deleted.
-CREATE TABLE `Image` (
-`imageId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
-`filetype` VARCHAR( 200 ) NOT NULL ,
-`filename` VARCHAR( 200 ) NOT NULL ,
-`filesize` INT UNSIGNED NOT NULL ,
-`filedata` MEDIUMBLOB NOT NULL 
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
 -- Represents a card, with all the necessary information.
@@ -79,20 +55,28 @@ CREATE TABLE `Card` (
 `threshold` VARCHAR( 100 ) NULL ,
 `attack` TINYINT NULL ,
 `defense` TINYINT NULL ,
-`rules` VARCHAR( 255 ) NOT NULL ,
+`rules` TEXT NOT NULL ,
 `author` VARCHAR( 100 ) NOT NULL ,
 `revision` DATETIME NULL ,
 `cardscapeId` INT NULL ,
 `private` TINYINT NOT NULL DEFAULT 1 ,
-`active` TINYINT NOT NULL DEFAULT 1 ,
-CONSTRAINT `fkCardCardImage` FOREIGN KEY (`imageId`) REFERENCES `CardImage`(`imageId`) 
+`active` TINYINT NOT NULL DEFAULT 1 
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
--- Relationship between a card an any of it's images.
-CREATE TABLE `Depict` (
+-- Stores the image data for a card's image.
+-- There will be, mainly, 3 records for each card in this table, one for the 
+-- normal size image, one for the reduced size and a rotated reduced version.
+-- As opposed to other entities, an image is removed from the database if it's 
+-- deleted.
+CREATE TABLE `CardImage` (
+`imageId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
+`filetype` VARCHAR( 200 ) NOT NULL ,
+`filename` VARCHAR( 200 ) NOT NULL ,
+`filesize` INT UNSIGNED NOT NULL ,
+`filedata` MEDIUMBLOB NOT NULL ,
 `cardId` INT UNSIGNED NOT NULL ,
-`imageId` INT UNSIGNED NOT NULL ,
-`type` TINYINT NOT NULL DEFAULT 1, -- 1 - normal size, 2 - reduced, 3 - rotated
+`type` TINYINT NOT NULL DEFAULT 1 , -- 1 - normal size, 2 - reduced, 3 - rotated
+CONSTRAINT `fkCardImageCard` FOREIGN KEY (`cardId`) REFERENCES `Card`(`cardId`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
 -- Relationship between a card and the user that created it.

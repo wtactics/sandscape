@@ -1,6 +1,6 @@
 <?php
 /*
- * Controller.php
+ * controllers/GameController.php
  * 
  * This file is part of SandScape.
  * 

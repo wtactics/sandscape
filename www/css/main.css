@@ -1,6 +1,5 @@
-<?php
 /*
- * Controller.php
+ * css/main.css
  * 
  * This file is part of SandScape.
  * 
@@ -18,8 +17,7 @@
  * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
- */
-?>
+*/
 body {
     text-align: justify;
 }

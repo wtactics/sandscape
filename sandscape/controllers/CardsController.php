@@ -1,6 +1,7 @@
 <?php
+
 /*
- * Controller.php
+ * controllers/CardsController.php
  * 
  * This file is part of SandScape.
  * 
@@ -19,12 +20,23 @@
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
-class CardsController extends GenericAdminController {
 
+class CardsController extends GenericAdminController {
 
     function __construct($id, $module) {
         parent::__construct($id, $module);
-        $this->menu[0]['active'] = true;
+        $this->menu[1]['active'] = true;
+    }
+
+    public function accessRules() {
+        return array_merge(array(
+            array(
+                'allow',
+                'actions' => array('index', 'create'/* , 'update', 'delete' */),
+                'expression' => function ($user, $rule) {
+                    return (!Yii::app()->user->isGuest && Yii::app()->user->role === 'admin');
+                })
+                ), parent::accessRules());
     }
 
     public function actionIndex() {
@@ -34,7 +46,10 @@ class CardsController extends GenericAdminController {
             $card->attributes = $_GET['Card'];
 
         $viewData = array(
-            'menu' => $this->menu,
+            'menu' => array(
+                'id' => 'submenu',
+                'items' => $this->menu
+            ),
             'grid' => array(
                 'id' => 'card-grid',
                 'dataProvider' => $card->search(),
@@ -47,7 +62,11 @@ class CardsController extends GenericAdminController {
                     'author',
                     'revision',
                     'cardscapeId',
-                    'private',
+                    array(
+                        'name' => 'private',
+                        'value' => '$data->private',
+                        'filter' => array('Public', 'Private')
+                    ),
                     array(
                         'class' => 'CButtonColumn'
                     )
@@ -60,29 +79,54 @@ class CardsController extends GenericAdminController {
 
     public function actionCreate() {
         $card = new Card();
-        $image = new CardImage();
+        $normal = new CardImage();
 
         if (isset($_POST['Card'])) {
+            //1 - normal size, 2 - reduced, 3 - rotated
+            
+            $reduced = new CardImage();
+            //$rotated = new CardImage();
+
             $card->attributes = $_POST['Card'];
 
-            $upload = CUploadedFile::getInstance($image, 'file');
+            $upload = CUploadedFile::getInstance($normal, 'file');
 
-            $image->filetype = $upload->type;
-            $image->filename = $upload->name;
-            $image->filesize = $upload->size;
-            $image->filedata = file_get_contents($upload->tempName);
+            $normal->filetype = $reduced->filetype = /* $rotated->filetype = */ $upload->getType();
+            $normal->filename = $reduced->filename = /* $rotated->filename = */ $upload->getName();
+            $normal->filesize = $upload->getSize();
+            $normal->filedata = file_get_contents($upload->getTempName());
 
-            if ($image->save()) {
-                $card->imageId = $image->imageId;
-                if ($card->save())
-                    $this->redirect(array('view', 'id' => $card->cardId));
+            $normal->type = 1;
+            $reduced->type = 2;
+            //$rotated->type = 3;
+            //Resize image to create smaller cards.
+            //Usable size is around 81x113 (widthxheigh)
+            //Create rotated card
+            Yii::import('application.extensions.image.Image');
+            $worker = new Image($upload->getTempName());
+            $worker->resize(81, 113);
+            $thumbname = $upload->getTempName() . '.thumb.' .$upload->getExtensionName();
+            $worker->save($thumbname);
+            //
+            $reduced->filesize = filesize($thumbname);
+            $reduced->filedata = file_get_contents($thumbname);
+
+            if ($card->save()) {
+                //TODO: create user<->card relation
+                $normal->cardId = $card->cardId;
+                $reduced->cardId = $card->cardId;
+
+                //TODO: show errors on image not created/saved
+                $normal->save();
+                $reduced->save();
+                $this->redirect(array('view', 'id' => $card->cardId));
             }
         }
 
         $viewData = array(
             'menu' => $this->menu,
             'card' => $card,
-            'image' => $image
+            'image' => $normal
         );
 
         $this->render('create', $viewData);

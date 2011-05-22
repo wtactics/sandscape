@@ -1,6 +1,6 @@
 <?php
 /*
- * Controller.php
+ * views/cards/index.php
  * 
  * This file is part of SandScape.
  * 
@@ -19,13 +19,8 @@
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
-?><?php
-$this->widget('zii.widgets.CMenu', array(
-    'id' => 'submenu',
-    'items' => $menu
-        )
-);
 ?>
+<?php $this->widget('zii.widgets.CMenu', $menu); ?>
 
 <div class="clear"></div>
 
@@ -46,9 +41,12 @@ $('.search-form form').submit(function(){
 
 <h1>Manage Cards</h1>
 
+<div style="float: right"><?php echo CHtml::link('New', $this->createUrl('cards/create'));?></div>
 <!-- START: search-form -->
 <?php echo CHtml::link('Advanced Search', '#', array('class' => 'search-button')); ?>
 <div class="search-form" style="display:none"> <?php $this->renderPartial('_search', array('model' => $model)); ?></div>
 <!-- END: search-form -->
+
+<div class="clear"></div>
 
 <?php $this->widget('zii.widgets.grid.CGridView', $grid); ?>
