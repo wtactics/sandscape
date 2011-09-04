@@ -1,8 +1,6 @@
 <?php
-
 /*
- * models/CardImage.php
- * http://sandscape.sourceforge.net/
+ * Controller.php
  * 
  * This file is part of SandScape.
  * 
@@ -21,17 +19,21 @@
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
+?><?php
+$this->breadcrumbs=array(
+	'Cards'=>array('index'),
+	$model->cardId=>array('view','id'=>$model->cardId),
+	'Update',
+);
 
-class CardImage extends CActiveRecord {
+$this->menu=array(
+	array('label'=>'List Card', 'url'=>array('index')),
+	array('label'=>'Create Card', 'url'=>array('create')),
+	array('label'=>'View Card', 'url'=>array('view', 'id'=>$model->cardId)),
+	array('label'=>'Manage Card', 'url'=>array('admin')),
+);
+?>
 
-    public static function model($className=__CLASS__) {
-        return parent::model($className);
-    }
+<h1>Update Card <?php echo $model->cardId; ?></h1>
 
-    public function relations() {
-        return array(
-            'card' => array(self::BELONGS_TO, 'Card', 'cardId')
-        );
-    }
-
-}
+<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

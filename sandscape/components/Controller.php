@@ -4,6 +4,7 @@
  * components/Controller.php
  * 
  * This file is part of SandScape.
+ * http://sandscape.sourceforge.net/
  * 
  * SandScape is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,11 +23,22 @@
  */
 
 /**
- * Base controller class for all controllers.
+ * Base class for all controllers.
  */
 class Controller extends CController {
 
+    /**
+     * Main menu with general links.
+     * 
+     * @var array
+     */
     private $menu;
+
+    /**
+     * Submenu used only for authenticated users.
+     * 
+     * @var array
+     */
     private $sessionMenu;
 
     function __construct($id, $module) {
@@ -49,35 +61,28 @@ class Controller extends CController {
                 'visible' => (!Yii::app()->user->isGuest)
             ),
             array(
-                'label' => 'My Cards',
-                'url' => array('/mycards'),
-                'visible' => (!Yii::app()->user->isGuest)
+                'label' => 'Login',
+                'url' => array('/site/login'),
+                'visible' => (Yii::app()->user->isGuest)
             ),
+        );
+
+        $this->sessionMenu = array(
             array(
                 'label' => 'Administration',
                 'url' => array('/admin'),
                 'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role === 'admin')
-            )
-        );
-
-        $url = Yii::app()->request->baseUrl . '/images/';
-
-        $this->sessionMenu = array(
+            ),
             array(
-                'label' => '<img src="' . $url . 'vcard.png" title="Profile"/>',
-                'url' => array('/account'),
+                'label' => 'My Account',
+                'url' => array('/myaccount'),
                 'visible' => (!Yii::app()->user->isGuest)
             ),
             array(
-                'label' => '<img src="' . $url . 'lock.png" title="Logout"/>',
+                'label' => 'Logout',
                 'url' => array('/site/logout'),
                 'visible' => (!Yii::app()->user->isGuest)
             ),
-            array(
-                'label' => '<img src="' . $url . 'lock.png" title="Login"/>',
-                'url' => array('/site/login'),
-                'visible' => (Yii::app()->user->isGuest)
-            )
         );
     }
 
@@ -87,11 +92,13 @@ class Controller extends CController {
      * @param type $index menu index, zero based.
      */
     public function setActiveMenu($index) {
-        foreach ($this->menu as $m) {
-            $m[$index]['url']['active'] = false;
-        }
+        if (in_array($index, $this->menu)) {
+            foreach ($this->menu as $m) {
+                $m[$index]['url']['active'] = false;
+            }
 
-        $this->menu[$index]['url']['active'] = true;
+            $this->menu[$index]['url']['active'] = true;
+        }
     }
 
     /**

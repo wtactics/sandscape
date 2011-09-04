@@ -32,15 +32,9 @@ body {
 }
 
 #logo {
-    width: 200px;
-    height: 100px;
-    float: left;
 }
 
 #menu {
-    float: left;
-    height: 100px;
-    width: 590px;
 }
 
 #center {
@@ -57,9 +51,10 @@ body {
     clear: both;
 }
 
-/*MAIN MENU*/
+/*TOP MENU*/
 #menu ul {
-    margin-top: 70px;
+    margin: 0;
+    padding: 0;
 }
 
 #menu li {
@@ -68,14 +63,26 @@ body {
     margin: 0 0.5em 0 0.5em;
 }
 
-#profile {
+#secmenu {
+    width: 45%;
+    float: right;
+    text-align: right;
+    padding-right: 0.5em;
+}
+
+#mmenu {
+    width: 45%;
+    text-align: right;
+}
+
+/*#profile {
     float:left;
     width: 110px;
 }
 
 #profile ul {
 
-}
+}*/
 
 /*GENERAL CSS*/
 a, img {
@@ -222,22 +229,6 @@ div.line {
 }
 
 #submenu li.active a {
-    color: #f00;
-}
-
-#profile ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0
-}
-
-#profile li {
-    float: left;
-    display: inline;
-    margin-right: 20px;
-}
-
-#profile li.active a {
     color: #f00;
 }
 

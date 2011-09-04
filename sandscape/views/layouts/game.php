@@ -20,7 +20,7 @@
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
 ?><!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
     <head>
         <title></title>
         <!-- <link type="text/css" rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/game.css" /> -->

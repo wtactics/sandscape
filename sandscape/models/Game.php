@@ -1,6 +1,8 @@
 <?php
+
 /*
- * Game.php
+ * models/Game.php
+ * http://sandscape.sourceforge.net/
  * 
  * This file is part of SandScape.
  * 
@@ -142,8 +144,8 @@ class Game extends CActiveRecord {
         $criteria->compare('private', $this->private);
 
         return new CActiveDataProvider(get_class($this), array(
-            'criteria' => $criteria,
-        ));
+                    'criteria' => $criteria,
+                ));
     }
 
 }

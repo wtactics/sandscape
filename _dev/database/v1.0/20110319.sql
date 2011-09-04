@@ -29,7 +29,7 @@ CREATE TABLE `User` (
 `visited` DATETIME NULL ,
 `emailVisibility` TINYINT NOT NULL DEFAULT 0, -- 0 - only admins, 1 - everyone
 `acceptMessages` TINYINT NOT NULL DEFAULT 0, -- 0 none, 1 - admins only, 2, everyone 
-`admin` TINYINT NOT NULL DEFAULT 0,
+`admin` TINYINT NOT NULL DEFAULT 0 ,
 `active` TINYINT NOT NULL DEFAULT 1 
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
@@ -82,7 +82,7 @@ CONSTRAINT `fkCardImageCard` FOREIGN KEY (`cardId`) REFERENCES `Card`(`cardId`)
 -- Relationship between a card and the user that created it.
 -- A record will be available if the card was created by a user and didn't 
 -- originate in a sync with CardScape. If the card was imported by the admin 
--- then a record is generated as if the card had been created by the admin user.
+-- then no owner is set.
 CREATE TABLE `Create` (
 `cardId` INT UNSIGNED NOT NULL PRIMARY KEY,
 `userId` INT UNSIGNED NOT NULL ,

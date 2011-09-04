@@ -1,6 +1,8 @@
 <?php
+
 /*
- * Controller.php
+ * models/Create.php
+ * http://sandscape.sourceforge.net/
  * 
  * This file is part of SandScape.
  * 
@@ -19,6 +21,7 @@
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
+
 /**
  * This is the model class for table "Create".
  *
@@ -92,8 +95,8 @@ class Create extends CActiveRecord {
         $criteria->compare('userId', $this->userId, true);
 
         return new CActiveDataProvider(get_class($this), array(
-            'criteria' => $criteria,
-        ));
+                    'criteria' => $criteria,
+                ));
     }
 
 }

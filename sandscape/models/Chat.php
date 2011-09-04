@@ -1,6 +1,8 @@
 <?php
+
 /*
- * Controller.php
+ * Chat.php
+ * http://sandscape.sourceforge.net/
  * 
  * This file is part of SandScape.
  * 
@@ -19,6 +21,7 @@
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
+
 /**
  * This is the model class for table "Chat".
  *
@@ -87,8 +90,8 @@ class Chat extends CActiveRecord {
         $criteria->compare('started', $this->started, true);
 
         return new CActiveDataProvider(get_class($this), array(
-            'criteria' => $criteria,
-        ));
+                    'criteria' => $criteria,
+                ));
     }
 
 }

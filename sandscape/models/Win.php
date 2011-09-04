@@ -1,8 +1,10 @@
 <?php
+
 /*
- * Controller.php
+ * models/Win.php
  * 
  * This file is part of SandScape.
+ * http://sandscape.sourceforge.net/
  * 
  * SandScape is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +21,7 @@
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
+
 class Win extends CActiveRecord {
 
     public static function model($className=__CLASS__) {

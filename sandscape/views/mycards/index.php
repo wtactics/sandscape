@@ -21,3 +21,15 @@
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
 ?>
+
+<?php $this->widget('zii.widgets.CMenu', $menu); ?>
+
+<div class="clear"></div>
+
+<h2>Cards</h2>
+
+<div style="float: right"><?php echo CHtml::link('New', $this->createUrl('cards/create'));?></div>
+
+<div class="clear"></div>
+
+<?php $this->widget('zii.widgets.grid.CGridView', $grid); ?>

@@ -1,7 +1,8 @@
 <?php
 
 /*
- * User.php
+ * models/User.php
+ * http://sandscape.sourceforge.net/
  * 
  * This file is part of SandScape.
  * 
@@ -81,11 +82,11 @@ class User extends CActiveRecord {
         $criteria->compare('active', 1);
 
         return new CActiveDataProvider(
-                get_class($this),
-                array(
-                    'criteria' => $criteria,
-                    'pagination' => array('pageSize' => 25)
-        ));
+                        get_class($this),
+                        array(
+                            'criteria' => $criteria,
+                            'pagination' => array('pageSize' => 25)
+                ));
     }
 
     /**

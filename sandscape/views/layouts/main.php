@@ -20,7 +20,7 @@
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
 ?><!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
@@ -36,21 +36,22 @@
                         <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.png" alt="//TODO:" title="//TODO:" />
                     </a>
                 </div>
-                <div id="menu">
-                    <?php
-                    $this->widget('zii.widgets.CMenu', array(
-                        'items' => $this->getMenu(),
-                    ));
-                    ?>
-                </div>
-                <div id="profile">
-                    <?php
-                    $this->widget('zii.widgets.CMenu', array(
-                        'encodeLabel' => false,
-                        'items' => $this->getSessionMenu(),
-                    ));
-                    ?>
-                    <div class="clear"></div>
+                <div id="menu">                   
+                    <div id="secmenu">
+                        <?php
+                        $this->widget('zii.widgets.CMenu', array(
+                            'encodeLabel' => false,
+                            'items' => $this->getSessionMenu(),
+                        ));
+                        ?>
+                    </div>
+                    <div id="mmenu">
+                        <?php
+                        $this->widget('zii.widgets.CMenu', array(
+                            'items' => $this->getMenu(),
+                        ));
+                        ?>
+                    </div>
                 </div>
                 <div class="clear"></div>
             </div>

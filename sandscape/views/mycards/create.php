@@ -1,8 +1,6 @@
 <?php
-
 /*
- * models/CardImage.php
- * http://sandscape.sourceforge.net/
+ * views/cards/create.php
  * 
  * This file is part of SandScape.
  * 
@@ -21,17 +19,16 @@
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
+?><?php
+$this->widget('zii.widgets.CMenu', array(
+    'id' => 'submenu',
+    'items' => $menu
+        )
+);
+?>
 
-class CardImage extends CActiveRecord {
+<div class="clear"></div>
 
-    public static function model($className=__CLASS__) {
-        return parent::model($className);
-    }
+<h1>Create Card</h1>
 
-    public function relations() {
-        return array(
-            'card' => array(self::BELONGS_TO, 'Card', 'cardId')
-        );
-    }
-
-}
+<?php echo $this->renderPartial('_form', array('model' => $card, 'image' => $image)); ?>

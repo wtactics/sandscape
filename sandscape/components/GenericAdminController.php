@@ -4,6 +4,7 @@
  * components/GenericAdminController.php
  * 
  * This file is part of SandScape.
+ * http://sandscape.sourceforge.net/
  * 
  * SandScape is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +33,8 @@ class GenericAdminController extends Controller {
 
     /**
      * Menu available to all administration controllers.
+     * 
+     * @var array
      */
     protected $menu;
 

@@ -1,7 +1,8 @@
 <?php
 
 /*
- * controllers/MyCardsController.php
+ * controllers/MyDecksController.php
+ * http://sandscape.sourceforge.net/
  * 
  * This file is part of SandScape.
  * http://sandscape.sourceforge.net/
@@ -22,7 +23,7 @@
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
 
-class MyCardsController extends MyItemsController {
+class MyDecksController extends MyItemsController {
 
     function __construct($id, $module) {
         parent::__construct($id, $module);
@@ -33,7 +34,7 @@ class MyCardsController extends MyItemsController {
         return array_merge(array(
             array(
                 'allow',
-                'actions' => array('index', 'create'/* , 'update', 'delete' */),
+                'actions' => array('index', /*'create'/* , /*'update', /*'delete' */),
                 'expression' => function ($user, $rule) {
                     return (!Yii::app()->user->isGuest);
                 })
@@ -41,10 +42,10 @@ class MyCardsController extends MyItemsController {
     }
 
     public function actionIndex() {
-        $card = new Card('search');
-        $card->unsetAttributes();
-        if (isset($_GET['Card']))
-            $card->attributes = $_GET['Card'];
+        $deck = new Deck('search');
+        $deck->unsetAttributes();
+        if (isset($_GET['Deck']))
+            $deck->attributes = $_GET['Deck'];
 
         $viewData = array(
             'menu' => array(
@@ -52,23 +53,21 @@ class MyCardsController extends MyItemsController {
                 'items' => $this->menu
             ),
             'grid' => array(
-                'id' => 'card-grid',
-                'dataProvider' => $card->search(),
-                'filter' => $card,
+                'id' => 'deck-grid',
+                'dataProvider' => $deck->search(),
+                'filter' => $deck,
                 'columns' => array(
                     'name',
-                    'faction',
-                    'type',
-                    'subtype',
-                    'author',
-                    'revision',
-                    'private',
+                    'created',
+                    //array (
+                    //    'name' => 'Cards'
+                    //    ),
                     array(
                         'class' => 'CButtonColumn'
                     )
                 )
             ),
-            'model' => $card
+            'model' => $deck
         );
         $this->render('index', $viewData);
     }

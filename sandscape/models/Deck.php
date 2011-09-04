@@ -1,6 +1,8 @@
 <?php
+
 /*
- * Controller.php
+ * models/Deck.php
+ * http://sandscape.sourceforge.net/
  * 
  * This file is part of SandScape.
  * 
@@ -19,6 +21,7 @@
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
+
 /**
  * This is the model class for table "Deck".
  *
@@ -107,8 +110,8 @@ class Deck extends CActiveRecord {
         $criteria->compare('active', $this->active);
 
         return new CActiveDataProvider(get_class($this), array(
-            'criteria' => $criteria,
-        ));
+                    'criteria' => $criteria,
+                ));
     }
 
 }

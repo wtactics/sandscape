@@ -1,6 +1,8 @@
 <?php
+
 /*
- * Controller.php
+ * models/LoginForm.php
+ * http://sandscape.sourceforge.net/
  * 
  * This file is part of SandScape.
  * 
@@ -19,6 +21,7 @@
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
+
 class LoginForm extends CFormModel {
 
     public $email;
