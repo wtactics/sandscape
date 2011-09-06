@@ -25,7 +25,7 @@ class AdminController extends GenericAdminController {
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
         
-        $this->menu[0]['active'] = true;
+        //$this->menu[0]['active'] = true;
     }
 
     public function actionIndex() {
