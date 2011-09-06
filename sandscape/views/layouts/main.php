@@ -24,6 +24,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
+        <?php
+        Yii::app()->clientScript->registerCssFile(Yii::app()->clientScript->getCoreScriptUrl() . '/jui/css/sandscape/sandscape.css');
+        //
+        Yii::app()->clientScript->registerCoreScript('jquery');
+        Yii::app()->clientScript->registerCoreScript('jquery.ui');
+        ?>
+
         <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/js.js" type="text/javascript"></script>
         <title></title>
     </head>

@@ -22,34 +22,36 @@
 ?><div class="form" style="width: 50%; margin: 0 auto;">
     <?php
     $form = $this->beginWidget('CActiveForm', array(
-                'id' => 'login-form'
+        'id' => 'login-form'
             ));
     ?>
+    <h3>Login to Play</h3>
+    <p>
+        <?php
+        echo $form->labelEx($model, 'email'),
+        $form->textField($model, 'email'),
+        $form->error($model, 'email');
+        ?>
+    </p>
 
-    <p class="note">Fields with <span class="required">*</span> are required.</p>
+    <p>
+        <?php
+        echo $form->labelEx($model, 'password'),
+        $form->passwordField($model, 'password'),
+        $form->error($model, 'password');
+        ?>
+    </p>
 
-    <div class="row">
-        
-        <div class="leftformcolum"><?php echo $form->labelEx($model, 'email'); ?></div>
-        <div class="rightformcolum"><?php echo $form->textField($model, 'email'); ?></div>
-        <div class="formfielderror"><?php echo $form->error($model, 'email'); ?></div>
-    </div>
-
-    <div class="row">
-        <div class="leftformcolum"><?php echo $form->labelEx($model, 'password'); ?></div>
-        <div class="rightformcolum"><?php echo $form->passwordField($model, 'password'); ?></div>
-        <div class="formfielderror"><?php echo $form->error($model, 'password'); ?></div>
-    </div>
-
-    <div class="row rememberMe">
-        <div class="leftformcolum"><?php echo $form->checkBox($model, 'rememberMe'); ?></div>
-        <div class="rightformcolum"><?php echo $form->label($model, 'rememberMe'); ?></div>
-        <div class="formfielderror"><?php echo $form->error($model, 'rememberMe'); ?></div>
-    </div>
-
-    <div class="row buttons">
+    <p>
+        <?php
+        echo $form->checkBox($model, 'rememberMe'),
+        $form->label($model, 'rememberMe'),
+        $form->error($model, 'rememberMe');
+        ?>
+    </p>
+    <p>
         <?php echo CHtml::submitButton('Login'); ?>
-    </div>
+    </p>
 
     <?php $this->endWidget(); ?>
 </div><!-- form -->

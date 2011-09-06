@@ -1,0 +1,16 @@
+- Proper theme for the all site including correct aligment in form and jQuery UI corrections.
+- Review database schema
+- Authentication and authorization
+- Base menus and UI
+- Update wiki
+- Update SF project page
+
+OLD:
+
+Identity.php - make login safer by implementing "random key in cookie" thingy...
+Make paginations user dependent?....
+
+Implement:
+    - SyncCommand.php
+
+//TODO: i18n
