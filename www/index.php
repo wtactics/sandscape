@@ -9,7 +9,7 @@ session_start();
 
 $filepath = str_replace('\\', '/', __FILE__);
 $cwd = realpath(dirname(__FILE__) . '/../rapyd');
-$app = realpath(dirname(__FILE__) . '/../sandscape2');
+$app = realpath(dirname(__FILE__) . '/../sandscape');
 define('DOC_ROOT', substr($filepath, 0, strrpos($filepath, $_SERVER['SCRIPT_NAME'])));
 
 define('RAPYD_ROOT', $cwd . DIRECTORY_SEPARATOR);
