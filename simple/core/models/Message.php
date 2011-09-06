@@ -1,11 +1,12 @@
 <?php
 
 /*
- * index.php
+ * Message.php
  *
  * (C) 2011, StaySimple team.
  *
  * This file is part of StaySimple.
+ * http://code.google.com/p/stay-simple-cms/
  *
  * StaySimple is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,18 +22,27 @@
  * along with StaySimple.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-error_reporting(E_ALL);
-ini_set('display_errors', true);
+/**
+ * Represents a message that is sent from controllers to the user.
+ */
+class Message {
 
-//------------- DON'T EDIT BELOW THIS LINE -------------//
-session_start();
-ini_set('magic_quotes_runtime', 0);
-ini_set('log_errors', true);
+    private $message;
+    private $type;
+    public static $SUCESS = 1;
+    public static $ERROR = 2;
 
-include '_defs.php';
+    public function __construct($message, $type = 1) {
+        $this->message = $message;
+        $this->type = $type;
+    }
 
-ini_set('error_log', DATAROOT . '/logs/stay.' . date('ymd') . '.log');
-include APPROOT . '/core/helpers/autoload.php';
+    public function getMessage() {
+        return $this->message;
+    }
 
-$app = new StaySimple();
-$app->execute();
+    public function getType() {
+        return $this->type;
+    }
+
+}

@@ -1,5 +1,4 @@
 nbproject/
-sandscape/config/*.php
-sandscape/runtime/*
-www/assets/*
 /_dev/ignore/
+.DS_Store
+simple/plugins/StatsWidget/

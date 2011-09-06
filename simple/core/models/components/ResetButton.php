@@ -1,11 +1,12 @@
 <?php
 
 /*
- * index.php
+ * ResetButton.php
  *
  * (C) 2011, StaySimple team.
  *
  * This file is part of StaySimple.
+ * http://code.google.com/p/stay-simple-cms/
  *
  * StaySimple is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,18 +22,21 @@
  * along with StaySimple.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-error_reporting(E_ALL);
-ini_set('display_errors', true);
+/**
+ * Input of type reset.
+ */
+class ResetButton extends HTMLElement {
 
-//------------- DON'T EDIT BELOW THIS LINE -------------//
-session_start();
-ini_set('magic_quotes_runtime', 0);
-ini_set('log_errors', true);
+    private $text;
 
-include '_defs.php';
+    public function __construct($text, $name = 'reset', $extra = array()) {
+        parent::__construct($name, $name, $extra);
 
-ini_set('error_log', DATAROOT . '/logs/stay.' . date('ymd') . '.log');
-include APPROOT . '/core/helpers/autoload.php';
+        $this->text = $text;
+    }
 
-$app = new StaySimple();
-$app->execute();
+    public function __toString() {
+        return '<input type="reset" ' . parent::__toString() . 'value="' . $this->text . '" />';
+    }
+
+}

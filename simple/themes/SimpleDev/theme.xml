@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<theme version="1.0">
+    <type>administration</type>
+    <name><![CDATA[SimpleDev]]></name>
+    <author><![CDATA[StaySimple]]></author>
+    <url>
+        <title><![CDATA[Original template by Minimalistic Design]]></title>
+        <link><![CDATA[http://www.minimalistic-design.net/]]></link>
+    </url>
+    <version>1.0</version>
+    <description><![CDATA[Stock administration theme.]]></description>
+    <minversion>1.0</minversion>
+</theme>

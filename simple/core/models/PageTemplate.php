@@ -1,11 +1,12 @@
 <?php
 
 /*
- * index.php
+ * PageTemplate.php
  *
  * (C) 2011, StaySimple team.
  *
  * This file is part of StaySimple.
+ * http://code.google.com/p/stay-simple-cms/
  *
  * StaySimple is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,18 +22,25 @@
  * along with StaySimple.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-error_reporting(E_ALL);
-ini_set('display_errors', true);
+/**
+ * Represents a page template.
+ */
+class PageTemplate {
 
-//------------- DON'T EDIT BELOW THIS LINE -------------//
-session_start();
-ini_set('magic_quotes_runtime', 0);
-ini_set('log_errors', true);
+    private $title;
+    private $file;
 
-include '_defs.php';
+    function __construct($title, $file) {
+        $this->title = $title;
+        $this->file = $file;
+    }
 
-ini_set('error_log', DATAROOT . '/logs/stay.' . date('ymd') . '.log');
-include APPROOT . '/core/helpers/autoload.php';
+    public function getTitle() {
+        return $this->title;
+    }
 
-$app = new StaySimple();
-$app->execute();
+    public function getFile() {
+        return $this->file;
+    }
+
+}
