@@ -2,3 +2,4 @@ nbproject/
 sandscape/config/*.php
 sandscape/runtime/*
 www/assets/*
+/_dev/ignore/

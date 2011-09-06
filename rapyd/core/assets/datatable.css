@@ -1,0 +1,14 @@
+/* styles for datatable */
+.datatable {}
+table.table {border: 1px solid #ccc;}
+
+table.table td {font-family: "Lucida Grande", Verdana, Geneva, Sans-serif;}
+table.collapsed {margin:0;	width:100%; border-collapse:collapse; padding:0;}
+
+table.table img {border:0;}
+
+.dt_header {font-size:1.2em; color: #555; font-weight: bold; clear:both; border-bottom: 1px solid #ECECEC; height:22px; padding:4px; }
+.dt_footer {clear:both; border-color: #92B8CB; border-top:1px solid #ECECEC; height:22px; padding:4px; color: #153D51; font-size: 0.8em;	font-weight: bold;}
+.dt_content {clear:both; padding:2px;}
+
+
