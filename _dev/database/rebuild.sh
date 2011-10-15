@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# database/rebuild.sh
+# rebuild.sh
 # 
 # This file is part of SandScape.
 # 
@@ -19,7 +19,13 @@
 # 
 # Copyright (c) 2011, the SandScape team and WTactics project.
 
+# This is a small utility script to recreate the database, assuming the name is 
+# 'sandscape', and run every script to bring the database to it's newer state.
+#
+# use it by issuing: sh rebuild.sh | mysql -u <user> -p<password>
 echo "DROP DATABASE IF EXISTS sandscape;"
 echo "CREATE DATABASE sandscape;"
 echo "USE sandscape;"
-for file in v*/*.sql; do echo SOURCE "$file"; done;
+for file in v*/*.sql; do 
+    echo SOURCE "$file"; 
+done;
