@@ -1,6 +1,7 @@
 Database Implementation Notes
 =============================
 
+DEPRECATED!
 
 While creating the ER diagram for the database took into account the correct 
 steps to create a relational database, not every ER diagram rule was applied 

@@ -1,6 +1,8 @@
 System Description
 ==================
 
+DEPRECATED!
+
 This file contains an overall description of *SandScape* and it's features 
 allowing for new users to get an overview of how the system works and at the 
 same time giving the developers a path to follow and a way to assess the 
