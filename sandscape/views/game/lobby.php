@@ -1,8 +1,16 @@
 <div class="span-4 border">
+    <div id="userlist">
+
+    </div>
 </div>
 <div class="span-16 border">
+    <div id="lobbychat">
+
+    </div>
 </div>
 <div class="span-4 last">
+    <div id="gamelist">
+    </div>
 </div>
 <div class="span-24">
     <div class="span-16">

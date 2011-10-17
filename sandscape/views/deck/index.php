@@ -6,11 +6,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'dataProvider' => $filter->search(Yii::app()->user->getId()),
     'filter' => $filter,
     'columns' => array(
-        'deckId',
         'name',
-        'userId',
         'created',
-        'active',
         array(
             'class' => 'CButtonColumn',
         ),

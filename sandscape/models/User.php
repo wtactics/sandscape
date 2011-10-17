@@ -31,6 +31,7 @@
  * @property integer $admin
  * @property integer $authenticated
  * @property integer $active
+ * @property integer $seeTopDown
  *
  * The followings are the available model relations:
  * @property ChatMessage[] $chatMessages
@@ -61,7 +62,7 @@ class User extends CActiveRecord {
     public function rules() {
         return array(
             array('email, password', 'required'),
-            array('admin, active', 'numerical', 'integerOnly' => true),
+            array('admin, active, seeTopDown', 'numerical', 'integerOnly' => true),
             array('email', 'length', 'max' => 255),
             array('name', 'length', 'max' => 100),
             //search
@@ -90,7 +91,8 @@ class User extends CActiveRecord {
             'email' => 'E-mail',
             'password' => 'Password',
             'name' => 'Name',
-            'admin' => 'Administrator'
+            'admin' => 'Administrator',
+            'seeTopDown' => 'See inverted card'
         );
     }
 

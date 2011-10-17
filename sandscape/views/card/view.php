@@ -1,28 +1,23 @@
-<div class="view">
+<?php echo CHtml::encode($card->getAttributeLabel('cardId')); ?>:
+<?php echo CHtml::link(CHtml::encode($card->cardId), array('view', 'id' => $card->cardId)); ?>
+<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('cardId')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->cardId), array('view', 'id'=>$data->cardId)); ?>
-	<br />
+<?php echo CHtml::encode($card->getAttributeLabel('name')); ?>:
+<?php echo CHtml::encode($card->name); ?>
+<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('name')); ?>:</b>
-	<?php echo CHtml::encode($data->name); ?>
-	<br />
+<?php echo CHtml::encode($card->getAttributeLabel('rules')); ?>:
+<?php echo CHtml::encode($card->rules); ?>
+<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('rules')); ?>:</b>
-	<?php echo CHtml::encode($data->rules); ?>
-	<br />
+<?php echo CHtml::encode($card->getAttributeLabel('image')); ?>:
+<?php echo CHtml::encode($card->image); ?>
+<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('image')); ?>:</b>
-	<?php echo CHtml::encode($data->image); ?>
-	<br />
+<?php echo CHtml::encode($card->getAttributeLabel('cardscapeId')); ?>:
+<?php echo CHtml::encode($card->cardscapeId); ?>
+<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('cardscapeId')); ?>:</b>
-	<?php echo CHtml::encode($data->cardscapeId); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('active')); ?>:</b>
-	<?php echo CHtml::encode($data->active); ?>
-	<br />
-
-
-</div>
+<?php echo CHtml::encode($card->getAttributeLabel('active')); ?>:
+<?php echo CHtml::encode($card->active); ?>
+<br />
