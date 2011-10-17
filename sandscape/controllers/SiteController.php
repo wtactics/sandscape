@@ -23,7 +23,43 @@
 class SiteController extends AppController {
 
     public function actionIndex() {
-        $this->render('index');
+        $this->render('pages/home');
+    }
+
+    public function actionAbout() {
+        $this->render('pages/about');
+    }
+
+    public function actionLogin() {
+        $login = new LoginForm();
+        $register = new RegisterForm();
+
+        if (isset($_POST['LoginForm'])) {
+            $login->attributes = $_POST['LoginForm'];
+            if ($login->validate() && $login->login()) {
+                $this->redirect(Yii::app()->user->returnUrl);
+            }
+        } else if (isset($_POST['RegisterForm'])) {
+            $register->attributes = $_POST['RegisterForm'];
+            if ($register->validate() && $register->register()) {
+                $this->redirect(Yii::app()->user->returnUrl);
+            }
+        }
+
+        $this->render('login', array('login' => $login, 'register' => $register));
+    }
+
+    public function actionLogout() {
+        Yii::app()->user->logout();
+        $this->redirect(Yii::app()->homeUrl);
+    }
+
+    public function actionRegister() {
+        
+    }
+
+    public function actionLostPassword() {
+        
     }
 
     public function actionError() {
@@ -37,24 +73,4 @@ class SiteController extends AppController {
         }
     }
 
-    public function actionLogin() {
-        $login = new LoginForm();
-
-        if (isset($_POST['LoginForm'])) {
-            $login->attributes = $_POST['LoginForm'];
-            if ($login->validate() && $login->login())
-                $this->redirect(Yii::app()->user->returnUrl);
-        }
-
-
-        $this->render('login', array('login' => $login));
-    }
-
-    public function actionLogout() {
-        Yii::app()->user->logout();
-        $this->redirect(Yii::app()->homeUrl);
-    }
-
 }
-
-//TODO: actions for semi-static content

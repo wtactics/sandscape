@@ -29,6 +29,7 @@
  * @property string $password
  * @property string $name
  * @property integer $admin
+ * @property integer $authenticated
  * @property integer $active
  *
  * The followings are the available model relations:
@@ -58,8 +59,6 @@ class User extends CActiveRecord {
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('email, password', 'required'),
             array('admin, active', 'numerical', 'integerOnly' => true),

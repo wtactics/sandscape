@@ -1,13 +1,17 @@
+<h2>Card List</h2>
+<div class="span-2 prepend-22 last"><a href="<?php echo $this->createURL('create'); ?>">New Card</a></div>
 <?php
-$this->menu=array(
-	array('label'=>'Create Card', 'url'=>array('create')),
-	array('label'=>'Manage Card', 'url'=>array('admin')),
-);
+$this->widget('zii.widgets.grid.CGridView', array(
+    'id' => 'card-grid',
+    'dataProvider' => $filter->search(),
+    'filter' => $filter,
+    'columns' => array(
+        'cardId',
+        'name',
+        'cardscapeId',
+        array(
+            'class' => 'CButtonColumn',
+        )
+    )
+));
 ?>
-
-<h1>Cards</h1>
-
-<?php $this->widget('zii.widgets.CListView', array(
-	'dataProvider'=>$dataProvider,
-	'itemView'=>'_view',
-)); ?>

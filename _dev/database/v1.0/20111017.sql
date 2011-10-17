@@ -1,0 +1,1 @@
+ALTER TABLE `User` ADD `authenticated` TINYINT NOT NULL DEFAULT 0 ;

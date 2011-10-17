@@ -1,6 +1,6 @@
 <?php
 
-/* UserController.php
+/* RegisterForm.php
  * 
  * This file is part of SandScape.
  *
@@ -20,33 +20,34 @@
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
 
-class UserController extends AppController {
+class RegisterForm extends CFormModel {
 
-    public function __construct($id, $module = null) {
-        parent::__construct($id, $module);
+    public $email;
+    public $password;
+    public $password_repeat;
+    public $name;
+
+    public function rules() {
+        return array(
+            array('email, password', 'required'),
+            array('email', 'unique'),
+            array('email', 'email'),
+            array('password', 'compare'),
+            array('name', 'length', 'max' => 100),
+        );
     }
 
-    public function actionIndex() {
-        $filter = new User('search');
-        $filter->unsetAttributes();
-
-        if (isset($_POST['User'])) {
-            $filter->attributes = $_POST['User'];
-        }
-
-        $this->render('index', array('filter' => $filter));
+    public function attributeLabels() {
+        return array(
+            'email' => 'E-mail',
+            'password' => 'Password',
+            'password_repeat' => 'Repeat Password',
+            'name' => 'Name'
+        );
     }
 
-    public function actionAccount() {
-        $user = null;
-        $this->render('account', array('user' => $user));
-    }
-
-    private function loadUserModel($id) {
-        if (($user = User::model()->findByPk((int) $id)) === null) {
-            throw new CHttpException(404, 'The requested page does not exist.');
-        }
-        return $user;
+    public function register() {
+        
     }
 
 }

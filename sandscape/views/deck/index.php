@@ -1,15 +1,19 @@
-<?php
-$this->menu = array(
-    array('label' => 'Create Deck', 'url' => array('create')),
-    array('label' => 'Manage Deck', 'url' => array('admin')),
-);
-?>
-
-<h1>Decks</h1>
+<h2>Manage Decks</h2>
 
 <?php
-$this->widget('zii.widgets.CListView', array(
-    'dataProvider' => $dataProvider,
-    'itemView' => '_view',
+$this->widget('zii.widgets.grid.CGridView', array(
+    'id' => 'deck-grid',
+    'dataProvider' => $model->search(),
+    'filter' => $model,
+    'columns' => array(
+        'deckId',
+        'name',
+        'userId',
+        'created',
+        'active',
+        array(
+            'class' => 'CButtonColumn',
+        ),
+    ),
 ));
 ?>

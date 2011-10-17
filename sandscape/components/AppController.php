@@ -22,11 +22,44 @@
 
 class AppController extends CController {
 
-    public $layout = '//layouts/';
-    protected $menu = array();
+    public $layout = '//layouts/site';
+    protected $menu;
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
+
+        $this->menu = array(
+            array('label' => 'Home', 'url' => array('site/index')),
+            array('label' => 'About', 'url' => array('site/about')),
+            array('label' => 'Play', 'url' => array('game/lobby'),
+                'items' => array(
+                    array('label' => 'Create', 'url' => array('game/create')),
+                    array('label' => 'Join', 'url' => array('game/join')),
+                ),
+                'visible' => true),
+            array('label' => 'Administration', 'url' => array('administration/index'),
+                'items' => array(
+                    array('label' => 'Cards', 'url' => array('card/index')),
+                    array('label' => 'Users', 'url' => array('user/admin')),
+                ),
+                'visible' => true
+            ),
+            array('label' => 'Account', 'url' => array('user/account'),
+                'items' => array(
+                    array('label' => 'Decks', 'url' => array('deck/index')),
+                    array('label' => 'Logout', 'url' => array('site/logout')),
+                ),
+                'visible' => true
+            ),
+            array('label' => 'Login', 'url' => array('site/login'), 'visible' => true)
+        );
+    }
+
+    public final function performAjaxValidation($form, $model) {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === $form) {
+            echo CActiveForm::validate($model);
+            Yii::app()->end();
+        }
     }
 
 }

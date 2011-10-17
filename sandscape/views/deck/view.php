@@ -1,24 +1,24 @@
-<?php
-$this->menu = array(
-    array('label' => 'List Deck', 'url' => array('index')),
-    array('label' => 'Create Deck', 'url' => array('create')),
-    array('label' => 'Update Deck', 'url' => array('update', 'id' => $model->deckId)),
-    array('label' => 'Delete Deck', 'url' => '#', 'linkOptions' => array('submit' => array('delete', 'id' => $model->deckId), 'confirm' => 'Are you sure you want to delete this item?')),
-    array('label' => 'Manage Deck', 'url' => array('admin')),
-);
-?>
+<div class="view">
 
-<h1>View Deck #<?php echo $model->deckId; ?></h1>
+    <b><?php echo CHtml::encode($data->getAttributeLabel('deckId')); ?>:</b>
+    <?php echo CHtml::link(CHtml::encode($data->deckId), array('view', 'id' => $data->deckId)); ?>
+    <br />
 
-<?php
-$this->widget('zii.widgets.CDetailView', array(
-    'data' => $model,
-    'attributes' => array(
-        'deckId',
-        'name',
-        'userId',
-        'created',
-        'active',
-    ),
-));
-?>
+    <b><?php echo CHtml::encode($data->getAttributeLabel('name')); ?>:</b>
+    <?php echo CHtml::encode($data->name); ?>
+    <br />
+
+    <b><?php echo CHtml::encode($data->getAttributeLabel('userId')); ?>:</b>
+    <?php echo CHtml::encode($data->userId); ?>
+    <br />
+
+    <b><?php echo CHtml::encode($data->getAttributeLabel('created')); ?>:</b>
+    <?php echo CHtml::encode($data->created); ?>
+    <br />
+
+    <b><?php echo CHtml::encode($data->getAttributeLabel('active')); ?>:</b>
+    <?php echo CHtml::encode($data->active); ?>
+    <br />
+
+
+</div>

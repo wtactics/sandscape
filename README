@@ -60,7 +60,7 @@ instance should take. You *don't* need to have *SandScape* installed in order
 to play, the software is installed in a server and accessed using a browser.
 
 .Steps
-1. Please have Apache Web Server, PHP and MySQL installed.
+1. Please make sure you have Apache Web Server, PHP and MySQL installed.
 2. Place the contents of the folder *www* in a public accessible place, normally 
 this is a folder named *htdocs*, *www* or *public_html*.
 3. Place the *sandscape* and *yii* folders outside the public accessible folder.

@@ -20,26 +20,45 @@
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
 
-class Credentials extends CUserIdentity {
+class Credentials extends CBaseUserIdentity {
 
-    public function __construct($username, $password) {
-        parent::__construct($username, $password);
+    private $email;
+    private $password;
+    private $id;
+    private $name;
+
+    public function __construct($email, $password) {
+        $this->email = $email;
+        $this->password = $password;
     }
 
     public function authenticate() {
-        //TODO: remove demo code and implement proper security
-        $users = array(
-            // username => password
-            'demo' => 'demo',
-            'admin' => 'admin',
+        $this->errorCode = self::ERROR_NONE;
+        $user = User::model()->find('email = :email AND password = :hash', array(
+            ':email' => $this->username,
+            ':hash' => $this->password
+                )
         );
-        if (!isset($users[$this->username]))
+
+        if ($user === null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID;
-        else if ($users[$this->username] !== $this->password)
-            $this->errorCode = self::ERROR_PASSWORD_INVALID;
-        else
-            $this->errorCode = self::ERROR_NONE;
-        return!$this->errorCode;
+            return false;
+        }
+
+        $this->id = $user->userId;
+        $this->name = ($user->name ? $user->name : $user->email);
+
+        $this->setState('name', $this->name);
+
+        return true;
+    }
+
+    public function getId() {
+        return $this->id;
+    }
+
+    public function getName() {
+        return $this->name;
     }
 
 }
