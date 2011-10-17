@@ -16,16 +16,43 @@ a:hover {
     color: #CC6600;
 }
 
-#menu ul{
-    list-style-type: none;
+ul {
+    list-style: none;
 }
 
-#menu li {
+#menu > ul {
+    position: relative; 
+}
+
+#menu > ul li {
     float: left;
-    display: block;
-    margin-right: 20px;
 }
 
-#menu li.active a{
+#menu > ul li.active {
     color: #FA7E02;
+}
+
+#menu > ul li a {
+    display: block;
+    padding: 4px 8px;
+}
+
+#menu > ul li.hover, #menu > ul li:hover { 
+    position: relative; 
+}
+
+#menu > ul ul {
+    visibility: hidden; 
+    position: absolute; 
+    top: 100%; left: 0; 
+}
+
+#menu > ul ul li {
+    float: none; 
+}
+
+/* IE 6 & 7 Needs Inline Block */
+#menu > ul ul li a {
+    width: 100%;
+    display: inline-block;
 }
