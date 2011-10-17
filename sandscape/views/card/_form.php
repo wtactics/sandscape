@@ -1,45 +1,54 @@
 <?php
-
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'card-form',
-    'enableAjaxValidation' => false,
+    'enableAjaxValidation' => true,
+    'clientOptions' => array(
+        'validateOnSubmit' => true,
+        'validateOnChange' => true,
+        'validateOnType' => false,
+    )
         ));
 ?>
 
-<?php echo $form->errorSummary($card); ?>
-
-
-<?php echo $form->labelEx($card, 'name'); ?>
-<?php echo $form->textField($card, 'name', array('size' => 60, 'maxlength' => 150)); ?>
-<?php echo $form->error($card, 'name'); ?>
-
-
-
-<?php echo $form->labelEx($card, 'rules'); ?>
-<?php echo $form->textArea($card, 'rules', array('rows' => 6, 'cols' => 50)); ?>
-<?php echo $form->error($card, 'rules'); ?>
-
-
-
-<?php echo $form->labelEx($card, 'image'); ?>
-<?php echo $form->textField($card, 'image', array('size' => 36, 'maxlength' => 36)); ?>
-<?php echo $form->error($card, 'image'); ?>
-
-
-
-<?php echo $form->labelEx($card, 'cardscapeId'); ?>
-<?php echo $form->textField($card, 'cardscapeId', array('size' => 10, 'maxlength' => 10)); ?>
-<?php echo $form->error($card, 'cardscapeId'); ?>
-
-
-
-<?php echo $form->labelEx($card, 'active'); ?>
-<?php echo $form->textField($card, 'active'); ?>
-<?php echo $form->error($card, 'active'); ?>
-
-
-
-<?php echo CHtml::submitButton($card->isNewRecord ? 'Create' : 'Save'); ?>
-
+<?php //echo $form->errorSummary($card); ?>
+<div class="span-13">
+    <fieldset>
+        <legend>Card Info</legend>
+        <p>
+            <?php
+            echo $form->labelEx($card, 'name'), '<br />',
+            $form->textField($card, 'name', array('size' => 60, 'maxlength' => 150, 'class' => 'text'));
+            ?>
+        </p>
+        <?php //echo $form->error($card, 'name'); ?>
+        <p>
+            <?php
+            echo $form->labelEx($card, 'cardscapeId'), '<br />',
+            $form->textField($card, 'cardscapeId', array('size' => 10, 'class' => 'text'));
+            ?>
+        <p>
+            <?php //echo $form->error($card, 'cardscapeId'); ?>
+        <p>
+            <?php
+            echo $form->labelEx($card, 'rules'), '<br />',
+            $form->textArea($card, 'rules', array('rows' => 4, 'cols' => 50, 'class' => 'text'));
+            ?>
+        </p>
+        <?php echo $form->error($card, 'rules'); ?>
+    </fieldset>
+</div>
+<div class="span-9 last">
+    <fieldset>
+        <legend>Card Image</legend>
+        <?php echo $form->labelEx($card, 'image'); ?>
+        <?php echo $form->textField($card, 'image', array('size' => 36, 'maxlength' => 36)); ?>
+        <?php //echo $form->error($card, 'image'); ?>
+    </fieldset>
+</div>
+<div class="span-22">
+    <p>
+        <?php echo CHtml::submitButton($card->isNewRecord ? 'Create' : 'Save'); ?>
+    </p>
+</div>
 
 <?php $this->endWidget(); ?>

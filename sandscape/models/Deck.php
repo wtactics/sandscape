@@ -92,11 +92,14 @@ class Deck extends CActiveRecord {
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
      */
-    public function search() {
+    public function search($owner = null) {
         $criteria = new CDbCriteria();
 
         $criteria->compare('name', $this->name, true);
         $criteria->compare('active', 1);
+        if ($owner) {
+            $criteria->compare('userId', $owner);
+        }
 
         return new CActiveDataProvider('Deck', array('criteria' => $criteria));
     }

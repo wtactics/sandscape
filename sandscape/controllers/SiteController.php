@@ -30,6 +30,7 @@ class SiteController extends AppController {
         $this->render('pages/about');
     }
 
+    //TODO: incomplete
     public function actionLogin() {
         $login = new LoginForm();
         $register = new RegisterForm();
@@ -49,17 +50,23 @@ class SiteController extends AppController {
         $this->render('login', array('login' => $login, 'register' => $register));
     }
 
+    //TODO: incomplete
     public function actionLogout() {
         Yii::app()->user->logout();
         $this->redirect(Yii::app()->homeUrl);
     }
 
-    public function actionRegister() {
-        
-    }
-
+    //TODO: incomplete
     public function actionLostPassword() {
-        
+        $recover = new RecoverForm();
+        if (isset($_POST['RecoverForm'])) {
+            $recover->attributes = $_POST['RecoverForma'];
+            if ($recover->validate() && $recover->recover()) {
+                $this->redirect('site/login');
+            }
+        }
+
+        $this->render('lostpwd', array('recover' => $recover));
     }
 
     public function actionError() {

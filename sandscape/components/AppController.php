@@ -40,13 +40,14 @@ class AppController extends CController {
             array('label' => 'Administration', 'url' => array('administration/index'),
                 'items' => array(
                     array('label' => 'Cards', 'url' => array('card/index')),
-                    array('label' => 'Users', 'url' => array('user/admin')),
+                    array('label' => 'Users', 'url' => array('user/index')),
                 ),
                 'visible' => true
             ),
             array('label' => 'Account', 'url' => array('user/account'),
                 'items' => array(
                     array('label' => 'Decks', 'url' => array('deck/index')),
+                    array('label' => 'Profile', 'url' => array('user/profile')),
                     array('label' => 'Logout', 'url' => array('site/logout')),
                 ),
                 'visible' => true

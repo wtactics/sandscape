@@ -42,6 +42,11 @@ class UserController extends AppController {
         $this->render('account', array('user' => $user));
     }
 
+    public function actionProfile() {
+        $user = null;
+        $this->render('profile', array('user' => $user));
+    }
+
     private function loadUserModel($id) {
         if (($user = User::model()->findByPk((int) $id)) === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
