@@ -67,11 +67,15 @@ class UserController extends AppController {
     }
 
     public function actionAccount() {
+        $this->updateUserActivity();
+        //TODO: ...
         $user = null;
         $this->render('account', array('user' => $user));
     }
 
     public function actionProfile() {
+        $this->updateUserActivity();
+        
         $user = $this->loadUserModel(Yii::app()->user->id);
         $passwordModel = new PasswordForm();
 

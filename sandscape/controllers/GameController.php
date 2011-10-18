@@ -31,6 +31,8 @@ class GameController extends AppController {
     }
 
     public function actionLobby() {
+        $this->updateUserActivity();
+        
         //TODO: not implemented yet
         $games = Game::model()->findAll('ended IS NULL AND private = 0');
         $users = User::model()->findAllAuthenticated()->getData();

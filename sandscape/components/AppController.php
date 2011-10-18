@@ -58,4 +58,17 @@ class AppController extends CController {
         }
     }
 
+    public final function updateUserActivity() {
+        if (!Yii::app()->user->isGuest) {
+            $sd = null;
+            if (($sd = SessionData::model()->findByPk(Yii::app()->user->id)) === null) {
+                $sd = new SessionData();
+                $sd->userId = Yii::app()->user->id;
+            }
+
+            $sd->lastActivity = date('Y-m-d H:i', time());
+            $sd->save();
+        }
+    }
+
 }
