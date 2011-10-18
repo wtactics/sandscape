@@ -40,9 +40,23 @@ $form = $this->beginWidget('CActiveForm', array(
 <div class="span-9 last">
     <fieldset>
         <legend>Card Image</legend>
-        <?php echo $form->labelEx($card, 'image'); ?>
-        <?php echo $form->textField($card, 'image', array('size' => 36, 'maxlength' => 36)); ?>
-        <?php //echo $form->error($card, 'image'); ?>
+        <?php
+        if (!$card->isNewRecord) {
+            echo CHtml::image('_cards/up/' . $card->image);
+        }
+        ?>
+        <p>
+            <?php
+            //TODOD: customize
+            $this->widget('CMultiFileUpload', array(
+                'name' => 'images',
+                'accept' => 'jpg|png',
+                'duplicate' => 'Duplicate file!',
+                'denied' => 'Invalid file type',
+            ));
+            ?>
+        </p>
+        <?php //echo $form->error($card, 'image');  ?>
     </fieldset>
 </div>
 <div class="span-22">

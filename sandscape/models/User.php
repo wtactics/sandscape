@@ -92,7 +92,7 @@ class User extends CActiveRecord {
             'password' => 'Password',
             'name' => 'Name',
             'admin' => 'Administrator',
-            'seeTopDown' => 'See inverted card'
+            'seeTopDown' => 'See inverted cards'
         );
     }
 

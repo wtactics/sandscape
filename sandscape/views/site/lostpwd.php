@@ -1,21 +1,21 @@
-<?php
-$form = $this->beginWidget('CActiveForm', array(
-    'id' => 'recover-form',
-    'enableClientValidation' => false
-        )
-);
-?>
+<div class="span-24">
+    <h2>Recover Password</h2>
+    <?php
+    $form = $this->beginWidget('CActiveForm', array(
+        'id' => 'recover-form',
+        'enableClientValidation' => false
+            )
+    );
+    ?>
 
-<div class="span-22 append-1 prepend-1 last">
     <fieldset>
-        <label>Request new password</label>
+        <legend>Request new password</legend>
         <p>
             <?php echo $form->labelEx($recover, 'email'), '<br />', $form->textField($recover, 'email', array('class' => 'text')); ?>
         </p>
-        <p>
-            <?php echo CHtml::submitButton('Send'); ?>
-        </p>
     </fieldset>
+    <p>
+        <?php echo CHtml::submitButton('Send'); ?>
+    </p>
+    <?php $this->endWidget(); ?>
 </div>
-
-<?php $this->endWidget(); ?>

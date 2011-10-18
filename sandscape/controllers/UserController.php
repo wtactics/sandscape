@@ -37,14 +37,47 @@ class UserController extends AppController {
         $this->render('index', array('filter' => $filter));
     }
 
+    public function actionCreate() {
+        $new = new User();
+        $this->performAjaxValidation('user-form', $new);
+
+        if (isset($_POST['User'])) {
+            $new->attributes = $_POST['User'];
+
+            $new->active = 1;
+            if ($new->save()) {
+                //TODO: validate redirect
+                $this->redirect(array('index'));
+            }
+        }
+
+        $this->render('edit', array('user' => $new));
+    }
+
+    public function actionUpdate($id) {
+        $user= $this->loadUserModel($id);
+
+        if (isset($_POST['User'])) {
+            $user->attributes = $_POST['User'];
+            if ($user->save()) {
+                //TODO: validate redirect
+                $this->redirect(array('index'));
+            }
+        }
+
+        $this->render('edit', array('user' => $user));
+    }
+
     public function actionAccount() {
         $user = null;
         $this->render('account', array('user' => $user));
     }
 
     public function actionProfile() {
-        $user = null;
-        $this->render('profile', array('user' => $user));
+        //TODO: get current user
+        $user = new User();
+        $passwordModel = new PasswordForm();
+        $this->render('profile', array('user' => $user, 'pwdModel' => $passwordModel));
     }
 
     private function loadUserModel($id) {

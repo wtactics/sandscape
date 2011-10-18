@@ -1,22 +1,22 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        
-        <!-- <link type="text/css" rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/game.css" /> -->
-        <link type="text/css" rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/board.css" />
+
+<!-- <link type="text/css" rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/game.css" /> -->
+<!-- <link type="text/css" rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/board.css" /> -->
 
         <?php
-        Yii::app()->clientScript->registerCssFile(Yii::app()->clientScript->getCoreScriptUrl() . '/jui/css/sandscape/sandscape.css');
+        //Yii::app()->clientScript->registerCssFile(Yii::app()->clientScript->getCoreScriptUrl() . '/jui/css/sandscape/sandscape.css');
         //
-        Yii::app()->clientScript->registerCoreScript('jquery');
-        Yii::app()->clientScript->registerCoreScript('jquery.ui');
+        //Yii::app()->clientScript->registerCoreScript('jquery');
+        //Yii::app()->clientScript->registerCoreScript('jquery.ui');
         ?>
-        <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/jQuery.radmenu.min.js"></script>
+        <!-- <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/jQuery.radmenu.min.js"></script> -->
 
         <!-- <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/game.js"></script> -->
-        <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/board.js"></script>
+        <!-- <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/board.js"></script> -->
         <style type="text/css">
-            #radial_container { 
+            /*#radial_container { 
                 position:relative; 
                 left:425px; 
                 top: 75px; 
@@ -47,9 +47,8 @@
                 width:30px;
                 height:30px;
                 -webkit-border-radius:30px;
-            }
+            }*/
         </style>
-        
         <title></title>
     </head>
     <body id="appendable">
@@ -59,7 +58,7 @@
             <div id="zoom">
                 <!-- <img src="http://localhost/spikes/card-images/CardBack.png" id="zoomedImage" /> -->
                 <!-- <img src="http://192.168.10.2/spikes/card-images/CardBack.png" id="zoomedImage" /> -->
-                
+
                 <button type="button" onclick="drawCardFromDeck()">ok</button>
             </div>
 
@@ -73,7 +72,7 @@
             </div>
             <!-- TODO: find hand size -->
             <div class="hand" style="background-color: green;height: 303px">
-                
+
             </div>
         </div>
         <!-- END: left vertical area -->
@@ -83,7 +82,7 @@
             <?php echo $content; ?>
         </div>
         <!-- END: game area -->
-        
+
         <!-- TODO: ... -->
         <!-- <div id='radial_container'>
             <ul class='list'>

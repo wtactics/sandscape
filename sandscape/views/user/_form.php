@@ -5,31 +5,39 @@ $form = $this->beginWidget('CActiveForm', array(
         ));
 ?>
 
-<?php //echo $form->errorSummary($model); ?>
+<?php //echo $form->errorSummary($user); ?>
 
+<fieldset>
+    <legend>General information</legend>
+    <p>
+        <?php
+        echo $form->labelEx($user, 'name'), '<br />',
+        $form->textField($user, 'name', array('size' => 60, 'maxlength' => 100, 'class' => 'text'));
+        ?>
+    </p>
+    <?php //echo $form->error($user, 'name'); ?>
+    <p>
+        <?php
+        echo $form->labelEx($user, 'email'), '<br />',
+        $form->textField($user, 'email', array('size' => 60, 'maxlength' => 255, 'class' => 'text'));
+        ?>
+    </p>
+    <?php //echo $form->error($user, 'email'); ?>
+    <p>
+        <?php
+        echo $form->checkBox($user, 'seeTopDown'), '&nbsp;', $form->labelEx($user, 'seeTopDown');
+        ?>
+    </p>
+    <?php //echo $form->error($user, 'admin');  ?>
+    <p>
+        <?php
+        echo $form->checkBox($user, 'admin'), '&nbsp;', $form->labelEx($user, 'admin');
+        ?>
+    </p>
+    <?php //echo $form->error($user, 'admin');  ?>
+</fieldset>
 <p>
-    <?php echo $form->labelEx($model, 'name'); ?>
-    <?php echo $form->textField($model, 'name', array('size' => 60, 'maxlength' => 100)); ?>
-
-</p>
-<?php //echo $form->error($model, 'name'); ?>
-
-<p>
-    <?php echo $form->labelEx($model, 'email'); ?>
-    <?php echo $form->textField($model, 'email', array('size' => 60, 'maxlength' => 255)); ?>
-
-</p>
-<?php //echo $form->error($model, 'email'); ?>
-
-<p>
-    <?php echo $form->labelEx($model, 'admin'); ?>
-    <?php echo $form->textField($model, 'admin'); ?>
-
-</p>
-<?php //echo $form->error($model, 'admin'); ?>
-
-<p>
-    <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+    <?php echo CHtml::submitButton($user->isNewRecord ? 'Create' : 'Save'); ?>
 </p>
 
 <?php $this->endWidget(); ?>

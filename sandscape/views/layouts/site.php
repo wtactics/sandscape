@@ -25,7 +25,7 @@ Yii::app()->clientScript->registerScript('menuhover', "
         <title></title>
     </head>
     <body>
-        <div class="container showgrid">
+        <div class="container <?php echo YII_DEBUG ? 'showgrid' : ''; ?>">
             <h1 id="header">Sandscape</h1>
             <div class="span-24" id="menu">
                 <?php $this->widget('zii.widgets.CMenu', array('items' => $this->menu)); ?>

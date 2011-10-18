@@ -7,8 +7,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'filter' => $filter,
     'columns' => array(
         'name',
-        'cardscapeId',
         array(
+            'header' => 'Actions',
             'class' => 'CButtonColumn',
         )
     )
