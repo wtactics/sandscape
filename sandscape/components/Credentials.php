@@ -50,21 +50,29 @@ class Credentials extends CBaseUserIdentity {
                 $this->id = $user->userId;
                 $this->name = ($user->name ? $user->name : $user->email);
 
+
+                $sd = null;
+                if (($sd = SessionData::model()->findByPk($user->userId)) === null) {
+                    $sd = new SessionData();
+                    $sd->userId = $user->userId;
+                }
+
                 $time = time();
                 $token = md5($time . $this->id . $user->email);
 
-                $time += (3600 * 24 * 7);
+                $expires = $time + (3600 * 24 * 7);
 
                 $this->setState('token', $token);
                 $this->setState('class', $user->admin);
 
-                $user->token = $token;
-                $user->tokenExpires = date('Y-m-d H:i', $time);
-                $user->save();
+                $sd->token = $token;
+                $sd->tokenExpires = date('Y-m-d H:i', $expires);
+                $sd->lastActivity = date('Y-m-d H:i', $time);
+                $sd->save();
             }
         }
 
-        return !$this->errorCode;
+        return!$this->errorCode;
     }
 
     public function getId() {

@@ -96,4 +96,13 @@ class User extends CActiveRecord {
         return new CActiveDataProvider('User', array('criteria' => $criteria));
     }
 
+    public function findAllAuthenticated() {
+        $criteria = new CDbCriteria();
+        $criteria->select = 't.*';
+        $criteria->join = 'INNER JOIN SessionData ON t.userId = SessionData.userId';
+        $criteria->condition = 'TOKEN IS NOT NULL AND tokenExpires > NOW() AND lastActivity > DATE_SUB(NOW(), INTERVAL 15 MINUTE)';
+
+        return new CActiveDataProvider('User', array('criteria' => $criteria));
+    }
+
 }

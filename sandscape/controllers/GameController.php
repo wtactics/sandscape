@@ -33,7 +33,7 @@ class GameController extends AppController {
     public function actionLobby() {
         //TODO: not implemented yet
         $games = Game::model()->findAll('ended IS NULL AND private = 0');
-        $users = User::model()->findAll('active = 1 AND authenticated = 1');
+        $users = User::model()->findAllAuthenticated()->getData();
         $messages = ChatMessage::model()->findAll('gameId IS NULL ORDER BY sent');
 
         $this->render('lobby', array('games' => $games, 'users' => $users, 'messages' => $messages));

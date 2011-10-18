@@ -8,8 +8,8 @@ class SSWebUser extends CWebUser {
             return true;
         }
 
-        $user = User::model()->findByPk($id);
-        if ($user === null || $user->token !== $states['token'] || strtotime($user->tokenExpires) < time()) {
+        $sd = SessionData::model()->findByPk($id);
+        if ($sd === null || $sd->token !== $states['token'] || strtotime($sd->tokenExpires) < time()) {
             return false;
         }
 

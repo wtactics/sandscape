@@ -51,6 +51,10 @@ class SiteController extends AppController {
     }
 
     public function actionLogout() {
+        if (($sd = SessionData::model()->findByPk(Yii::app()->user->id)) !== null) {
+            $sd->delete();
+        }
+
         Yii::app()->user->logout();
         $this->redirect(Yii::app()->homeUrl);
     }
