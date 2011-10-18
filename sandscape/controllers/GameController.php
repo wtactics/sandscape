@@ -32,16 +32,16 @@ class GameController extends AppController {
 
     public function actionLobby() {
         //TODO: not implemented yet
-        $search = new CDbCriteria();
-        $search->compare('running', 1)->compare('private', 0);
+        $games = Game::model()->findAll('ended IS NULL AND private = 0');
+        $users = User::model()->findAll('active = 1 AND authenticated = 1');
+        $messages = ChatMessage::model()->findAll('gameId IS NULL ORDER BY sent');
 
-        $games = Game::model()->findAll($search);
-
-        $this->render('lobby', array('games' => $games));
+        $this->render('lobby', array('games' => $games, 'users' => $users, 'messages' => $messages));
     }
 
     public function actionCreate() {
         //TODO: not implemented yet
+        $this->render('create');
     }
 
     public function actionJoin() {

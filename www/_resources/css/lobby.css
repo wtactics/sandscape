@@ -1,11 +1,16 @@
 #userlist {
-    min-height: 200px;
+    text-align: left;
+    min-height: 250px;
 }
 
 #lobbychat {
-    min-height: 200px;
+    min-height: 250px;
 }
 
 #gamelist {
-    min-height: 200px;
+    min-height: 250px;
+}
+
+#lobbychat li {
+    padding-bottom: 0.5em;
 }
