@@ -43,8 +43,6 @@ class UserController extends AppController {
 
         if (isset($_POST['User'])) {
             $new->attributes = $_POST['User'];
-
-            $new->active = 1;
             if ($new->save()) {
                 //TODO: validate redirect
                 $this->redirect(array('index'));
@@ -55,7 +53,7 @@ class UserController extends AppController {
     }
 
     public function actionUpdate($id) {
-        $user= $this->loadUserModel($id);
+        $user = $this->loadUserModel($id);
 
         if (isset($_POST['User'])) {
             $user->attributes = $_POST['User'];
@@ -74,9 +72,21 @@ class UserController extends AppController {
     }
 
     public function actionProfile() {
-        //TODO: get current user
-        $user = new User();
+        $user = $this->loadUserModel(Yii::app()->user->id);
         $passwordModel = new PasswordForm();
+
+        if (isset($_POST['User'])) {
+            $user->attributes = $_POST['User'];
+            if ($user->save()) {
+                $this->redirect(array('profile'));
+            }
+        } else if (isset($_POST['PasswordForm'])) {
+            //TODO: change password
+            //$user->attributes = $_POST['PasswordForm'];
+            //if ($user->save()) {
+            //}
+        }
+
         $this->render('profile', array('user' => $user, 'pwdModel' => $passwordModel));
     }
 

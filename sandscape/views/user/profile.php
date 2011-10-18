@@ -1,59 +1,32 @@
+<?php
+Yii::app()->clientScript->registerCssFile('_resources/css/profiletabs.css');
+Yii::app()->clientScript->registerScript('tabsjs', "
+    $('#tabs div').hide();
+    $('#tabs div:first').show();
+    $('#tabs ul li:first').addClass('active');
+    $('#tabs ul li a').click(function() {
+        $('#tabs ul li').removeClass('active');
+        $(this).parent().addClass('active');
+        var currentTab = $(this).attr('href');
+        $('#tabs div').hide();
+        $(currentTab).show();
+        return false;
+    });
+");
+?>
+
 <div class="span-24">
     <h2>Edit Profile</h2>
-    <?php
-    $form = $this->beginWidget('CActiveForm', array(
-        'id' => 'profile-form',
-        'enableClientValidation' => true,
-        'clientOptions' => array(
-            'validateOnSubmit' => true,
-            'validateOnChange' => true,
-            'validateOnType' => false,
-            ))
-    );
-    ?>
-    <?php //echo $form->errorSummary($user);  ?>
-    <fieldset>
-        <legend>General information</legend>
-        <p>
-            <?php
-            echo $form->labelEx($user, 'name'), '<br />',
-            $form->textField($user, 'name', array('size' => 60, 'maxlength' => 100, 'class' => 'text'));
-            ?>
-        </p>
-        <?php //echo $form->error($user, 'name'); ?>
-        <p>
-            <?php
-            echo $form->labelEx($user, 'email'), '<br />',
-            $form->textField($user, 'email', array('size' => 60, 'maxlength' => 255, 'class' => 'text'));
-            ?>
-        </p>
-        <?php //echo $form->error($user, 'email'); ?>
-        <p>
-            <?php
-            echo $form->checkBox($user, 'seeTopDown'), '&nbsp;', $form->labelEx($user, 'seeTopDown');
-            ?>
-        </p>
-        <?php //echo $form->error($user, 'seeTopDown'); ?>
-    </fieldset>
-    <fieldset>
-        <legend>Password</legend>
-        <p class="notice">If you don't want to change your password, leave the following fields empty.</p>
-        <p>
-            <?php
-            echo $form->labelEx($pwdModel, 'password'), '<br />',
-            $form->passwordField($pwdModel, 'password', array('class' => 'text'));
-            ?>
-        </p>
-        <p>
-            <?php
-            echo $form->labelEx($pwdModel, 'password_repeat'), '<br />',
-            $form->passwordField($pwdModel, 'password_repeat', array('class' => 'text'));
-            ?>
-        </p>
-    </fieldset>
-    <p>
-        <?php echo CHtml::submitButton('Save'); ?>
-    </p>
-
-    <?php $this->endWidget(); ?>
+    <div id="tabs">
+        <ul>
+            <li><a href="#tab1">General</a></li>
+            <li><a href="#tab2">Password</a></li>
+        </ul>
+        <div id="tab1">
+            <?php $this->renderPartial('_personal', array('user' => $user)) ?>
+        </div>
+        <div id="tab2">
+            <?php $this->renderPartial('_password', array('pwdModel' => $pwdModel)); ?>
+        </div>
+    </div>
 </div>

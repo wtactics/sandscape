@@ -1,0 +1,30 @@
+#tabs {
+}
+
+#tabs ul {
+    float: left;
+    width: 500px;
+}
+
+#tabs li {
+    margin-right: 8px;
+    list-style: none;
+}
+
+* html #tabs li {
+    display: inline;
+}
+
+#tabs li, #tabs li a {
+    float: left;
+}
+
+#tabs ul li.active {
+}
+
+#tabs ul li.active a {
+}
+
+#tabs div {
+    clear: both;
+}

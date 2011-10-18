@@ -5,6 +5,10 @@
     text-align: justify;
 }
 
+a {
+    text-decoration: none;
+}
+
 a, a:visited {
 }
 
