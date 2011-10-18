@@ -48,7 +48,7 @@ class LoginForm extends CFormModel {
      */
     public function authenticate($attribute, $params) {
         if (!$this->hasErrors()) {
-            $this->credentials = new Credentials($this->email, sha1($this->password));
+            $this->credentials = new Credentials($this->email, $this->password);
             if (!$this->credentials->authenticate())
                 $this->addError('password', 'Incorrect email or password.');
         }
@@ -61,14 +61,10 @@ class LoginForm extends CFormModel {
         }
 
         if ($this->credentials->errorCode === Credentials::ERROR_NONE) {
-            //remember for 30 days
-            $duration = $this->rememberMe ? 3600 * 24 * 30 : 0;
+            //remember for 7 days
+            //TODO: make this configurable in the user's profile
+            $duration = $this->rememberMe ? 3600 * 24 * 7 : 0;
             Yii::app()->user->login($this->credentials, $duration);
-
-            //mark user as logged in
-            $user = User::model()->findByPk($this->credentials->getId());
-            $user->authenticated = 1;
-            $user->save();
 
             return true;
         }

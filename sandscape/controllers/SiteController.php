@@ -30,7 +30,6 @@ class SiteController extends AppController {
         $this->render('pages/about');
     }
 
-    //TODO: incomplete
     public function actionLogin() {
         $login = new LoginForm();
         $register = new RegisterForm();
@@ -43,6 +42,7 @@ class SiteController extends AppController {
         } else if (isset($_POST['RegisterForm'])) {
             $register->attributes = $_POST['RegisterForm'];
             if ($register->validate() && $register->register()) {
+                //TODO: don't redirect, just show success messages
                 $this->redirect(Yii::app()->user->returnUrl);
             }
         }
@@ -50,7 +50,6 @@ class SiteController extends AppController {
         $this->render('login', array('login' => $login, 'register' => $register));
     }
 
-    //TODO: incomplete
     public function actionLogout() {
         Yii::app()->user->logout();
         $this->redirect(Yii::app()->homeUrl);
@@ -70,7 +69,7 @@ class SiteController extends AppController {
     }
 
     public function actionError() {
-        //TODO: proper error handling
+        //TODO: proper error handling, view doesn't exist
         if (($error = Yii::app()->errorHandler->error)) {
             if (Yii::app()->request->isAjaxRequest) {
                 echo $error['message'];

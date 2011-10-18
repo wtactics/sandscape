@@ -34,23 +34,37 @@ class Credentials extends CBaseUserIdentity {
 
     public function authenticate() {
         $this->errorCode = self::ERROR_NONE;
-        $user = User::model()->find('email = :email AND password = :hash', array(
-            ':email' => $this->username,
-            ':hash' => $this->password
-                )
-        );
+        $user = User::model()->findByAttributes(array('email' => $this->email));
 
         if ($user === null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID;
-            return false;
+        } else {
+            $value = $this->password;
+            if (Yii::app()->params['hash'] != '') {
+                $value .= Yii::app()->params['hash'];
+            }
+
+            if ($user->password !== sha1($value)) {
+                $this->errorCode = self::ERROR_PASSWORD_INVALID;
+            } else {
+                $this->id = $user->userId;
+                $this->name = ($user->name ? $user->name : $user->email);
+
+                $time = time();
+                $token = md5($time . $this->id . $user->email);
+
+                $time += (3600 * 24 * 7);
+
+                $this->setState('token', $token);
+                $this->setState('class', $user->admin);
+
+                $user->token = $token;
+                $user->tokenExpires = date('Y-m-d H:i', $time);
+                $user->save();
+            }
         }
 
-        $this->id = $user->userId;
-        $this->name = ($user->name ? $user->name : $user->email);
-
-        $this->setState('name', $this->name);
-
-        return true;
+        return !$this->errorCode;
     }
 
     public function getId() {

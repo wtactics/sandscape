@@ -41,7 +41,7 @@ $form = $this->beginWidget('CActiveForm', array(
     <p>
         <?php
         echo $form->labelEx($register, 'password_repeat'), '<br />',
-        $form->passwordField($register, 'password', array('class' => 'text'));
+        $form->passwordField($register, 'password_repeat', array('class' => 'text'));
         ?>
     </p>
     <?php //echo $form->error($register, 'password_repeat', $htmlOptions); ?>

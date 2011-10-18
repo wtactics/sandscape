@@ -1,0 +1,1 @@
+ALTER TABLE `User` DROP `authenticated`, ADD `token` VARCHAR( 32 ) NULL, ADD `tokenExpires` DATETIME NULL ;

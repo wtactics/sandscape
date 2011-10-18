@@ -1,11 +1,11 @@
 -- Testing users
 INSERT INTO `User`(`userId`, `email`, `password`, `name`, `admin`)
-VALUES (1, 'knitter@wtactics.org', SHA1('demo'), 'Knitter', 1),
-(2, 'afonso@sandscape.moc', SHA1('demo'), 'Afonso Gonçalves Baldaia', 0),
-(3, 'alvaro@sandscape.moc', SHA1('demo'), 'Álvaro Martins', 0), 
-(4, 'andre@sandscape.moc', SHA1('demo'), 'André Gonçalves ', 0), 
-(5, 'antonio@sandscape.moc', SHA1('demo'), 'António Fernandes', 0), 
-(6, 'diogo@sandscape.moc', SHA1('demo'), 'Diogo Cão', 0) ;
+VALUES (1, 'knitter@wtactics.org', SHA1('demoDemo, development hash, please change this in a production server'), 'Knitter', 1),
+(2, 'afonso@sandscape.moc', SHA1('demoDemo, development hash, please change this in a production server'), 'Afonso Gonçalves Baldaia', 0),
+(3, 'alvaro@sandscape.moc', SHA1('demoDemo, development hash, please change this in a production server'), 'Álvaro Martins', 0), 
+(4, 'andre@sandscape.moc', SHA1('demoDemo, development hash, please change this in a production server'), 'André Gonçalves ', 0), 
+(5, 'antonio@sandscape.moc', SHA1('demoDemo, development hash, please change this in a production server'), 'António Fernandes', 0), 
+(6, 'diogo@sandscape.moc', SHA1('demoDemo, development hash, please change this in a production server'), 'Diogo Cão', 0) ;
 
 -- Decks, 4 decks for the first 4 users
 INSERT INTO `Deck`(`deckId`, `name`, `userId`, `created`)
@@ -71,5 +71,3 @@ VALUES (1, 'Hey!', 1, NULL), (2, 'Everybody ready for a new game?', 2, NULL),
 -- game messages
 (6, 'Ready?', 3, 2),
 (7, 'Yes, you can start', 4, 2) ;
-
-UPDATE `User` SET `authenticated` = 1 ;

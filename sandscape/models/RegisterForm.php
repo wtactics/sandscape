@@ -30,7 +30,6 @@ class RegisterForm extends CFormModel {
     public function rules() {
         return array(
             array('email, password, password_repeat', 'required'),
-            array('email', 'unique'),
             array('email', 'email'),
             array('password', 'compare'),
             array('name', 'length', 'max' => 100),
@@ -47,7 +46,13 @@ class RegisterForm extends CFormModel {
     }
 
     public function register() {
-        
+        $new = new User();
+
+        $new->email = $this->email;
+        $new->password = sha1($this->password . Yii::app()->params['hash']);
+        $new->name = $this->name;
+
+        return $new->save();
     }
 
 }

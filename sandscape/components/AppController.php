@@ -31,13 +31,13 @@ class AppController extends CController {
         $this->menu = array(
             array('label' => 'Home', 'url' => array('site/index')),
             array('label' => 'About', 'url' => array('site/about')),
-            array('label' => 'Play', 'url' => array('game/lobby'), 'visible' => true),
+            array('label' => 'Play', 'url' => array('game/lobby'), 'visible' => !Yii::app()->user->isGuest),
             array('label' => 'Administration', 'url' => array('administration/index'),
                 'items' => array(
                     array('label' => 'Cards', 'url' => array('card/index')),
                     array('label' => 'Users', 'url' => array('user/index')),
                 ),
-                'visible' => true
+                'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class
             ),
             array('label' => 'Account', 'url' => array('user/account'),
                 'items' => array(
@@ -45,9 +45,9 @@ class AppController extends CController {
                     array('label' => 'Profile', 'url' => array('user/profile')),
                     array('label' => 'Logout', 'url' => array('site/logout')),
                 ),
-                'visible' => true
+                'visible' => !Yii::app()->user->isGuest
             ),
-            array('label' => 'Login', 'url' => array('site/login'), 'visible' => true)
+            array('label' => 'Login', 'url' => array('site/login'), 'visible' => Yii::app()->user->isGuest)
         );
     }
 
