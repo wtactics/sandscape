@@ -28,7 +28,7 @@ class DeckController extends AppController {
 
     public function actionIndex() {
         $this->updateUserActivity();
-        
+
         $filter = new Deck('search');
         $filter->unsetAttributes();
 
@@ -41,7 +41,7 @@ class DeckController extends AppController {
 
     public function actionCreate() {
         $this->updateUserActivity();
-        
+
         $new = new Deck();
 
         if (isset($_POST['Deck'])) {
@@ -57,12 +57,13 @@ class DeckController extends AppController {
             }
         }
 
-        $this->render('edit', array('deck' => $new));
+        $cards = Card::model()->findAll('active = 1');
+        $this->render('edit', array('deck' => $new, 'cards' => $cards));
     }
 
     public function actionUpdate($id) {
         $this->updateUserActivity();
-        
+
         $deck = $this->loadDeckModel($id);
 
         if (isset($_POST['Deck'])) {
@@ -73,12 +74,14 @@ class DeckController extends AppController {
             }
         }
 
-        $this->render('edit', array('deck' => $deck));
+        //TODO: filter those already in the deck
+        $cards = Card::model()->findAll('active = 1');
+        $this->render('edit', array('deck' => $deck, 'cards' => $cards));
     }
 
     public function actionDelete($id) {
         $this->updateUserActivity();
-        
+
         if (Yii::app()->request->isPostRequest) {
             $this->loadDeckModel($id)->delete();
         } else {

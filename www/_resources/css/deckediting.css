@@ -1,0 +1,23 @@
+#existingcards {
+}
+
+#existingcards img {
+    float: left;
+    margin: 0.3em 0.3em 0 0;
+}
+
+#usecards {
+    /*TODO: remove */
+    border: 1px solid blue;
+    min-height: 200px;
+    position: relative;
+}
+
+.dragme {
+}
+
+.chosen {
+    position: absolute;
+    margin:0;
+    padding:0;
+}

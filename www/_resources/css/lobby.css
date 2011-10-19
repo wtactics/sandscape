@@ -4,7 +4,8 @@
 }
 
 #lobbychat {
-    min-height: 250px;
+    height: 420px;
+    overflow: auto;
 }
 
 #gamelist {

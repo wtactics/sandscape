@@ -1,11 +1,36 @@
-<?php Yii::app()->clientScript->registerCssFile('_resources/css/lobby.css'); ?>
+<?php
+$url = $this->createURL('game/lobbychatupdate');
+
+$last = end($messages);
+$last = $last->messageId;
+
+
+Yii::app()->clientScript->registerCssFile('_resources/css/lobby.css');
+Yii::app()->clientScript->registerScriptFile('_resources/js/lobby.js');
+
+Yii::app()->clientScript->registerScript('msgscripts', "
+$('#writemessage').keypress(function(e) {
+    if(e.which == 13) {
+        $('#sendbtn').click();
+    }
+});
+
+//5 sec delay before asking for more messages
+setInterval(function() {
+    updateMessages('{$url}')
+}, 5000);
+    
+lastReceived = {$last};
+");
+?>
 
 <h2>Lobby</h2>
 <div class="span-5 border">
     <h3>Users</h3>
     <ul id="userlist">
         <?php foreach ($users as $user) { ?>
-            <li><a href="#"><?php echo $user->name; ?></a></li>
+            <li><a href="#"><?php echo $user->name;
+            ?></a></li>
         <?php } ?>
     </ul>
 </div>
@@ -49,6 +74,6 @@
 </div>
 <hr />
 <div class="span-24 centered">
-    <input type="text" class="text" id="writemessage"/>
-    <button type="button">Send</button>
+    <input type="text" class="text" id="writemessage" />
+    <button type="button" onclick="sendMessage('<?php echo $this->createURL('game/sendlobbymessage'); ?>');" id="sendbtn">Send</button>
 </div>
