@@ -21,7 +21,10 @@
  */
 
 class GameController extends AppController {
-    
+
+    /**
+     * @var SCGame
+     */
     private $scGame;
 
     public function __construct($id, $module = null) {
@@ -144,12 +147,26 @@ class GameController extends AppController {
         //TODO: not implemented yet
     }
 
+    //u1: 2 - afonso
+    //u2: 3 - alvaro
     public function actionPlay($id) {
         //TODO: not implemented yet
-        $this->layout = '//layouts/game';        
+        $this->layout = '//layouts/game';
         //Game::model()->find('running = 0')
-        //$game = $this->loadGameById($id);
-        $this->render('board');
+        $game = $this->loadGameById($id);
+        if (isset($_POST['event'])) {
+
+            switch ($_POST['event']) {
+                case 'startup':
+                    if ($game->state != '') {
+                        $this->scGame = unserialize($game->state);
+                    }
+                    break;
+                default:
+            }
+        }
+
+        $this->render('board', array('gameId' => $id));
     }
 
     /**

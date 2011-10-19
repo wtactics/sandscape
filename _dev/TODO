@@ -40,3 +40,8 @@ public function accessRules() {
         ),
     );
 }
+
+NOTES/IDEAS:
+
+When a small card version is clicked, the state should be seen on the leff with 
+full size card, rule text and tokens/states affecting the card.

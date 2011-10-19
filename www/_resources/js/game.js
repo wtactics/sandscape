@@ -1,11 +1,73 @@
-//General functions
-var last = 0;
+function init() {
+    $('#board').css('width', $(window).width() - 300);
+    
+    $.ajax({
+        type: 'POST',
+        url: requestUrl,
+        dataType: 'json',
+        data: {
+            'event' : 'startup'
+        },
+        success: function(json) {
+            
+//            var opp = $('.opponent');
+//            opp.attr('id', json.opponentArea.id);
+//            opp.css('height', $(window).height() / 2);
+//            opp.append(json.opponentArea.html);
+//            
+//            var hand = $('.hand');
+//            hand.attr('id', json.hand.id);
+//            hand.append(json.hand.html);
+//        
+//            //
+//            var player = $('.player').attr('id', json.playableArea.id);
+//            player.css('height', $(window).height() / 2);
+//            
+//            player.append(json.playableArea.html);
+//            
+//            $('#' + json.opponentArea.id + ' > table').css('height', $(window).height() / 2);
+//            
+//            $('#' + json.playableArea.id + ' > table').css('height', $(window).height() / 2);
+//            $('#' + json.playableArea.id + ' > table td').addClass('dropzone');
+//            
+//            $('#' + json.hand.id + ' > table').css('height', '303');
+//            $('#' + json.hand.id + ' > table td').addClass('dropzone');
+//            
+//            var deck = $('.deck');
+//            deck.attr('id', json.deck.id);
+//            
+//            var grave = $('.graveyard').attr('id', json.graveyard.id);
+//            grave.addClass('dropzone');
+//            //
+//            grave.droppable({
+//                accept: '.card',
+//                drop: function(event, ui) {
+//                }
+//            });
+//            
+//            $.each(json.update, function(index, elem) {
+//                
+//                if(elem.f == 'create') {
+//                    createCard(elem.id, elem.idLocation);
+//                } else if(elem.f == 'image') {
+//                    defineCardSource(elem.id, elem.src);
+//                } else if(elem.f == 'move') {
+//                    moveCard(elem.id, elem.idDestination);
+//                } else {
+//                    alert('Wrong function request');
+//                } 
+//            });            
+        }//END: success
+    });
+}
+
+/*var last = 0;*/
 
 /**
  * Sends a message to the server that can then be pulled by other clients. Part
  * of the chat system.
  */
-function sendMessage() {
+/*function sendMessage() {
     var text = $('#message');
     if(text.val() != '') {
         $.post('', {
@@ -14,13 +76,13 @@ function sendMessage() {
     
         text.val('');
     }
-}
+}*/
 
 /**
  * Pulls messages from the server. All messages after a give message/time are 
  * pulled, even the ones posted by the current client.
  */
-function reload() {
+/*function reload() {
     $.get('', {
         after: last
     }, function(e) {
@@ -42,72 +104,9 @@ function reload() {
             last = e[i].messageId;
         }
     }, 'json');
-}
+}*/
 
-function init() {
-    $('#board').css('width', $(window).width() - 300);
-    
-    $.ajax({
-        url: 'http://192.168.10.3/wtserver/?quiet',
-        dataType: 'jsonp',
-        data: {
-            'event' : 'startup'
-        },
-        crossDomain: true,
-        success: function(json) {
-            
-            var opp = $('.opponent');
-            opp.attr('id', json.opponentArea.id);
-            opp.css('height', $(window).height() / 2);
-            opp.append(json.opponentArea.html);
-            
-            var hand = $('.hand');
-            hand.attr('id', json.hand.id);
-            hand.append(json.hand.html);
-        
-            //
-            var player = $('.player').attr('id', json.playableArea.id);
-            player.css('height', $(window).height() / 2);
-            
-            player.append(json.playableArea.html);
-            
-            $('#' + json.opponentArea.id + ' > table').css('height', $(window).height() / 2);
-            
-            $('#' + json.playableArea.id + ' > table').css('height', $(window).height() / 2);
-            $('#' + json.playableArea.id + ' > table td').addClass('dropzone');
-            
-            $('#' + json.hand.id + ' > table').css('height', '303');
-            $('#' + json.hand.id + ' > table td').addClass('dropzone');
-            
-            var deck = $('.deck');
-            deck.attr('id', json.deck.id);
-            
-            var grave = $('.graveyard').attr('id', json.graveyard.id);
-            grave.addClass('dropzone');
-            //
-            grave.droppable({
-                accept: '.card',
-                drop: function(event, ui) {
-                }
-            });
-            
-            $.each(json.update, function(index, elem) {
-                
-                if(elem.f == 'create') {
-                    createCard(elem.id, elem.idLocation);
-                } else if(elem.f == 'image') {
-                    defineCardSource(elem.id, elem.src);
-                } else if(elem.f == 'move') {
-                    moveCard(elem.id, elem.idDestination);
-                } else {
-                    alert('Wrong function request');
-                } 
-            });            
-        }//END: success
-    });
-}
-
-$(document).ready(function() {   
+/*$(document).ready(function() {   
     //setInterval(reload, 3000);
     init();
     
@@ -124,9 +123,9 @@ $(document).ready(function() {
 //        },
 //        angleOffset: Math.PI // in radians
 //    });
-});
+});*/
 
-function createCard(id, location) {
+/*function createCard(id, location) {
     if( $('#' + id).length == 0) {
         var image = $(document.createElement('img'));
         $('#appendable').append(image);
@@ -186,17 +185,17 @@ function createCard(id, location) {
             }
         });
     }
-}
+}*/
 
-function defineCardSource(id, source) {
+/*function defineCardSource(id, source) {
     $('#' + id).attr('src', source);
-}
+}*/
 
-function moveCard(id, destination) {
+/*function moveCard(id, destination) {
     $('#' + id).animate($('#' + destination).position(), 'slow');
-}
+}*/
 
-function drawCardFromDeck() {
+/*function drawCardFromDeck() {
     $.ajax({
         url: 'http://192.168.10.3/wtserver/?quiet',
         dataType: 'jsonp',
@@ -218,4 +217,4 @@ function drawCardFromDeck() {
             });
         }
     });
-}
+}*/
