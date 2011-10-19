@@ -21,6 +21,8 @@
  */
 
 class GameController extends AppController {
+    
+    private $scGame;
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
@@ -134,6 +136,7 @@ class GameController extends AppController {
 
     public function actionCreate() {
         //TODO: not implemented yet
+        //$game = new Game();        
         $this->render('create');
     }
 
@@ -143,9 +146,9 @@ class GameController extends AppController {
 
     public function actionPlay($id) {
         //TODO: not implemented yet
-        $this->layout = '//layouts/game';
-
-        $game = $this->loadGameById($id);
+        $this->layout = '//layouts/game';        
+        //Game::model()->find('running = 0')
+        //$game = $this->loadGameById($id);
         $this->render('board');
     }
 

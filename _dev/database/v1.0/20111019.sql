@@ -1,0 +1,1 @@
+ALTER TABLE `Game` ADD `state` TEXT NULL ;

@@ -34,6 +34,7 @@
  * @property string $deck1
  * @property string $deck2
  * @property integer $private
+ * @property string $state
  *
  * The followings are the available model relations:
  * @property ChatMessage[] $chatMessages
