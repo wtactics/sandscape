@@ -69,6 +69,7 @@ class GameController extends AppController {
      *  database and formatted using Yii's settings
      */
     public function actionSendLobbyMessage() {
+        //TODO: accept only AJAX by post
         $result = array('success' => 0);
         if (isset($_POST['chatmessage'])) {
             $cm = new ChatMessage();
@@ -108,6 +109,7 @@ class GameController extends AppController {
      * last: integer, the ID for the last message being sent
      */
     public function actionLobbyChatUpdate() {
+        //TODO: accept only AJAX by post
         $result = array('has' => 0);
         if (isset($_POST['lastupdate'])) {
             $lastUpdate = intval($_POST['lastupdate']);
@@ -132,6 +134,31 @@ class GameController extends AppController {
                 'messages' => $messages,
                 'last' => $last
             );
+        }
+
+        echo json_encode($result);
+    }
+
+    public function actionSendGameMessage($id) {
+        //TODO: accept only AJAX by post
+        //TODO: validate user sending message, only players can send in-game messages
+        $result = array('success' => 0);
+        if (isset($_POST['gamemessage'])) {
+            $cm = new ChatMessage();
+
+            $cm->message = $_POST['gamemessage'];
+            $cm->userId = Yii::app()->user->id;
+            $cm->gameId = $id;
+
+            if ($cm->save()) {
+                $result = array(
+                    'success' => 1,
+                    'id' => $cm->messageId,
+                    'name' => Yii::app()->user->name,
+                    //TODO: there is a bug while formating date, maybe date is not set yet
+                    'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
+                );
+            }
         }
 
         echo json_encode($result);

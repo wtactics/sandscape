@@ -1,81 +1,83 @@
-/*#system {
+* {
+    margin:0;
+    border: none;
+    padding:0;
+}
+
+body {
+    background: url('../images/darkwood2.jpg') repeat; 
+}
+
+#game-table {
+
+}
+
+#top {
+}
+
+#info-widget {
     float: left;
-    width: 296px;
-}*/
+    width: 350px;
+}
 
-/*#zoom {
-    text-align: center;
-    margin-top: 1em;
-}*/
+#tools-widget {
+    height: 30px;
+}
 
-/*#system-events {
-    margin: 1em auto;
-    width: 290px;
-    height: 150px;
+#card-info {
+    width: 95%;
+    margin: .8em auto;
+}
+
+#opponent-area {
+    height: 100%;
+    float: left;
+}
+
+#play-area {
+    height: 100%;
+    overflow: hidden;
+}
+
+#hand {
+    height: 100%;
+    width: 350px;
+}
+
+#deck-nob {
+    position: absolute;
+    top: 55%;
+    right: 5px;
+}
+
+#deck-widget {
+    height: 115px;
+    position: absolute;
+    right: 86px;
+    top: 55%;
+    overflow: hidden; 
+    width: 0;
+}
+
+#deck-slide {
+    height: 115px;
 }
 
 #chat {
-
 }
 
-#chat input, #chat button {
-    border: solid 1px #CFCEC3;
-    margin-bottom: 1em;
+#chat {
+    border: 1px solid black;
+    border-top: none;
+    width: 60%;
+    position: absolute;
+    top: -255px;
+    height: 250px;
+    left: 20%;
 }
 
-#messages {
-    width: 290px;
-    margin: 1em auto;
+#chat ul {
+    list-style: none;
     height: 200px;
-
-}*/
-
-#board {
-    float: left;
+    background-color: #FFF;
 }
-
-/*UNIQUE CLASSES FOR JSONP/SERVER/WHATEVER/DOCUMENT LATER :) */
-.opponent {
-    padding-left: 100px;
-    background-color: darkgreen;
-}
-
-.op-graveyard {
-    position: absolute;
-    left: 301px;
-    bottom: 55%;
-}
-
-.op-deck {
-    position: absolute;
-    left: 301px;
-    top: 1%;
-}
-
-.player {
-    padding-right: 100px;
-    background-color: green;
-}
-
-.graveyard {
-    position: absolute;
-    right: 1%;
-    top: 55%;
-}
-
-.deck {
-    position: absolute;
-    right: 1%;
-    bottom: 1%;
-}
-
-
-/*demo*/
-/*.grid * td {
-    border: solid 1px #000;
-}
-
-.grid {
-    width: 100%;
-    border-collapse: collapse;
-}*/
