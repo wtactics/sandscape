@@ -22,165 +22,207 @@
 
 class GameController extends AppController {
 
-    /**
-     * @var SCGame
-     */
-    private $scGame;
+   /**
+    * @var SCGame
+    */
+   private $scGame;
 
-    public function __construct($id, $module = null) {
-        parent::__construct($id, $module);
-    }
+   public function __construct($id, $module = null) {
+      parent::__construct($id, $module);
+   }
 
-    /**
-     * As a convenience, the index action has been invalidated by making a redirect
-     * whenever this action is requested. All actions in the game controller need 
-     * to have an explicit name.
-     */
-    public function actionIndex() {
-        $this->redirect(array('lobby'));
-    }
+   /**
+    * As a convenience, the index action has been invalidated by making a redirect
+    * whenever this action is requested. All actions in the game controller need 
+    * to have an explicit name.
+    */
+   public function actionIndex() {
+      $this->redirect(array('lobby'));
+   }
 
-    public function actionLobby() {
-        $this->updateUserActivity();
+   public function actionLobby() {
+      $this->updateUserActivity();
 
-        //TODO: not implemented yet
-        $games = Game::model()->findAll('ended IS NULL AND private = 0');
-        $users = User::model()->findAllAuthenticated()->getData();
-        $messages = ChatMessage::model()->findAll('gameId IS NULL ORDER BY sent');
+      //TODO: not implemented yet
+      $games = Game::model()->findAll('ended IS NULL AND private = 0');
+      $users = User::model()->findAllAuthenticated()->getData();
+      $messages = ChatMessage::model()->findAll('gameId IS NULL ORDER BY sent');
 
-        $this->render('lobby', array('games' => $games, 'users' => $users, 'messages' => $messages));
-    }
+      $this->render('lobby', array('games' => $games, 'users' => $users, 'messages' => $messages));
+   }
 
-    /**
-     * Registers a new message in the lobby chat.
-     * 
-     * A new message is sent by the chat client as a POST parameter and the 
-     * correct database object is created and stored.
-     * 
-     * If successful, a JSON object is sent back with the message information 
-     * that the client didn't had, like the author's name or the new message's ID.
-     * 
-     * The JSON object format is:
-     * 
-     * success: integer, 0 or 1 telling the client if the action was successful
-     * id: integer, the new ID for the registered message
-     * name: string, the name of the user sending the message
-     * date: string, the date in which the message was sent, as created by the 
-     *  database and formatted using Yii's settings
-     */
-    public function actionSendLobbyMessage() {
-        $result = array('success' => 0);
-        if (isset($_POST['chatmessage'])) {
-            $cm = new ChatMessage();
+   /**
+    * Registers a new message in the lobby chat.
+    * 
+    * A new message is sent by the chat client as a POST parameter and the 
+    * correct database object is created and stored.
+    * 
+    * If successful, a JSON object is sent back with the message information 
+    * that the client didn't had, like the author's name or the new message's ID.
+    * 
+    * The JSON object format is:
+    * 
+    * success: integer, 0 or 1 telling the client if the action was successful
+    * id: integer, the new ID for the registered message
+    * name: string, the name of the user sending the message
+    * date: string, the date in which the message was sent, as created by the 
+    *  database and formatted using Yii's settings
+    */
+   public function actionSendLobbyMessage() {
+      $result = array('success' => 0);
+      if (isset($_POST['chatmessage'])) {
+         $cm = new ChatMessage();
 
-            $cm->message = $_POST['chatmessage'];
-            $cm->userId = Yii::app()->user->id;
+         $cm->message = $_POST['chatmessage'];
+         $cm->userId = Yii::app()->user->id;
 
-            if ($cm->save()) {
-                $result = array(
-                    'success' => 1,
-                    'id' => $cm->messageId,
-                    'name' => Yii::app()->user->name,
-                    //TODO: there is a bug while formating date, maybe date is not set yet
-                    'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
-                );
-            }
-        }
-
-        echo json_encode($result);
-    }
-
-    /**
-     * Allows for clients to request updates on existing lobby chat messages.
-     * 
-     * The messages are encoded as a JSON object that is sent to the client. For 
-     * a proper request the client must send the ID of the last message he has 
-     * received, only messages with IDs above the given one will be provided.
-     * 
-     * The JSON object is as following:
-     * 
-     * has: integer, the number of messages sent in the response
-     * messages: array, the messages sent
-     *      name: string, the name of the message author
-     *      message: string, the message text
-     *      date: string, the date in which the message was sent, formatted using Yii's settings 
-     * 
-     * last: integer, the ID for the last message being sent
-     */
-    public function actionLobbyChatUpdate() {
-        $result = array('has' => 0);
-        if (isset($_POST['lastupdate'])) {
-            $lastUpdate = intval($_POST['lastupdate']);
-            $messages = array();
-
-            $cms = ChatMessage::model()->findAll('messageId > :last AND gameId IS NULL', array(':last' => $lastUpdate));
-            foreach ($cms as $cm) {
-                $messages[] = array(
-                    'name' => $cm->user->name,
-                    'message' => $cm->message,
-                    'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
-                );
-            }
-            $count = count($messages);
-
-            $last = $lastUpdate;
-            if ($count) {
-                $last = end($cms)->messageId;
-            }
+         if ($cm->save()) {
             $result = array(
-                'has' => $count,
-                'messages' => $messages,
-                'last' => $last
+                'success' => 1,
+                'id' => $cm->messageId,
+                'name' => Yii::app()->user->name,
+                //TODO: there is a bug while formating date, maybe date is not set yet
+                'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
             );
-        }
+         }
+      }
 
-        echo json_encode($result);
-    }
+      echo json_encode($result);
+   }
 
-    public function actionCreate() {
-        //TODO: not implemented yet
-        //$game = new Game();        
-        $this->render('create');
-    }
+   /**
+    * Allows for clients to request updates on existing lobby chat messages.
+    * 
+    * The messages are encoded as a JSON object that is sent to the client. For 
+    * a proper request the client must send the ID of the last message he has 
+    * received, only messages with IDs above the given one will be provided.
+    * 
+    * The JSON object is as following:
+    * 
+    * has: integer, the number of messages sent in the response
+    * messages: array, the messages sent
+    *      name: string, the name of the message author
+    *      message: string, the message text
+    *      date: string, the date in which the message was sent, formatted using Yii's settings 
+    * 
+    * last: integer, the ID for the last message being sent
+    */
+   public function actionLobbyChatUpdate() {
+      $result = array('has' => 0);
+      if (isset($_POST['lastupdate'])) {
+         $lastUpdate = intval($_POST['lastupdate']);
+         $messages = array();
 
-    public function actionJoin() {
-        //TODO: not implemented yet
-    }
+         $cms = ChatMessage::model()->findAll('messageId > :last AND gameId IS NULL', array(':last' => $lastUpdate));
+         foreach ($cms as $cm) {
+            $messages[] = array(
+                'name' => $cm->user->name,
+                'message' => $cm->message,
+                'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
+            );
+         }
+         $count = count($messages);
 
-    //u1: 2 - afonso
-    //u2: 3 - alvaro
-    public function actionPlay($id) {
-        //TODO: not implemented yet
-        $this->layout = '//layouts/game';
-        //Game::model()->find('running = 0')
-        $game = $this->loadGameById($id);
-        if (isset($_POST['event'])) {
+         $last = $lastUpdate;
+         if ($count) {
+            $last = end($cms)->messageId;
+         }
+         $result = array(
+             'has' => $count,
+             'messages' => $messages,
+             'last' => $last
+         );
+      }
 
+      echo json_encode($result);
+   }
+
+   public function actionCreate() {
+      //TODO: not implemented yet
+      //$game = new Game();        
+      $this->render('create');
+   }
+
+   public function actionJoin() {
+      //TODO: not implemented yet
+   }
+
+   //u1: 2 - afonso
+   //u2: 3 - alvaro
+   public function actionPlay($id) {
+      //TODO: not implemented yet
+      $this->layout = '//layouts/game';
+      //Game::model()->find('running = 0')
+      $game = $this->loadGameById($id);
+      if (in_array(yii::app()->user->id, array($game->player1, $game->player2))) {
+
+         if (isset($_POST['event'])) {
             switch ($_POST['event']) {
-                case 'startup':
-                    if ($game->state != '') {
-                        $this->scGame = unserialize($game->state);
-                    }
-                    break;
-                default:
+               /**
+                * START GAME: Player 1 starts the game.
+                * Only the player that creates the game can start it.
+                * This action can be automatized somewhere in the interface.
+                */
+               case 'startGame':
+                  if ($game->player1Ready && $game->player2Ready && !$game->running && yii::app()->user->id == $game->player1) {
+                     $game->running = 1;
+                     $game->started = 1;
+
+                     // decks in the game
+                     $decksPlayer1 = array();
+                     $decksPlayer2 = array();
+                     foreach ($game->decks as $deck) {
+                        $cards = array();
+                        foreach ($deck->deckCards as $card) {
+                           $cards[] = new SCCard($card->card->cardId, $card->card->image);
+                        }
+
+                        $scdeck = new SCDeck($deck->name, $cards);
+
+                        if ($deck->userId == $game->player1)
+                           $decksPlayer1[] = $scdeck;
+                        elseif ($deck->userId == $game->player2)
+                           $decksPlayer2[] = $scdeck;
+                     }
+
+                     $this->scGame = new SCGame($game->graveyard, $game->player1, $game->player2, $decksPlayer1, $decksPlayer2);
+                  }
+                  break;
+               /**
+                * STARTUP: initialization of client state
+                */
+               case 'startup':
+                  if ($game->running) {
+                     $this->scGame = unserialize($this->scGame->state);
+                     echo $this->scGame->clientInitialization(yii::app()->user->id);
+                  }
+                  break;
+
+               default:
             }
-        }
 
-        $this->render('board', array('gameId' => $id));
-    }
+            $game->state = serialize($this->scGame);
+            $game->save();
+            yii::app()->end();
+         }
+         $this->render('board', array('gameId' => $id));
+      } else {
+         // TODO: the user accessing the game is not a player of the game. Show some error or something.
+      }
+   }
 
-    /**
-     * Loads a Game object from the database.
-     * 
-     * @param integer $id The ID for the game being loaded.
-     * @return Game The game or null if the ID is invalid.
-     */
-    private function loadGameById($id) {
-        if (($game = Game::model()->findByPk((int) $id)) === null) {
-            throw new CHttpException(404, 'The requested page does not exist.');
-        }
+   /**
+    * Loads a Game object from the database.
+    * 
+    * @param integer $id The ID for the game being loaded.
+    * @return Game The game or null if the ID is invalid.
+    */
+   private function loadGameById($id) {
+      if (($game = Game::model()->findByPk((int) $id)) === null) {
+         throw new CHttpException(404, 'The requested page does not exist.');
+      }
 
-        return $game;
-    }
+      return $game;
+   }
 
 }
