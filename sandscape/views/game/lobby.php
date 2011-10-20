@@ -4,11 +4,11 @@ $url = $this->createURL('game/lobbychatupdate');
 $last = end($messages);
 $last = $last->messageId;
 
-
+Yii::app()->clientScript->registerCss('modalcss', "#simplemodal-overlay {background-color:#000;} #simplemodal-container {background-color:#333; border:8px solid #444; padding:12px;}");
 Yii::app()->clientScript->registerCssFile('_resources/css/lobby.css');
 Yii::app()->clientScript->registerScriptFile('_resources/js/lobby.js');
 
-Yii::app()->clientScript->registerScript('msgscripts', "
+Yii::app()->clientScript->registerScript('msgsjs', "
 $('#writemessage').keypress(function(e) {
     if(e.which == 13) {
         $('#sendbtn').click();
@@ -22,6 +22,9 @@ setInterval(function() {
     
 lastReceived = {$last};
 ");
+
+//Yii::app()->clientScript->registerScript('modalsjs', '$("#joindlg").modal();$("#createdlg").modal();');
+Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.simplemodal.1.4.1.min.js');
 ?>
 
 <h2>Lobby</h2>
@@ -73,7 +76,19 @@ lastReceived = {$last};
     </ul>
 </div>
 <hr />
-<div class="span-24 centered">
+<div class="span-20 centered">
     <input type="text" class="text" id="writemessage" />
     <button type="button" onclick="sendMessage('<?php echo $this->createURL('game/sendlobbymessage'); ?>');" id="sendbtn">Send</button>
+</div>
+<div class="span-4 last">
+    <a href="javascript:;" onclick="$('#createdlg').modal();">Create</a>
+    <a href="javascript:;" onclick="$('#joinprivatedlg').modal();">Join</a>
+</div>
+
+<div style="display: none">
+    <?php
+    $this->renderPartial('_createdlg');
+    $this->renderPartial('_joindlg');
+    $this->renderPartial('_joinprivatedlg');
+    ?>
 </div>

@@ -18,9 +18,7 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/deck.js', CClientScr
     <h2>Existing cards</h2>
     <div id="existingcards">
         <?php foreach ($cards as $card) { ?>
-            <div class="draggable-container">
-                <img class="available" src="_cards/up/thumbs/<?php echo $card->image; ?>" title="<?php echo $card->name; ?>" id="card-<?php echo $card->cardId; ?>" />
-            </div>
+            <img class="available" src="_cards/up/thumbs/<?php echo $card->image; ?>" title="<?php echo $card->name; ?>" id="card-<?php echo $card->cardId; ?>" />
         <?php } ?>
     </div>
 </div>

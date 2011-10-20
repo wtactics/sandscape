@@ -45,3 +45,9 @@ NOTES/IDEAS:
 
 When a small card version is clicked, the state should be seen on the leff with 
 full size card, rule text and tokens/states affecting the card.
+
+Find orphan cards.
+
+Review all view code and remove any CSS that exists.
+
+Make cardscape link used in card details an options

@@ -8,6 +8,12 @@ $form = $this->beginWidget('CActiveForm', array(
     <legend>Password</legend>
     <p>
         <?php
+        echo $form->labelEx($pwdModel, 'current'), '<br />',
+        $form->passwordField($pwdModel, 'current', array('class' => 'text'));
+        ?>
+    </p>
+    <p>
+        <?php
         echo $form->labelEx($pwdModel, 'password'), '<br />',
         $form->passwordField($pwdModel, 'password', array('class' => 'text'));
         ?>
