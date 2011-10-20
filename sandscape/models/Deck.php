@@ -71,8 +71,7 @@ class Deck extends CActiveRecord {
         return array(
             'user' => array(self::BELONGS_TO, 'User', 'userId'),
             'deckCards' => array(self::HAS_MANY, 'DeckCard', 'deckId'),
-            'gamesAs1' => array(self::HAS_MANY, 'Game', 'deck1'),
-            'gamesAs2' => array(self::HAS_MANY, 'Game', 'deck2'),
+            'games' => array(self::MANY_MANY, 'Game', 'GameDeck(deckId, gameId)'),
         );
     }
 

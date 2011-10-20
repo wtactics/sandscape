@@ -15,16 +15,14 @@ class SCGrid extends SCContainer {
         $this->rows = $rows;
         $this->columns = $columns;
 
-        //TODO: not implemented yet
         for ($i = 0; $i < $rows; ++$i) {
             for ($j = 0; $j < $columns; ++$j) {
-                //$this->cells[$i][$j] = $this->cellList[] = $c = new WTSWTSGridCell(false, true);
-                //$c->setId("{$this->getId()}_{$i}_{$j}");
+                $this->cells[$i][$j] = $this->cellList[] = $c = new SCContainer(false, true);
+                $c->setId("{$this->getId()}_{$i}_{$j}");
             }
         }
     }
 
-    //TODO: revise and update
     public function getHTML() {
         $html = array();
         $html[] = '<table class="grid">';
@@ -39,7 +37,6 @@ class SCGrid extends SCContainer {
         return implode($html);
     }
 
-    //TODO: revise and update
     public function getReversedHTML() {
         $html = array();
         $html[] = '<table class="grid">';

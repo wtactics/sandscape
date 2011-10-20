@@ -87,7 +87,7 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.simplemodal.1
 
 <div style="display: none">
     <?php
-    $this->renderPartial('_createdlg');
+    $this->renderPartial('_createdlg', array('decks' => $decks));
     $this->renderPartial('_joindlg');
     $this->renderPartial('_joinprivatedlg');
     ?>

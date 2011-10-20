@@ -1,44 +1,68 @@
+/*http://colorschemedesigner.com/#0H11Ttjjlw0w0*/
+/*9A5D0D 735124	643A04	CD8F40	CDA066*/
+
 * {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-size: 10px;
-    color: #777777;
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+    color: #333;
     text-align: justify;
+    margin: 0;
+    padding: 0;
+    border: none;
 }
 
-a {
-    text-decoration: none;
-}
-
-a, a:visited {
-}
-
-a:hover {
-    color: #3397D5
+body {
+    background: #E0E0E0 url(../images/top-bg.png) repeat-x;
 }
 
 #header {
-    color: #CC6600;
+    margin: 0;
+    height: 100px;
+    line-height: 90px;
+    padding-left: 1em;
+    color: #745124;
+    background-color: #CDA066;
+    font-family: "Brush Script Std", "Brush Script ";
+    font-size: 42px;
+}
+
+.container {
+    font-size: 12px;
+    background-color: #FFF;
 }
 
 ul {
     list-style: none;
 }
 
+#menu {
+    background-color: #FFF;
+}
+
 #menu > ul {
-    position: relative; 
+    position: relative;
+    left: 6%;
+    display: block;
 }
 
 #menu > ul li {
     float: left;
+    display: list-item;
 }
 
-#menu > ul li.active {
-    color: #FA7E02;
+#menu > ul li.active > a {
+    color: #643A04;
+    background-color: #9A5D0D
 }
 
 #menu > ul li a {
     display: block;
-    padding: 4px 8px;
+    width: 154px;
+    height: 24px;
+    line-height: 24px;
+    background-color: #643A04;
+    margin: 1px;
+    text-align: center;
+    color: #9A5D0D;
 }
 
 #menu > ul li.hover, #menu > ul li:hover { 
@@ -48,17 +72,45 @@ ul {
 #menu > ul ul {
     visibility: hidden; 
     position: absolute; 
-    top: 100%; left: 0; 
+    top: 100%;
+    left: 0; 
 }
 
 #menu > ul ul li {
-    float: none; 
+    float: none;
 }
 
 /* IE 6 & 7 Needs Inline Block */
 #menu > ul ul li a {
-    width: 100%;
     display: inline-block;
+    width: 120px;
+    
+}
+
+#footer {
+    color: #CDA066;
+    background-color: #643A04;
+    margin: 2em 0 1em 0;
+    text-align: center;
+}
+
+#footer a:hover {
+    color: #FFF;
+}
+
+h2, h3, h4 {
+    color: #CDA066;
+}
+
+a {
+    text-decoration: none;
+}
+
+a, a:visited {
+    color: #9A5D0D;
+}
+
+a:hover {
 }
 
 .centered {

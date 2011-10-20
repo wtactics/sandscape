@@ -31,8 +31,6 @@
  * @property string $started
  * @property string $ended
  * @property integer $running
- * @property string $deck1
- * @property string $deck2
  * @property integer $private
  * @property string $state
  *
@@ -40,8 +38,6 @@
  * @property ChatMessage[] $chatMessages
  * @property User $player10
  * @property User $player20
- * @property Deck $deck10
- * @property Deck $deck20
  */
 class Game extends CActiveRecord {
 
@@ -65,11 +61,10 @@ class Game extends CActiveRecord {
      */
     public function rules() {
         return array(
-            array('player1, deck1', 'required'),
             array('running, private', 'numerical', 'integerOnly' => true),
             array('started, ended', 'safe'),
             //search
-            array('player1, player2, created, started, ended, running, deck1, deck2, private', 'safe', 'on' => 'search'),
+            array('player1, player2, created, started, ended, running, private', 'safe', 'on' => 'search'),
         );
     }
 
@@ -81,8 +76,7 @@ class Game extends CActiveRecord {
             'chatMessages' => array(self::HAS_MANY, 'ChatMessage', 'gameId'),
             'player10' => array(self::BELONGS_TO, 'User', 'player1'),
             'player20' => array(self::BELONGS_TO, 'User', 'player2'),
-            'deck10' => array(self::BELONGS_TO, 'Deck', 'deck1'),
-            'deck20' => array(self::BELONGS_TO, 'Deck', 'deck2'),
+            'decks' => array(self::MANY_MANY, 'Deck', 'GameDeck(gameId, deckId)')
         );
     }
 
@@ -98,9 +92,11 @@ class Game extends CActiveRecord {
             'started' => 'Started',
             'ended' => 'Ended',
             'running' => 'Running',
-            'deck1' => 'Player 1 Deck',
-            'deck2' => 'Player 2 Deck',
             'private' => 'Private',
+            'maxDecks' => 'Max. number of decks',
+            'graveyard' => 'Game has graveyard',
+            'player1Ready' => 'Player 1 is ready',
+            'player2Ready' => 'Player 2 is ready',
         );
     }
 
@@ -117,8 +113,6 @@ class Game extends CActiveRecord {
         $criteria->compare('started', $this->started, true);
         $criteria->compare('ended', $this->ended, true);
         $criteria->compare('running', $this->running);
-        $criteria->compare('deck1', $this->deck1, true);
-        $criteria->compare('deck2', $this->deck2, true);
         $criteria->compare('private', $this->private);
 
         return new CActiveDataProvider('Game', array('criteria' => $criteria));
