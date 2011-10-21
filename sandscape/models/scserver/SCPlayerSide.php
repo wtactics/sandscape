@@ -16,7 +16,12 @@ class SCPlayerSide
       $this->playableArea = new SCGrid($gameHeight, $gameWidth);
       if ($hasGraveyard) $this->graveyard = new SCContainer();
 
-      $this->decks = $decks;
+      $this->decks = array();
+   }
+   
+   public function addDeck(SCDeck $deck)
+   {
+      $this->decks[] = $deck;
    }
 
    public function getPlayerId()
@@ -61,6 +66,11 @@ class SCPlayerSide
    }
    public function getPlayableArea() {
        return $this->playableArea;
+   }
+   
+   public function getDecks()
+   {
+      return $this->decks;
    }
    
    public function getDecksInitialization()

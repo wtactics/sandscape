@@ -20,14 +20,16 @@
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
 
-class GameController extends AppController {
 
+class GameController extends AppController
+{
    /**
     * @var SCGame
     */
    private $scGame;
 
-   public function __construct($id, $module = null) {
+   public function __construct($id, $module = null)
+   {
       parent::__construct($id, $module);
    }
 
@@ -36,11 +38,13 @@ class GameController extends AppController {
     * whenever this action is requested. All actions in the game controller need 
     * to have an explicit name.
     */
-   public function actionIndex() {
+   public function actionIndex()
+   {
       $this->redirect(array('lobby'));
    }
 
-   public function actionLobby() {
+   public function actionLobby()
+   {
       $this->updateUserActivity();
 
       //TODO: not implemented yet
@@ -68,21 +72,24 @@ class GameController extends AppController {
     * date: string, the date in which the message was sent, as created by the 
     *  database and formatted using Yii's settings
     */
-   public function actionSendLobbyMessage() {
+   public function actionSendLobbyMessage()
+   {
       $result = array('success' => 0);
-      if (isset($_POST['chatmessage'])) {
+      if (isset($_POST['chatmessage']))
+      {
          $cm = new ChatMessage();
 
          $cm->message = $_POST['chatmessage'];
          $cm->userId = Yii::app()->user->id;
 
-         if ($cm->save()) {
+         if ($cm->save())
+         {
             $result = array(
-                'success' => 1,
-                'id' => $cm->messageId,
-                'name' => Yii::app()->user->name,
-                //TODO: there is a bug while formating date, maybe date is not set yet
-                'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
+                  'success' => 1,
+                  'id' => $cm->messageId,
+                  'name' => Yii::app()->user->name,
+                  //TODO: there is a bug while formating date, maybe date is not set yet
+                  'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
             );
          }
       }
@@ -107,92 +114,103 @@ class GameController extends AppController {
     * 
     * last: integer, the ID for the last message being sent
     */
-   public function actionLobbyChatUpdate() {
+   public function actionLobbyChatUpdate()
+   {
       $result = array('has' => 0);
-      if (isset($_POST['lastupdate'])) {
+      if (isset($_POST['lastupdate']))
+      {
          $lastUpdate = intval($_POST['lastupdate']);
          $messages = array();
 
          $cms = ChatMessage::model()->findAll('messageId > :last AND gameId IS NULL', array(':last' => $lastUpdate));
-         foreach ($cms as $cm) {
+         foreach ($cms as $cm)
+         {
             $messages[] = array(
-                'name' => $cm->user->name,
-                'message' => $cm->message,
-                'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
+                  'name' => $cm->user->name,
+                  'message' => $cm->message,
+                  'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
             );
          }
          $count = count($messages);
 
          $last = $lastUpdate;
-         if ($count) {
+         if ($count)
+         {
             $last = end($cms)->messageId;
          }
          $result = array(
-             'has' => $count,
-             'messages' => $messages,
-             'last' => $last
+               'has' => $count,
+               'messages' => $messages,
+               'last' => $last
          );
       }
 
       echo json_encode($result);
    }
 
-   public function actionCreate() {
+   public function actionCreate()
+   {
       //TODO: not implemented yet
       //$game = new Game();        
       $this->render('create');
    }
 
-   public function actionJoin() {
+   public function actionJoin()
+   {
       //TODO: not implemented yet
    }
 
    //u1: 2 - afonso
    //u2: 3 - alvaro
-   public function actionPlay($id) {
+   public function actionPlay($id)
+   {
       //TODO: not implemented yet
       $this->layout = '//layouts/game';
       //Game::model()->find('running = 0')
       $game = $this->loadGameById($id);
-      if (in_array(yii::app()->user->id, array($game->player1, $game->player2))) {
+      if (in_array(yii::app()->user->id, array($game->player1, $game->player2)))
+      {
 
-         if (isset($_POST['event'])) {
-            switch ($_POST['event']) {
+         if (isset($_POST['event']))
+         {
+            switch ($_POST['event'])
+            {
                /**
                 * START GAME: Player 1 starts the game.
                 * Only the player that creates the game can start it.
                 * This action can be automatized somewhere in the interface.
                 */
                case 'startGame':
-                  if ($game->player1Ready && $game->player2Ready && !$game->running && yii::app()->user->id == $game->player1) {
+                  if ($game->player1Ready && $game->player2Ready && !$game->running && yii::app()->user->id == $game->player1)
+                  {
                      $game->running = 1;
                      $game->started = 1;
 
+                     // create the game status
+                     $this->scGame = new SCGame($game->graveyard, $game->player1, $game->player2);
+
                      // decks in the game
-                     $decksPlayer1 = array();
-                     $decksPlayer2 = array();
-                     foreach ($game->decks as $deck) {
+                     foreach ($game->decks as $deck)
+                     {
                         $cards = array();
-                        foreach ($deck->deckCards as $card) {
+                        foreach ($deck->deckCards as $card)
+                        {
                            $cards[] = new SCCard($card->card->cardId, $card->card->image);
                         }
 
-                        $scdeck = new SCDeck($deck->name, $cards);
+                        $scdeck = new SCDeck($this->scGame, $deck->name, $cards);
 
-                        if ($deck->userId == $game->player1)
-                           $decksPlayer1[] = $scdeck;
-                        elseif ($deck->userId == $game->player2)
-                           $decksPlayer2[] = $scdeck;
+                        if ($deck->userId == $game->player1) $this->scGame->addPlayer1Deck($scdeck);
+                        elseif ($deck->userId == $game->player2) $this->scGame->addPlayer2Deck($scdeck);
                      }
-
-                     $this->scGame = new SCGame($game->graveyard, $game->player1, $game->player2, $decksPlayer1, $decksPlayer2);
                   }
                   break;
                /**
                 * STARTUP: initialization of client state
                 */
                case 'startup':
-                  if ($game->running) {
+                  if ($game->running)
+                  {
                      $this->scGame = unserialize($this->scGame->state);
                      echo $this->scGame->clientInitialization(yii::app()->user->id);
                   }
@@ -206,7 +224,9 @@ class GameController extends AppController {
             yii::app()->end();
          }
          $this->render('board', array('gameId' => $id));
-      } else {
+      }
+      else
+      {
          // TODO: the user accessing the game is not a player of the game. Show some error or something.
       }
    }
@@ -217,8 +237,10 @@ class GameController extends AppController {
     * @param integer $id The ID for the game being loaded.
     * @return Game The game or null if the ID is invalid.
     */
-   private function loadGameById($id) {
-      if (($game = Game::model()->findByPk((int) $id)) === null) {
+   private function loadGameById($id)
+   {
+      if (($game = Game::model()->findByPk((int) $id)) === null)
+      {
          throw new CHttpException(404, 'The requested page does not exist.');
       }
 
