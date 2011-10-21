@@ -15,3 +15,7 @@
 #lobbychat li {
     padding-bottom: 0.5em;
 }
+
+.deck-list {
+    width: 300px;
+}

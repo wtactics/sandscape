@@ -38,3 +38,4 @@ create table DeckCard (
    constraint fkDCCard foreign key (cardId) references Card(cardId)
 ) engine=InnoDB character set utf8 collate utf8_unicode_ci;
 
+ALTER TABLE `ChatMessage` ADD `system` TINYINT NOT NULL DEFAULT 0 ;

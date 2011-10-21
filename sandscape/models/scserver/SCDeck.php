@@ -12,7 +12,7 @@ class SCDeck extends SCContainer
    
    public function __construct(SCGame $game, $name, $cards)
    {
-      parent::__construct(false, false);
+      parent::__construct($game, false, false);
       $this->name = $name;
       
       foreach($cards as $c) $this->push ($c);

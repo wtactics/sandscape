@@ -78,55 +78,30 @@ class SCContainer
    {
       return $this->movable;
    }
+   
+   public function setMovable($movable)
+   {
+      $this->movable = $movable;
+   }
 
-//    public function getCard($id) {
-//        foreach ($this->elements as $e)
-//            if ($e instanceof WTSCard && $e->getId() == $id)
-//                return $e;
-//    }
-//
-//    public function removeCard($id) {
-//        foreach ($this->elements as $i => $e)
-//            if ($e instanceof WTSCard && $e->getId() == $id) {
-//                unset($this->elements[$i]);
-//                return $e;
-//            }
-//    }
-//
-//    public function getUpdate() {
-//        $output = array();
-//        foreach ($this->elements as $e)
-//            if ($e instanceof WTSCard) {
-//                $output [] = $e->jsonCreate($this->getId());
-//                $output [] = $e->jsonImage();
-////            $output [] = $e->jsonActive();
-//                $output [] = $e->jsonMove($this->getId());
-//                $output = array_merge($output, $e->getUpdate());
-//            }
-//        return $output;
-//    }
-//
-//    public function findCardContainer($id) {
-//        foreach ($this->elements as $e) {
-//            if ($e instanceof WTSCard && $e->getId() == $id)
-//                return $this;
-//            elseif ($e->findCardContainer($id))
-//                return $e->findCardContainer($id);
-//        }
-//
-//        return null;
-//    }
-//
-//    public function find($id) {
-//        if ($this->getId() == $id)
-//            return $this;
-//        foreach ($this->elements as $e) {
-//            if ($e->getId() == $id)
-//                return $e;
-//            $result = $e->find($id);
-//            if ($result)
-//                return $result;
-//        }
-//        return null;
-//    }
+   public function setDropable($dropable)
+   {
+      $this->dropable = $dropable;
+   }
+
+   public function isDropable()
+   {
+      return $this->dropable;
+   }
+
+   public function getStatus()
+   {
+      $root = $this->getRoot();
+      
+      return (object) array(
+            'id' => $this->getId(), 
+            'location' => ($root && $this->getParent() ? $this->getParent()->getId() : $this->game->getVoid()->getId()),
+            'ofsetHeight' => ( $this->getParent()  &&  $this->getParent()->isMovable() ? 1 : 0)
+      );
+   }
 }

@@ -20,16 +20,14 @@
  * Copyright (c) 2011, the SandScape team and WTactics project.
  */
 
+class GameController extends AppController {
 
-class GameController extends AppController
-{
    /**
     * @var SCGame
     */
    private $scGame;
 
-   public function __construct($id, $module = null)
-   {
+   public function __construct($id, $module = null) {
       parent::__construct($id, $module);
    }
 
@@ -38,13 +36,11 @@ class GameController extends AppController
     * whenever this action is requested. All actions in the game controller need 
     * to have an explicit name.
     */
-   public function actionIndex()
-   {
+   public function actionIndex() {
       $this->redirect(array('lobby'));
    }
 
-   public function actionLobby()
-   {
+   public function actionLobby() {
       $this->updateUserActivity();
 
       //TODO: not implemented yet
@@ -52,7 +48,14 @@ class GameController extends AppController
       $users = User::model()->findAllAuthenticated()->getData();
       $messages = ChatMessage::model()->findAll('gameId IS NULL ORDER BY sent');
 
-      $this->render('lobby', array('games' => $games, 'users' => $users, 'messages' => $messages));
+      $decks = Deck::model()->findAll('userId = :id', array(':id' => Yii::app()->user->id));
+
+      $this->render('lobby', array(
+          'games' => $games,
+          'users' => $users,
+          'messages' => $messages,
+          'decks' => $decks
+      ));
    }
 
    /**
@@ -72,24 +75,22 @@ class GameController extends AppController
     * date: string, the date in which the message was sent, as created by the 
     *  database and formatted using Yii's settings
     */
-   public function actionSendLobbyMessage()
-   {
+   public function actionSendLobbyMessage() {
+      //TODO: accept only AJAX by post
       $result = array('success' => 0);
-      if (isset($_POST['chatmessage']))
-      {
+      if (isset($_POST['chatmessage'])) {
          $cm = new ChatMessage();
 
          $cm->message = $_POST['chatmessage'];
          $cm->userId = Yii::app()->user->id;
 
-         if ($cm->save())
-         {
+         if ($cm->save()) {
             $result = array(
-                  'success' => 1,
-                  'id' => $cm->messageId,
-                  'name' => Yii::app()->user->name,
-                  //TODO: there is a bug while formating date, maybe date is not set yet
-                  'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
+                'success' => 1,
+                'id' => $cm->messageId,
+                'name' => Yii::app()->user->name,
+                //TODO: there is a bug while formating date, maybe date is not set yet
+                'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
             );
          }
       }
@@ -114,106 +115,186 @@ class GameController extends AppController
     * 
     * last: integer, the ID for the last message being sent
     */
-   public function actionLobbyChatUpdate()
-   {
+   public function actionLobbyChatUpdate() {
+      //TODO: accept only AJAX by post
       $result = array('has' => 0);
-      if (isset($_POST['lastupdate']))
-      {
+      if (isset($_POST['lastupdate'])) {
          $lastUpdate = intval($_POST['lastupdate']);
          $messages = array();
 
          $cms = ChatMessage::model()->findAll('messageId > :last AND gameId IS NULL', array(':last' => $lastUpdate));
-         foreach ($cms as $cm)
-         {
+         foreach ($cms as $cm) {
             $messages[] = array(
-                  'name' => $cm->user->name,
-                  'message' => $cm->message,
-                  'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
+                'name' => $cm->user->name,
+                'message' => $cm->message,
+                'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
             );
          }
          $count = count($messages);
 
          $last = $lastUpdate;
-         if ($count)
-         {
+         if ($count) {
             $last = end($cms)->messageId;
          }
          $result = array(
-               'has' => $count,
-               'messages' => $messages,
-               'last' => $last
+             'success' => 1,
+             'id' => $cm->messageId,
+             'name' => Yii::app()->user->name,
+             //TODO: there is a bug while formating date, maybe date is not set yet
+             'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
          );
       }
 
       echo json_encode($result);
    }
 
-   public function actionCreate()
-   {
-      //TODO: not implemented yet
-      //$game = new Game();        
-      $this->render('create');
+   public function actionSendGameMessage($id) {
+      //TODO: accept only AJAX by post
+      //TODO: validate user sending message, only players can send in-game messages
+      $result = array('success' => 0);
+      if (isset($_POST['gamemessage'])) {
+         $cm = new ChatMessage();
+
+         $cm->message = $_POST['gamemessage'];
+         $cm->userId = Yii::app()->user->id;
+         $cm->gameId = $id;
+
+         if ($cm->save()) {
+            $result = array(
+                'success' => 1,
+                'id' => $cm->messageId,
+                'name' => Yii::app()->user->name,
+                //TODO: there is a bug while formating date, maybe date is not set yet
+                'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
+            );
+         }
+      }
+
+      echo json_encode($result);
    }
 
-   public function actionJoin()
-   {
-      //TODO: not implemented yet
+   public function actionCreate() {
+      if (isset($_POST['CreateGame']) && isset($_POST['deckList'])) {
+
+         $game = new Game();
+         $game->player1 = Yii::app()->user->id;
+         $game->created = date('Y-m-d H:i');
+         $game->private = isset($_POST['private']) ? (int) $_POST['private'] : 0;
+         $game->maxDecks = isset($_POST['maxDecks']) ? (int) $_POST['maxDecks'] : 1;
+         $game->graveyard = isset($_POST['useGraveyard']) ? (int) $_POST['useGraveyard'] : 1;
+         $game->player1Ready = 1;
+
+         if ($game->save()) {
+            $error = false;
+
+            foreach ($_POST['deckList'] as $deckId) {
+               $gameDeck = new GameDeck();
+               $gameDeck->gameId = $game->gameId;
+               $gameDeck->deckId = $deckId;
+               if (!$gameDeck->save()) {
+                  $error = true;
+                  break;
+               }
+            }
+
+            if (!$error) {
+               $this->redirect(array('play', 'id' => $game->gameId));
+            }
+         }
+      }
+
+      $this->redirect(array('lobby'));
+   }
+
+   //TODO: running, when?
+   public function actionJoin($id) {
+      //TODO: second user can't be the first
+      //deck list can't be bigger than maxDecks
+      if (isset($_POST['JoinGame']) && isset($_POST['deckList'])) {
+         $game = $this->loadGameById($id);
+
+         $game->player2 = Yii::app()->user->id;
+         $game->player2Ready = 1;
+         if ($game->save()) {
+
+
+            foreach ($_POST['deckList'] as $deckId) {
+               $gameDeck = new GameDeck();
+               $gameDeck->gameId = $game->gameId;
+               $gameDeck->deckId = $deckId;
+               if (!$gameDeck->save()) {
+                  $error = true;
+                  break;
+               }
+            }
+
+            if (!$error) {
+               $this->redirect(array('play', 'id' => $game->gameId));
+            }
+         }
+      }
+
+      $this->redirect(array('lobby'));
    }
 
    //u1: 2 - afonso
    //u2: 3 - alvaro
-   public function actionPlay($id)
-   {
+   public function actionPlay($id) {
       //TODO: not implemented yet
       $this->layout = '//layouts/game';
       //Game::model()->find('running = 0')
       $game = $this->loadGameById($id);
-      if (in_array(yii::app()->user->id, array($game->player1, $game->player2)))
-      {
+      if (in_array(yii::app()->user->id, array($game->player1, $game->player2))) {
+         if ($game->state)
+            $this->scGame = unserialize($game->state);
 
-         if (isset($_POST['event']))
-         {
-            switch ($_POST['event'])
-            {
+         if (isset($_REQUEST['event'])) {
+            switch ($_REQUEST['event']) {
                /**
                 * START GAME: Player 1 starts the game.
                 * Only the player that creates the game can start it.
                 * This action can be automatized somewhere in the interface.
                 */
                case 'startGame':
-                  if ($game->player1Ready && $game->player2Ready && !$game->running && yii::app()->user->id == $game->player1)
-                  {
+                  if (!$game->player1Ready || !$game->player2Ready) {
+                     echo SCGame::JSONIndent(json_encode((object) array('result' => 'wait')));
+                  } elseif ($game->player1Ready && $game->player2Ready && !$game->running && yii::app()->user->id == $game->player1) {
                      $game->running = 1;
-                     $game->started = 1;
+                     $game->started = date('Y-m-d H:i:s');
 
                      // create the game status
                      $this->scGame = new SCGame($game->graveyard, $game->player1, $game->player2);
 
                      // decks in the game
-                     foreach ($game->decks as $deck)
-                     {
+                     foreach ($game->decks as $deck) {
                         $cards = array();
-                        foreach ($deck->deckCards as $card)
-                        {
-                           $cards[] = new SCCard($card->card->cardId, $card->card->image);
+                        foreach ($deck->deckCards as $card) {
+                           $cards[] = new SCCard($this->scGame, $card->card->cardId, $card->card->image);
                         }
 
                         $scdeck = new SCDeck($this->scGame, $deck->name, $cards);
 
-                        if ($deck->userId == $game->player1) $this->scGame->addPlayer1Deck($scdeck);
-                        elseif ($deck->userId == $game->player2) $this->scGame->addPlayer2Deck($scdeck);
+                        if ($deck->userId == $game->player1)
+                           $this->scGame->addPlayer1Deck($scdeck);
+                        elseif ($deck->userId == $game->player2)
+                           $this->scGame->addPlayer2Deck($scdeck);
                      }
+                     $game->lastChange = time();
                   }
+                  echo SCGame::JSONIndent(json_encode((object) array('result' => 'ok')));
                   break;
                /**
                 * STARTUP: initialization of client state
                 */
-               case 'startup':
-                  if ($game->running)
-                  {
-                     $this->scGame = unserialize($this->scGame->state);
-                     echo $this->scGame->clientInitialization(yii::app()->user->id);
+               case 'startUp':
+                  if ($game->running && $this->scGame) {
+                     $result = $this->scGame->clientInitialization(yii::app()->user->id);
+//                  die('died in '.get_class($this).' at ' . time() . '  ' . var_export($_REQUEST, true));
+                     $result->result = 'ok';
+                     echo SCGame::JSONIndent(json_encode($result));
                   }
+                  else
+                     echo SCGame::JSONIndent(json_encode((object) array('result' => 'wait', 'motive' => 'Game not started')));
                   break;
 
                default:
@@ -225,8 +306,7 @@ class GameController extends AppController
          }
          $this->render('board', array('gameId' => $id));
       }
-      else
-      {
+      else {
          // TODO: the user accessing the game is not a player of the game. Show some error or something.
       }
    }
@@ -237,10 +317,8 @@ class GameController extends AppController
     * @param integer $id The ID for the game being loaded.
     * @return Game The game or null if the ID is invalid.
     */
-   private function loadGameById($id)
-   {
-      if (($game = Game::model()->findByPk((int) $id)) === null)
-      {
+   private function loadGameById($id) {
+      if (($game = Game::model()->findByPk((int) $id)) === null) {
          throw new CHttpException(404, 'The requested page does not exist.');
       }
 

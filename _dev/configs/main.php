@@ -7,6 +7,7 @@ return array(
     'charset' => 'utf-8',
     'import' => array(
         'application.models.*',
+        'application.models.scserver.*',
         'application.components.*',
     ),
     'components' => array(

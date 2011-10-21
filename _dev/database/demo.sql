@@ -59,16 +59,13 @@ VALUES (1, 1), (2, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1), (8, 1), (9, 1),
 (19, 4), (20, 4), (21, 4), (22, 4), (23, 4), (24, 4), (25, 4) ;
 
 -- Create some games
-INSERT INTO `Game`(`gameId`, `player1`, `player2`, `created`, `started`, `ended`, `running`, `deck1`, `deck2`, `private`)
-VALUES (1, 1, NULL, NOW(), NULL, NULL, 0, 1, NULL, 0), 
-(2, 2, 3, NOW(), NOW(), NULL, 1, 2, 3, 0),
-(3, 4, NULL, NOW(), NULL, NULL, 0, 4, NULL, 0) ;
+-- INSERT INTO `Game`(`gameId`, `player1`, `player2`, `created`, `started`, `ended`, `running`, `deck1`, `deck2`, `private`)
+-- VALUES (1, 1, NULL, NOW(), NULL, NULL, 0, 1, NULL, 0), 
+-- (2, 2, 3, NOW(), NOW(), NULL, 1, 2, 3, 0),
+-- (3, 4, NULL, NOW(), NULL, NULL, 0, 4, NULL, 0) ;
 
--- Place some messages in lobby and in game number 2
-INSERT INTO `ChatMessage` (`messageId`, `message`, `userId`, `gameId`)
-VALUES (1, 'Hey!', 1, NULL), (2, 'Everybody ready for a new game?', 2, NULL), 
-(3, 'Here, lets start on', 1, NULL), (4, 'I can\'t, already playing...', 3, NULL), 
-(5, 'I\'ve just created a new game, feel free to join', 1, NULL),
--- game messages
-(6, 'Ready?', 3, 2),
-(7, 'Yes, you can start', 4, 2) ;
+-- Place some messages in lobby
+INSERT INTO `ChatMessage` (`messageId`, `message`, `userId`)
+VALUES (1, 'Hey!', 1), (2, 'Everybody ready for a new game?', 2) , 
+(3, 'Here, lets start on', 1), (4, 'I can\'t, already playing...', 3) , 
+(5, 'I\'ve just created a new game, feel free to join', 1) ;

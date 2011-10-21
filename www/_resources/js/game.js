@@ -1,3 +1,117 @@
+function ui() {
+    //define area sizes: horizontal mid-point and with for opponent area
+    $('#opponent-area').css('width', $(window).width() - 350);
+    $('#top').css('height', $(window).height() / 2); 
+    $('#bottom').css('height', $(window).height() / 2);
+    
+    //define positions for existing decks
+    $('#deck-slide').children('img').each(function(index) {
+        $(this).css({
+            left: index * 85, 
+            top: 0,
+            position: 'absolute'
+        });
+    })
+    
+    //bind click event for deck widget slide
+    $('#deck-nob').click(deckSlide);
+    
+//bind keybord events
+    
+//TODO: remove, do after init
+}
+
+function bubbles() {   
+    $('#deck-slide img').CreateBubblePopup({
+        innerHtml: 'Deck name',
+        position: 'top',
+        align: 'center',
+        tail: {
+            align: 'center'
+        },
+        //TODO: choose correct theme
+        themeName: 'all-black',
+        themePath: '_resources/images/jqBubblePopup',
+        alwaysVisible: false,
+        closingDelay: 100
+    });
+    
+//TODO: setup deck name as popup text
+//$('').SetBubblePopupInnerHtml('');
+}
+
+function deckSlide (event) {   
+    if($('#deck-widget').width() > 0) {
+        $('#deck-slide img').each(function() {
+            if( $(this).HasBubblePopup() ){
+                $(this).RemoveBubblePopup();
+            }
+        });    
+       
+        $('#deck-widget').animate({
+            width: 0
+        });
+    } else {
+        $('#deck-widget').animate({
+            width: $('#deck-slide').children('img').length * 85
+        }, function() {
+            bubbles();
+        });
+    }
+}
+function showChat() {
+    if($('#chat').position().top == 0) {
+        $('#chat').animate({
+            top: -255
+        });
+    } else {
+        $('#chat').animate({
+            top: 0
+        });
+    }
+}
+
+function sendMessage(destination) {
+    var message = $("#writemessage").val();
+    if(message.length > 0) {
+        $.ajax({
+            type: "POST",
+            url: destination,
+            data: {
+                'gamemessage': message
+            },
+            dataType: 'json',
+            success: function(json) {
+                if(json.success) {
+                    $('#chat-messages').append('<li class="user-message"><span><strong>' + json.name + '</strong>&nbsp;[' 
+                        + json.date + ']:</span>' + message + '</li>');
+                    
+                    //TODO: track received messages
+                    lastReceived = json.id;
+                }
+            }
+        });
+        $("#writemessage").val('');
+    }
+}
+
+function filterChatMessages(elem) {
+    if(elem.id == 'fshow-all') {
+        $('li.user-message').show();
+        $('li.user-system').show();
+    } else if(elem.id == 'fshow-user') {
+        $('li.user-message').show();
+        $('li.user-system').hide();
+    } else if(elem.id == 'fshow-system') {
+        $('li.user-message').hide();
+        $('li.user-system').show();
+    }    
+}
+
+function inspect() {
+    alert('Not implemented yet!');
+}
+
 function init() {
     $('#board').css('width', $(window).width() - 300);
     
@@ -10,56 +124,58 @@ function init() {
         },
         success: function(json) {
             
-//            var opp = $('.opponent');
-//            opp.attr('id', json.opponentArea.id);
-//            opp.css('height', $(window).height() / 2);
-//            opp.append(json.opponentArea.html);
-//            
-//            var hand = $('.hand');
-//            hand.attr('id', json.hand.id);
-//            hand.append(json.hand.html);
-//        
-//            //
-//            var player = $('.player').attr('id', json.playableArea.id);
-//            player.css('height', $(window).height() / 2);
-//            
-//            player.append(json.playableArea.html);
-//            
-//            $('#' + json.opponentArea.id + ' > table').css('height', $(window).height() / 2);
-//            
-//            $('#' + json.playableArea.id + ' > table').css('height', $(window).height() / 2);
-//            $('#' + json.playableArea.id + ' > table td').addClass('dropzone');
-//            
-//            $('#' + json.hand.id + ' > table').css('height', '303');
-//            $('#' + json.hand.id + ' > table td').addClass('dropzone');
-//            
-//            var deck = $('.deck');
-//            deck.attr('id', json.deck.id);
-//            
-//            var grave = $('.graveyard').attr('id', json.graveyard.id);
-//            grave.addClass('dropzone');
-//            //
-//            grave.droppable({
-//                accept: '.card',
-//                drop: function(event, ui) {
-//                }
-//            });
-//            
-//            $.each(json.update, function(index, elem) {
-//                
-//                if(elem.f == 'create') {
-//                    createCard(elem.id, elem.idLocation);
-//                } else if(elem.f == 'image') {
-//                    defineCardSource(elem.id, elem.src);
-//                } else if(elem.f == 'move') {
-//                    moveCard(elem.id, elem.idDestination);
-//                } else {
-//                    alert('Wrong function request');
-//                } 
-//            });            
+        //            var opp = $('.opponent');
+        //            opp.attr('id', json.opponentArea.id);
+        //            opp.css('height', $(window).height() / 2);
+        //            opp.append(json.opponentArea.html);
+        //            
+        //            var hand = $('.hand');
+        //            hand.attr('id', json.hand.id);
+        //            hand.append(json.hand.html);
+        //        
+        //            //
+        //            var player = $('.player').attr('id', json.playableArea.id);
+        //            player.css('height', $(window).height() / 2);
+        //            
+        //            player.append(json.playableArea.html);
+        //            
+        //            $('#' + json.opponentArea.id + ' > table').css('height', $(window).height() / 2);
+        //            
+        //            $('#' + json.playableArea.id + ' > table').css('height', $(window).height() / 2);
+        //            $('#' + json.playableArea.id + ' > table td').addClass('dropzone');
+        //            
+        //            $('#' + json.hand.id + ' > table').css('height', '303');
+        //            $('#' + json.hand.id + ' > table td').addClass('dropzone');
+        //            
+        //            var deck = $('.deck');
+        //            deck.attr('id', json.deck.id);
+        //            
+        //            var grave = $('.graveyard').attr('id', json.graveyard.id);
+        //            grave.addClass('dropzone');
+        //            //
+        //            grave.droppable({
+        //                accept: '.card',
+        //                drop: function(event, ui) {
+        //                }
+        //            });
+        //            
+        //            $.each(json.update, function(index, elem) {
+        //                
+        //                if(elem.f == 'create') {
+        //                    createCard(elem.id, elem.idLocation);
+        //                } else if(elem.f == 'image') {
+        //                    defineCardSource(elem.id, elem.src);
+        //                } else if(elem.f == 'move') {
+        //                    moveCard(elem.id, elem.idDestination);
+        //                } else {
+        //                    alert('Wrong function request');
+        //                } 
+        //            });            
         }//END: success
     });
 }
+
+
 
 /*var last = 0;*/
 

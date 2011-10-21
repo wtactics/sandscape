@@ -29,8 +29,8 @@ class SCGame
     */
    public function __construct($hasGraveyard, $player1, $player2, $handWidth = 10, $handHeight = 10, $gameWidth = 70, $gameHeight = 30)
    {
-      $this->player1Side = new SCPlayerSide($player1, $hasGraveyard, $handWidth, $handHeight, $gameWidth, $gameHeight);
-      $this->player2Side = new SCPlayerSide($player2, $hasGraveyard, $handWidth, $handHeight, $gameWidth, $gameHeight);
+      $this->player1Side = new SCPlayerSide($this, $player1, $hasGraveyard, $handWidth, $handHeight, $gameWidth, $gameHeight);
+      $this->player2Side = new SCPlayerSide($this, $player2, $hasGraveyard, $handWidth, $handHeight, $gameWidth, $gameHeight);
       $this->void = new SCContainer($this, false, false);
    }
 
@@ -103,6 +103,25 @@ class SCGame
    {
       return $this->void;
    }
+   
+   /**
+    * Returns the cards initialization
+    * @return array
+    */
+   public function getCardInitialization()
+   {
+      $update = array();
+      
+      foreach($this->all as $c)
+      {
+         if ($c instanceof SCCard)
+         {
+            $update [] = $c->getStatus();
+         }
+      }
+      
+      return $update;
+   }
 
    /**
     * Returns all elements positions
@@ -119,13 +138,7 @@ class SCGame
       {
          if ($c->isMovable())
          {
-            $root = $c->getRoot();
-         
-            $update [] = (object) array(
-                  'id' => $c->getId(),
-                  'location' => ($root && $c->getParent() ? $c->getParent() : $this->void->getId()),
-                  'offsetHeight' => ( $c->getParent()  &&  $c->getParent()->isMovable() ? 1 : 0)
-            );
+            $update [] = $c->getStatus();
          }
       }
       
@@ -134,7 +147,7 @@ class SCGame
    
    public function clientUpdate($userId)
    {
-      $player = $this->getPLayerSide($userId);
+      $player = $this->getPlayerSide($userId);
       $opponent = $this->getOpponentSide($userId);
       
       return self::JSONIndent(json_encode((object) array(
@@ -147,7 +160,7 @@ class SCGame
       $player = $this->getPlayerSide($userId);
       $opponent = $this->getOpponentSide($userId);
 
-      $init = (object) array(
+      return (object) array(
                   'createThis' => (object) array(
                         'void' => (object) array(
                               'id' => $this->void->getId(),
@@ -172,10 +185,9 @@ class SCGame
                                     'html' => $opponent->getPlayableArea()->getReversedHTML(),
                               )
                         ),
-                  ),
-            'update' => $this->getGameUpdate(),
+                        'cards' => $this->getCardInitialization(),
+                  )
       );
-      return self::JSONIndent(json_encode($init));
    }
 
    public static function JSONIndent($json)
