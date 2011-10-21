@@ -1,7 +1,6 @@
 /*Base: 9A5D0D, other: 735124, 643A04, CD8F40, CDA066*/
 * {
     font-family: Helvetica, Verdana, Arial, sans-serif;
-    color: #333;
     text-align: justify;
     margin: 0;
     padding: 0;
@@ -9,6 +8,7 @@
 }
 
 body {
+    color: #333;
     background: #E0E0E0 url(../images/top-bg.png) repeat-x;
 }
 
@@ -48,7 +48,7 @@ ul {
 }
 
 #menu > ul li.active > a {
-    color: #643A04;
+    color: #FFF;
     background-color: #9A5D0D
 }
 
@@ -60,7 +60,7 @@ ul {
     background-color: #643A04;
     margin: 1px;
     text-align: center;
-    color: #9A5D0D;
+    color: #CDA066;
 }
 
 #menu > ul li.hover, #menu > ul li:hover { 
@@ -86,7 +86,7 @@ ul {
 }
 
 #menu a:hover {
-    color: #643A04;
+    color: #FFF;
     background-color: #9A5D0D
 }
 

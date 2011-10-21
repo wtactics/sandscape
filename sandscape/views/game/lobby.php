@@ -4,7 +4,6 @@ $url = $this->createURL('game/lobbychatupdate');
 $last = end($messages);
 $last = $last->messageId;
 
-Yii::app()->clientScript->registerCss('modalcss', "#simplemodal-overlay {background-color:#000;} #simplemodal-container {background-color:#333; border:8px solid #444; padding:12px;}");
 Yii::app()->clientScript->registerCssFile('_resources/css/lobby.css');
 Yii::app()->clientScript->registerScriptFile('_resources/js/lobby.js');
 
@@ -23,12 +22,11 @@ setInterval(function() {
 lastReceived = {$last};
 ");
 
-//Yii::app()->clientScript->registerScript('modalsjs', '$("#joindlg").modal();$("#createdlg").modal();');
 Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.simplemodal.1.4.1.min.js');
 ?>
 
 <h2>Lobby</h2>
-<div class="span-4 border">
+<div class="span-4">
     <h3>Users</h3>
     <ul id="userlist">
         <?php foreach ($users as $user) { ?>
