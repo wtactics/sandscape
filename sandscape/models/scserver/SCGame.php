@@ -27,7 +27,7 @@ class SCGame
    /**
     * TODO: document this....
     */
-   public function __construct($hasGraveyard, $player1, $player2, $handWidth = 10, $handHeight = 10, $gameWidth = 70, $gameHeight = 30)
+   public function __construct($hasGraveyard, $player1, $player2, $handWidth = 10, $handHeight = 10, $gameWidth = 50, $gameHeight = 15)
    {
       $this->player1Side = new SCPlayerSide($this, $player1, $hasGraveyard, $handWidth, $handHeight, $gameWidth, $gameHeight);
       $this->player2Side = new SCPlayerSide($this, $player2, $hasGraveyard, $handWidth, $handHeight, $gameWidth, $gameHeight);
@@ -165,6 +165,9 @@ class SCGame
       $card = isset($this->all[$card]) ? $this->all[$card] : null;
       $location = isset($this->all[$location]) ? $this->all[$location] : null;
       
+      echo $location;
+      die;
+
       if ($card  &&  $location  &&  $card instanceof SCCard  &&  $card->isMovable()  &&  $location->isDroppable())
       {
          if ($card->getParent()) $oldLocation = $card->getParent();

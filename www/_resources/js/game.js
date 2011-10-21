@@ -7,7 +7,7 @@ var chkGameID;
 var updGame;
 
 function initTable(base) {
-    bUrl = base;
+    bUrl = base
     
     pack();
     checkGameStart();
@@ -37,7 +37,7 @@ function checkGameStart() {
                     dataType: 'json',
                     success: function (json) {
                         console.log('starting game');
-                        //debugger;
+                        
                         if(json.result == 'ok') {
                             console.log('game started');
                             
@@ -50,8 +50,8 @@ function checkGameStart() {
                             .css({
                                 visibility: 'hidden',
                                 position: 'absolute',
-                                top: 0,
-                                left: 0
+                                top: -200,
+                                left: -200
                             })
                             .appendTo($('body'));
     
@@ -66,7 +66,7 @@ function checkGameStart() {
                             $('.play > table').css({
                                 height: $('.play').height()
                             });
-                            //debugger;
+
                             for(i = 0; i < create.player.decks.length; i++) {
                                 $(document.createElement('img'))
                                 .attr({
@@ -74,8 +74,10 @@ function checkGameStart() {
                                     src: '_cards/up/thumbs/cardback.jpg'
                                 })
                                 .data('deck-name', create.player.decks[i].name)
+                                .click(function() {
+                                    drawCard($(this).attr('id'));
+                                })
                                 .appendTo($('#deck-slide'));
-                                
                             }
                             
                             if(create.player.graveyard) {
@@ -88,12 +90,28 @@ function checkGameStart() {
                                 .appendTo($('#deck-slide'));
                             }
                             
+                            //Configure deck widgets
+                            //Define positions for existing decks
+                            $('#deck-slide').children('img').each(function(index) {
+                                $(this).css({
+                                    left: index * 85, 
+                                    top: 0,
+                                    position: 'absolute'
+                                });
+                            })
+                            
                             //Opponent area (top window zone)
                             $('.opponent-area').attr('id', create.opponent.playableArea.id)
                             .html(create.opponent.playableArea.html);
                             
                             $('.opponent-area > table').css({
                                 height: $('.opponent-area').height() 
+                            });
+                            
+                            $('#play-area * .grid * td').droppable({
+                                drop: function(event, ui) {
+                                    moveCard(ui.draggable.attr('id'), $(this).attr('id'));
+                                }
                             });
                             
                             var card;
@@ -104,19 +122,33 @@ function checkGameStart() {
                                 .attr({
                                     id: card.id,
                                     src: '_cards/up/thumbs/' + card.src
-                                    })
-                                .css({
-                                    position: 'absolute'
                                 })
-                                .css($('#' + card.position).position())
+                                .css({
+                                    position: 'absolute',
+                                    zIndex: 50,
+                                    top: $('#' + card.location).offset().top,
+                                    left: $('#' + card.location).offset().left
+                                })
+                                .addClass('card')
+                                .draggable({
+                                    stack: '.card',
+                                    revert: 'invalid'
+                                })
                                 .appendTo($('body'));
                             }
                             
-                            //updGame = setInterval(updateGame, 3000);*/
+                            //Configure and set deck-nob widget
+                            $(document.createElement('img')).attr({
+                                id: 'deck-nob',
+                                src: '_cards/up/thumbs/cardback.jpg'
+                            })
+                            .css('z-index', 100)
+                            .click(deckSlide)
+                            .appendTo($('body'));
+
                             
-                            
-                            //Configure deck widgets
-                            ui();
+                            gameRunning = true;
+                        //updGame = setInterval(updateGame, 3000);*/
                         }
                     }
                 });
@@ -128,9 +160,9 @@ function checkGameStart() {
 function doGameUpdate(json) {
     if(json.result == 'ok') {
         console.log('doing game update');
-        for(i = 0; i < json.update.lenght; i++) {
+        for(i = 0; i < json.update.length; i++) {
             $('#' + json.update[i].id)
-            .animate($('#' + json.update[i].location).position())
+            .animate($('#' + json.update[i].location).offset())
             .attr('src', '_cards/up/thumbs/' + json.update[i].src);
         }
     }
@@ -179,36 +211,40 @@ function moveCard(cardId, destinationId) {
     });
 }
 
-//TODO: revise....
 function pack() {
-    //Define area sizes: horizontal mid-point and with for opponent area
-    $('.opponent-area').css('width', $(window).width() - 350);
-    $('.play').css('width', $(window).width() - 350);
-    
-    $('#top').css('height', $(window).height() / 2); 
-    $('#bottom').css('height', $(window).height() / 2);
-    $('.play').css('height', $(window).height() / 2);
-        
-    //$('#wait-modal').modal();
     console.log('packing');
-}
-
-function ui() { 
-    //Define positions for existing decks
-    $('#deck-slide').children('img').each(function(index) {
-        $(this).css({
-            left: index * 85, 
-            top: 0,
-            position: 'absolute'
-        });
-    })
     
-    //bind click event for deck widget slide
-    $('#deck-nob').click(deckSlide);
+    $('#info-widget').css({
+        width: 350,
+        height: $(window).height() / 2,
+        top: 0,
+        left: 0,
+        position: 'absolute'
+    });
+    $('.opponent-area').css({
+        width: $(window).width() - 350,
+        height: $(window).height() / 2,
+        top: 0,
+        left: 350,
+        position: 'absolute'
+    });
     
-//bind keybord events
+    $('.hand').css({
+        width: 350,
+        height: $(window).height() / 2,
+        top: $(window).height() / 2,
+        left: 0,
+        position: 'absolute'
+    });  
     
-//TODO: remove, do after init
+    $('.play').css({
+        width: $(window).width() - 350,
+        height: $(window).height() / 2,
+        top: $(window).height() / 2,
+        left: 350,
+        position: 'absolute'
+    });
+    console.log('done packing');
 }
 
 function bubbles() {   

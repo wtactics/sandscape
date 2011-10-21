@@ -13,15 +13,12 @@ body {
 }
 
 #game-table {
-    /*TODO: REMOVE DEV VALUE */
-    opacity: 0.5;
 }
 
 #top {
 }
 
 #info-widget {
-    float: left;
     width: 350px;
 }
 
@@ -37,8 +34,7 @@ body {
 /* UNIQUE CLASS */
 .opponent-area {
     height: 100%;
-    float: left;
-    
+
     /*TODO: REMOVE DEV VALUE */
     background-color: darkgreen;
 }
@@ -55,7 +51,6 @@ body {
 .hand {
     height: 100%;
     width: 350px;
-    float: left;
 
     /*TODO: REMOVE DEV VALUE */
     background-color: gray;
@@ -103,9 +98,15 @@ table {
     width: 100%;
 }
 
+table.grid {
+    border-collapse: collapse;
+}
+
+table.grid * td {
+    border: 1px solid transparent;
+}
+
 /* UNIQUE CLASS */
-.play {
-    float: left;
-    
+.play {    
     background-color: yellow;
 }

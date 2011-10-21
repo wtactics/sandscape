@@ -1,44 +1,4 @@
-- Bring old code up-to-date.
 - Update SF project page
-
-Pages/Areas:
-    - About
-    - Play
-        - Lobby
-        - Game
-    - Login
-    - Register
-
-    [authenticated]
-    - Manage Deck
-
-    [admin]
-    - Manage Users
-    - Manage Cards
-
-
-Access controllers and filters by proving the correct overloads: 
-public function filters() {}
-
-public function accessRules() {
-    return array(
-        array('allow', // allow all users to perform 'index' and 'view' actions
-            'actions' => array('index', 'view'),
-            'users' => array('*'),
-        ),
-        array('allow', // allow authenticated user to perform 'create' and 'update' actions
-            'actions' => array('create', 'update'),
-            'users' => array('@'),
-        ),
-        array('allow', // allow admin user to perform 'admin' and 'delete' actions
-            'actions' => array('admin', 'delete'),
-            'users' => array('admin'),
-        ),
-        array('deny', // deny all users
-            'users' => array('*'),
-        ),
-    );
-}
 
 NOTES/IDEAS:
 
@@ -46,3 +6,8 @@ When a small card version is clicked, the state should be seen on the leff with
 full size card, rule text and tokens/states affecting the card.
 
 Find orphan cards.
+
+Image on deck-nob that tells the user the deck expands.
+Preloader image waiting game and initializing game.
+Record game and replay.
+View to watch the game.
