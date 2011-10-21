@@ -3,18 +3,20 @@
 
 class SCCard extends SCContainer
 {
-   private $id;
+   private $dbId;
    private $face;
    private $back;
    private $faceUp = false;
+   private $player;
 
 //   private $states;
 //   private $tokens;
 
-   public function __construct(SCGame $game, $id, $face, $back = 'cardback.jpg')
+   public function __construct(SCGame $game, $player, $dbId, $face, $back = 'cardback.jpg')
    {
       parent::__construct($game, false, true, 1);
-      $this->id = $id;
+      $this->player = $player;
+      $this->dbId = $dbId;
       $this->face = $face;
       $this->back = $back;
 //      $this->states = array();

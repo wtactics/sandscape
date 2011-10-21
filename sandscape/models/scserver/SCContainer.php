@@ -42,7 +42,20 @@ class SCContainer
       {
          array_push($this->elements, $scCard);
          $scCard->setParent($this);
+         return true;
       }
+      else return false;
+   }
+   
+   public function remove(SCCard $card)
+   {
+      $pos = array_search($card, $this->elements, true);
+      if ($pos !== false)
+      {
+         unset($this->elements[$pos]);
+         return $card;
+      }
+      else return null;
    }
 
    /**
@@ -101,7 +114,7 @@ class SCContainer
       return (object) array(
             'id' => $this->getId(), 
             'location' => ($root && $this->getParent() ? $this->getParent()->getId() : $this->game->getVoid()->getId()),
-            'ofsetHeight' => ( $this->getParent()  &&  $this->getParent()->isMovable() ? 1 : 0)
+            'offsetHeight' => ( $this->getParent()  &&  $this->getParent()->isMovable() ? 1 : 0)
       );
    }
 }

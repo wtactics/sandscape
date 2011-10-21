@@ -145,14 +145,45 @@ class SCGame
       return $update;
    }
    
+   public function drawCard($userId, $deck)
+   {
+      $player = $this->getPlayerSide($userId);
+      $opponent = $this->getOpponentSide($userId);
+      
+      $player->drawCard($deck);
+      
+      return (object) array(
+          'update' => $this->getGameStatus()
+      );
+   }
+   
+   public function moveCard($userId, $card, $location)
+   {
+      $player = $this->getPlayerSide($userId);
+      $opponent = $this->getOpponentSide($userId);
+      
+      $card = isset($this->all[$card]) ? $this->all[$card] : null;
+      $location = isset($this->all[$location]) ? $this->all[$location] : null;
+      
+      if ($card  &&  $location  &&  $card instanceof SCCard  &&  $card->isMovable()  &&  $location->isDroppable())
+      {
+         if ($card->getParent()) $oldLocation = $card->getParent();
+         if ($location->push($card)  &&  $oldLocation) $oldLocation->remove($card);
+      }
+      
+      return (object) array(
+          'update' => $this->getGameStatus()
+      );
+   }
+   
    public function clientUpdate($userId)
    {
       $player = $this->getPlayerSide($userId);
       $opponent = $this->getOpponentSide($userId);
       
-      return self::JSONIndent(json_encode((object) array(
+      return (object) array(
             'update' => $this->getGameStatus()
-      )));
+      );
    }
 
    public function clientInitialization($userId)
