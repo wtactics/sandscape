@@ -315,4 +315,14 @@ class GameController extends AppController {
         return $game;
     }
 
+    public function accessRules() {
+        return array_merge(array(
+                    array('allow',
+                        'actions' => array('index', 'create', 'join', 'lobby',
+                            'lobbyChatUpdate', 'play', 'sendGameMessage', 'sendLobbyMessage'),
+                        'users' => array('@')
+                    )
+                        ), parent::accessRules());
+    }
+
 }

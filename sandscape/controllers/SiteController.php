@@ -83,4 +83,17 @@ class SiteController extends AppController {
         }
     }
 
+    public function accessRules() {
+        return array_merge(array(
+                    array('allow',
+                        'actions' => array('index', 'about', 'login', 'recoverPassword', 'error'),
+                        'users' => array('*')
+                    ),
+                    array('allow',
+                        'actions' => array('logout'),
+                        'users' => array('@')
+                    )
+                        ), parent::accessRules());
+    }
+
 }

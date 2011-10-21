@@ -66,6 +66,10 @@ class UserController extends AppController {
         $this->render('edit', array('user' => $user));
     }
 
+    public function actionDelete() {
+        //TODO: not implemented yet!
+    }
+
     public function actionAccount() {
         $this->updateUserActivity();
         //TODO: ...
@@ -75,7 +79,7 @@ class UserController extends AppController {
 
     public function actionProfile() {
         $this->updateUserActivity();
-        
+
         $user = $this->loadUserModel(Yii::app()->user->id);
         $passwordModel = new PasswordForm();
 
@@ -99,6 +103,19 @@ class UserController extends AppController {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
         return $user;
+    }
+
+    public function accessRules() {
+        return array_merge(array(
+                    array('allow',
+                        'actions' => array('account', 'profile'),
+                        'users' => array('@')
+                    ),
+                    array('allow',
+                        'actions' => array('index', 'create', 'update', 'delete'),
+                        'expression' => '$user->class'
+                    )
+                        ), parent::accessRules());
     }
 
 }

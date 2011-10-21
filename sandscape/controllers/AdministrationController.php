@@ -10,4 +10,13 @@ class AdministrationController extends AppController {
         $this->render('index');
     }
 
+    public function accessRules() {
+        return array_merge(array(
+                    array('allow',
+                        'actions' => array('index'),
+                        'expression' => '$user->class'
+                    )
+                        ), parent::accessRules());
+    }
+
 }

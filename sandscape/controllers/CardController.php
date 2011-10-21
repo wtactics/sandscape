@@ -87,4 +87,13 @@ class CardController extends AppController {
         return $card;
     }
 
+    public function accessRules() {
+        return array_merge(array(
+                    array('allow',
+                        'actions' => array('index', 'create', 'update', 'delete', 'view'),
+                        'expression' => '$user->class'
+                    )
+                        ), parent::accessRules());
+    }
+
 }

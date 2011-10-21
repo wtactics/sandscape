@@ -96,4 +96,13 @@ class DeckController extends AppController {
         return $deck;
     }
 
+    public function accessRules() {
+        return array_merge(array(
+                    array('allow',
+                        'actions' => array('index', 'create', 'update', 'delete'),
+                        'users' => array('@')
+                    )
+                        ), parent::accessRules());
+    }
+
 }
