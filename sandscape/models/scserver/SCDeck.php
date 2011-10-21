@@ -17,6 +17,11 @@ class SCDeck extends SCContainer
       
       foreach($cards as $c) $this->push ($c);
    }
+   
+   public function getName() {
+      return $this->name;
+   }
+
 }
 
 ?>
