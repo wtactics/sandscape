@@ -193,7 +193,7 @@ class SCGame
 
       return (object) array(
                   'createThis' => (object) array(
-                        'void' => (object) array(
+                        'nowhere' => (object) array(
                               'id' => $this->void->getId(),
                         ),
                         'player' => (object) array(

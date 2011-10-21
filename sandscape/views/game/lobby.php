@@ -1,8 +1,11 @@
 <?php
 $url = $this->createURL('game/lobbychatupdate');
 
-$last = end($messages);
-$last = $last->messageId;
+$last = 0;
+if (count($messages)) {
+    $last = end($messages);
+    $last = $last->messageId;
+}
 
 Yii::app()->clientScript->registerCssFile('_resources/css/lobby.css');
 Yii::app()->clientScript->registerScriptFile('_resources/js/lobby.js');

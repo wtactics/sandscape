@@ -1,2 +1,4 @@
 *.jpg
 *.png
+!cardback.jpg
+!noimage.jpg

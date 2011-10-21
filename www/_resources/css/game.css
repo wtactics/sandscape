@@ -13,7 +13,8 @@ body {
 }
 
 #game-table {
-
+    /*TODO: REMOVE DEV VALUE */
+    opacity: 0.5;
 }
 
 #top {
@@ -33,19 +34,31 @@ body {
     margin: .8em auto;
 }
 
-#opponent-area {
+/* UNIQUE CLASS */
+.opponent-area {
     height: 100%;
     float: left;
+    
+    /*TODO: REMOVE DEV VALUE */
+    background-color: darkgreen;
 }
 
 #play-area {
     height: 100%;
     overflow: hidden;
+
+    /*TODO: REMOVE DEV VALUE */
+    background-color: green;
 }
 
-#hand {
+/* UNIQUE CLASS */
+.hand {
     height: 100%;
     width: 350px;
+    float: left;
+
+    /*TODO: REMOVE DEV VALUE */
+    background-color: gray;
 }
 
 #deck-nob {
@@ -84,4 +97,15 @@ body {
     list-style: none;
     height: 200px;
     background-color: #FFF;
+}
+
+table {
+    width: 100%;
+}
+
+/* UNIQUE CLASS */
+.play {
+    float: left;
+    
+    background-color: yellow;
 }

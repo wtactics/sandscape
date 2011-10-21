@@ -1,10 +1,200 @@
-function ui() {
-    //define area sizes: horizontal mid-point and with for opponent area
-    $('#opponent-area').css('width', $(window).width() - 350);
+//Global control variables
+//TODO: //NOTE: shouldn't this be placed in a global object for easier control 
+//and maintenance
+var gameRunning = false;
+var bUrl;
+var chkGameID;
+var updGame;
+
+function initTable(base) {
+    bUrl = base;
+    
+    pack();
+    checkGameStart();
+    
+    chkGameID = setInterval(checkGameStart, 3000);
+}
+
+function checkGameStart() {
+    $.ajax({
+        url: bUrl,
+        data: {
+            event: 'startGame'
+        },
+        type: 'POST',
+        dataType: 'json',
+        success: function (json) {
+            console.log('checking game start');
+            if(json.result == 'ok') {
+                console.log('all players ready');
+                clearInterval(chkGameID);
+                $.ajax({
+                    url: bUrl,
+                    data: {
+                        event: 'startUp'
+                    },
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (json) {
+                        console.log('starting game');
+                        //debugger;
+                        if(json.result == 'ok') {
+                            console.log('game started');
+                            
+                            var create = json.createThis;
+                            
+                            //set void object
+                            $(document.createElement('div')).attr({
+                                id: create.nowhere.id
+                            })
+                            .css({
+                                visibility: 'hidden',
+                                position: 'absolute',
+                                top: 0,
+                                left: 0
+                            })
+                            .appendTo($('body'));
+    
+                            //Player area: left hand, decks and play zone
+                            $('.hand').html(create.player.hand.html).attr('id', create.player.hand.id);
+                            $('.hand > table').css({
+                                height: $('.hand').height()
+                            });
+                            
+                            
+                            $('.play').html(create.player.playableArea.html).attr('id', create.player.playableArea.id);
+                            $('.play > table').css({
+                                height: $('.play').height()
+                            });
+                            //debugger;
+                            for(i = 0; i < create.player.decks.length; i++) {
+                                $(document.createElement('img'))
+                                .attr({
+                                    id: create.player.decks[i].id, 
+                                    src: '_cards/up/thumbs/cardback.jpg'
+                                })
+                                .data('deck-name', create.player.decks[i].name)
+                                .appendTo($('#deck-slide'));
+                                
+                            }
+                            
+                            if(create.player.graveyard) {
+                                $(document.createElement('img'))
+                                .attr({
+                                    id: create.player.graveyard.id,
+                                    src: '_cards/up/thumbs/noimage.jpg'
+                                })
+                                .data('deck-name', 'Graveyard')
+                                .appendTo($('#deck-slide'));
+                            }
+                            
+                            //Opponent area (top window zone)
+                            $('.opponent-area').attr('id', create.opponent.playableArea.id)
+                            .html(create.opponent.playableArea.html);
+                            
+                            $('.opponent-area > table').css({
+                                height: $('.opponent-area').height() 
+                            });
+                            
+                            var card;
+                            for(i = 0; i < create.cards.length; i++) {
+                                card = create.cards[i];
+                                
+                                $(document.createElement('img'))
+                                .attr({
+                                    id: card.id,
+                                    src: '_cards/up/thumbs/' + card.src
+                                    })
+                                .css({
+                                    position: 'absolute'
+                                })
+                                .css($('#' + card.position).position())
+                                .appendTo($('body'));
+                            }
+                            
+                            //updGame = setInterval(updateGame, 3000);*/
+                            
+                            
+                            //Configure deck widgets
+                            ui();
+                        }
+                    }
+                });
+            }
+        }
+    });
+}
+
+function doGameUpdate(json) {
+    if(json.result == 'ok') {
+        console.log('doing game update');
+        for(i = 0; i < json.update.lenght; i++) {
+            $('#' + json.update[i].id)
+            .animate($('#' + json.update[i].location).position())
+            .attr('src', '_cards/up/thumbs/' + json.update[i].src);
+        }
+    }
+    
+}
+
+function updateGame() {
+    console.log('requesting game update');
+    $.ajax({
+        url: bUrl,
+        data: {
+            event: 'update'
+        },
+        dataType: 'json',
+        type: 'POST',
+        success: doGameUpdate
+    });
+}
+
+function drawCard(deckId) {
+    console.log('drawing a card');
+    $.ajax({
+        url: bUrl,
+        data: {
+            event: 'drawCard',
+            deck: deckId
+        },
+        dataType: 'json',
+        type: 'POST',
+        success: doGameUpdate
+    });
+}
+
+function moveCard(cardId, destinationId) {
+    console.log('moving a card');
+    $.ajax({
+        url: bUrl,
+        data: {
+            event: 'moveCard',
+            card: cardId,
+            location: destinationId
+        },
+        dataType: 'json',
+        type: 'POST',
+        success: doGameUpdate
+    });
+}
+
+//TODO: revise....
+function pack() {
+    //Define area sizes: horizontal mid-point and with for opponent area
+    $('.opponent-area').css('width', $(window).width() - 350);
+    $('.play').css('width', $(window).width() - 350);
+    
     $('#top').css('height', $(window).height() / 2); 
     $('#bottom').css('height', $(window).height() / 2);
-    
-    //define positions for existing decks
+    $('.play').css('height', $(window).height() / 2);
+        
+    //$('#wait-modal').modal();
+    console.log('packing');
+}
+
+function ui() { 
+    //Define positions for existing decks
     $('#deck-slide').children('img').each(function(index) {
         $(this).css({
             left: index * 85, 
@@ -23,40 +213,48 @@ function ui() {
 
 function bubbles() {   
     $('#deck-slide img').CreateBubblePopup({
-        innerHtml: 'Deck name',
         position: 'top',
         align: 'center',
         tail: {
             align: 'center'
         },
-        //TODO: choose correct theme
+
         themeName: 'all-black',
         themePath: '_resources/images/jqBubblePopup',
         alwaysVisible: false,
         closingDelay: 100
     });
     
-//TODO: setup deck name as popup text
-//$('').SetBubblePopupInnerHtml('');
+    var text;
+    $('#deck-slide img').each(function(index) {
+        text = $(this).data('deck-name');
+        
+        if(text.length == 0) {
+            text = 'Unknown Deck';
+        }
+        $(this).SetBubblePopupInnerHtml(text);
+    })
 }
 
-function deckSlide (event) {   
-    if($('#deck-widget').width() > 0) {
-        $('#deck-slide img').each(function() {
-            if( $(this).HasBubblePopup() ){
-                $(this).RemoveBubblePopup();
-            }
-        });    
+function deckSlide (event) {
+    if(gameRunning) {
+        if($('#deck-widget').width() > 0) {
+            $('#deck-slide img').each(function() {
+                if( $(this).HasBubblePopup() ){
+                    $(this).RemoveBubblePopup();
+                }
+            });    
        
-        $('#deck-widget').animate({
-            width: 0
-        });
-    } else {
-        $('#deck-widget').animate({
-            width: $('#deck-slide').children('img').length * 85
-        }, function() {
-            bubbles();
-        });
+            $('#deck-widget').animate({
+                width: 0
+            });
+        } else {
+            $('#deck-widget').animate({
+                width: $('#deck-slide').children('img').length * 85
+            }, function() {
+                bubbles();
+            });
+        }
     }
 }
 function showChat() {
@@ -111,226 +309,3 @@ function filterChatMessages(elem) {
 function inspect() {
     alert('Not implemented yet!');
 }
-
-function init() {
-    $('#board').css('width', $(window).width() - 300);
-    
-    $.ajax({
-        type: 'POST',
-        url: requestUrl,
-        dataType: 'json',
-        data: {
-            'event' : 'startup'
-        },
-        success: function(json) {
-            
-        //            var opp = $('.opponent');
-        //            opp.attr('id', json.opponentArea.id);
-        //            opp.css('height', $(window).height() / 2);
-        //            opp.append(json.opponentArea.html);
-        //            
-        //            var hand = $('.hand');
-        //            hand.attr('id', json.hand.id);
-        //            hand.append(json.hand.html);
-        //        
-        //            //
-        //            var player = $('.player').attr('id', json.playableArea.id);
-        //            player.css('height', $(window).height() / 2);
-        //            
-        //            player.append(json.playableArea.html);
-        //            
-        //            $('#' + json.opponentArea.id + ' > table').css('height', $(window).height() / 2);
-        //            
-        //            $('#' + json.playableArea.id + ' > table').css('height', $(window).height() / 2);
-        //            $('#' + json.playableArea.id + ' > table td').addClass('dropzone');
-        //            
-        //            $('#' + json.hand.id + ' > table').css('height', '303');
-        //            $('#' + json.hand.id + ' > table td').addClass('dropzone');
-        //            
-        //            var deck = $('.deck');
-        //            deck.attr('id', json.deck.id);
-        //            
-        //            var grave = $('.graveyard').attr('id', json.graveyard.id);
-        //            grave.addClass('dropzone');
-        //            //
-        //            grave.droppable({
-        //                accept: '.card',
-        //                drop: function(event, ui) {
-        //                }
-        //            });
-        //            
-        //            $.each(json.update, function(index, elem) {
-        //                
-        //                if(elem.f == 'create') {
-        //                    createCard(elem.id, elem.idLocation);
-        //                } else if(elem.f == 'image') {
-        //                    defineCardSource(elem.id, elem.src);
-        //                } else if(elem.f == 'move') {
-        //                    moveCard(elem.id, elem.idDestination);
-        //                } else {
-        //                    alert('Wrong function request');
-        //                } 
-        //            });            
-        }//END: success
-    });
-}
-
-
-
-/*var last = 0;*/
-
-/**
- * Sends a message to the server that can then be pulled by other clients. Part
- * of the chat system.
- */
-/*function sendMessage() {
-    var text = $('#message');
-    if(text.val() != '') {
-        $.post('', {
-            message: text.val()
-        });
-    
-        text.val('');
-    }
-}*/
-
-/**
- * Pulls messages from the server. All messages after a give message/time are 
- * pulled, even the ones posted by the current client.
- */
-/*function reload() {
-    $.get('', {
-        after: last
-    }, function(e) {
-        var chat = $('#chat');
-        var temp = '';
-        for(i = 0; i < e.length; i++) {
-            
-            if(e[i].system) {
-                temp += '<br /><span style="color: ' + e[i].color 
-                + '"><strong>&lt;&lt;</strong> ' + e[i].stamp 
-                + '<strong>&gt;&gt;:</strong>' + e[i].message + '</span>';
-            } else {
-                temp += '<br /><span style="color: ' + e[i].color 
-                + '"><strong>&lt;</strong> ' + e[i].stamp 
-                + '<strong>&gt;:</strong>' + e[i].message + '</span>';
-            }
-        
-            //TODO: //NOTE: will give all chat messages on refresh...
-            last = e[i].messageId;
-        }
-    }, 'json');
-}*/
-
-/*$(document).ready(function() {   
-    //setInterval(reload, 3000);
-    init();
-    
-//TODO: passar para o init   
-//    $('#radial_container').radmenu({
-//        listClass: 'list', // the list class to look within for items
-//        itemClass: 'item', // the items - NOTE: the HTML inside the item is copied into the menu item
-//        radius: 25, // in pixels
-//        animSpeed: 400, //in millis
-//        selectEvent: 'click', // the select event
-//        onSelect: function($selected){
-//            //TODO: ... create event...
-//            $('#radial_container').hide();
-//        },
-//        angleOffset: Math.PI // in radians
-//    });
-});*/
-
-/*function createCard(id, location) {
-    if( $('#' + id).length == 0) {
-        var image = $(document.createElement('img'));
-        $('#appendable').append(image);
-        
-        image.css('position', 'absolute');
-        image.css($('#' + location).position());
-        //TODO: ....
-        image.css('width', 81);
-        image.css('height', 113);
-        image.attr('id', id);
-       
-        image.draggable({
-            scroll: false,
-            containment: 'window',
-            stop: function (event, ui) {
-                //ui.offset;
-                var moved = false;
-                $('.dropzone').each(function(index, cell) {
-                    if(ui.offset.left > $(cell).offset().left && ui.offset.left < $(cell).offset().left + $(cell).width()
-                        && ui.offset.top > $(cell).offset().top && ui.offset.top < $(cell).offset().top + $(cell).height()) {
-                        //
-                        moved = true;
-                        $.ajax({
-                            url: 'http://192.168.10.3/wtserver/?quiet',
-                            dataType: 'jsonp',
-                            data: {
-                                'event' : 'moveCard',
-                                'id': ui.helper.attr('id'),
-                                'idDestination': cell.id
-                            },
-                            crossDomain: true,
-                            success: function(json) {
-                                $.each(json.update, function(index, elem){
-                                    if(elem.f == 'create') {
-                                        createCard(elem.id, elem.idLocation);
-                                    } else if(elem.f == 'image') {
-                                        defineCardSource(elem.id, elem.src);
-                                    } else if(elem.f == 'move') {
-                                        moveCard(elem.id, elem.idDestination);
-                                    } else {
-                                        alert('Wrong function request');
-                                    }
-                                });    
-                            }
-                        });
-                    //
-                    }
-                })
-                
-                if(!moved) {
-                    ui.helper.animate(ui.helper.data('originalPos'), 'fast');
-                }
-            },
-            //END: stop
-            start: function (event, ui) {
-                ui.helper.data('originalPos', ui.offset);
-            }
-        });
-    }
-}*/
-
-/*function defineCardSource(id, source) {
-    $('#' + id).attr('src', source);
-}*/
-
-/*function moveCard(id, destination) {
-    $('#' + id).animate($('#' + destination).position(), 'slow');
-}*/
-
-/*function drawCardFromDeck() {
-    $.ajax({
-        url: 'http://192.168.10.3/wtserver/?quiet',
-        dataType: 'jsonp',
-        data: {
-            'event' : 'cardFromDeck'
-        },
-        crossDomain: true,
-        success: function(json) {
-            $.each(json.update, function(index, elem){
-                if(elem.f == 'create') {
-                    createCard(elem.id, elem.idLocation);
-                } else if(elem.f == 'image') {
-                    defineCardSource(elem.id, elem.src);
-                } else if(elem.f == 'move') {
-                    moveCard(elem.id, elem.idDestination);
-                } else {
-                    alert('Wrong function request');
-                }
-            });
-        }
-    });
-}*/
