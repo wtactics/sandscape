@@ -3,54 +3,33 @@
 
 class SCPlayerSide
 {
+   private $game;
    private $playerId;
    private $decks;
    private $graveyard;
    private $hand;
    private $playableArea;
 
-   public function __construct($playerId, $decks, $hasGraveyard, $handWidth, $handHeight, $gameWidth, $gameHeight)
+   public function __construct(SCGame $game, $playerId, $hasGraveyard, $handWidth, $handHeight, $gameWidth, $gameHeight)
    {
+      $this->game = $game;
       $this->playerId = $playerId;
-      $this->hand = new SCGrid($handHeight, $handWidth);
-      $this->playableArea = new SCGrid($gameHeight, $gameWidth);
-      if ($hasGraveyard) $this->graveyard = new SCContainer();
+      $this->hand = new SCGrid($game, $handHeight, $handWidth);
+      $this->playableArea = new SCGrid($game, $gameHeight, $gameWidth);
+      if ($hasGraveyard) $this->graveyard = new SCContainer($game, false, false);
 
-      $this->decks = $decks;
+      $this->decks = array();
+   }
+   
+   public function addDeck(SCDeck $deck)
+   {
+      $this->decks[] = $deck;
    }
 
    public function getPlayerId()
    {
       return $this->playerId;
    }
-
-   public function findCardContainer($id)
-   {
-      //$container = $this->deck->findCardContainer($id);
-      //if (!$container)
-      //    $container = $this->graveyard->findCardContainer($id);
-      //if (!$container)
-      //    $container = $this->hand->findCardContainer($id);
-      //if (!$container)
-      //    $container = $this->playableArea->findCardContainer($id);
-      //return $container;
-   }
-
-   public function find($id)
-   {
-      //$obj = $this->deck->find($id);
-      //if (!$obj)
-      //    $obj = $this->graveyard->find($id);
-      //if (!$obj)
-      //    $obj = $this->hand->find($id);
-      //if (!$obj)
-      //    $obj = $this->playableArea->find($id);
-      //return $obj;
-   }
-
-   //public function getDeck() {
-   //    return $this->deck;
-   //}
    
    public function getGraveyard() {
        return $this->graveyard;
@@ -61,6 +40,11 @@ class SCPlayerSide
    }
    public function getPlayableArea() {
        return $this->playableArea;
+   }
+   
+   public function getDecks()
+   {
+      return $this->decks;
    }
    
    public function getDecksInitialization()
