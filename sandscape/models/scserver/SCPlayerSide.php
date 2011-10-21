@@ -23,7 +23,7 @@ class SCPlayerSide
    
    public function addDeck(SCDeck $deck)
    {
-      $this->decks[] = $deck;
+      $this->decks[$deck->getId()] = $deck;
    }
 
    public function getPlayerId()
@@ -55,6 +55,21 @@ class SCPlayerSide
          $output [] = (object) array('id' => $deck->getId());
       }
       return $output;
+   }
+   
+   public function drawCard($deckId)
+   {
+//      die('died in '.get_class($this).' at ' . time() . '  ' . var_export($_REQUEST, true));
+      if (isset($this->decks[$deckId]))
+      {
+         $deck = $this->decks[$deckId];
+         $card = $deck->pop();
+         if ($card) {
+            $card->setFaceUp(true);
+            $card->setMovable(true);
+            $this->hand->push($card);
+         }
+      }
    }
    
 }
