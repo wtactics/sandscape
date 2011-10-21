@@ -30,8 +30,11 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.simplemodal.1
     <h3>Users</h3>
     <ul id="userlist">
         <?php foreach ($users as $user) { ?>
-            <li><a href="#"><?php echo $user->name;
-            ?></a></li>
+            <li>
+                <a href="<?php echo $this->createURL((Yii::app()->user->id != $user->userId ? 'user/view' : 'user/profile'), array('id' => $user->userId)); ?>">
+                    <?php echo $user->name; ?>
+                </a>
+            </li>
         <?php } ?>
     </ul>
 </div>
@@ -59,10 +62,10 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.simplemodal.1
             $url = '#';
             if ($game->running) {
                 $class = 'success';
-                $url = $this->createURL('game/spectate', array('id' => $game->gameId));
+                //$url = $this->createURL('game/spectate', array('id' => $game->gameId));
             } else {
                 $class = 'info';
-                $url = $this->createURL('game/join', array('id' => $game->gameId));
+                //$url = $this->createURL('game/join', array('id' => $game->gameId));
             }
             ?>
             <li class="<?php echo $class; ?>">

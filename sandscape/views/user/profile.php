@@ -1,5 +1,5 @@
 <?php
-Yii::app()->clientScript->registerCssFile('_resources/css/profiletabs.css');
+Yii::app()->clientScript->registerCssFile('_resources/css/tabs.css');
 Yii::app()->clientScript->registerScript('tabsjs', "
     $('#tabs div').hide();
     $('#tabs div:first').show();

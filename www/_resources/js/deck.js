@@ -1,4 +1,7 @@
 $(function () {
+    //Configure draggables for existing cards
+    //These cards can be dragged using a helper clone function and dropped in 
+    //the #usecards area.
     $('.available').draggable({
         appendTo: '#usecards',
         containment: 'body', 
@@ -14,6 +17,10 @@ $(function () {
         }
     });
 
+    //Configure the #usercards area where selected cards are dropped.
+    //Whenever a card is dropped, two new elements are created: the visible card 
+    //that the user can manipulate and the hidden field that carries the card's 
+    //ID to the server
     $('#usecards').droppable({
         accept: '.available',
         drop: function(event, ui) {
@@ -25,16 +32,52 @@ $(function () {
                 left = (cardCount - (14  * mv)) * 25;
             }
             
-            var newimg = $(document.createElement('img'));
+            var count = $('.s-' + ui.draggable.attr('id')).length;
             
-            newimg.addClass('chosen').css({
-                'left': left, 
-                'top': top
-            });
-            newimg.attr('src', ui.draggable.attr('src'));
-            newimg.appendTo(destination);
+            configureSelectedCard($(document.createElement('img'))
+                .addClass('chosen')
+                .addClass('s-' + ui.draggable.attr('id'))
+                .css({
+                    'left': left, 
+                    'top': top
+                })
+                .attr({
+                    src: ui.draggable.attr('src'),
+                    id: 's-' + ui.draggable.attr('id') + count
+                })
+                .appendTo(destination));
             
-            $(ui.draggable).remove();
+            $(document.createElement('input'))
+            .addClass('hs-' + ui.draggable.attr('id'))
+            .attr({
+                type: 'hidden', 
+                name: 'using[]',
+                value: ui.draggable.attr('id'),
+                id: 'hs-' + ui.draggable.attr('id') + count
+            })
+            .appendTo($('#deck-form'));
         }
     });
+    
+    //The #existingcards area is also a droppable for cards that have been added 
+    //to the deck, it allows cards to be removed from the deck
+    $('#existingcards').droppable({
+        accept: '.chosen',
+        drop: function(event, ui) {           
+            $('#h' + ui.draggable.attr('id')).remove();
+            ui.draggable.remove();
+        }
+    });
+    
+    $('.chosen').each(function(index) {
+        configureSelectedCard($(this));
+    });
 });
+
+function configureSelectedCard(card) {
+    card.draggable({
+        containment: 'body',
+        stack: '.chosen'
+    });
+    
+}

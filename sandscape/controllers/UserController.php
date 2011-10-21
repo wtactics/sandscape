@@ -98,6 +98,12 @@ class UserController extends AppController {
         $this->render('profile', array('user' => $user, 'pwdModel' => $passwordModel));
     }
 
+    public function actionView($id) {
+        //TODO: not implemented yet!
+        $user = $this->loadUserModel($id);
+        $this->render('view', array('user' => $user));
+    }
+
     private function loadUserModel($id) {
         if (($user = User::model()->findByPk((int) $id)) === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
@@ -108,7 +114,7 @@ class UserController extends AppController {
     public function accessRules() {
         return array_merge(array(
                     array('allow',
-                        'actions' => array('account', 'profile'),
+                        'actions' => array('account', 'profile', 'view'),
                         'users' => array('@')
                     ),
                     array('allow',
