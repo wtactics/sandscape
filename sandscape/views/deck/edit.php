@@ -9,12 +9,10 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/deck.js', CClientScr
 
     <div class="span-11 last">
         <h3>Cards in deck</h3>
-        <div id="usecards">
-        </div>
-        <input type="hidden" id="draggingTracker" value="" />
+        <div id="usecards"></div>
     </div>
 </div>
-<div class="span-12 last">
+<div class="span-10 last">
     <h2>Existing cards</h2>
     <div id="existingcards">
         <?php foreach ($cards as $card) { ?>

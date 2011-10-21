@@ -17,7 +17,7 @@ class RecoverForm extends CFormModel {
 
     public function attributeLabels() {
         return array(
-            'email' => 'Registered E-mail',
+            'email' => 'Registration E-mail',
         );
     }
 

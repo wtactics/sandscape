@@ -28,7 +28,7 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.simplemodal.1
 ?>
 
 <h2>Lobby</h2>
-<div class="span-5 border">
+<div class="span-4 border">
     <h3>Users</h3>
     <ul id="userlist">
         <?php foreach ($users as $user) { ?>
@@ -52,7 +52,7 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.simplemodal.1
         <?php } ?>
     </ul>
 </div>
-<div class="span-6 last">
+<div class="span-5 last">
     <h3>Games</h3>
     <ul id="gamelist">
         <?php
@@ -76,7 +76,7 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.simplemodal.1
     </ul>
 </div>
 <hr />
-<div class="span-20 centered">
+<div class="span-18 centered">
     <input type="text" class="text" id="writemessage" />
     <button type="button" onclick="sendMessage('<?php echo $this->createURL('game/sendlobbymessage'); ?>');" id="sendbtn">Send</button>
 </div>

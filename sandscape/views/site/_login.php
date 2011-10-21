@@ -31,8 +31,8 @@ $form = $this->beginWidget('CActiveForm', array(
         ?>
     </p>
     <?php //echo $form->error($login, 'rememberMe'); ?>
-    <p>
-        <?php echo CHtml::submitButton('Login'); ?>
-    </p>
 </fieldset>
+<p>
+    <?php echo CHtml::submitButton('Login'); ?>
+</p>
 <?php $this->endWidget(); ?>

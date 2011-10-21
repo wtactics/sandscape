@@ -60,7 +60,7 @@ class SiteController extends AppController {
     }
 
     //TODO: incomplete
-    public function actionLostPassword() {
+    public function actionRecoverPassword() {
         $recover = new RecoverForm();
         if (isset($_POST['RecoverForm'])) {
             $recover->attributes = $_POST['RecoverForma'];

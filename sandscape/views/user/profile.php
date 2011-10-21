@@ -15,18 +15,17 @@ Yii::app()->clientScript->registerScript('tabsjs', "
 ");
 ?>
 
-<div class="span-24">
-    <h2>Edit Profile</h2>
-    <div id="tabs">
-        <ul>
-            <li><a href="#tab1">General</a></li>
-            <li><a href="#tab2">Password</a></li>
-        </ul>
-        <div id="tab1">
-            <?php $this->renderPartial('_personal', array('user' => $user)) ?>
-        </div>
-        <div id="tab2">
-            <?php $this->renderPartial('_password', array('pwdModel' => $pwdModel)); ?>
-        </div>
+
+<h2>Edit Profile</h2>
+<div id="tabs">
+    <ul>
+        <li><a href="#tab1">General</a></li>
+        <li><a href="#tab2">Password</a></li>
+    </ul>
+    <div id="tab1">
+        <?php $this->renderPartial('_personal', array('user' => $user)) ?>
+    </div>
+    <div id="tab2">
+        <?php $this->renderPartial('_password', array('pwdModel' => $pwdModel)); ?>
     </div>
 </div>

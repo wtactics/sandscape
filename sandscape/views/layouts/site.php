@@ -27,10 +27,12 @@ Yii::app()->clientScript->registerScript('menuhover', "
     <body>
         <div class="container">
             <h1 id="header">Sandscape</h1>
-            <div class="span-24" id="menu">
+            <div class="span-22 prepend-1 append-1 last" id="menu">
                 <?php $this->widget('zii.widgets.CMenu', array('items' => $this->menu)); ?>
             </div>
-            <?php echo $content; ?>
+            <div class="span-22 prepend-1 append-1 last">
+                <?php echo $content; ?>
+            </div>
             <div class="span-24" id="footer">
                 &copy; <?php echo date('Y'); ?> <a href="#">Sandscape</a> & <a href="#">WTactics</a> Team
             </div>

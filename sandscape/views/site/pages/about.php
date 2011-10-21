@@ -1,7 +1,5 @@
-<div class="span-24">
-    <h2>About SandScape Project</h2>
-    <p>The purpose of Sandscape project is to create a virtual online and purely browser based environment where players can meet to play a CCG. Sandscape is, as all things WT, an open source endeavor that should be generic, easy to extend and modify so that it can be of use in other projects, making it possible to play almost any CCG with it. To the best of our knowledge there is no such existing libre software around today.</p>
-    <p>Sandscape does not intend to compete with the existing open source solutions for online CCG play, alas the fact that Sandscape follows, to some extent, the same concept as systems like OTCGN2, LackeyCCG or gCCG will make Sandscape a competitor in the same way that WTactics is a competitor with other established CCGs.</p>
-    <p>Nevertheless, Sandscape will bring innovation into the market by freeing the player from the constraints set by forcing him/her to follow predefined rules, by offering a lighter version that is not graphically cumbersome and that is easier to use in comparison to existing solutions.</p>
-    <p>Following the steps of WTactics, Sandscape is an open source, generic and extensible project that can be used by other projects to allow almost any CCG to be played.</p>
-</div>
+<h2>About SandScape Project</h2>
+<p>The purpose of Sandscape project is to create a virtual online and purely browser based environment where players can meet to play a CCG. Sandscape is, as all things WT, an open source endeavor that should be generic, easy to extend and modify so that it can be of use in other projects, making it possible to play almost any CCG with it. To the best of our knowledge there is no such existing libre software around today.</p>
+<p>Sandscape does not intend to compete with the existing open source solutions for online CCG play, alas the fact that Sandscape follows, to some extent, the same concept as systems like OTCGN2, LackeyCCG or gCCG will make Sandscape a competitor in the same way that WTactics is a competitor with other established CCGs.</p>
+<p>Nevertheless, Sandscape will bring innovation into the market by freeing the player from the constraints set by forcing him/her to follow predefined rules, by offering a lighter version that is not graphically cumbersome and that is easier to use in comparison to existing solutions.</p>
+<p>Following the steps of WTactics, Sandscape is an open source, generic and extensible project that can be used by other projects to allow almost any CCG to be played.</p>

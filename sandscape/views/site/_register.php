@@ -45,10 +45,10 @@ $form = $this->beginWidget('CActiveForm', array(
         ?>
     </p>
     <?php //echo $form->error($register, 'password_repeat', $htmlOptions); ?>
-    <p>
-        <?php echo CHtml::submitButton('Register'); ?>
-    </p>
 </fieldset>
+<p>
+    <?php echo CHtml::submitButton('Register'); ?>
+</p>
 <?php
 $this->endWidget();
 

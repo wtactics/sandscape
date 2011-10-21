@@ -59,7 +59,7 @@ $form = $this->beginWidget('CActiveForm', array(
         <?php //echo $form->error($card, 'image');  ?>
     </fieldset>
 </div>
-<div class="span-22">
+<div class="span-20 last">
     <p>
         <?php echo CHtml::submitButton($card->isNewRecord ? 'Create' : 'Save'); ?>
     </p>

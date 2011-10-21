@@ -1,6 +1,4 @@
-/*http://colorschemedesigner.com/#0H11Ttjjlw0w0*/
-/*9A5D0D 735124	643A04	CD8F40	CDA066*/
-
+/*Base: 9A5D0D, other: 735124, 643A04, CD8F40, CDA066*/
 * {
     font-family: Helvetica, Verdana, Arial, sans-serif;
     color: #333;
@@ -40,7 +38,7 @@ ul {
 
 #menu > ul {
     position: relative;
-    left: 6%;
+    /*left: 6%;*/
     display: block;
 }
 
@@ -66,12 +64,12 @@ ul {
 }
 
 #menu > ul li.hover, #menu > ul li:hover { 
-    position: relative; 
+    position: relative;
 }
 
 #menu > ul ul {
     visibility: hidden; 
-    position: absolute; 
+    position: absolute;
     top: 100%;
     left: 0; 
 }
@@ -84,7 +82,12 @@ ul {
 #menu > ul ul li a {
     display: inline-block;
     width: 120px;
-    
+
+}
+
+#menu a:hover {
+    color: #643A04;
+    background-color: #9A5D0D
 }
 
 #footer {
