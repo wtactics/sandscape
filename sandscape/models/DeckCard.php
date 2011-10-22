@@ -18,6 +18,7 @@
  * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
+ * http://wtactics.org
  */
 
 /**
@@ -30,6 +31,8 @@
  * The followings are the available model relations:
  * @property Deck $deck
  * @property Card $card
+ * 
+ * @since 1.0
  */
 class DeckCard extends CActiveRecord {
 

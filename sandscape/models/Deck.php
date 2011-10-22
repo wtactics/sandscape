@@ -18,44 +18,37 @@
  * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
+ * http://wtactics.org
  */
 
 /**
- * This is the model class for table "Deck".
+ * This is the model class for 'Deck' table that stores deck information. A 
+ * <em>Deck</em> is just a name that is used to group cards.
  *
  * The followings are the available columns in table 'Deck':
- * @property string $deckId
+ * @property integer $deckId
  * @property string $name
- * @property string $userId
+ * @property integer $userId
  * @property string $created
  * @property integer $active
  *
- * The followings are the available model relations:
+ * Relations:
  * @property User $user
  * @property DeckCard[] $deckCards
- * @property Game[] $gamesAs1
- * @property Game[] $gamesAs2
+ * @property Game[] $games
+ * 
+ * @since 1.0
  */
 class Deck extends CActiveRecord {
 
-    /**
-     * Returns the static model of the specified AR class.
-     * @return Deck the static model class
-     */
     public static function model($className=__CLASS__) {
         return parent::model($className);
     }
 
-    /**
-     * @return string the associated database table name
-     */
     public function tableName() {
         return 'Deck';
     }
 
-    /**
-     * @return array validation rules for model attributes.
-     */
     public function rules() {
         return array(
             array('name', 'length', 'max' => 100),
@@ -64,9 +57,6 @@ class Deck extends CActiveRecord {
         );
     }
 
-    /**
-     * @return array relational rules.
-     */
     public function relations() {
         return array(
             'user' => array(self::BELONGS_TO, 'User', 'userId'),
@@ -75,9 +65,6 @@ class Deck extends CActiveRecord {
         );
     }
 
-    /**
-     * @return array customized attribute labels (name=>label)
-     */
     public function attributeLabels() {
         return array(
             'deckId' => 'ID',
@@ -89,7 +76,14 @@ class Deck extends CActiveRecord {
 
     /**
      * Retrieves a list of models based on the current search/filter conditions.
-     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+     * A filter is just an <em>Deck</em> instance whose attributes values are used 
+     * to limit the search criteria.
+     * 
+     * @param integer $owner If the search is to be limited to a given user, this
+     * parameter should contain that user's ID.
+     * 
+     * @return CActiveDataProvider the data provider that can return the models 
+     * based on the search/filter conditions.
      */
     public function search($owner = null) {
         $criteria = new CDbCriteria();

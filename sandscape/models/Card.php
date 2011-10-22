@@ -18,42 +18,39 @@
  * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
+ * http://wtactics.org
  */
 
 /**
- * This is the model class for table "Card".
+ * This is the model class for <em>Card</em> table that stores all the existing cards 
+ * in the database.
+ * 
+ * Card images are not placed in the database, only their file name is.
  *
  * The followings are the available columns in table 'Card':
- * @property string $cardId
- * @property string $name
- * @property string $rules
- * @property string $image
- * @property string $cardscapeId
- * @property integer $active
- *
- * The followings are the available model relations:
+ * @property integer $cardId The card ID in the database.
+ * @property string $name The name of the card.
+ * @property string $rules The rules text for this card.
+ * @property string $image The image file for this card.
+ * @property integer $cardscapeId If this is a card imported from or that exists in
+ * Cardscape, this is the ID used in Cardscape to identify the card.
+ * @property integer $active Active cards are available cards, inactive are deleted cards.
+ * 
+ * Relations:
  * @property DeckCard[] $deckCards
+ * 
+ * @since 1.0
  */
 class Card extends CActiveRecord {
 
-    /**
-     * Returns the static model of the specified AR class.
-     * @return Card the static model class
-     */
     public static function model($className=__CLASS__) {
         return parent::model($className);
     }
 
-    /**
-     * @return string the associated database table name
-     */
     public function tableName() {
         return 'Card';
     }
 
-    /**
-     * @return array validation rules for model attributes.
-     */
     public function rules() {
         return array(
             array('name, rules', 'required'),
@@ -64,18 +61,12 @@ class Card extends CActiveRecord {
         );
     }
 
-    /**
-     * @return array relational rules.
-     */
     public function relations() {
         return array(
             'deckCards' => array(self::HAS_MANY, 'DeckCard', 'cardId'),
         );
     }
 
-    /**
-     * @return array customized attribute labels (name=>label)
-     */
     public function attributeLabels() {
         return array(
             'cardId' => 'ID',
@@ -88,7 +79,11 @@ class Card extends CActiveRecord {
 
     /**
      * Retrieves a list of models based on the current search/filter conditions.
-     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+     * A filter is just an <em>Card</em> instance whose attribute values are used 
+     * to limit the search criteria.
+     * 
+     * @return CActiveDataProvider the data provider that can return the models 
+     * based on the search/filter conditions.
      */
     public function search() {
         $criteria = new CDbCriteria();

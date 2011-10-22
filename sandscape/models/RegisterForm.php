@@ -18,8 +18,12 @@
  * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
+ * http://wtactics.org
  */
 
+/**
+ * @since 1.0
+ */
 class RegisterForm extends CFormModel {
 
     public $email;

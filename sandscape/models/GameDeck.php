@@ -18,6 +18,7 @@
  * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
+ * http://wtactics.org
  */
 
 /**
@@ -26,6 +27,8 @@
  * The followings are the available columns in table 'Game':
  * @property integer $gameId
  * @property intger $deckId
+ * 
+ * @since 1.0
  */
 class GameDeck extends CActiveRecord {
 

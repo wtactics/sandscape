@@ -18,6 +18,7 @@
  * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
+ * http://wtactics.org
  */
 
 /**
@@ -38,6 +39,8 @@
  * @property ChatMessage[] $chatMessages
  * @property User $player10
  * @property User $player20
+ * 
+ * @since 1.0
  */
 class Game extends CActiveRecord {
 
@@ -102,7 +105,11 @@ class Game extends CActiveRecord {
 
     /**
      * Retrieves a list of models based on the current search/filter conditions.
-     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+     * A filter is just an <em>Card</em> instance whose attribute values are used 
+     * to limit the search criteria.
+     * 
+     * @return CActiveDataProvider the data provider that can return the models 
+     * based on the search/filter conditions.
      */
     public function search() {
         $criteria = new CDbCriteria();

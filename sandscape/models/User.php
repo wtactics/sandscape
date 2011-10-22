@@ -18,10 +18,11 @@
  * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
+ * http://wtactics.org
  */
 
 /**
- * This is the model class for table "User".
+ * This is the model class for the <em>User</em> table.
  *
  * The followings are the available columns in table 'User':
  * @property string $userId
@@ -39,6 +40,9 @@
  * @property Deck[] $decks
  * @property Game[] $gamesAsPlayer1
  * @property Game[] $gamesAsPlayer2
+ * 
+ * @since 1.0
+ * //TODO: properly document
  */
 class User extends CActiveRecord {
 
@@ -85,6 +89,14 @@ class User extends CActiveRecord {
         );
     }
 
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     * A filter is just an <em>Card</em> instance whose attribute values are used 
+     * to limit the search criteria.
+     * 
+     * @return CActiveDataProvider the data provider that can return the models 
+     * based on the search/filter conditions.
+     */
     public function search() {
         $criteria = new CDbCriteria();
 
@@ -96,6 +108,11 @@ class User extends CActiveRecord {
         return new CActiveDataProvider('User', array('criteria' => $criteria));
     }
 
+    /**
+     * Retrieves all users that were active in the last 15 minutes.
+     * 
+     * @return CActiveDataProvider
+     */
     public function findAllAuthenticated() {
         $criteria = new CDbCriteria();
         $criteria->select = 't.*';
@@ -103,6 +120,18 @@ class User extends CActiveRecord {
         $criteria->condition = 'TOKEN IS NOT NULL AND tokenExpires > NOW() AND lastActivity > DATE_SUB(NOW(), INTERVAL 15 MINUTE)';
 
         return new CActiveDataProvider('User', array('criteria' => $criteria));
+    }
+
+    /**
+     * Creates a hash from the given password using the correct hashing process.
+     * This method should be prefered over manually hashing any password.
+     * 
+     * @param string $password The password you whish to hash.
+     * 
+     * @return string The hashed password. 
+     */
+    public final static function hash($password) {
+        return sha1($password . Yii::app()->params['hash']);
     }
 
 }

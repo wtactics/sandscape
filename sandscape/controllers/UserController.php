@@ -66,17 +66,34 @@ class UserController extends AppController {
         $this->render('edit', array('user' => $user));
     }
 
-    public function actionDelete() {
-        //TODO: not implemented yet!
+    /**
+     * Handles the AJAX request for user deletion. Only POST requests are valid 
+     * and only if the user making the request is and administrator.
+     * 
+     * @param integer $id User ID
+     */
+    public function actionDelete($id) {
+        if (Yii::app()->request->isPostRequest && Yii::app()->user->class) {
+            $user = $this->loadUserModel($id);
+            if ($user) {
+                $user->active = 0;
+                $user->save();
+            }
+        } else {
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
     }
 
+    //TODO: not implemented yet
     public function actionAccount() {
         $this->updateUserActivity();
-        //TODO: ...
-        $user = null;
+        $user = $this->loadUserModel(Yii::app()->user->id);
         $this->render('account', array('user' => $user));
     }
 
+    /**
+     * Provides access to the user's profile.
+     */
     public function actionProfile() {
         $this->updateUserActivity();
 
@@ -89,10 +106,13 @@ class UserController extends AppController {
                 $this->redirect(array('profile'));
             }
         } else if (isset($_POST['PasswordForm'])) {
-            //TODO: change password
-            //$user->attributes = $_POST['PasswordForm'];
-            //if ($user->save()) {
-            //}
+            $passwordModel->attributes = $_POST['PasswordForm'];
+            if ($passwordModel->validate()) {
+                $user->password = User::hash($passwordModel->password);
+                if ($user->save()) {
+                    $this->redirect(array('profile'));
+                }
+            }
         }
 
         $this->render('profile', array('user' => $user, 'pwdModel' => $passwordModel));
@@ -104,6 +124,11 @@ class UserController extends AppController {
         $this->render('view', array('user' => $user));
     }
 
+    /**
+     * Loads a <em>User</em> model from the database
+     * @param integer $id The user ID.
+     * @return User The loaded user model. 
+     */
     private function loadUserModel($id) {
         if (($user = User::model()->findByPk((int) $id)) === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
