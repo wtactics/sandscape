@@ -1,5 +1,8 @@
 var lastReceived = 0;
 
+/**
+ *
+ */
 function initLobby(url) {
     $('#writemessage').keypress(function(e) {
         if(e.which == 13) {
@@ -22,6 +25,9 @@ function initLobby(url) {
     });
 }
 
+/**
+ *
+ */
 function sendMessage(destination) {
     var message = $("#writemessage").val();
     if(message.length > 0) {
@@ -38,6 +44,7 @@ function sendMessage(destination) {
                         + json.date + ']:</span><br />' + message + '</li>');
                     
                     lastReceived = json.id;
+                    updateMessageScroll();
                 }
             }
         });
@@ -45,6 +52,9 @@ function sendMessage(destination) {
     }
 }
 
+/**
+ *
+ */
 function updateMessages(destination) {
     $.ajax({
         type: "POST",
@@ -61,7 +71,15 @@ function updateMessages(destination) {
                 });
 
                 lastReceived = json.last;
+                updateMessageScroll();
             }
         }
     });
+}
+
+/**
+ * 
+ */
+function updateMessageScroll() {
+    $("#lobbychat").scrollTop($("#lobbychat")[0].scrollHeight);
 }

@@ -44,7 +44,6 @@ return array(
     //Note: Changing the hash value will invalidate any password you have, you will 
     //be locking your users out.
     'params' => array(
-        'hash' => 'Demo, development hash, please change this in a production server',
-        'version' => 'Sudden Growth'
+        'hash' => 'Demo, development hash, please change this in a production server'
     )
 );

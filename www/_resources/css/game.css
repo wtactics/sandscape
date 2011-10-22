@@ -31,29 +31,20 @@ body {
     margin: .8em auto;
 }
 
-/* UNIQUE CLASS */
+/* UNIQUE CLASS: This class is handled as if it was an ID */
 .opponent-area {
     height: 100%;
-
-    /*TODO: REMOVE DEV VALUE */
-    background-color: darkgreen;
 }
 
 #play-area {
     height: 100%;
     overflow: hidden;
-
-    /*TODO: REMOVE DEV VALUE */
-    background-color: green;
 }
 
-/* UNIQUE CLASS */
+/* UNIQUE CLASS: This class is handled as if it was an ID */
 .hand {
     height: 100%;
     width: 350px;
-
-    /*TODO: REMOVE DEV VALUE */
-    background-color: gray;
 }
 
 #deck-nob {
@@ -106,7 +97,7 @@ table.grid * td {
     border: 1px solid transparent;
 }
 
-/* UNIQUE CLASS */
+/* UNIQUE CLASS: This class is handled as if it was an ID */
 .play {    
     background-color: yellow;
 }

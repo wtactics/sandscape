@@ -43,10 +43,11 @@ class GameController extends AppController {
     public function actionLobby() {
         $this->updateUserActivity();
 
-        //TODO: not implemented yet
         $games = Game::model()->findAll('ended IS NULL AND private = 0');
         $users = User::model()->findAllAuthenticated()->getData();
-        $messages = ChatMessage::model()->findAll('gameId IS NULL ORDER BY sent');
+        
+        $max = ChatMessage::model()->count('gameId IS NULL ORDER BY sent');
+        $messages = ChatMessage::model()->findAll('gameId IS NULL ORDER BY sent LIMIT :start, 15', array(':start' => $max - 15));
 
         $decks = Deck::model()->findAll('userId = :id', array(':id' => Yii::app()->user->id));
 
@@ -85,11 +86,11 @@ class GameController extends AppController {
                 $cm->userId = Yii::app()->user->id;
 
                 if ($cm->save()) {
+                    $cm->refresh();
                     $result = array(
                         'success' => 1,
                         'id' => $cm->messageId,
                         'name' => Yii::app()->user->name,
-                        //TODO: there is a bug while formating date, maybe date is not set yet
                         'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
                     );
                 }
@@ -119,7 +120,7 @@ class GameController extends AppController {
         $result = array('has' => 0);
         if (Yii::app()->request->isPostRequest) {
             if (isset($_POST['lastupdate'])) {
-                $lastUpdate = intval($_POST['lastupdate']);
+                $lastUpdate = (int) $_POST['lastupdate'];
                 $messages = array();
 
                 $cms = ChatMessage::model()->findAll('messageId > :last AND gameId IS NULL', array(':last' => $lastUpdate));
@@ -137,10 +138,9 @@ class GameController extends AppController {
                     $last = end($cms)->messageId;
                 }
                 $result = array(
-                    'success' => 1,
-                    'id' => $cm->messageId,
-                    'name' => Yii::app()->user->name,
-                    'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
+                    'has' => $count,
+                    'messages' => $messages,
+                    'last' => $last
                 );
             }
         }
@@ -158,7 +158,7 @@ class GameController extends AppController {
         $result = array('success' => 0);
         if (Yii::app()->request->isPostRequest) {
             $game = $this->loadGameById($id);
-            if (($game->player1 == Yii::app()->user - id || $game->player2 == Yii::app()->user - id)
+            if (($game->player1 == Yii::app()->user->id || $game->player2 == Yii::app()->user->id)
                     && isset($_POST['gamemessage'])) {
 
                 $cm = new ChatMessage();
@@ -168,6 +168,7 @@ class GameController extends AppController {
                 $cm->gameId = $id;
 
                 if ($cm->save()) {
+                    $cm->refresh();
                     $result = array(
                         'success' => 1,
                         'id' => $cm->messageId,
@@ -181,10 +182,46 @@ class GameController extends AppController {
         echo json_encode($result);
     }
 
+    /**
+     * Retrieves chat messages from the game. Only the users participating in a 
+     * game can request chat messages.
+     * 
+     * @param integer $id The game ID
+     */
     public function actionGameChatUpdate($id) {
-        $result = array('success' => 0);
+        $result = array('has' => 0);
         if (Yii::app()->request->isPostRequest) {
-            //TODO: not implemented yet!
+            $game = $this->loadGameById($id);
+            if (($game->player1 == Yii::app()->user->id || $game->player2 == Yii::app()->user->id)
+                    && isset($_POST['lastupdate'])) {
+
+                $lastUpdate = (int) $_POST['lastupdate'];
+                $messages = array();
+
+                $cms = ChatMessage::model()->findAll('messageId > :last AND gameId = :id', array(
+                    ':last' => $lastUpdate,
+                    ':id' => (int) $id
+                        ));
+
+                foreach ($cms as $cm) {
+                    $messages[] = array(
+                        'name' => $cm->user->name,
+                        'message' => $cm->message,
+                        'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
+                    );
+                }
+                $count = count($messages);
+
+                $last = $lastUpdate;
+                if ($count) {
+                    $last = end($cms)->messageId;
+                }
+                $result = array(
+                    'has' => $count,
+                    'messages' => $messages,
+                    'last' => $last
+                );
+            }
         }
         echo json_encode($result);
     }

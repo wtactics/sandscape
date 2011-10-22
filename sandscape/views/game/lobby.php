@@ -11,7 +11,7 @@ Yii::app()->clientScript->registerCssFile('_resources/css/lobby.css');
 Yii::app()->clientScript->registerScriptFile('_resources/js/lobby.js');
 Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.simplemodal.1.4.1.min.js');
 
-Yii::app()->clientScript->registerScript('msgsjs', "lastReceived = {$last}; initLobby('{$url}');");
+Yii::app()->clientScript->registerScript('msgsjs', "lastReceived = {$last}; initLobby('{$url}');updateMessageScroll();");
 ?>
 
 <h2>Lobby</h2>
