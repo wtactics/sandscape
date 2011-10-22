@@ -1,10 +1,10 @@
 <div id="createdlg">
+    <h2>Create Game</h2>
     <?php echo CHtml::beginForm($this->createURL('game/create')); ?>
     <p><?php echo CHtml::label('Max. Decks:', 'maxDecks'), '<br />', CHtml::textField('maxDecks', '1', array('size' => 4)); ?></p>
     <p class="deck-list">
         <?php
-        //TODO: prevent selection of more than max decks
-        echo CHtml::label('Decks:', 'deckList'), '<br />',
+        echo CHtml::label('Available Decks:', 'deckList'), '<br />',
         CHtml::checkBoxList('deckList', array(), CHtml::listData($decks, 'deckId', 'name'));
         ?>
     </p>

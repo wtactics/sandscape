@@ -172,7 +172,6 @@ class GameController extends AppController {
                         'success' => 1,
                         'id' => $cm->messageId,
                         'name' => Yii::app()->user->name,
-                        //TODO: there is a bug while formating date, maybe date is not set yet
                         'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
                     );
                 }
@@ -190,6 +189,16 @@ class GameController extends AppController {
         echo json_encode($result);
     }
 
+    /**
+     * Creates a new game and redirects the first player to the game area.
+     * 
+     * The game is created with the configuration submitted by the user (number 
+     * of decks, if the game uses graveyard), the user is added to the game and 
+     * marked as ready.
+     * 
+     * If the game was successfully created, the user is redirected to game/play
+     * 
+     */
     public function actionCreate() {
         if (isset($_POST['CreateGame']) && isset($_POST['deckList'])) {
 
@@ -223,29 +232,35 @@ class GameController extends AppController {
         $this->redirect(array('lobby'));
     }
 
-    public function actionJoin($id) {
-        //TODO: second user can't be the first
-        //deck list can't be bigger than maxDecks
-        if (isset($_POST['JoinGame']) && isset($_POST['deckList'])) {
-            $game = $this->loadGameById($id);
+    /**
+     * Allows a user to join a previously created game. The game ID will be given 
+     * as a POST parameter and the uer ID will be taken from the user making the 
+     * request.
+     * 
+     * If the user is allowed to join the game, then it is set as player 2 and 
+     * made ready. After that the user will be redirected to the play area.
+     */
+    public function actionJoin() {
+        if (isset($_POST['JoinGame']) && isset($_POST['deckList']) && isset($_POST['game'])) {
+            $game = $this->loadGameById($_POST['game']);
 
-            $game->player2 = Yii::app()->user->id;
-            $game->player2Ready = 1;
-            if ($game->save()) {
-
-
-                foreach ($_POST['deckList'] as $deckId) {
-                    $gameDeck = new GameDeck();
-                    $gameDeck->gameId = $game->gameId;
-                    $gameDeck->deckId = $deckId;
-                    if (!$gameDeck->save()) {
-                        $error = true;
-                        break;
+            if ($game->player1 != Yii::app()->user->id) {
+                $game->player2 = Yii::app()->user->id;
+                $game->player2Ready = 1;
+                if ($game->save()) {
+                    foreach ($_POST['deckList'] as $deckId) {
+                        $gameDeck = new GameDeck();
+                        $gameDeck->gameId = $game->gameId;
+                        $gameDeck->deckId = (int) $deckId;
+                        if (!$gameDeck->save()) {
+                            $error = true;
+                            break;
+                        }
                     }
-                }
 
-                if (!$error) {
-                    $this->redirect(array('play', 'id' => $game->gameId));
+                    if (!$error) {
+                        $this->redirect(array('play', 'id' => $game->gameId));
+                    }
                 }
             }
         }

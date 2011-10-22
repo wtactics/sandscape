@@ -9,23 +9,9 @@ if (count($messages)) {
 
 Yii::app()->clientScript->registerCssFile('_resources/css/lobby.css');
 Yii::app()->clientScript->registerScriptFile('_resources/js/lobby.js');
-
-Yii::app()->clientScript->registerScript('msgsjs', "
-$('#writemessage').keypress(function(e) {
-    if(e.which == 13) {
-        $('#sendbtn').click();
-    }
-});
-
-//5 sec delay before asking for more messages
-setInterval(function() {
-    updateMessages('{$url}')
-}, 5000);
-    
-lastReceived = {$last};
-");
-
 Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.simplemodal.1.4.1.min.js');
+
+Yii::app()->clientScript->registerScript('msgsjs', "lastReceived = {$last}; initLobby('{$url}');");
 ?>
 
 <h2>Lobby</h2>
@@ -61,17 +47,14 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.simplemodal.1
     <ul id="gamelist">
         <?php
         foreach ($games as $game) {
-            $class = '';
-            $url = '#';
+            $class = 'error';
             if ($game->running) {
-                $class = 'success';
-                //$url = $this->createURL('game/spectate', array('id' => $game->gameId));
-            } else {
-                $class = 'info';
-                //$url = $this->createURL('game/join', array('id' => $game->gameId));
+                $class = 'success spectate';
+            } else if (!$game->player2) {
+                $class = 'info join';
             }
             ?>
-            <li class="<?php echo $class; ?>">
+            <li class="<?php echo $class; ?>" id="game-<?php echo $game->gameId; ?>">
                 <span><?php echo Yii::app()->dateFormatter->formatDateTime(strtotime($game->created), 'short', false); ?></span>
                 <br />
                 <span>by <?php echo $game->player10->name; ?></span>
@@ -86,13 +69,14 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.simplemodal.1
 </div>
 <div class="span-4 last">
     <a href="javascript:;" onclick="$('#createdlg').modal();">Create</a>
-    <a href="javascript:;" onclick="$('#joinprivatedlg').modal();">Join</a>
+    &nbsp;::&nbsp;
+    <a href="javascript:;" onclick="alert('Private games are not not implemented yet!');//$('#joinprivatedlg').modal();">Private Game</a>
 </div>
 
 <div style="display: none">
     <?php
     $this->renderPartial('_createdlg', array('decks' => $decks));
-    $this->renderPartial('_joindlg');
-    $this->renderPartial('_joinprivatedlg');
+    $this->renderPartial('_joindlg', array('decks' => $decks));
+    $this->renderPartial('_joinprivatedlg', array('decks' => $decks));
     ?>
 </div>
