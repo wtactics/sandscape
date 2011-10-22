@@ -76,25 +76,25 @@ class GameController extends AppController {
      *  database and formatted using Yii's settings
      */
     public function actionSendLobbyMessage() {
-        //TODO: accept only AJAX by post
         $result = array('success' => 0);
-        if (isset($_POST['chatmessage'])) {
-            $cm = new ChatMessage();
+        if (Yii::app()->request->isPostRequest) {
+            if (isset($_POST['chatmessage'])) {
+                $cm = new ChatMessage();
 
-            $cm->message = $_POST['chatmessage'];
-            $cm->userId = Yii::app()->user->id;
+                $cm->message = $_POST['chatmessage'];
+                $cm->userId = Yii::app()->user->id;
 
-            if ($cm->save()) {
-                $result = array(
-                    'success' => 1,
-                    'id' => $cm->messageId,
-                    'name' => Yii::app()->user->name,
-                    //TODO: there is a bug while formating date, maybe date is not set yet
-                    'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
-                );
+                if ($cm->save()) {
+                    $result = array(
+                        'success' => 1,
+                        'id' => $cm->messageId,
+                        'name' => Yii::app()->user->name,
+                        //TODO: there is a bug while formating date, maybe date is not set yet
+                        'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
+                    );
+                }
             }
         }
-
         echo json_encode($result);
     }
 
@@ -116,60 +116,77 @@ class GameController extends AppController {
      * last: integer, the ID for the last message being sent
      */
     public function actionLobbyChatUpdate() {
-        //TODO: accept only AJAX by post
         $result = array('has' => 0);
-        if (isset($_POST['lastupdate'])) {
-            $lastUpdate = intval($_POST['lastupdate']);
-            $messages = array();
+        if (Yii::app()->request->isPostRequest) {
+            if (isset($_POST['lastupdate'])) {
+                $lastUpdate = intval($_POST['lastupdate']);
+                $messages = array();
 
-            $cms = ChatMessage::model()->findAll('messageId > :last AND gameId IS NULL', array(':last' => $lastUpdate));
-            foreach ($cms as $cm) {
-                $messages[] = array(
-                    'name' => $cm->user->name,
-                    'message' => $cm->message,
+                $cms = ChatMessage::model()->findAll('messageId > :last AND gameId IS NULL', array(':last' => $lastUpdate));
+                foreach ($cms as $cm) {
+                    $messages[] = array(
+                        'name' => $cm->user->name,
+                        'message' => $cm->message,
+                        'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
+                    );
+                }
+                $count = count($messages);
+
+                $last = $lastUpdate;
+                if ($count) {
+                    $last = end($cms)->messageId;
+                }
+                $result = array(
+                    'success' => 1,
+                    'id' => $cm->messageId,
+                    'name' => Yii::app()->user->name,
                     'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
                 );
             }
-            $count = count($messages);
-
-            $last = $lastUpdate;
-            if ($count) {
-                $last = end($cms)->messageId;
-            }
-            $result = array(
-                'success' => 1,
-                'id' => $cm->messageId,
-                'name' => Yii::app()->user->name,
-                //TODO: there is a bug while formating date, maybe date is not set yet
-                'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
-            );
         }
 
         echo json_encode($result);
     }
 
+    /**
+     * Sends messages to the game chat. Only the two players can send messages, 
+     * any spectator will be able to see the messages but not write in the chat.
+     *  
+     * @param integer $id The game ID.
+     */
     public function actionSendGameMessage($id) {
-        //TODO: accept only AJAX by post
-        //TODO: validate user sending message, only players can send in-game messages
         $result = array('success' => 0);
-        if (isset($_POST['gamemessage'])) {
-            $cm = new ChatMessage();
+        if (Yii::app()->request->isPostRequest) {
+            $game = $this->loadGameById($id);
+            if (($game->player1 == Yii::app()->user - id || $game->player2 == Yii::app()->user - id)
+                    && isset($_POST['gamemessage'])) {
 
-            $cm->message = $_POST['gamemessage'];
-            $cm->userId = Yii::app()->user->id;
-            $cm->gameId = $id;
+                $cm = new ChatMessage();
 
-            if ($cm->save()) {
-                $result = array(
-                    'success' => 1,
-                    'id' => $cm->messageId,
-                    'name' => Yii::app()->user->name,
-                    //TODO: there is a bug while formating date, maybe date is not set yet
-                    'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
-                );
+                $cm->message = $_POST['gamemessage'];
+                $cm->userId = Yii::app()->user->id;
+                $cm->gameId = $id;
+
+                if ($cm->save()) {
+                    $result = array(
+                        'success' => 1,
+                        'id' => $cm->messageId,
+                        'name' => Yii::app()->user->name,
+                        //TODO: there is a bug while formating date, maybe date is not set yet
+                        'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
+                    );
+                }
             }
         }
 
+        echo json_encode($result);
+    }
+
+    public function actionGameChatUpdate($id) {
+        $result = array('success' => 0);
+        if (Yii::app()->request->isPostRequest) {
+            //TODO: not implemented yet!
+        }
         echo json_encode($result);
     }
 
@@ -206,7 +223,6 @@ class GameController extends AppController {
         $this->redirect(array('lobby'));
     }
 
-    //TODO: running, when?
     public function actionJoin($id) {
         //TODO: second user can't be the first
         //deck list can't be bigger than maxDecks
@@ -385,6 +401,11 @@ class GameController extends AppController {
         return $game;
     }
 
+    /**
+     * Prepends new access rules to the default rules.
+     * Only registered users can execute <em>GameController</em> actions.
+     * @return array The new rules array
+     */
     public function accessRules() {
         return array_merge(array(
                     array('allow',

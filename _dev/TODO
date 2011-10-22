@@ -1,13 +1,2 @@
-- Update SF project page
-
 NOTES/IDEAS:
-
-When a small card version is clicked, the state should be seen on the leff with 
-full size card, rule text and tokens/states affecting the card.
-
 Find orphan cards.
-
-Image on deck-nob that tells the user the deck expands.
-Preloader image waiting game and initializing game.
-Record game and replay.
-View to watch the game.

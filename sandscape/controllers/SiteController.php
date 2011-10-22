@@ -18,8 +18,12 @@
  * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
+ * http://wtactics.org
  */
 
+/**
+ * @since 1.0
+ */
 class SiteController extends AppController {
 
     public function actionIndex() {
@@ -73,7 +77,7 @@ class SiteController extends AppController {
     }
 
     public function actionError() {
-        //TODO: proper error handling, view doesn't exist
+        //TODO: proper error handling
         if (($error = Yii::app()->errorHandler->error)) {
             if (Yii::app()->request->isAjaxRequest) {
                 echo $error['message'];
@@ -83,6 +87,12 @@ class SiteController extends AppController {
         }
     }
 
+    /**
+     * Site access rules allow for every action without restriction, except for 
+     * the <em>logout</em> action.
+     * 
+     * @return array The new rules array.
+     */
     public function accessRules() {
         return array_merge(array(
                     array('allow',

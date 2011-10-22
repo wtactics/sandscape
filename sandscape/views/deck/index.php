@@ -3,7 +3,7 @@
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'deck-grid',
-    'dataProvider' => $filter->search(Yii::app()->user->getId()),
+    'dataProvider' => $filter->search(Yii::app()->user->id),
     'filter' => $filter,
     'columns' => array(
         'name',

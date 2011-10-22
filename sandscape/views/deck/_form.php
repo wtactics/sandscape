@@ -40,18 +40,21 @@ $form = $this->beginWidget('CActiveForm', array(
             ?>
             <img class="chosen s-card-<?php echo $card->cardId; ?>" style="left: <?php echo $left; ?>px; top: <?php echo $top; ?>px; " src="_cards/up/thumbs/<?php echo $card->image; ?>" id="s-card-<?php echo $card->cardId, $i; ?>">
             <input class="hs-card-<?php echo $card->cardId; ?>" type="hidden" name="using[]" value="card-<?php echo $card->cardId; ?>" id="hs-card-<?php echo $card->cardId, $i; ?>" />
-        <?php 
-        $i++;
-        } ?>
+            <?php
+            $i++;
+        }
+        ?>
     </div>
 </div>
 <div class="span-10 last">
-    <h3>Existing cards</h3>
+    <h3><?php echo count($cards); ?> Existing cards</h3>
     <div id="existingcards">
         <?php foreach ($cards as $card) { ?>
             <img class="available" src="_cards/up/thumbs/<?php echo $card->image; ?>" title="<?php echo $card->name; ?>" id="card-<?php echo $card->cardId; ?>" />
         <?php } ?>
     </div>
+
+
 </div>
 
 <?php $this->endWidget(); ?>

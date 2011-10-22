@@ -18,14 +18,25 @@
  * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
+ * http://wtactics.org
  */
 
+/**
+ * Handles all deck management actions that users can perform.
+ * 
+ * @since 1.0
+ */
 class DeckController extends AppController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
     }
 
+    /**
+     * Default action used to list all decks for the current user.
+     * The filter is applied in the view since it's there that the search method 
+     * is called.
+     */
     public function actionIndex() {
         $this->updateUserActivity();
 
@@ -33,12 +44,16 @@ class DeckController extends AppController {
         $filter->unsetAttributes();
 
         if (isset($_GET['Deck'])) {
-            $model->attributes = $_GET['Deck'];
+            $filter->attributes = $_GET['Deck'];
         }
 
         $this->render('index', array('filter' => $filter));
     }
 
+    /**
+     * Creates a new deck and redirects the user to the <em>update</em> action 
+     * uppon success.
+     */
     public function actionCreate() {
         $this->updateUserActivity();
 
@@ -49,11 +64,32 @@ class DeckController extends AppController {
 
             $new->userId = 1;
             $new->created = date('Y-m-d H:i');
-            $new->active = 1;
 
             if ($new->save()) {
-                //TODO: validate redirect
-                $this->redirect(array('index'));
+                if (isset($_POST['autoFill']) && (int) $_POST['autoFill']) {
+                    $cards = Card::model()->findAll('active = 1');
+                    //auto-filling with 62 random cards
+                    if (($max = count($cards))) {
+                        for ($i = 0; $i < 62; $i++) {
+                            $dkc = new DeckCard();
+                            $dkc->cardId = $cards[rand(0, $max - 1)]->cardId;
+                            $dkc->deckId = $new->deckId;
+
+                            $dkc->save();
+                        }
+                    }
+                } else if (isset($_POST['using']) && !empty($_POST['using'])) {
+                    foreach ($_POST['using'] as $cardname) {
+                        $dkc = new DeckCard();
+                        $cardId = explode('card-', $cardname);
+                        $dkc->cardId = (int) $cardId[1];
+                        $dkc->deckId = $new->deckId;
+
+                        $dkc->save();
+                    }
+                }
+
+                $this->redirect(array('update', 'id' => $new->deckId));
             }
         }
 
@@ -67,28 +103,74 @@ class DeckController extends AppController {
         $deck = $this->loadDeckModel($id);
 
         if (isset($_POST['Deck'])) {
-            $model->attributes = $_POST['Deck'];
-            if ($model->save()) {
-                //TODO: validate redirect
-                $this->redirect(array('index'));
+            $deck->attributes = $_POST['Deck'];
+            if ($deck->save()) {
+
+                //Remove all associations, and add only those that have been sent.
+                //Worse case scenerio: user changes deck name but all cards are 
+                //removed and added again.
+                DeckCard::model()->deleteAll('deckId = :id', array(':id' => $deck->deckId));
+
+                if (isset($_POST['autoFill']) && (int) $_POST['autoFill']) {
+                    $cards = Card::model()->findAll('active = 1');
+                    //auto-filling with 62 random cards
+                    if (($max = count($cards))) {
+                        for ($i = 0; $i < 62; $i++) {
+                            $dkc = new DeckCard();
+                            $dkc->cardId = $cards[rand(0, $max - 1)];
+                            $dkc->deckId = $deck->deckId;
+
+                            $dkc->save();
+                        }
+                    }
+                } else if (isset($_POST['using']) && !empty($_POST['using'])) {
+                    foreach ($_POST['using'] as $cardname) {
+                        $dkc = new DeckCard();
+                        $cardId = explode('card-', $cardname);
+                        $dkc->cardId = (int) $cardId[1];
+                        $dkc->deckId = $deck->deckId;
+
+                        $dkc->save();
+                    }
+                }
+
+                $this->redirect(array('update', 'id' => $deck->deckId));
             }
         }
 
-        //TODO: filter those already in the deck
         $cards = Card::model()->findAll('active = 1');
         $this->render('edit', array('deck' => $deck, 'cards' => $cards));
     }
 
+    /**
+     * Deletes a model from the database. Only POST requests are accepted so this 
+     * method is used only in the list of decks for the current user.
+     * 
+     * Only the owner of a deck can delete it.
+     * 
+     * @param integer $id The deck's database ID.
+     */
     public function actionDelete($id) {
-        $this->updateUserActivity();
-
         if (Yii::app()->request->isPostRequest) {
-            $this->loadDeckModel($id)->delete();
+            $deck = $this->loadDeckModel($id);
+            if ($deck->userId == Yii::app()->user->id) {
+
+                $deck->active = 0;
+                $deck->save();
+
+                $this->updateUserActivity();
+            }
         } else {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
         }
     }
 
+    /**
+     * Retrieves a Deck model from the database.
+     * 
+     * @param integer $id The model's database ID
+     * @return  Deck The loaded model or null if no model was found for the given ID
+     */
     private function loadDeckModel($id) {
         if (($deck = Deck::model()->findByPk((int) $id)) === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
@@ -96,6 +178,11 @@ class DeckController extends AppController {
         return $deck;
     }
 
+    /**
+     * Adding to the default access rules.
+     * 
+     * @return array
+     */
     public function accessRules() {
         return array_merge(array(
                     array('allow',
