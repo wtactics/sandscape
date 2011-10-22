@@ -35,6 +35,7 @@ Yii::app()->clientScript->registerScript('menuhover', "
             </div>
             <div class="span-24" id="footer">
                 &copy; <?php echo date('Y'); ?> <a href="#">Sandscape</a> & <a href="#">WTactics</a> Team
+                &nbsp;|&nbsp;Running <em>Sandscape <?php echo Yii::app()->params['version']; ?></em>
             </div>
         </div>
     </body>
