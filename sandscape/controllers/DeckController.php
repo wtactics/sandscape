@@ -62,7 +62,7 @@ class DeckController extends AppController {
         if (isset($_POST['Deck'])) {
             $new->attributes = $_POST['Deck'];
 
-            $new->userId = 1;
+            $new->userId = Yii::app()->user->id;
             $new->created = date('Y-m-d H:i');
 
             if ($new->save()) {
