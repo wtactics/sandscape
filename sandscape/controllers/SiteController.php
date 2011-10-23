@@ -46,8 +46,14 @@ class SiteController extends AppController {
         } else if (isset($_POST['RegisterForm'])) {
             $register->attributes = $_POST['RegisterForm'];
             if ($register->validate() && $register->register()) {
-                //TODO: don't redirect, just show success messages
-                $this->redirect(Yii::app()->user->returnUrl);
+                $login->email = $register->email;
+                $login->password = $register->password;
+
+                if ($login->login()) {
+                    $this->redirect(Yii::app()->user->returnUrl);
+                } else {
+                    $this->redirect(array('index'));
+                }
             }
         }
 

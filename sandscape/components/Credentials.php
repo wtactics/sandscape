@@ -43,12 +43,7 @@ class Credentials extends CBaseUserIdentity {
         if ($user === null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID;
         } else {
-            $value = $this->password;
-            if (Yii::app()->params['hash'] != '') {
-                $value .= Yii::app()->params['hash'];
-            }
-
-            if ($user->password !== sha1($value)) {
+            if ($user->password !== User::hash($this->password)) {
                 $this->errorCode = self::ERROR_PASSWORD_INVALID;
             } else {
                 $this->id = $user->userId;

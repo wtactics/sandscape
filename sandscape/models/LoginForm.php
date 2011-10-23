@@ -60,7 +60,7 @@ class LoginForm extends CFormModel {
 
     public function login() {
         if ($this->credentials === null) {
-            $this->credentials = new Credentials($this->username, sha1($this->password));
+            $this->credentials = new Credentials($this->email, $this->password);
             $this->credentials->authenticate();
         }
 
