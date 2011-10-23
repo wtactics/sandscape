@@ -1,4 +1,4 @@
 *.jpg
 *.png
-!cardback.reverse.thumb.jpg
-!noimage.reverse.thumb.jpg
+!cardback.jpg
+!noimage.jpg
