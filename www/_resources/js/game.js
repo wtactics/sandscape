@@ -139,6 +139,7 @@ function checkGameStart() {
                                     stack: '.card',
                                     revert: 'invalid'
                                 })
+                                .dblclick(requestCardInfo)
                                 .appendTo($('body'));
                             }
                             
@@ -214,6 +215,27 @@ function moveCard(cardId, destinationId) {
         type: 'POST',
         success: doGameUpdate
     });
+}
+
+function requestCardInfo(e) {
+    $.ajax({
+        url: bUrl,
+        data: {
+            event: 'cardInfo',
+            card: $(this).attr('id')
+        },
+        type: 'POST',
+        dataType: 'json',
+        success: function (json) {
+            if(json.success) {
+                $('#card-info-name').html(json.name);
+                $('#card-info-image').attr('src', '_cards/up/thumbs/' + json.image);
+                $('#card-info-states').html(json.states);
+                $('#card-info-rules').html(json.rules);
+            }
+        }
+    })
+                                
 }
 
 function pack() {

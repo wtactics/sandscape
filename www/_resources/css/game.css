@@ -20,6 +20,8 @@ body {
 
 #info-widget {
     width: 350px;
+    overflow: auto;
+    /*background: transparent url(../images/hline.png) repeat-x bottom left;*/
 }
 
 #tools-widget {
@@ -34,6 +36,7 @@ body {
 /* UNIQUE CLASS: This class is handled as if it was an ID */
 .opponent-area {
     height: 100%;
+    /*background: transparent url(../images/hline.png) repeat-x bottom left;*/
 }
 
 #play-area {
@@ -45,6 +48,7 @@ body {
 .hand {
     height: 100%;
     width: 350px;
+    background: transparent url(../images/vline.png) repeat-y top right;
 }
 
 #deck-nob {
@@ -89,6 +93,7 @@ body {
 #chat #filters {
     float: left;
     width: 40%;
+    text-align: right;
 }
 
 #chat p {
@@ -114,25 +119,18 @@ table.grid * td {
 
 /* UNIQUE CLASS: This class is handled as if it was an ID */
 .play {
+    /*background: transparent url(../images/hline.png) repeat-x top left;*/
 }
 
-
-
-input.text {
+#chat input.text {
     background-color: #FFF;
     border: 1px solid #BBB;
     color: #000;
+    /*margin:0.5em 0;*/
+    padding: 5px;
+    width: 300px;
 }
 
 input.text:focus {
     border-color: #666;
-}
-
-input.text {
-    margin:0.5em 0;
-}
-
-input.text {
-    /*width: 300px;*/
-    padding: 5px;
 }

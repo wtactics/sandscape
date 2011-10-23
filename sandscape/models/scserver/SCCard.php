@@ -55,5 +55,14 @@ class SCCard extends SCContainer
       $status->src = $this->getSrc();
       return $status;
    }
+   
+   /**
+    * Returns the database ID for this card.
+    * 
+    * @return integer
+    */
+   public function getDbId() {
+       return $this->dbId;
+   }
 
 }

@@ -430,6 +430,22 @@ class GameController extends AppController {
                             echo SCGame::JSONIndent(json_encode($result));
                         }
                         break;
+                    case 'cardInfo':
+                        $result = array('success' => 0);
+                        if ($game->running && $this->scGame && isset($_REQUEST['card'])) {
+                            if(($cardId = $this->scGame->getCardDBId($_REQUEST['card'])) != 0) {
+                            $card = Card::model()->findByPk((int) $cardId);
+                            $result = array(
+                                'success' => 1,
+                                'name' => $card->name,
+                                'rules' => $card->rules,
+                                'image' => $card->image,
+                                'states' => ''
+                            );   
+                            }
+                        }
+                        echo json_encode($result);
+                        break;
                     default:
                         echo SCGame::JSONIndent(json_encode((object) array('result' => 'error', 'motive' => 'Unrecognized action')));
                         yii::app()->end();

@@ -24,17 +24,21 @@ Yii::app()->clientScript->registerScript('startjs', "lastReceived = {$last};init
     </div>
     <table id="card-info">
         <tr>
-            <td colspan="2"><strong>Card:</strong> name</td>
-        </tr>
-        <tr  style="vertical-align: top;">
-            <td style="width: 30%;"><img src="_cards/up/thumbs/cardback.jpg" /></td>
-            <td>
-                <strong>States:</strong>
+            <td colspan="2"><strong>Card:</strong>
+                <span id="card-info-name"></span>
             </td>
         </tr>
-        <tr colspane="2">
+        <tr  style="vertical-align: top;">
+            <td style="width: 30%;"><img src="_cards/up/thumbs/cardback.jpg" id="card-info-image" /></td>
             <td>
+                <strong>States:</strong>
+                <span id="card-info-states"></span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
                 <strong>Rules:</strong>
+                <span id="card-info-rules"></span>
             </td>
         </tr>
     </table>
@@ -61,15 +65,15 @@ Yii::app()->clientScript->registerScript('startjs', "lastReceived = {$last};init
         <?php } ?>
     </ul>
     <div id="controls">
-        <div id="filters">
-            Filter messages:
-            <input type="radio" name="filter" id="fshow-all" onchange="filterChatMessages(this);" selected="selected" /> All ::
-            <input type="radio" name="filter" id="fshow-user"onchange="filterChatMessages(this);" /> User ::
-            <input type="radio" name="filter" id="fshow-system" onchange="filterChatMessages(this);" /> System         
-        </div>
         <p>
             <input type="text" class="text" id="writemessage" />
             <button type="button" onclick="sendMessage('<?php echo $this->createURL('game/sendgamemessage', array('id' => $gameId)); ?>');" id="sendbtn">Send</button>
         </p>
+        <div id="filters">
+            Filter:
+            <input type="radio" name="filter" id="fshow-all" onchange="filterChatMessages(this);" checked="checked" /> All ::
+            <input type="radio" name="filter" id="fshow-user"onchange="filterChatMessages(this);" /> User ::
+            <input type="radio" name="filter" id="fshow-system" onchange="filterChatMessages(this);" /> System         
+        </div>
     </div>
 </div>
