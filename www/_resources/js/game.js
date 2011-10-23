@@ -15,9 +15,9 @@ function initTable(base, messageUpUrl) {
     checkGameStart();
     
     chkGameID = setInterval(checkGameStart, 3000);
-    updMessagesID = setInterval(function() {
-        updateMessages(messageUpUrl)
-    }, 5000);
+    //updMessagesID = setInterval(function() {
+    //    updateMessages(messageUpUrl)
+    //}, 5000);
 }
 
 function checkGameStart() {
@@ -154,7 +154,7 @@ function checkGameStart() {
 
                             
                             gameRunning = true;
-                            updGameID = setInterval(updateGame, 3000);
+                            //updGameID = setInterval(updateGame, 3000);
                         }
                     }
                 });
