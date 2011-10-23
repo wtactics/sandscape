@@ -1,18 +1,22 @@
 //Global control variables
 //TODO: //NOTE: shouldn't this be placed in a global object for easier control 
 //and maintenance
+var lastReceived = 0;
 var gameRunning = false;
 var bUrl;
 var chkGameID;
 var updGame;
 
-function initTable(base) {
+function initTable(base, messageUpUrl) {
     bUrl = base
     
     pack();
     checkGameStart();
     
     chkGameID = setInterval(checkGameStart, 3000);
+//setInterval(function() {
+//    updateMessages(messageUpUrl)
+//}, 5000);
 }
 
 function checkGameStart() {
@@ -148,7 +152,7 @@ function checkGameStart() {
 
                             
                             gameRunning = true;
-                        //updGame = setInterval(updateGame, 3000);*/
+                            updGame = setInterval(updateGame, 3000);
                         }
                     }
                 });
@@ -320,13 +324,39 @@ function sendMessage(destination) {
                     $('#chat-messages').append('<li class="user-message"><span><strong>' + json.name + '</strong>&nbsp;[' 
                         + json.date + ']:</span>' + message + '</li>');
                     
-                    //TODO: track received messages
                     lastReceived = json.id;
+                    updateMessageScroll();
                 }
             }
         });
         $("#writemessage").val('');
     }
+}
+
+function updateMessages(destination) {
+//    $.ajax({
+//        type: "POST",
+//        url: destination,
+//        data: {
+//            'lastupdate': lastReceived
+//        },
+//        dataType: 'json',
+//        success: function(json) {
+//            if(json.has) {
+//                $.each(json.messages, function() {
+//                    $('#chat-messages').append('<li class="user-message"><span><strong>' + json.name + '</strong>&nbsp;[' 
+//                        + json.date + ']:</span>' + message + '</li>');
+//                });
+//
+//                lastReceived = json.last;
+//                updateMessageScroll();
+//            }
+//        }
+//    });
+}
+
+function updateMessageScroll() {
+    $('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
 }
 
 function filterChatMessages(elem) {

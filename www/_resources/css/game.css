@@ -82,7 +82,20 @@ body {
 #chat ul {
     list-style: none;
     height: 200px;
-    background-color: #FFF;
+}
+
+#chat #filters {
+    float: left;
+    width: 40%;
+}
+
+#chat p {
+    float: left;
+    text-align: center;
+    width: 58%;
+}
+#chat #controls {
+    clear:both;
 }
 
 table {
@@ -98,6 +111,26 @@ table.grid * td {
 }
 
 /* UNIQUE CLASS: This class is handled as if it was an ID */
-.play {    
-    background-color: yellow;
+.play {
+}
+
+
+
+input.text {
+    background-color: #FFF;
+    border: 1px solid #BBB;
+    color: #000;
+}
+
+input.text:focus {
+    border-color: #666;
+}
+
+input.text {
+    margin:0.5em 0;
+}
+
+input.text {
+    /*width: 300px;*/
+    padding: 5px;
 }

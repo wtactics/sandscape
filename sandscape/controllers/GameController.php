@@ -40,16 +40,25 @@ class GameController extends AppController {
         $this->redirect(array('lobby'));
     }
 
+    /**
+     * Default action is to send users to the game lobby.
+     * 
+     * The game lobby offers a way to create games, join existing games and exchange
+     * messages between other users.
+     */
     public function actionLobby() {
         $this->updateUserActivity();
 
         $games = Game::model()->findAll('ended IS NULL AND private = 0');
         $users = User::model()->findAllAuthenticated()->getData();
-        
-        $max = ChatMessage::model()->count('gameId IS NULL ORDER BY sent');
-        $messages = ChatMessage::model()->findAll('gameId IS NULL ORDER BY sent LIMIT :start, 15', array(':start' => $max - 15));
 
-        $decks = Deck::model()->findAll('userId = :id', array(':id' => Yii::app()->user->id));
+        $max = ChatMessage::model()->count('gameId IS NULL ORDER BY sent');
+        if ($max >= 15) {
+            $max -= 15;
+        }
+        $messages = ChatMessage::model()->findAll('gameId IS NULL ORDER BY sent LIMIT :start, 15', array(':start' => (int) $max));
+
+        $decks = Deck::model()->findAll('userId = :id', array(':id' => (int) (Yii::app()->user->id)));
 
         $this->render('lobby', array(
             'games' => $games,
@@ -285,6 +294,7 @@ class GameController extends AppController {
                 $game->player2 = Yii::app()->user->id;
                 $game->player2Ready = 1;
                 if ($game->save()) {
+                    $error = false;
                     foreach ($_POST['deckList'] as $deckId) {
                         $gameDeck = new GameDeck();
                         $gameDeck->gameId = $game->gameId;
@@ -427,7 +437,17 @@ class GameController extends AppController {
                 $game->save();
                 yii::app()->end();
             }
-            $this->render('board', array('gameId' => $id));
+
+
+            $max = ChatMessage::model()->count('gameId = :id ORDER BY sent', array(':id' => (int) $id));
+            if ($max >= 15) {
+                $max -= 15;
+            }
+            $messages = ChatMessage::model()->findAll('gameId = :id ORDER BY sent LIMIT :start, 15', array(
+                ':id' => (int) $id,
+                ':start' => (int) $max
+                    ));
+            $this->render('board', array('gameId' => $id, 'messages' => $messages));
         } else {
             // TODO: the user accessing the game is not a player of the game. Show some error or something.
         }
