@@ -55,7 +55,8 @@ Yii::app()->clientScript->registerScript('startjs', "lastReceived = {$last};init
     <ul id="chat-messages">
         <?php foreach ($messages as $message) { ?>
             <li class="user-message"><span><strong><?php echo $message->user->name; ?></strong>
-                    [<?php echo Yii::app()->dateFormatter->formatDateTime(strtotime($message->sent), 'short'); ?>]:
+                    [<?php echo Yii::app()->dateFormatter->formatDateTime(strtotime($message->sent), 'short'); ?>]:</span>
+                <?php echo $message->message; ?>
             </li>
         <?php } ?>
     </ul>

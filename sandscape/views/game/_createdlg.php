@@ -1,7 +1,7 @@
 <div id="createdlg">
     <h2>Create Game</h2>
     <?php echo CHtml::beginForm($this->createURL('game/create')); ?>
-    <p><?php echo CHtml::label('Max. Decks:', 'maxDecks'), '<br />', CHtml::textField('maxDecks', '1', array('size' => 4)); ?></p>
+    <p><?php echo CHtml::label('Number of Decks:', 'maxDecks'), '<br />', CHtml::textField('maxDecks', '1', array('size' => 4)); ?></p>
     <p class="deck-list">
         <?php
         echo CHtml::label('Available Decks:', 'deckList'), '<br />',

@@ -82,6 +82,8 @@ body {
 #chat ul {
     list-style: none;
     height: 200px;
+    overflow: auto;
+    margin-bottom: 0.5em;
 }
 
 #chat #filters {

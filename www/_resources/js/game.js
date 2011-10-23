@@ -5,7 +5,8 @@ var lastReceived = 0;
 var gameRunning = false;
 var bUrl;
 var chkGameID;
-var updGame;
+var updGameID;
+var updMessagesID;
 
 function initTable(base, messageUpUrl) {
     bUrl = base
@@ -14,9 +15,9 @@ function initTable(base, messageUpUrl) {
     checkGameStart();
     
     chkGameID = setInterval(checkGameStart, 3000);
-//setInterval(function() {
-//    updateMessages(messageUpUrl)
-//}, 5000);
+    updMessagesID = setInterval(function() {
+        updateMessages(messageUpUrl)
+    }, 5000);
 }
 
 function checkGameStart() {
@@ -152,7 +153,7 @@ function checkGameStart() {
 
                             
                             gameRunning = true;
-                            updGame = setInterval(updateGame, 3000);
+                            updGameID = setInterval(updateGame, 3000);
                         }
                     }
                 });
@@ -334,25 +335,26 @@ function sendMessage(destination) {
 }
 
 function updateMessages(destination) {
-//    $.ajax({
-//        type: "POST",
-//        url: destination,
-//        data: {
-//            'lastupdate': lastReceived
-//        },
-//        dataType: 'json',
-//        success: function(json) {
-//            if(json.has) {
-//                $.each(json.messages, function() {
-//                    $('#chat-messages').append('<li class="user-message"><span><strong>' + json.name + '</strong>&nbsp;[' 
-//                        + json.date + ']:</span>' + message + '</li>');
-//                });
-//
-//                lastReceived = json.last;
-//                updateMessageScroll();
-//            }
-//        }
-//    });
+    $.ajax({
+        type: "POST",
+        url: destination,
+        data: {
+            'lastupdate': lastReceived
+        },
+        dataType: 'json',
+        success: function(json) {
+            if(json.has) {
+                $.each(json.messages, function() {
+                    $('#chat-messages').append('<li class="user-message"><span><strong>' + this.name + '</strong>&nbsp;[' 
+                        + this.date + ']:</span>' + this.message + '</li>');
+                    console.log('Appending');
+                });
+
+                lastReceived = json.last;
+                updateMessageScroll();
+            }
+        }
+    });
 }
 
 function updateMessageScroll() {

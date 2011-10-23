@@ -52,11 +52,13 @@ class GameController extends AppController {
         $games = Game::model()->findAll('ended IS NULL AND private = 0');
         $users = User::model()->findAllAuthenticated()->getData();
 
-        $max = ChatMessage::model()->count('gameId IS NULL ORDER BY sent');
-        if ($max >= 15) {
-            $max -= 15;
+        $start = ChatMessage::model()->count('gameId IS NULL ORDER BY sent');
+        if ($start >= 15) {
+            $start -= 15;
+        } else {
+            $start = 0;
         }
-        $messages = ChatMessage::model()->findAll('gameId IS NULL ORDER BY sent LIMIT :start, 15', array(':start' => (int) $max));
+        $messages = ChatMessage::model()->findAll('gameId IS NULL ORDER BY sent LIMIT :start, 15', array(':start' => (int) $start));
 
         $decks = Deck::model()->findAll('userId = :id', array(':id' => (int) (Yii::app()->user->id)));
 
@@ -439,13 +441,16 @@ class GameController extends AppController {
             }
 
 
-            $max = ChatMessage::model()->count('gameId = :id ORDER BY sent', array(':id' => (int) $id));
-            if ($max >= 15) {
-                $max -= 15;
+            $start = ChatMessage::model()->count('gameId = :id ORDER BY sent', array(':id' => (int) $game->gameId));
+            if ($start >= 15) {
+                $start -= 15;
+            } else {
+                $start = 0;
             }
+
             $messages = ChatMessage::model()->findAll('gameId = :id ORDER BY sent LIMIT :start, 15', array(
-                ':id' => (int) $id,
-                ':start' => (int) $max
+                ':id' => (int) $game->gameId,
+                ':start' => (int) $start
                     ));
             $this->render('board', array('gameId' => $id, 'messages' => $messages));
         } else {
@@ -482,7 +487,8 @@ class GameController extends AppController {
         return array_merge(array(
                     array('allow',
                         'actions' => array('index', 'create', 'join', 'lobby',
-                            'lobbyChatUpdate', 'play', 'sendGameMessage', 'sendLobbyMessage'),
+                            'lobbyChatUpdate', 'play', 'sendGameMessage', 'sendLobbyMessage',
+                            'gameChatUpdate'),
                         'users' => array('@')
                     )
                         ), parent::accessRules());
