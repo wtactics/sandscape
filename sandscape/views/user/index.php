@@ -1,3 +1,4 @@
+<?php $this->title = 'Users'; ?>
 <h2>User List</h2>
 <div class="span-2 prepend-20 last"><a href="<?php echo $this->createURL('create'); ?>">New User</a></div>
 <?php

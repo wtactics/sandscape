@@ -1,1 +1,1 @@
-
+<?php $this->title = 'Watching a Game'; ?>

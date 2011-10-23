@@ -48,6 +48,12 @@ class AppController extends CController {
      */
     protected $menu;
 
+    /**
+     *
+     * @var string The page title.
+     */
+    protected $title;
+
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
 

@@ -1,3 +1,4 @@
+<?php $this->title = 'About Sandscape'; ?>
 <h2>About SandScape Project</h2>
 <p>The purpose of Sandscape project is to create a virtual online and purely browser based environment where players can meet to play a CCG. Sandscape is, as all things WT, an open source endeavor that should be generic, easy to extend and modify so that it can be of use in other projects, making it possible to play almost any CCG with it. To the best of our knowledge there is no such existing libre software around today.</p>
 <p>Sandscape does not intend to compete with the existing open source solutions for online CCG play, alas the fact that Sandscape follows, to some extent, the same concept as systems like OTCGN2, LackeyCCG or gCCG will make Sandscape a competitor in the same way that WTactics is a competitor with other established CCGs.</p>

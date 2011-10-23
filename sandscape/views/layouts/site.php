@@ -22,7 +22,7 @@ Yii::app()->clientScript->registerScript('menuhover', "
         <!-- css -->
         <link href="_resources/css/main.css" rel="stylesheet" type="text/css" media="screen, projection" />
 
-        <title></title>
+        <title><?php echo $this->title; ?></title>
     </head>
     <body>
         <div class="container">

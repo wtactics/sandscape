@@ -13,8 +13,9 @@ Yii::app()->clientScript->registerScript('tabsjs', "
         return false;
     });
 ");
-?>
 
+$this->title = 'Edit Profile';
+?>
 
 <h2>Edit Profile</h2>
 <div id="tabs">

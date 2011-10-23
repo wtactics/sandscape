@@ -1,3 +1,4 @@
+<?php $this->title = 'Recover your password'; ?>
 <h2>Recover Password</h2>
 <?php
 $form = $this->beginWidget('CActiveForm', array(

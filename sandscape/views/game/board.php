@@ -15,6 +15,8 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/game.js', CClientScr
 $url = $this->createURL('game/play', array('id' => $gameId));
 $url2 = $this->createUrl('game/gamechatupdate', array('id' => $gameId));
 Yii::app()->clientScript->registerScript('startjs', "lastReceived = {$last};initTable('{$url}', '{$url2}');updateMessageScroll();");
+
+$this->title = 'Playing';
 ?>
 
 <div id="info-widget">

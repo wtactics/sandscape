@@ -1,3 +1,4 @@
+<?php $this->title = 'Cards'; ?>
 <h2>Card List</h2>
 <div class="span-2 prepend-20 last"><a href="<?php echo $this->createURL('create'); ?>">New Card</a></div>
 <?php

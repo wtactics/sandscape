@@ -1,3 +1,4 @@
+<?php $this->title = 'Card details for "' . CHtml::encode($card->name) . '"'; ?>
 <h2>View Card</h2>
 <div class="span-13">
     <div class="span-4 border">
