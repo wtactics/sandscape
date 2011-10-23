@@ -1,6 +1,6 @@
 <?php $this->title = 'Users'; ?>
 <h2>User List</h2>
-<div class="span-2 prepend-20 last"><a href="<?php echo $this->createURL('create'); ?>">New User</a></div>
+<div class="span-22 last"><a href="<?php echo $this->createURL('create'); ?>">New User</a></div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'user-grid',

@@ -105,6 +105,7 @@ class GameController extends AppController {
                         'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
                     );
                 }
+                $this->updateUserActivity();
             }
         }
         echo json_encode($result);
@@ -153,6 +154,7 @@ class GameController extends AppController {
                     'messages' => $messages,
                     'last' => $last
                 );
+                $this->updateUserActivity();
             }
         }
 
@@ -187,6 +189,7 @@ class GameController extends AppController {
                         'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
                     );
                 }
+                $this->updateUserActivity();
             }
         }
 
@@ -232,6 +235,7 @@ class GameController extends AppController {
                     'messages' => $messages,
                     'last' => $last
                 );
+                $this->updateUserActivity();
             }
         }
         echo json_encode($result);
@@ -275,6 +279,7 @@ class GameController extends AppController {
                     $this->redirect(array('play', 'id' => $game->gameId));
                 }
             }
+            $this->updateUserActivity();
         }
 
         $this->redirect(array('lobby'));
@@ -312,6 +317,7 @@ class GameController extends AppController {
                     }
                 }
             }
+            $this->updateUserActivity();
         }
 
         $this->redirect(array('lobby'));
@@ -433,15 +439,16 @@ class GameController extends AppController {
                     case 'cardInfo':
                         $result = array('success' => 0);
                         if ($game->running && $this->scGame && isset($_REQUEST['card'])) {
-                            if(($cardId = $this->scGame->getCardDBId($_REQUEST['card'])) != 0) {
-                            $card = Card::model()->findByPk((int) $cardId);
-                            $result = array(
-                                'success' => 1,
-                                'name' => $card->name,
-                                'rules' => $card->rules,
-                                'image' => $card->image,
-                                'states' => ''
-                            );   
+                            if (($cardId = $this->scGame->getCardDBId($_REQUEST['card'])) != 0) {
+                                $card = Card::model()->findByPk((int) $cardId);
+                                $result = array(
+                                    'success' => 1,
+                                    'name' => $card->name,
+                                    'rules' => $card->rules,
+                                    'image' => $card->image,
+                                    //TODO: add states when they become available
+                                    'states' => ''
+                                );
                             }
                         }
                         echo json_encode($result);
@@ -468,6 +475,8 @@ class GameController extends AppController {
                 ':id' => (int) $game->gameId,
                 ':start' => (int) $start
                     ));
+
+            $this->updateUserActivity();
             $this->render('board', array('gameId' => $id, 'messages' => $messages));
         } else {
             // TODO: the user accessing the game is not a player of the game. Show some error or something.
@@ -475,6 +484,7 @@ class GameController extends AppController {
     }
 
     public function actionLeave($id) {
+        $this->updateUserActivity();
         //TODO: not implemented yet!
         //TODO: close game, notify all clients, dispose states.
         $this->redirect(array('lobby'));

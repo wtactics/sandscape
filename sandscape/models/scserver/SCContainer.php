@@ -101,7 +101,8 @@ class SCContainer {
 
         return (object) array(
                     'id' => $this->getId(),
-                    'location' => ($root && $this->getParent() ? $this->getParent()->getId() : $this->game->getVoid()->getId()),
+                    //'location' => ($root && $this->getParent() ? $this->getParent()->getId() : $this->game->getVoid()->getId()),
+                    'location' => (($root || $this->isMovable()) && $this->getParent() ? $this->getParent()->getId() : $this->game->getVoid()->getId()),
                     'offsetHeight' => ( $this->getParent() && $this->getParent()->isMovable() ? 1 : 0)
         );
     }
