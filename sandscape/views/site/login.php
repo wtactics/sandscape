@@ -1,5 +1,5 @@
 <?php $this->title = 'Login'; ?>
-<h2>//TODO: Some title</h2>
+<h2>Login</h2>
 <div class="span-11">
     <?php $this->renderPartial('_register', array('register' => $register)); ?>
 </div>

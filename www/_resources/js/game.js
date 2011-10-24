@@ -11,13 +11,14 @@ var updMessagesID;
 function initTable(base, messageUpUrl) {
     bUrl = base
     
+    //$('#opponent-loader').show();
     pack();
     checkGameStart();
     
     chkGameID = setInterval(checkGameStart, 3000);
-    //updMessagesID = setInterval(function() {
-    //    updateMessages(messageUpUrl)
-    //}, 5000);
+//updMessagesID = setInterval(function() {
+//    updateMessages(messageUpUrl)
+//}, 5000);
 }
 
 function checkGameStart() {
@@ -29,9 +30,9 @@ function checkGameStart() {
         type: 'POST',
         dataType: 'json',
         success: function (json) {
-            console.log('checking game start');
             if(json.result == 'ok') {
-                console.log('all players ready');
+                //$('#opponent-loader').remove();
+                //$('#game-loader').show();
                 clearInterval(chkGameID);
                 $.ajax({
                     url: bUrl,
@@ -40,11 +41,8 @@ function checkGameStart() {
                     },
                     type: 'POST',
                     dataType: 'json',
-                    success: function (json) {
-                        console.log('starting game');
-                        
+                    success: function (json) {                       
                         if(json.result == 'ok') {
-                            console.log('game started');
                             
                             var create = json.createThis;
                             
@@ -142,7 +140,7 @@ function checkGameStart() {
                                 .dblclick(requestCardInfo)
                                 .appendTo($('body'));
                             }
-                            
+                                                        
                             //Configure and set deck-nob widget
                             $(document.createElement('img')).attr({
                                 id: 'deck-nob',
@@ -152,9 +150,9 @@ function checkGameStart() {
                             .click(deckSlide)
                             .appendTo($('body'));
 
-                            
                             gameRunning = true;
                             //updGameID = setInterval(updateGame, 3000);
+                            //$('#game-loader').remove();
                         }
                     }
                 });
@@ -165,7 +163,6 @@ function checkGameStart() {
 
 function doGameUpdate(json) {
     if(json.result == 'ok') {
-        console.log('doing game update');
         for(i = 0; i < json.update.length; i++) {
             $('#' + json.update[i].id)
             .animate($('#' + json.update[i].location).offset())
@@ -176,7 +173,6 @@ function doGameUpdate(json) {
 }
 
 function updateGame() {
-    console.log('requesting game update');
     $.ajax({
         url: bUrl,
         data: {
@@ -189,7 +185,6 @@ function updateGame() {
 }
 
 function drawCard(deckId) {
-    console.log('drawing a card');
     $.ajax({
         url: bUrl,
         data: {
@@ -203,7 +198,6 @@ function drawCard(deckId) {
 }
 
 function moveCard(cardId, destinationId) {
-    console.log('moving a card');
     $.ajax({
         url: bUrl,
         data: {
@@ -238,9 +232,7 @@ function requestCardInfo(e) {
                                 
 }
 
-function pack() {
-    console.log('packing');
-    
+function pack() {   
     $('#info-widget').css({
         width: 350,
         height: $(window).height() / 2,
@@ -271,7 +263,6 @@ function pack() {
         left: 350,
         position: 'absolute'
     });
-    console.log('done packing');
 }
 
 function bubbles() {   
@@ -369,7 +360,6 @@ function updateMessages(destination) {
                 $.each(json.messages, function() {
                     $('#chat-messages').append('<li class="user-message"><span><strong>' + this.name + '</strong>&nbsp;[' 
                         + this.date + ']:</span>' + this.message + '</li>');
-                    console.log('Appending');
                 });
 
                 lastReceived = json.last;

@@ -79,3 +79,16 @@ $this->title = 'Playing';
         </div>
     </div>
 </div>
+
+<!-- LOADER DIVS -->
+<div id="opponent-loader" class="loader" style="display:none;"">
+    <img id="img-loader" src="_resources/images/loader2.gif" />
+    <br />
+    <span>Waiting for opponent.</span>
+</div>
+
+<div id="game-loader" class="loader" style="display:none;"">
+    <img id="img-loader" src="_resources/images/loader2.gif" />
+    <br />
+    <span>Building game.</span>
+</div>

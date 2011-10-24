@@ -47,7 +47,6 @@ $form = $this->beginWidget('CActiveForm', array(
         ?>
         <p>
             <?php
-            //TODOD: customize
             $this->widget('CMultiFileUpload', array(
                 'name' => 'images',
                 'accept' => 'jpg|png',

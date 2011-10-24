@@ -17,7 +17,7 @@ $this->title = 'Sandscape Lobby';
 ?>
 
 <h2>Lobby</h2>
-<div class="span-4">
+<div class="span-3">
     <h3>Users</h3>
     <ul id="userlist">
         <?php foreach ($users as $user) { ?>
@@ -44,7 +44,7 @@ $this->title = 'Sandscape Lobby';
         <?php } ?>
     </ul>
 </div>
-<div class="span-5 last">
+<div class="span-6 last">
     <h3>Games</h3>
     <ul id="gamelist">
         <?php
@@ -59,7 +59,11 @@ $this->title = 'Sandscape Lobby';
             <li class="<?php echo $class; ?>" id="game-<?php echo $game->gameId; ?>">
                 <span><?php echo Yii::app()->dateFormatter->formatDateTime(strtotime($game->created), 'short', false); ?></span>
                 <br />
-                <span>by <?php echo $game->player10->name; ?></span>
+                <?php if ($game->running) { ?>
+                    <span><?php echo $game->player10->name, '&nbsp;-&nbsp;', $game->player20->name; ?></span>
+                <?php } else { ?>
+                    <span>Create by <?php echo $game->player10->name; ?></span>
+                <?php } ?>
             </li>
         <?php } ?>
     </ul>
@@ -71,7 +75,7 @@ $this->title = 'Sandscape Lobby';
 </div>
 <div class="span-4 last">
     <a href="javascript:;" onclick="$('#createdlg').modal();">Create</a>
-    &nbsp;::&nbsp;
+    &nbsp;:&nbsp;
     <a href="javascript:;" onclick="alert('Private games are not not implemented yet!');//$('#joinprivatedlg').modal();">Private Game</a>
 </div>
 
