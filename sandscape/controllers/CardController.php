@@ -208,8 +208,10 @@ class CardController extends AppController {
                             continue;
                         }
 
-                        $card = new Card();
-                        $card->name = $cvsLine[0];
+                        if (($card = Card::model()->find('name LIKE :name', array(':name' => $csvLine[0]))) === null) {
+                            $card = new Card();
+                            $card->name = $cvsLine[0];
+                        }
                         $card->rules = $cvsLine[1];
                         if (isset($cvsLine[3])) {
                             $card->cardscapeId = (int) $cvsLine[3];
@@ -226,6 +228,9 @@ class CardController extends AppController {
                         $imgFactory = PhpThumbFactory::create($destination . 'cards/' . $cvsLine[2]);
 
                         $name = md5('[CARDID=' . $card->cardId . ']=' . $name . '.' . $ext);
+                        if (is_file($path . '/up/' . $name)) {
+                            continue;
+                        }
 
                         //320 width
                         if ($sizes[0] > 320) {
