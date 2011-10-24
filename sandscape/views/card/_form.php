@@ -3,15 +3,12 @@ $form = $this->beginWidget('CActiveForm', array(
     'id' => 'card-form',
     'enableAjaxValidation' => true,
     'clientOptions' => array(
-        'validateOnSubmit' => true,
-        'validateOnChange' => true,
-        'validateOnType' => false,
+        'inputContainer' => 'p'
     ),
     'htmlOptions' => array('enctype' => 'multipart/form-data')
         ));
 ?>
 
-<?php //echo $form->errorSummary($card); ?>
 <div class="span-13">
     <fieldset>
         <legend>Card Info</legend>
@@ -21,14 +18,14 @@ $form = $this->beginWidget('CActiveForm', array(
             $form->textField($card, 'name', array('size' => 60, 'maxlength' => 150, 'class' => 'text'));
             ?>
         </p>
-        <?php //echo $form->error($card, 'name'); ?>
+        <?php echo $form->error($card, 'name'); ?>
         <p>
             <?php
             echo $form->labelEx($card, 'cardscapeId'), '<br />',
             $form->textField($card, 'cardscapeId', array('size' => 10, 'class' => 'text'));
             ?>
         <p>
-            <?php //echo $form->error($card, 'cardscapeId'); ?>
+            <?php echo $form->error($card, 'cardscapeId'); ?>
         <p>
             <?php
             echo $form->labelEx($card, 'rules'), '<br />',
@@ -49,12 +46,12 @@ $form = $this->beginWidget('CActiveForm', array(
         <p>
             <?php echo $form->fileField($card, 'image'); ?>
         </p>
-        <?php //echo $form->error($card, 'image');  ?>
+        <?php echo $form->error($card, 'image'); ?>
     </fieldset>
 </div>
 <div class="span-20 last">
     <p>
-        <?php echo CHtml::submitButton($card->isNewRecord ? 'Create' : 'Save'); ?>
+        <?php echo CHtml::submitButton($card->isNewRecord ? 'Create' : 'Save', array('class' => 'button')); ?>
     </p>
 </div>
 

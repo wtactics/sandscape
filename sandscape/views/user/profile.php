@@ -15,9 +15,12 @@ Yii::app()->clientScript->registerScript('tabsjs', "
 ");
 
 $this->title = 'Edit Profile';
+
+Yii::app()->clientScript->registerCssFile('_resources/css/forms.css');
 ?>
 
 <h2>Edit Profile</h2>
+<!-- //TODO: //NOTE: this could probably be done with Yii's CTabView -->
 <div id="tabs">
     <ul>
         <li><a href="#tab1">General</a></li>

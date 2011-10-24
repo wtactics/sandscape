@@ -119,3 +119,15 @@ a:hover {
 .centered {
     text-align: center;
 }
+
+.button {
+    background-color: #643A04;
+    text-align: center;
+    color: #CDA066;
+    padding: 0.5em 0.8em 0.5em 0.8em;
+}
+
+.button:hover {
+    color: #FFF;
+    background-color: #9A5D0D
+}

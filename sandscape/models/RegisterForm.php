@@ -22,6 +22,8 @@
  */
 
 /**
+ * Form model for the registration process.
+ * 
  * @since 1.0, Sudden Growth
  */
 class RegisterForm extends CFormModel {
@@ -35,6 +37,7 @@ class RegisterForm extends CFormModel {
         return array(
             array('email, password, password_repeat', 'required'),
             array('email', 'email'),
+            array('email', 'unique', 'className' => 'User'),
             array('password', 'compare'),
             array('name', 'length', 'max' => 100),
         );

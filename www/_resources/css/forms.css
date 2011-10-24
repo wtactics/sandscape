@@ -1,0 +1,22 @@
+.error, .success, .validating {
+    border: none;
+    background-color: transparent;
+    padding: 0;
+}
+
+.error input {
+    border: 1px solid #FBC2C4;
+}
+
+.success input {
+    border: 1px solid #C6D880;
+}
+
+span.required {
+    color: #FF0000;
+}
+
+.errorMessage {
+    color: #8A1F11;
+}
+

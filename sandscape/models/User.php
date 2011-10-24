@@ -62,7 +62,9 @@ class User extends CActiveRecord {
             array('email, password', 'required'),
             array('admin, active, seeTopDown', 'numerical', 'integerOnly' => true),
             array('email', 'length', 'max' => 255),
-            array('name', 'length', 'max' => 100),
+            array('name', 'length', 'max' => 15),
+            array('email', 'email'),
+            array('name, email', 'unique', 'className' => 'User'),
             //search
             array('email, name, admin', 'safe', 'on' => 'search'),
         );

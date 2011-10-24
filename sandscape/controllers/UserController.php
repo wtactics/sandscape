@@ -53,13 +53,13 @@ class UserController extends AppController {
      */
     public function actionCreate() {
         $new = new User();
+
         $this->performAjaxValidation('user-form', $new);
 
         if (isset($_POST['User'])) {
             $new->attributes = $_POST['User'];
             if ($new->save()) {
-                //TODO: validate redirect
-                $this->redirect(array('index'));
+                $this->redirect(array('update', 'id' => $new->userId));
             }
         }
 
@@ -67,19 +67,21 @@ class UserController extends AppController {
     }
 
     /**
-     *
-     * @param type $id 
+     * Updates a user's information, this action is only available to administrators.
+     * 
+     * @param integer $id The user ID that we want to update.
      * 
      * @since 1.0, Sudden Growth
      */
     public function actionUpdate($id) {
         $user = $this->loadUserModel($id);
 
+        $this->performAjaxValidation('user-form', $new);
+
         if (isset($_POST['User'])) {
             $user->attributes = $_POST['User'];
             if ($user->save()) {
-                //TODO: validate redirect
-                $this->redirect(array('index'));
+                $this->redirect(array('update', 'id' => $user->userId));
             }
         }
 
@@ -123,6 +125,10 @@ class UserController extends AppController {
 
         $user = $this->loadUserModel(Yii::app()->user->id);
         $passwordModel = new PasswordForm();
+
+        $this->performAjaxValidation(
+                array('profile-form', 'password-form'), array($user, $passwordModel)
+        );
 
         if (isset($_POST['User'])) {
             $user->attributes = $_POST['User'];

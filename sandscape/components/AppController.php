@@ -94,8 +94,9 @@ class AppController extends CController {
      * sub-class.
      */
     public final function performAjaxValidation($form, $model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === $form) {
+        if (isset($_POST['ajax']) && ($_POST['ajax'] === $form || (is_array($form) && in_array($_POST['ajax'], $form)))) {
             echo CActiveForm::validate($model);
+            
             Yii::app()->end();
         }
     }

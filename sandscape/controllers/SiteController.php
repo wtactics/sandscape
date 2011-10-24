@@ -57,6 +57,8 @@ class SiteController extends AppController {
     public function actionLogin() {
         $login = new LoginForm();
         $register = new RegisterForm();
+        
+        $this->performAjaxValidation('register-form', $register);
 
         if (isset($_POST['LoginForm'])) {
             $login->attributes = $_POST['LoginForm'];

@@ -96,6 +96,8 @@ class CardController extends AppController {
     public function actionUpdate($id) {
         //TODO: not implemented yet, allow card uploads
         $card = $this->loadCardModel($id);
+        
+        $this->performAjaxValidation('card-form', $card);
 
         if (isset($_POST['Card'])) {
             $card->attributes = $_POST['Card'];

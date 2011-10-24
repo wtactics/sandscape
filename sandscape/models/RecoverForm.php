@@ -46,6 +46,7 @@ class RecoverForm extends CFormModel {
     }
 
     public function recover() {
+        //TODO: not implemented yet, need code to reset password.
         
     }
 

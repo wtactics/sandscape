@@ -1,11 +1,7 @@
 <?php
-$form = $this->beginWidget('CActiveForm', array(
-    'id' => 'deck-form',
-    'enableAjaxValidation' => false,
-        ));
+$form = $this->beginWidget('CActiveForm', array('id' => 'deck-form'));
 ?>
 
-<?php //echo $form->errorSummary($deck); ?>
 <fieldset>
     <legend>Deck information</legend>
     <p>
@@ -14,13 +10,13 @@ $form = $this->beginWidget('CActiveForm', array(
         $form->textField($deck, 'name', array('size' => 60, 'maxlength' => 100, 'class' => 'text'));
         ?>
     </p>
-    <?php //echo $form->error($deck, 'name'); ?>
+    <?php echo $form->error($deck, 'name'); ?>
     <p>
         <?php echo CHtml::checkBox('autoFill'), '&nbsp;', CHtml::label('Auto fill with 62 random cards', 'autoFill'); ?>
     </p>
 </fieldset>
 <p>
-    <?php echo CHtml::submitButton($deck->isNewRecord ? 'Create' : 'Save'); ?>
+    <?php echo CHtml::submitButton($deck->isNewRecord ? 'Create' : 'Save', array('class' => 'button')); ?>
 </p>
 
 <div class="span-11 append-1">
@@ -56,5 +52,4 @@ $form = $this->beginWidget('CActiveForm', array(
 
 
 </div>
-
 <?php $this->endWidget(); ?>
