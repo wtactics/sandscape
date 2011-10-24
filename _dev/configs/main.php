@@ -9,6 +9,7 @@ return array(
         'application.models.*',
         'application.models.scserver.*',
         'application.components.*',
+        'application.extensions.*'
     ),
     'components' => array(
         'assetManager' => array(

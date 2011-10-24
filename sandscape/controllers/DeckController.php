@@ -24,7 +24,7 @@
 /**
  * Handles all deck management actions that users can perform.
  * 
- * @since 1.0
+ * @since 1.0, Sudden Growth
  */
 class DeckController extends AppController {
 
@@ -36,6 +36,8 @@ class DeckController extends AppController {
      * Default action used to list all decks for the current user.
      * The filter is applied in the view since it's there that the search method 
      * is called.
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function actionIndex() {
         $this->updateUserActivity();
@@ -53,6 +55,8 @@ class DeckController extends AppController {
     /**
      * Creates a new deck and redirects the user to the <em>update</em> action 
      * uppon success.
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function actionCreate() {
         $this->updateUserActivity();
@@ -97,6 +101,15 @@ class DeckController extends AppController {
         $this->render('edit', array('deck' => $new, 'cards' => $cards));
     }
 
+    /**
+     * Allows for updates to existing decks. The deck is identified by the given 
+     * ID and the interface will allow for both the deck's info to be changed and 
+     * the associated cards, if any.
+     * 
+     * @param integer $id The deck ID to update.
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function actionUpdate($id) {
         $this->updateUserActivity();
 
@@ -149,6 +162,8 @@ class DeckController extends AppController {
      * Only the owner of a deck can delete it.
      * 
      * @param integer $id The deck's database ID.
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function actionDelete($id) {
         if (Yii::app()->request->isPostRequest) {
@@ -170,6 +185,8 @@ class DeckController extends AppController {
      * 
      * @param integer $id The model's database ID
      * @return  Deck The loaded model or null if no model was found for the given ID
+     * 
+     * @since 1.0, Sudden Growth
      */
     private function loadDeckModel($id) {
         if (($deck = Deck::model()->findByPk((int) $id)) === null) {
@@ -182,6 +199,8 @@ class DeckController extends AppController {
      * Adding to the default access rules.
      * 
      * @return array
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function accessRules() {
         return array_merge(array(

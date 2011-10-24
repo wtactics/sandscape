@@ -22,18 +22,38 @@
  */
 
 /**
- * @since 1.0
+ * The <em>SiteController</em> handles general website related information like 
+ * static pages, login, logout and registration action.
+ * 
+ * @since 1.0, Sudden Growth
  */
 class SiteController extends AppController {
 
+    /**
+     * Loads the home page.
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function actionIndex() {
         $this->render('pages/home');
     }
 
+    /**
+     * Loads the about page.
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function actionAbout() {
         $this->render('pages/about');
     }
 
+    /**
+     * Allows users to login and to register new accounts.
+     * Registration and authentication are handle in the same action since they 
+     * are made in the same view.
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function actionLogin() {
         $login = new LoginForm();
         $register = new RegisterForm();
@@ -60,6 +80,9 @@ class SiteController extends AppController {
         $this->render('login', array('login' => $login, 'register' => $register));
     }
 
+    /**
+     * Action to remove a logged in user.
+     */
     public function actionLogout() {
         if (($sd = SessionData::model()->findByPk(Yii::app()->user->id)) !== null) {
             $sd->delete();
@@ -69,8 +92,8 @@ class SiteController extends AppController {
         $this->redirect(Yii::app()->homeUrl);
     }
 
-    //TODO: incomplete
     public function actionRecoverPassword() {
+        //TODO: not implemented yet, incomplete
         $recover = new RecoverForm();
         if (isset($_POST['RecoverForm'])) {
             $recover->attributes = $_POST['RecoverForma'];
@@ -83,7 +106,7 @@ class SiteController extends AppController {
     }
 
     public function actionError() {
-        //TODO: proper error handling
+        //TODO: not implemented yet, proper error handling
         if (($error = Yii::app()->errorHandler->error)) {
             if (Yii::app()->request->isAjaxRequest) {
                 echo $error['message'];
@@ -98,6 +121,8 @@ class SiteController extends AppController {
      * the <em>logout</em> action.
      * 
      * @return array The new rules array.
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function accessRules() {
         return array_merge(array(

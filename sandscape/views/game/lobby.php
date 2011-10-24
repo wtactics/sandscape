@@ -51,7 +51,12 @@ $this->title = 'Sandscape Lobby';
         foreach ($games as $game) {
             $class = 'error';
             if ($game->running) {
-                $class = 'success spectate';
+                $class = 'success';
+                if (in_array(Yii::app()->user->id, array($game->player1, $game->player2))) {
+                    $class .= ' return';
+                } else {
+                    $class .= ' spectate';
+                }
             } else if (!$game->player2) {
                 $class = 'info join';
             }

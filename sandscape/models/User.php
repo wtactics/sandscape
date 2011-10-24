@@ -41,8 +41,7 @@
  * @property Game[] $gamesAsPlayer1
  * @property Game[] $gamesAsPlayer2
  * 
- * @since 1.0
- * //TODO: properly document
+ * @since 1.0, Sudden Growth
  */
 class User extends CActiveRecord {
 

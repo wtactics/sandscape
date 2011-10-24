@@ -29,7 +29,7 @@
  * @property string $password The new password.
  * @property string $password_repeat The new password repeated for validation purposes.
  * 
- * @since 1.0
+ * @since 1.0, Sudden Growth
  */
 class PasswordForm extends CFormModel {
 

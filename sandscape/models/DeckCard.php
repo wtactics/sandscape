@@ -32,7 +32,7 @@
  * @property Deck $deck
  * @property Card $card
  * 
- * @since 1.0
+ * @since 1.0, Sudden Growth
  */
 class DeckCard extends CActiveRecord {
 

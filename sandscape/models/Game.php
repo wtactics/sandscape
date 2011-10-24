@@ -40,7 +40,7 @@
  * @property User $player10
  * @property User $player20
  * 
- * @since 1.0
+ * @since 1.0, Sudden Growth
  */
 class Game extends CActiveRecord {
 

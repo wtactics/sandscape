@@ -18,8 +18,14 @@
  * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
+ * http://wtactics.org
  */
 
+/**
+ * Handles all game related actions, from lobby to in-game actions.
+ * 
+ * @since 1.0, Sudden Growth
+ */
 class GameController extends AppController {
 
     /**
@@ -35,6 +41,8 @@ class GameController extends AppController {
      * As a convenience, the index action has been invalidated by making a redirect
      * whenever this action is requested. All actions in the game controller need 
      * to have an explicit name.
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function actionIndex() {
         $this->redirect(array('lobby'));
@@ -45,6 +53,8 @@ class GameController extends AppController {
      * 
      * The game lobby offers a way to create games, join existing games and exchange
      * messages between other users.
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function actionLobby() {
         $this->updateUserActivity();
@@ -86,6 +96,8 @@ class GameController extends AppController {
      * name: string, the name of the user sending the message
      * date: string, the date in which the message was sent, as created by the 
      *  database and formatted using Yii's settings
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function actionSendLobbyMessage() {
         $result = array('success' => 0);
@@ -127,6 +139,8 @@ class GameController extends AppController {
      *      date: string, the date in which the message was sent, formatted using Yii's settings 
      * 
      * last: integer, the ID for the last message being sent
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function actionLobbyChatUpdate() {
         $result = array('has' => 0);
@@ -166,6 +180,8 @@ class GameController extends AppController {
      * any spectator will be able to see the messages but not write in the chat.
      *  
      * @param integer $id The game ID.
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function actionSendGameMessage($id) {
         $result = array('success' => 0);
@@ -201,6 +217,8 @@ class GameController extends AppController {
      * game can request chat messages.
      * 
      * @param integer $id The game ID
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function actionGameChatUpdate($id) {
         $result = array('has' => 0);
@@ -250,6 +268,7 @@ class GameController extends AppController {
      * 
      * If the game was successfully created, the user is redirected to game/play
      * 
+     * @since 1.0, Sudden Growth
      */
     public function actionCreate() {
         if (isset($_POST['CreateGame']) && isset($_POST['deckList'])) {
@@ -292,6 +311,8 @@ class GameController extends AppController {
      * 
      * If the user is allowed to join the game, then it is set as player 2 and 
      * made ready. After that the user will be redirected to the play area.
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function actionJoin() {
         if (isset($_POST['JoinGame']) && isset($_POST['deckList']) && isset($_POST['game'])) {
@@ -323,6 +344,14 @@ class GameController extends AppController {
         $this->redirect(array('lobby'));
     }
 
+    /**
+     * The main action that offers all "game" features allowing users to play games.
+     * This action will continually evolve to untill the game actions are statble.
+     * 
+     * @param integer $id The game ID.
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function actionPlay($id) {
         $this->layout = '//layouts/game';
         $game = $this->loadGameById($id);
@@ -485,8 +514,7 @@ class GameController extends AppController {
 
     public function actionLeave($id) {
         $this->updateUserActivity();
-        //TODO: not implemented yet!
-        //TODO: close game, notify all clients, dispose states.
+        //TODO: not implemented yet, close game, notify all clients, dispose states.
         $this->redirect(array('lobby'));
     }
 
@@ -495,6 +523,8 @@ class GameController extends AppController {
      * 
      * @param integer $id The ID for the game being loaded.
      * @return Game The game or null if the ID is invalid.
+     * 
+     * @since 1.0, Sudden Growth
      */
     private function loadGameById($id) {
         if (($game = Game::model()->findByPk((int) $id)) === null) {
@@ -508,6 +538,8 @@ class GameController extends AppController {
      * Prepends new access rules to the default rules.
      * Only registered users can execute <em>GameController</em> actions.
      * @return array The new rules array
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function accessRules() {
         return array_merge(array(

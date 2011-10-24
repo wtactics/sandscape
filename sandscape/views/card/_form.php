@@ -6,7 +6,8 @@ $form = $this->beginWidget('CActiveForm', array(
         'validateOnSubmit' => true,
         'validateOnChange' => true,
         'validateOnType' => false,
-    )
+    ),
+    'htmlOptions' => array('enctype' => 'multipart/form-data')
         ));
 ?>
 
@@ -46,14 +47,7 @@ $form = $this->beginWidget('CActiveForm', array(
         }
         ?>
         <p>
-            <?php
-            $this->widget('CMultiFileUpload', array(
-                'name' => 'images',
-                'accept' => 'jpg|png',
-                'duplicate' => 'Duplicate file!',
-                'denied' => 'Invalid file type',
-            ));
-            ?>
+            <?php echo $form->fileField($card, 'image'); ?>
         </p>
         <?php //echo $form->error($card, 'image');  ?>
     </fieldset>

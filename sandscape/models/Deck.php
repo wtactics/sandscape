@@ -37,7 +37,7 @@
  * @property DeckCard[] $deckCards
  * @property Game[] $games
  * 
- * @since 1.0
+ * @since 1.0, Sudden Growth
  */
 class Deck extends CActiveRecord {
 

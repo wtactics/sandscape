@@ -18,14 +18,25 @@
  * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Copyright (c) 2011, the SandScape team and WTactics project.
+ * http://wtactics.org
  */
 
+/**
+ * Manages users, their accounts and profiles. Does not provide user registration 
+ * or login and logout actions as thoses are handled by the <em>SiteController</em>
+ * class.
+ * 
+ * @since 1.0, Sudden Growth
+ */
 class UserController extends AppController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
     }
 
+    /**
+     * @since 1.0, Sudden Growth
+     */
     public function actionIndex() {
         $filter = new User('search');
         $filter->unsetAttributes();
@@ -37,6 +48,9 @@ class UserController extends AppController {
         $this->render('index', array('filter' => $filter));
     }
 
+    /**
+     * @since 1.0, Sudden Growth
+     */
     public function actionCreate() {
         $new = new User();
         $this->performAjaxValidation('user-form', $new);
@@ -52,6 +66,12 @@ class UserController extends AppController {
         $this->render('edit', array('user' => $new));
     }
 
+    /**
+     *
+     * @param type $id 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function actionUpdate($id) {
         $user = $this->loadUserModel($id);
 
@@ -71,6 +91,8 @@ class UserController extends AppController {
      * and only if the user making the request is and administrator.
      * 
      * @param integer $id User ID
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function actionDelete($id) {
         if (Yii::app()->request->isPostRequest && Yii::app()->user->class) {
@@ -93,6 +115,8 @@ class UserController extends AppController {
 
     /**
      * Provides access to the user's profile.
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function actionProfile() {
         $this->updateUserActivity();
@@ -127,7 +151,9 @@ class UserController extends AppController {
     /**
      * Loads a <em>User</em> model from the database
      * @param integer $id The user ID.
-     * @return User The loaded user model. 
+     * @return User The loaded user model.
+     * 
+     * @since 1.0, Sudden Growth
      */
     private function loadUserModel($id) {
         if (($user = User::model()->findByPk((int) $id)) === null) {
@@ -136,6 +162,17 @@ class UserController extends AppController {
         return $user;
     }
 
+    /**
+     * Overrides the default rules allowing for user actions. Authenticated users 
+     * can view profile and stats information and change their own accounts.
+     * 
+     * Administrators are allowed to create new users, update information or 
+     * delete existing users.
+     * 
+     * @return array Rules array.
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function accessRules() {
         return array_merge(array(
                     array('allow',

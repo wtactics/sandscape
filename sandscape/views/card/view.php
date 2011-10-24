@@ -16,10 +16,12 @@
         <?php echo CHtml::encode($card->rules); ?>
     </div>
     <div class="span-13 last">
-        <p style="padding-top: 1em;">
-            <?php echo CHtml::link('See card details at Cardscape', 'http://chaosrealm.net/wtactics/cardscape/index.php?act=show_card&id=' . $card->cardscapeId, array('target' => '_blanck'));
-            ?>
-        </p>
+        <?php if ($card->cardscapeId) { ?>
+            <p style="padding-top: 1em;">
+                <?php echo CHtml::link('See card details at Cardscape', 'http://chaosrealm.net/wtactics/cardscape/index.php?act=show_card&id=' . $card->cardscapeId, array('target' => '_blanck'));
+                ?>
+            </p>
+        <?php } ?>
     </div>
 </div>
 <div class="span-8 prepend-1 last">

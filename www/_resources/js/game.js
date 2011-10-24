@@ -1,6 +1,7 @@
 //Global control variables
 //TODO: //NOTE: shouldn't this be placed in a global object for easier control 
 //and maintenance
+var lastChange = 0;
 var lastReceived = 0;
 var gameRunning = false;
 var bUrl;
@@ -11,14 +12,14 @@ var updMessagesID;
 function initTable(base, messageUpUrl) {
     bUrl = base
     
-    //$('#opponent-loader').show();
+    $('#opponent-loader').show();
     pack();
     checkGameStart();
     
     chkGameID = setInterval(checkGameStart, 3000);
-//updMessagesID = setInterval(function() {
-//    updateMessages(messageUpUrl)
-//}, 5000);
+    updMessagesID = setInterval(function() {
+        updateMessages(messageUpUrl)
+    }, 5000);
 }
 
 function checkGameStart() {
@@ -31,8 +32,8 @@ function checkGameStart() {
         dataType: 'json',
         success: function (json) {
             if(json.result == 'ok') {
-                //$('#opponent-loader').remove();
-                //$('#game-loader').show();
+                $('#opponent-loader').remove();
+                $('#game-loader').show();
                 clearInterval(chkGameID);
                 $.ajax({
                     url: bUrl,
@@ -43,7 +44,6 @@ function checkGameStart() {
                     dataType: 'json',
                     success: function (json) {                       
                         if(json.result == 'ok') {
-                            
                             var create = json.createThis;
                             
                             //set void object
@@ -151,8 +151,8 @@ function checkGameStart() {
                             .appendTo($('body'));
 
                             gameRunning = true;
-                            //updGameID = setInterval(updateGame, 3000);
-                            //$('#game-loader').remove();
+                            updGameID = setInterval(updateGame, 3000);
+                            $('#game-loader').remove();
                         }
                     }
                 });
@@ -163,10 +163,14 @@ function checkGameStart() {
 
 function doGameUpdate(json) {
     if(json.result == 'ok') {
+        lastChange = json.lastChange;
+        
         for(i = 0; i < json.update.length; i++) {
-            $('#' + json.update[i].id)
-            .animate($('#' + json.update[i].location).offset())
-            .attr('src', '_cards/up/thumbs/' + json.update[i].src);
+            if($('#' + json.update[i].id).hasClass('ui-draggable-dragging')) {
+                $('#' + json.update[i].id)
+                .animate($('#' + json.update[i].location).offset())
+                .attr('src', '_cards/up/thumbs/' + json.update[i].src);
+            }
         }
     }
     
@@ -176,7 +180,8 @@ function updateGame() {
     $.ajax({
         url: bUrl,
         data: {
-            event: 'update'
+            event: 'update',
+            lastChange: lastChange
         },
         dataType: 'json',
         type: 'POST',

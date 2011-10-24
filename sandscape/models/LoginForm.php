@@ -22,7 +22,7 @@
  */
 
 /**
- * @since 1.0
+ * @since 1.0, Sudden Growth
  */
 class LoginForm extends CFormModel {
 
