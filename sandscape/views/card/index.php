@@ -3,7 +3,7 @@
 <div class="span-22 last">
     <a href="<?php echo $this->createURL('create'); ?>">New Card</a>
     &nbsp;:&nbsp;
-    <a href="<?php echo $this->createURL('import'); ?>">Bulk Import</a>
+    <a href="<?php echo $this->createURL('import'); ?>">Import</a>
 </div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(

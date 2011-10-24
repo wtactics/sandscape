@@ -60,10 +60,12 @@ class PasswordForm extends CFormModel {
      * @return boolean True if the old password is valid, false otherwise
      */
     public function confirm($attribute, $params) {
-        return (User::model()->find('userId = :id AND password = :pwd', array(
+        if (User::model()->find('userId = :id AND password = :pwd', array(
                     ':id' => Yii::app()->user->id,
-                    ':pwd' => User::hash($attribute))
-                ) !== null);
+                    ':pwd' => User::hash($this->current))
+                ) === null) {
+            $this->addError($attribute, 'Invalid password.');
+        }
     }
 
     public function attributeLabels() {
