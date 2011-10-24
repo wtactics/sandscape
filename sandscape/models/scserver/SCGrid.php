@@ -19,6 +19,7 @@ class SCGrid extends SCContainer {
             for ($j = 0; $j < $columns; ++$j) {
                 $this->cells[$i][$j] = $this->cellList[] = $c = new SCContainer($game, false, true);
                 $c->setId("{$this->getId()}_{$i}_{$j}");
+                $c->setParent($this);
             }
         }
     }
