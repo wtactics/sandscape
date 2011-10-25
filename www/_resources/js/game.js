@@ -152,7 +152,7 @@ function checkGameStart() {
 
                             gameRunning = true;
                             updGameID = setInterval(updateGame, 3000);
-                            $('#game-loader').remove();
+                            $('#game-loader').hide('slow'); // remove();  // fadeout
                         }
                     }
                 });
@@ -163,10 +163,10 @@ function checkGameStart() {
 
 function doGameUpdate(json) {
     if(json.result == 'ok') {
-        lastChange = json.lastChange;
-        
+        if (json.lastChange) lastChange = json.lastChange;
+ 
         for(i = 0; i < json.update.length; i++) {
-            if($('#' + json.update[i].id).hasClass('ui-draggable-dragging')) {
+            if(!$('#' + json.update[i].id).hasClass('ui-draggable-dragging')) {
                 $('#' + json.update[i].id)
                 .animate($('#' + json.update[i].location).offset())
                 .attr('src', '_cards/up/thumbs/' + json.update[i].src);
