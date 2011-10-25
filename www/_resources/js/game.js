@@ -1,3 +1,7 @@
+var globals = new function() {
+//TODO: move globals here
+}
+
 //Global control variables
 //TODO: //NOTE: shouldn't this be placed in a global object for easier control 
 //and maintenance
@@ -14,6 +18,9 @@ function initTable(base, messageUpUrl) {
     
     $('#opponent-loader').show();
     pack();
+    $('#card-info-image').dblclick(function(e){
+        alert('Not implemented yet!');
+    });
     checkGameStart();
     
     chkGameID = setInterval(checkGameStart, 3000);
@@ -391,6 +398,6 @@ function filterChatMessages(elem) {
     }    
 }
 
-function inspect() {
+function lost() {
     alert('Not implemented yet!');
 }

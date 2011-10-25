@@ -21,8 +21,11 @@ $this->title = 'Playing';
 
 <div id="info-widget">
     <div id="tools-widget">
-        <a href="javascript:;" onclick="showChat();">Chat</a>
-        <a href="<?php echo $this->createURL('game/leave', array('id' => $gameId)); ?>">Leave</a>
+        <a href="<?php echo $this->createURL('game/leave', array('id' => $gameId)); ?>"><img src="_resources/images/icons/door_in.png" /></a>
+        &nbsp;&nbsp;
+        <a href="javascript:;" onclick="showChat();"><img src="_resources/images/icons/comments.png" /></a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="javascript:;" onclick="lost();"><img src="_resources/images/icons/thumb_down.png" /></a>
     </div>
     <table id="card-info">
         <tr>
@@ -44,7 +47,6 @@ $this->title = 'Playing';
             </td>
         </tr>
     </table>
-    <a id="inspect-card" href="javascript:;" onclick="inspect();">Inspect</a>
 </div>
 <div class="opponent-area"><!-- OPPONENT GAME AREA --></div>
 
@@ -82,13 +84,19 @@ $this->title = 'Playing';
 
 <!-- LOADER DIVS -->
 <div id="opponent-loader" class="loader" style="display:none;"">
-    <img id="img-loader" src="_resources/images/loader2.gif" />
+     <img id="img-loader" src="_resources/images/loader2.gif" />
     <br />
     <span>Waiting for opponent.</span>
 </div>
 
 <div id="game-loader" class="loader" style="display:none;"">
-    <img id="img-loader" src="_resources/images/loader2.gif" />
+     <img id="img-loader" src="_resources/images/loader2.gif" />
     <br />
     <span>Building game.</span>
+</div>
+
+<div style="display: none;">
+    <div id="card-details">
+
+    </div>
 </div>

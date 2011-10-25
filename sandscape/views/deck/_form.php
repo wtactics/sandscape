@@ -11,12 +11,16 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'deck-form'));
         ?>
     </p>
     <?php echo $form->error($deck, 'name'); ?>
-    <p>
-        <?php echo CHtml::checkBox('autoFill'), '&nbsp;', CHtml::label('Auto fill with 62 random cards', 'autoFill'); ?>
-    </p>
 </fieldset>
 <p>
     <?php echo CHtml::submitButton($deck->isNewRecord ? 'Create' : 'Save', array('class' => 'button')); ?>
+
+    <?php if (!$deck->isNewRecord && Yii::app()->user->class) { ?>
+    &nbsp;&nbsp;&nbsp;
+        <?php echo CHtml::link('Make Template', $this->createURL('deck/maketemplate', array('id' => $deck->deckId))); ?>
+    <?php } ?>
+
+
 </p>
 
 <div class="span-11 append-1">
