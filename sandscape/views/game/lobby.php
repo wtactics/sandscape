@@ -8,6 +8,7 @@ if (count($messages)) {
 }
 
 Yii::app()->clientScript->registerCssFile('_resources/css/lobby.css');
+Yii::app()->clientScript->registerCssFile('_resources/css/modal.css');
 Yii::app()->clientScript->registerScriptFile('_resources/js/lobby.js');
 Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.simplemodal.1.4.1.min.js');
 
@@ -49,28 +50,39 @@ $this->title = 'Sandscape Lobby';
     <ul id="gamelist">
         <?php
         foreach ($games as $game) {
-            $class = 'error';
-            if ($game->running) {
-                $class = 'success';
-                if (in_array(Yii::app()->user->id, array($game->player1, $game->player2))) {
-                    $class .= ' return';
-                } else {
-                    $class .= ' spectate';
+            if (in_array(Yii::app()->user->id, array($game->player1, $game->player2)) && $game->running) {
+                ?>
+                <li class="success">
+                    <span>
+                        <a href="<?php echo $this->createURL('game/play', array('id' => $game->gameId)); ?>">Return to Game</a>
+                        &nbsp;-&nbsp;
+                        <?php echo Yii::app()->dateFormatter->formatDateTime(strtotime($game->created), 'short', false); ?>
+                    </span>
+                    <br />
+                    <span>Opponent: <?php echo (Yii::app()->user->id == $game->player1 ? $game->player20->name : $game->player10->name); ?></span>
+                </li>
+                <?php
+            } else {
+                $class = 'error';
+                if ($game->running) {
+                    $class = 'success spectate';
+                } else if (!$game->player2) {
+                    $class = 'info join';
                 }
-            } else if (!$game->player2) {
-                $class = 'info join';
+                ?>
+                <li class="<?php echo $class; ?>" id="game-<?php echo $game->gameId; ?>">
+                    <span><?php echo Yii::app()->dateFormatter->formatDateTime(strtotime($game->created), 'short', false); ?></span>
+                    <br />
+                    <?php if ($game->running) { ?>
+                        <span><?php echo $game->player10->name, '&nbsp;-&nbsp;', $game->player20->name; ?></span>
+                    <?php } else { ?>
+                        <span>Create by <?php echo $game->player10->name; ?></span>
+                    <?php } ?>
+                </li>
+                <?php
             }
-            ?>
-            <li class="<?php echo $class; ?>" id="game-<?php echo $game->gameId; ?>">
-                <span><?php echo Yii::app()->dateFormatter->formatDateTime(strtotime($game->created), 'short', false); ?></span>
-                <br />
-                <?php if ($game->running) { ?>
-                    <span><?php echo $game->player10->name, '&nbsp;-&nbsp;', $game->player20->name; ?></span>
-                <?php } else { ?>
-                    <span>Create by <?php echo $game->player10->name; ?></span>
-                <?php } ?>
-            </li>
-        <?php } ?>
+        }
+        ?>
     </ul>
 </div>
 <hr />

@@ -49,7 +49,8 @@ class DeckController extends AppController {
             $filter->attributes = $_GET['Deck'];
         }
 
-        $this->render('index', array('filter' => $filter));
+        $templates = DeckTemplate::model()->findAll('active = 1');
+        $this->render('index', array('filter' => $filter, 'templates' => $templates));
     }
 
     /**
@@ -70,19 +71,7 @@ class DeckController extends AppController {
             $new->created = date('Y-m-d H:i');
 
             if ($new->save()) {
-                if (isset($_POST['autoFill']) && (int) $_POST['autoFill']) {
-                    $cards = Card::model()->findAll('active = 1');
-                    //auto-filling with 62 random cards
-                    if (($max = count($cards))) {
-                        for ($i = 0; $i < 62; $i++) {
-                            $dkc = new DeckCard();
-                            $dkc->cardId = $cards[rand(0, $max - 1)]->cardId;
-                            $dkc->deckId = $new->deckId;
-
-                            $dkc->save();
-                        }
-                    }
-                } else if (isset($_POST['using']) && !empty($_POST['using'])) {
+                if (isset($_POST['using']) && !empty($_POST['using'])) {
                     foreach ($_POST['using'] as $cardname) {
                         $dkc = new DeckCard();
                         $cardId = explode('card-', $cardname);
@@ -181,6 +170,59 @@ class DeckController extends AppController {
     }
 
     /**
+     * Creates a <em>DeckTemplate</em> from a <em>Deck</em> object.
+     * 
+     * @param integer $id The deck's ID.
+     * 
+     * @since 1.1, Green Shield
+     */
+    public function actionMakeTemplate($id) {
+        $deck = $this->loadDeckModel($id);
+
+        $template = new DeckTemplate();
+        $template->name = $deck->name;
+        $template->created = $deck->created;
+        if ($template->save()) {
+
+            foreach ($deck->deckCards as $dkc) {
+                $dktc = new DeckTemplateCard();
+                $dktc->deckTemplateId = $template->deckTemplateId;
+                $dktc->cardId = $dkc->cardId;
+                
+                //NOTE: ignoring save errors
+                $dktc->save();
+            }
+        }
+
+        $this->redirect(array('update', 'id' => $id));
+    }
+
+    /**
+     * Creates a <em>Deck</em> from the selected template ID, <em>DeckTemplate</em>.
+     */
+    public function actionFromTemplate() {
+        if (isset($_POST['preconslst']) && (int) $_POST['preconslst']) {
+            if (($template = DeckTemplate::model()->findByPk((int) $_POST['preconslst'])) !== null) {
+                $deck->name = $template->name;
+                $deck->created = date('Y-m-d H:i:s');
+                if ($deck->save()) {
+
+                    foreach ($template->templatesCard as $tplc) {
+                        $dkc = new DeckCard();
+                        $dkc->deckId = $deck->deckId;
+                        $dkc->cardId = $tplc->cardId;
+
+                        //NOTE: ignoring save errors
+                        $dkc->save();
+                    }
+                }
+            }
+        }
+
+        $this->redirect(array('index'));
+    }
+
+    /**
      * Retrieves a Deck model from the database.
      * 
      * @param integer $id The model's database ID
@@ -205,8 +247,12 @@ class DeckController extends AppController {
     public function accessRules() {
         return array_merge(array(
                     array('allow',
-                        'actions' => array('index', 'create', 'update', 'delete'),
+                        'actions' => array('index', 'create', 'update', 'delete', 'fromTemplate'),
                         'users' => array('@')
+                    ),
+                    array('allow',
+                        'actions' => array('makeTemplate'),
+                        'expression' => '$user->class'
                     )
                         ), parent::accessRules());
     }

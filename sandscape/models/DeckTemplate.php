@@ -1,6 +1,6 @@
 <?php
 
-/* Deck.php
+/* DeckTemplate.php
  * 
  * This file is part of SandScape.
  *
@@ -22,31 +22,25 @@
  */
 
 /**
- * This is the model class for 'Deck' table that stores deck information. A 
- * <em>Deck</em> is just a name that is used to group cards.
  *
- * The followings are the available columns in table 'Deck':
- * @property integer $deckId
+ * @property integer $deckTemplateId
  * @property string $name
- * @property integer $userId
  * @property string $created
  * @property integer $active
- *
- * Relations:
- * @property User $user
- * @property DeckCard[] $deckCards
- * @property Game[] $games
  * 
- * @since 1.0, Sudden Growth
+ * Relations:
+ * @property DeckTemplateCard[] $templatesCard
+ * 
+ * @since 1.1, Green Shield
  */
-class Deck extends CActiveRecord {
+class DeckTemplate extends CActiveRecord {
 
     public static function model($className=__CLASS__) {
         return parent::model($className);
     }
 
     public function tableName() {
-        return 'Deck';
+        return 'DeckTemplate';
     }
 
     public function rules() {
@@ -60,42 +54,25 @@ class Deck extends CActiveRecord {
 
     public function relations() {
         return array(
-            'user' => array(self::BELONGS_TO, 'User', 'userId'),
-            'deckCards' => array(self::HAS_MANY, 'DeckCard', 'deckId'),
-            'games' => array(self::MANY_MANY, 'Game', 'GameDeck(deckId, gameId)'),
+            'templatesCard' => array(self::HAS_MANY, 'DeckTemplateCard', 'deckTemplateId'),
         );
     }
 
     public function attributeLabels() {
         return array(
-            'deckId' => 'ID',
+            'deckTemplateId' => 'ID',
             'name' => 'Name',
-            'userId' => 'Owner',
             'created' => 'Created',
         );
     }
 
-    /**
-     * Retrieves a list of models based on the current search/filter conditions.
-     * A filter is just an <em>Deck</em> instance whose attributes values are used 
-     * to limit the search criteria.
-     * 
-     * @param integer $owner If the search is to be limited to a given user, this
-     * parameter should contain that user's ID.
-     * 
-     * @return CActiveDataProvider the data provider that can return the models 
-     * based on the search/filter conditions.
-     */
-    public function search($owner = null) {
+    public function search() {
         $criteria = new CDbCriteria();
 
         $criteria->compare('name', $this->name, true);
         $criteria->compare('active', 1);
-        if ($owner) {
-            $criteria->compare('userId', $owner);
-        }
 
-        return new CActiveDataProvider('Deck', array('criteria' => $criteria));
+        return new CActiveDataProvider('DeckTemplate', array('criteria' => $criteria));
     }
 
 }
