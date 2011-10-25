@@ -25,7 +25,6 @@ body {
 }
 
 #tools-widget {
-    height: 30px;
 }
 
 #card-info {
@@ -146,4 +145,22 @@ input.text:focus {
     overflow: auto;
     width: 120px; /* width of the loader gif */
     height: 122px; /*hight of the loader gif +2px to fix IE8 issue */
+}
+
+/**/
+ul#dice-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 33px;
+    display: none;
+}
+
+ul#dice-menu li {
+    
+}
+
+ul#dice-menu a {
+    
 }

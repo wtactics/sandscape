@@ -22,10 +22,22 @@ $this->title = 'Playing';
 <div id="info-widget">
     <div id="tools-widget">
         <a href="<?php echo $this->createURL('game/leave', array('id' => $gameId)); ?>"><img src="_resources/images/icons/door_in.png" /></a>
-        &nbsp;&nbsp;
-        <a href="javascript:;" onclick="showChat();"><img src="_resources/images/icons/comments.png" /></a>
-        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;
+        <a href="javascript:;" onclick="alert('Not implemented yet!');"><img src="_resources/images/icons/control_<?php echo ($paused ? 'play' : 'pause'); ?>_blue.png" /></a>
+        &nbsp;
         <a href="javascript:;" onclick="lost();"><img src="_resources/images/icons/thumb_down.png" /></a>
+        &nbsp;        
+        <a href="javascript:;" onclick="showChat();"><img src="_resources/images/icons/comments.png" /></a>
+        &nbsp;&nbsp;
+        <a href="javascript:;"><img src="_resources/images/icons/dice.png" id="dice" onmouseover="showDiceMenu();"/></a>
+        <ul id="dice-menu">
+            <li><a href="#">A</a></li>
+            <li><a href="#">A</a></li>
+            <li><a href="#">A</a></li>
+            <li><a href="#">A</a></li>
+            <li><a href="#">A</a></li>
+        </ul>
+                
     </div>
     <table id="card-info">
         <tr>

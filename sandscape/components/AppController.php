@@ -68,6 +68,7 @@ class AppController extends CController {
                 'items' => array(
                     array('label' => 'Cards', 'url' => array('card/index')),
                     array('label' => 'Deck Templates', 'url' => array('decktemplate/index')),
+                    array('label' => 'Dice', 'url' => array('dice/index')),
                     array('label' => 'Users', 'url' => array('user/index')),
                 ),
                 'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class

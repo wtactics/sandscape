@@ -9,8 +9,6 @@
         ?>
     </p>
     <p><?php echo CHtml::checkBox('useGraveyard', true, array('value' => 1)), '&nbsp;', CHtml::label('Use Graveyard:', 'useGraveyard'); ?></p>
-    <p><?php echo CHtml::checkBox('private', false, array('value' => 1)), '&nbsp;', CHtml::label('Private:', 'private'); ?></p>
     <p><?php echo CHtml::submitButton('Ready!', array('name' => 'CreateGame')); ?></p>
-
     <?php echo CHtml::endForm(); ?>
 </div>

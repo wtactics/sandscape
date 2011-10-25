@@ -50,7 +50,7 @@ $this->title = 'Sandscape Lobby';
     <ul id="gamelist">
         <?php
         foreach ($games as $game) {
-            if (in_array(Yii::app()->user->id, array($game->player1, $game->player2)) && $game->running) {
+            if (in_array(Yii::app()->user->id, array($game->player1, $game->player2)) && ($game->running || $game->paused)) {
                 ?>
                 <li class="success">
                     <span>
@@ -92,14 +92,11 @@ $this->title = 'Sandscape Lobby';
 </div>
 <div class="span-4 last">
     <a href="javascript:;" onclick="$('#createdlg').modal();">Create</a>
-    &nbsp;:&nbsp;
-    <a href="javascript:;" onclick="alert('Private games are not not implemented yet!');//$('#joinprivatedlg').modal();">Private Game</a>
 </div>
 
 <div style="display: none">
     <?php
     $this->renderPartial('_createdlg', array('decks' => $decks));
     $this->renderPartial('_joindlg', array('decks' => $decks));
-    $this->renderPartial('_joinprivatedlg', array('decks' => $decks));
     ?>
 </div>
