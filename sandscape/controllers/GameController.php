@@ -84,9 +84,9 @@ class GameController extends AppController {
     * Registers a new message in the lobby chat.
     * 
     * A new message is sent by the chat client as a POST parameter and the 
-     * correct database object is created and stored. Simple word filtering is 
-     * applied to the message before being stored, due to the way chats work
-     * the user that sent the message will still see the unfiltered message.
+    * correct database object is created and stored. Simple word filtering is 
+    * applied to the message before being stored, due to the way chats work
+    * the user that sent the message will still see the unfiltered message.
     * 
     * If successful, a JSON object is sent back with the message information 
     * that the client didn't had, like the author's name or the new message's ID.
@@ -107,7 +107,7 @@ class GameController extends AppController {
          if (isset($_POST['chatmessage'])) {
             $cm = new ChatMessage();
 
-                $cm->message = $this->chatWordFilter($_POST['chatmessage']);
+            $cm->message = $this->chatWordFilter($_POST['chatmessage']);
             $cm->userId = Yii::app()->user->id;
 
             if ($cm->save()) {
@@ -181,10 +181,10 @@ class GameController extends AppController {
     * Sends messages to the game chat. Only the two players can send messages, 
     * any spectator will be able to see the messages but not write in the chat.
     *  
-     * Simple word filtering is applied to the message before being stored, due 
-     * to the way chats work the user that sent the message will still see the 
-     * unfiltered message.
-     *  
+    * Simple word filtering is applied to the message before being stored, due 
+    * to the way chats work the user that sent the message will still see the 
+    * unfiltered message.
+    *  
     * @param integer $id The game ID.
     * 
     * @since 1.0, Sudden Growth
@@ -198,7 +198,7 @@ class GameController extends AppController {
 
             $cm = new ChatMessage();
 
-                $cm->message = $this->chatWordFilter($_POST['gamemessage']);
+            $cm->message = $this->chatWordFilter($_POST['gamemessage']);
             $cm->userId = Yii::app()->user->id;
             $cm->gameId = $id;
 
@@ -385,14 +385,26 @@ class GameController extends AppController {
                      $game->running = 1;
                      $game->started = date('Y-m-d H:i:s');
 
+                     // tokens
+                     $tokens = array(
+                         new SCToken('debugToken', 'debugToken.gif'),
+                         new SCToken('debugToken', 'debugToken2.png')
+                     );
+
                      // create the game status
-                     $this->scGame = new SCGame($game->graveyard, $game->player1, $game->player2);
+                     $this->scGame = new SCGame($game->graveyard, $game->player1, $game->player2, $tokens);
 
                      // decks in the game
                      foreach ($game->decks as $deck) {
                         $cards = array();
                         foreach ($deck->deckCards as $card) {
-                           $cards[] = new SCCard($this->scGame, $deck->userId, $card->card->cardId, $card->card->image);
+                           $cards[] = $c = new SCCard($this->scGame, $deck->userId, $card->card->cardId, $card->card->image);
+
+                           // Debug
+                           if (rand(0, 1) > .5)
+                              $c->addToken($tokens[0]);
+                           if (rand(0, 1) > .5)
+                              $c->addToken($tokens[1]);
                         }
 
                         $scdeck = new SCDeck($this->scGame, $deck->name, $cards);
@@ -560,30 +572,30 @@ class GameController extends AppController {
                       'users' => array('@')
                   )
                       ), parent::accessRules());
-    }
+   }
 
-    /**
-     * Applies a simple word filter to a chat message.
-     * 
-     * @param string $message The chat message to apply the filtering to.
-     * 
-     * @return string The message with words filtered, if any were found.
-     * 
-     * @since 1.1, Green Shield
-     */
-    private function chatWordFilter($message) {
-        if (($setting = Setting::model()->findByPk('wordfilter')) !== null) {
-            if (trim($setting->value) != '') {
-                $words = explode(',', $setting->value);
-                //remove any spaces, support for PHP < 5.3, it could be replaced 
-                //by a simple lamba in the future
-                array_walk($words, create_function('&$val', '$val = trim($val);'));
-                
-                return str_ireplace($words, '***', $message);
-            }
-        }
+   /**
+    * Applies a simple word filter to a chat message.
+    * 
+    * @param string $message The chat message to apply the filtering to.
+    * 
+    * @return string The message with words filtered, if any were found.
+    * 
+    * @since 1.1, Green Shield
+    */
+   private function chatWordFilter($message) {
+      if (($setting = Setting::model()->findByPk('wordfilter')) !== null) {
+         if (trim($setting->value) != '') {
+            $words = explode(',', $setting->value);
+            //remove any spaces, support for PHP < 5.3, it could be replaced 
+            //by a simple lamba in the future
+            array_walk($words, create_function('&$val', '$val = trim($val);'));
 
-        return $message;
+            return str_ireplace($words, '***', $message);
+         }
+      }
+
+      return $message;
    }
 
 }

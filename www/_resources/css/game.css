@@ -1,15 +1,15 @@
 /*Base: 9A5D0D, other: 735124, 643A04, CD8F40, CDA066*/
 * {
-    margin:0;
-    border: none;
-    padding:0;
-    font-family: Helvetica, Verdana, Arial, sans-serif;
-    text-align: justify;
+   margin:0;
+   border: none;
+   padding:0;
+   font-family: Helvetica, Verdana, Arial, sans-serif;
+   text-align: justify;
 }
 
 body {
-    color: #333;
-    background: url('../images/8.jpg') repeat;
+   color: #333;
+   background: url('../images/8.jpg') repeat;
 }
 
 #game-table {
@@ -19,131 +19,157 @@ body {
 }
 
 #info-widget {
-    width: 350px;
-    overflow: auto;
-    /*background: transparent url(../images/hline.png) repeat-x bottom left;*/
+   width: 350px;
+   overflow: auto;
+   /*background: transparent url(../images/hline.png) repeat-x bottom left;*/
 }
 
 #tools-widget {
-    height: 30px;
+   height: 30px;
 }
 
 #card-info {
-    width: 95%;
-    margin: .8em auto;
+   width: 95%;
+   margin: .8em auto;
 }
 
 /* UNIQUE CLASS: This class is handled as if it was an ID */
 .opponent-area {
-    height: 100%;
-    /*background: transparent url(../images/hline.png) repeat-x bottom left;*/
+   height: 100%;
+   /*background: transparent url(../images/hline.png) repeat-x bottom left;*/
 }
 
 #play-area {
-    height: 100%;
-    overflow: hidden;
+   height: 100%;
+   overflow: hidden;
 }
 
 /* UNIQUE CLASS: This class is handled as if it was an ID */
 .hand {
-    height: 100%;
-    width: 350px;
-    background: transparent url(../images/vline.png) repeat-y top right;
+   height: 100%;
+   width: 350px;
+   background: transparent url(../images/vline.png) repeat-y top right;
 }
 
 #deck-nob {
-    position: absolute;
-    top: 55%;
-    right: 5px;
+   position: absolute;
+   top: 55%;
+   right: 5px;
 }
 
 #deck-widget {
-    height: 115px;
-    position: absolute;
-    right: 86px;
-    top: 55%;
-    overflow: hidden; 
-    width: 0;
+   height: 115px;
+   position: absolute;
+   right: 86px;
+   top: 55%;
+   overflow: hidden; 
+   width: 0;
 }
 
 #deck-slide {
-    height: 115px;
+   height: 115px;
 }
 
 #chat {
 }
 
 #chat {
-    border: 1px solid black;
-    border-top: none;
-    width: 60%;
-    position: absolute;
-    top: -255px;
-    height: 250px;
-    left: 20%;
+   border: 1px solid black;
+   border-top: none;
+   width: 60%;
+   position: absolute;
+   top: -255px;
+   height: 250px;
+   left: 20%;
 }
 
 #chat ul {
-    list-style: none;
-    height: 200px;
-    overflow: auto;
-    margin-bottom: 0.5em;
+   list-style: none;
+   height: 200px;
+   overflow: auto;
+   margin-bottom: 0.5em;
 }
 
 #chat #filters {
-    float: left;
-    width: 40%;
-    text-align: right;
+   float: left;
+   width: 40%;
+   text-align: right;
 }
 
 #chat p {
-    float: left;
-    text-align: center;
-    width: 58%;
+   float: left;
+   text-align: center;
+   width: 58%;
 }
 #chat #controls {
-    clear:both;
+   clear:both;
 }
 
 table {
-    width: 100%;
+   width: 100%;
 }
 
 table.grid {
-    border-collapse: collapse;
+   border-collapse: collapse;
 }
 
 table.grid * td {
-    border: 1px solid transparent;
+   border: 1px solid transparent;
 }
 
 /* UNIQUE CLASS: This class is handled as if it was an ID */
 .play {
-    /*background: transparent url(../images/hline.png) repeat-x top left;*/
+   /*background: transparent url(../images/hline.png) repeat-x top left;*/
 }
 
 #chat input.text {
-    background-color: #FFF;
-    border: 1px solid #BBB;
-    color: #000;
-    /*margin:0.5em 0;*/
-    padding: 5px;
-    width: 300px;
+   background-color: #FFF;
+   border: 1px solid #BBB;
+   color: #000;
+   /*margin:0.5em 0;*/
+   padding: 5px;
+   width: 300px;
 }
 
 input.text:focus {
-    border-color: #666;
+   border-color: #666;
 }
 
 .loader {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin-left: -50px; /* half width of the loader gif */
-    margin-top: -50px; /* half height of the loader gif */
-    text-align: center;
-    z-index: 9999;
-    overflow: auto;
-    width: 120px; /* width of the loader gif */
-    height: 122px; /*hight of the loader gif +2px to fix IE8 issue */
+   position: fixed;
+   top: 50%;
+   left: 50%;
+   margin-left: -50px; /* half width of the loader gif */
+   margin-top: -50px; /* half height of the loader gif */
+   text-align: center;
+   z-index: 9999;
+   overflow: auto;
+   width: 120px; /* width of the loader gif */
+   height: 122px; /*hight of the loader gif +2px to fix IE8 issue */
+}
+
+
+div.card {
+   margin: 0px;
+   padding: 0px;
+   width: 81px;
+   height: 115px;
+}
+
+div.card > img.face {
+   position: absolute;
+   top: 0px;
+   left: 0px;
+   z-index: 0;
+   width: 81px;
+   height: 115px;
+}
+
+div.card > img.token {
+   position: absolute;
+   top: -10px;
+   left: -14px;
+   z-index: 1;
+   width: 101px;
+   height: 143px;
 }

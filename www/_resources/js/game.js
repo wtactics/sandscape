@@ -125,10 +125,10 @@ function checkGameStart() {
                      for(i = 0; i < create.cards.length; i++) {
                         card = create.cards[i];
                                 
-                        $(document.createElement('img'))
+                        $(document.createElement('div'))
+                        .html('<img class="face" />')
                         .attr({
-                           id: card.id,
-                           src: '_cards/up/thumbs/' + card.src
+                           id: card.id
                         })
                         .addClass('card')
                         .draggable({
@@ -147,8 +147,11 @@ function checkGameStart() {
                            left: -200,
                            visibility: card.visibility
                         })
+                        .data('status', card)
                         .addClass('update')
-                        .data('status', card);
+                        .children('img.face').attr('src', '_cards/up/thumbs/' + card.src);
+                        
+                        updateTokens($('#'+card.id));
                      }
                      $('.card').droppable({
                         drop: function (event, ui) {
@@ -200,31 +203,41 @@ function checkGameStart() {
    });
 }
 
+function updateTokens(card) {
+   if (card.data('status').tokens){
+      card.find('.token').remove();
+      for (var i = 0; i < card.data('status').tokens.length; ++i) {
+         $(document.createElement('img'))
+         .addClass('token')
+         .attr('src', '_tokens/up/thumbs/' + card.data('status').tokens[i].src)
+         .appendTo(card);
+      }
+   }
+}
+
 function cyclicPositionUpdate() {
    if (!stopPositionUpdate){
       $('.update').each(function (i, o) {
          o = $(o);
       
-         if (o.data('status')) { 
-            if (!o.hasClass('ui-draggable-dragging')) //  &&  !o.is(':animated'))
-            {
-               var location = $('#'+o.data('status').location);
-               var top = location.offset().top + (o.data('status').offsetHeight ? 20 : 0);
-               var left = location.offset().left;
+         if (o.data('status')  &&  !o.hasClass('ui-draggable-dragging')  &&  !o.is(':animated'))
+         {
+            var location = $('#'+o.data('status').location);
+            var top = location.offset().top + (o.data('status').offsetHeight ? 20 : 0);
+            var left = location.offset().left;
             
-               if (o.offset().top != top  ||  o.offset().left != left) 
-               {
-                  o.animate({
-                     top: top,
-                     left: left
-                  }, 300)
-               }
+            if (o.offset().top != top  ||  o.offset().left != left) 
+            {
+               o.animate({
+                  top: top,
+                  left: left
+               }, 300)
+            }
                
-               o.css({
-                  zIndex: o.data('status').zIndex
-               });
-            }         
-         }
+            o.css({
+               zIndex: o.data('status').zIndex
+            });
+         }         
       });
    }  
    setTimeout(cyclicPositionUpdate, 200);
@@ -240,11 +253,13 @@ function doGameUpdate(json) {
          
          
          $('#' + json.update[i].id)
-         .attr('src',  '_cards/up/thumbs/' + json.update[i].src)
          .css({
             zIndex: json.update[i].zIndex,
             visibility: json.update[i].visibility
-         });
+         })
+         .children('img.face').attr('src',  '_cards/up/thumbs/' + json.update[i].src);
+         
+         updateTokens($('#' + json.update[i].id));
       }
    }
 }
