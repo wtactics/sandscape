@@ -18,6 +18,7 @@ $this->widget('CTabView', array(
             'view' => '_password',
             'data' => array('pwdModel' => $pwdModel)
         )
-    )
+    ),
+    'cssFile' => '_resources/css/tabs.css'
 ));
 ?>

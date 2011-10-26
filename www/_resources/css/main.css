@@ -131,3 +131,10 @@ a:hover {
     color: #FFF;
     background-color: #9A5D0D
 }
+
+#server-time {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    text-align: right;
+}

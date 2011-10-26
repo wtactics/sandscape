@@ -171,7 +171,7 @@ function checkGameStart() {
                      //Configure and set deck-nob widget
                      $(document.createElement('img')).attr({
                         id: 'deck-nob',
-                        src: '_cards/up/thumbs/cardback.jpg'
+                        src: '_resources/images/deck-nob.png'
                      })
                      .css('z-index', 100)
                      .click(deckSlide)

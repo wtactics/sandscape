@@ -14,11 +14,16 @@
                 'data' => array()
             ),
             'tab3' => array(
+                'title' => 'Tools',
+                'view' => '_tools'
+            ),
+            'tab4' => array(
                 'title' => 'Word Filter',
                 'view' => '_wordfilter',
                 'data' => array()
             )
-        )
+        ),
+        'cssFile' => '_resources/css/tabs.css'
     ));
     ?>
 </div>

@@ -11,6 +11,7 @@ CREATE TABLE `Dice` (
 `diceId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `face` TINYINT NOT NULL DEFAULT 6 ,
 `name` VARCHAR( 150 ) NOT NULL ,
+`enabled` TINYINT NOT NULL DEFAULT 1,
 `active` TINYINT NOT NULL DEFAULT 1 
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
@@ -21,3 +22,7 @@ PRIMARY KEY (`diceId`, `gameId`) ,
 CONSTRAINT `fkGameDiceDice` FOREIGN KEY (`diceId`) REFERENCES `Dice`(`diceId`) ,
 CONSTRAINT `fkGameDiceDeck` FOREIGN KEY (`gameId`) REFERENCES `Game`(`gameId`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+-- Some of the current existing settings
+INSERT INTO `Setting` 
+VALUES ('disabledice', '1', 'All dice will be disabled and users won\'t be able to use dice while playing. If this options is active, any enabled dice will be ignored.') ;

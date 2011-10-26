@@ -1,14 +1,12 @@
-TODO: not implemented yet.
-<?php
-$form = $this->beginWidget('CActiveForm', array(
-    'id' => 'user-form',
-    'enableAjaxValidation' => true,
-    'clientOptions' => array(
-        'inputContainer' => 'p'
-    )
-        ));
-?>
+<?php CHtml::form('#'); ?>
+<p>
+    You can configure words to be filtered in chat messages. Separate each word 
+    by a comma [ , ].
+</p>
 <p>
     <?php echo CHtml::label('Word Filter', 'wfilter'), '<br />', CHtml::textArea('wfilter'); ?>
 </p>
-<?php $this->endWidget(); ?>
+<p>
+    <?php echo CHtml::submitButton('Save', array('class' => 'button')); ?>
+</p>
+<?php Chtml::endForm(); ?>

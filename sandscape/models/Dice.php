@@ -25,6 +25,7 @@
  * @property integer $diceId
  * @property string $name
  * @property integer $face
+ * @property integer $enabled
  * @property integer $active
  *
  * Relations:
@@ -46,7 +47,7 @@ class Dice extends CActiveRecord {
         return array(
             array('face, name', 'required'),
             array('name', 'length', 'max' => 150),
-            array('face', 'numerical', 'integerOnly' => true),
+            array('face, enabled', 'numerical', 'integerOnly' => true),
             //search
             array('name, face', 'safe', 'on' => 'search'),
         );
@@ -62,6 +63,7 @@ class Dice extends CActiveRecord {
         return array(
             'diceId' => 'ID',
             'name' => 'Name',
+            'enabled' => 'Enabled',
             'face' => 'Nr. Faces'
         );
     }

@@ -20,45 +20,22 @@ $this->title = 'Playing';
 ?>
 
 <div id="info-widget">
-    <div id="tools-widget">
-        <a href="<?php echo $this->createURL('game/leave', array('id' => $gameId)); ?>"><img src="_resources/images/icons/door_in.png" /></a>
-        &nbsp;
-        <a href="javascript:;" onclick="alert('Not implemented yet!');"><img src="_resources/images/icons/control_<?php echo ($paused ? 'play' : 'pause'); ?>_blue.png" /></a>
-        &nbsp;
-        <a href="javascript:;" onclick="lost();"><img src="_resources/images/icons/thumb_down.png" /></a>
-        &nbsp;        
-        <a href="javascript:;" onclick="showChat();"><img src="_resources/images/icons/comments.png" /></a>
-        &nbsp;&nbsp;
-        <a href="javascript:;"><img src="_resources/images/icons/dice.png" id="dice" onmouseover="showDiceMenu();"/></a>
-        <ul id="dice-menu">
-            <li><a href="#">A</a></li>
-            <li><a href="#">A</a></li>
-            <li><a href="#">A</a></li>
-            <li><a href="#">A</a></li>
-            <li><a href="#">A</a></li>
-        </ul>
-                
-    </div>
-    <table id="card-info">
-        <tr>
-            <td colspan="2"><strong>Card:</strong>
-                <span id="card-info-name"></span>
-            </td>
-        </tr>
-        <tr  style="vertical-align: top;">
-            <td style="width: 30%;"><img src="_cards/up/thumbs/cardback.jpg" id="card-info-image" /></td>
-            <td>
-                <strong>States:</strong>
-                <span id="card-info-states"></span>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <strong>Rules:</strong>
-                <span id="card-info-rules"></span>
-            </td>
-        </tr>
-    </table>
+    <?php
+    $this->widget('CTabView', array(
+        'tabs' => array(
+            'tab1' => array(
+                'title' => 'Card',
+                'view' => '_card-info',
+            ),
+            'tab2' => array(
+                'title' => 'Tools',
+                'view' => '_tools',
+                'data' => array()
+            )
+        ),
+        'cssFile' => '_resources/css/game-tabs.css'
+    ));
+    ?>
 </div>
 <div class="opponent-area"><!-- OPPONENT GAME AREA --></div>
 
@@ -71,7 +48,7 @@ $this->title = 'Playing';
         <div id="deck-slide"><!-- DECK CONTAINER --></div>
     </div>                   
 </div>
-<div id="chat">
+<div id="chat" style="z-index: 999">
     <ul id="chat-messages">
         <?php foreach ($messages as $message) { ?>
             <li class="user-message"><span><strong><?php echo $message->user->name; ?></strong>

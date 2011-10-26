@@ -59,7 +59,11 @@ class GameController extends AppController {
     public function actionLobby() {
         $this->updateUserActivity();
 
-        $games = Game::model()->findAll('ended IS NULL');
+        $criteria = new CDbCriteria();
+        $criteria->condition = 'ended IS NULL';
+        $criteria->order = 'created DESC';
+        $games = Game::model()->findAll($criteria);
+
         $users = User::model()->findAllAuthenticated()->getData();
 
         $start = ChatMessage::model()->count('gameId IS NULL ORDER BY sent');
@@ -68,7 +72,13 @@ class GameController extends AppController {
         } else {
             $start = 0;
         }
-        $messages = ChatMessage::model()->findAll('gameId IS NULL ORDER BY sent LIMIT :start, 15', array(':start' => (int) $start));
+
+        $criteria = new CDbCriteria();
+        $criteria->condition = 'gameId IS NULL';
+        $criteria->order = 'sent';
+        $criteria->offset = (int) $start;
+        $criteria->limit = 15;
+        $messages = ChatMessage::model()->findAll($criteria);
 
         $decks = Deck::model()->findAll('userId = :id', array(':id' => (int) (Yii::app()->user->id)));
 
@@ -351,7 +361,29 @@ class GameController extends AppController {
 
     /**
      * The main action that offers all "game" features allowing users to play games.
-     * This action will continually evolve to untill the game actions are statble.
+     * This action will continually evolve to untill the game actions are stable.
+     * 
+     * Current actions:
+     * 
+     * [since Sudden Growth]
+     * startGame:
+     * startUp:
+     * update:
+     * drawCard:
+     * 
+     * [since Green Shield]
+     * cardInfo:
+     *      Gets the requested card's information. This event should provide the 
+     *      card image, name, rules and any associated token/state that affects 
+     *      the card in-game.
+     * 
+     * [since Elvish Shaman]
+     * gamePause:
+     *      Pauses a game allowing users to leave and resume game play at a later time.
+     * roll:
+     *      Generates a dice roll for the specified dice ID. If the dice is set 
+     *      available for this game and is a valid dice (active), than a random
+     *      will be generated between 1 and $dice->face.
      * 
      * @param integer $id The game ID.
      * 
@@ -494,6 +526,27 @@ class GameController extends AppController {
                     case 'gamePause':
                         //TODO: not implemented yet
                         break;
+                    case 'roll':
+                        $result = array('success' => 0);
+                        if (isset($_POST['dice']) && (int) $_POST['dice']) {
+                            $dice = null;
+                            if (GameDice::model()->find('gameId = :id AND diceId = :dice', array(
+                                        ':id' => $game->gameId,
+                                        ':face' => (int) $_POST['dice']
+                                    )) !== null) {
+
+                                $dice = Dice::model()->find('active = 1 AND diceId = :id', array(':id' => (int) $_POST['dice']));
+                            }
+
+                            if ($dice !== null) {
+                                $result['success'] = 1;
+                                $result['roll'] = rand(1, $dice->face);
+                                $result['dice'] = $dice->name;
+                                $result['face'] = $dice->face;
+                            }
+                        }
+                        echo json_encode($result);
+                        break;
                     default:
                         echo SCGame::JSONIndent(json_encode((object) array('result' => 'error', 'motive' => 'Unrecognized action')));
                         yii::app()->end();
@@ -519,8 +572,8 @@ class GameController extends AppController {
 
             $this->updateUserActivity();
             $this->render('board', array(
-                'gameId' => $id, 
-                'messages' => $messages, 
+                'gameId' => $id,
+                'messages' => $messages,
                 'paused' => $game->paused
             ));
         } else {
