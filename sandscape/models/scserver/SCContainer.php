@@ -99,6 +99,10 @@ class SCContainer {
     public function isDroppable() {
         return $this->droppable;
     }
+    
+    public function getZIndex() {
+       return 50;
+    }
 
     public function getStatus() {
         $root = $this->getRoot();
@@ -106,8 +110,25 @@ class SCContainer {
         return (object) array(
                     'id' => $this->getId(),
                     'location' => ($root && $this->getParent() ? $this->getParent()->getId() : $this->game->getVoid()->getId()),
-                    'offsetHeight' => ( $this->getParent() && $this->getParent()->isMovable() ? 1 : 0)
+                    'offsetHeight' => ( $this->getParent() && $this->getParent()->isMovable() ? 1 : 0),
+                    'zIndex' => $this->getZIndex()
         );
+    }
+    
+    /**
+     * Checks if the container is inside the other container
+     * @param SCContainer $container 
+     * @return boolean
+     */
+    public function isInside(SCContainer $container)
+    {
+       $o = $this;
+       while ($o->getParent())
+       {
+          if ($o === $container) return true;
+          $o = $o->getParent();
+       }
+       return false;
     }
 
     public function __toString() {

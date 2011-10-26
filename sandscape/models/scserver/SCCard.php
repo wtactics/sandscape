@@ -45,15 +45,27 @@ class SCCard extends SCContainer {
    }
 
    public function getSrc() {
-      if ($this->isFaceUp())
+      if ($this->isFaceUp()  &&  $this->getRoot())
          return $this->face;
       else
          return $this->back;
+   }
+   
+   public function getVisibility()
+   {
+      $o = $this->getParent();
+      while ($o)
+      {
+         if ($o instanceof SCDeck) return 'hidden';
+         $o = $o->getParent();
+      }
+      return 'visible';
    }
 
    public function getStatus() {
       $status = parent::getStatus();
       $status->src = $this->getSrc();
+      $status->visibility = $this->getVisibility();
       return $status;
    }
 
@@ -64,6 +76,16 @@ class SCCard extends SCContainer {
     */
    public function getDbId() {
       return $this->dbId;
+   }
+
+   public function getZIndex() {
+      $z = 50;
+      $o = $this;
+      while ($o) {
+         $o = $o->getParent();
+         $z++;
+      }
+      return $z;
    }
 
 }

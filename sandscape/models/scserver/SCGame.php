@@ -165,8 +165,8 @@ class SCGame
       $card = isset($this->all[$card]) ? $this->all[$card] : null;
       $location = isset($this->all[$location]) ? $this->all[$location] : null;
       
-      if ($card  &&  $location  &&  $card instanceof SCCard  &&  $card->isMovable()  &&  $location->isDroppable()  &&  $card->getPlayer() == $userId)
-      {
+      if ($card  &&  $location  &&  $card instanceof SCCard  &&  $card->isMovable()  &&  $location->isDroppable()  &&  $card->getPlayer() == $userId  &&  $card !== $location  &&  !$location->isInside($card))
+      {         
          if ($card->getParent()) $oldLocation = $card->getParent();
          if ($location->push($card)  &&  $oldLocation) $oldLocation->remove($card);
       }
