@@ -352,7 +352,7 @@ class GameController extends AppController {
 
    /**
     * The main action that offers all "game" features allowing users to play games.
-    * This action will continually evolve to untill the game actions are statble.
+    * This action will continually evolve to untill the game actions are stable.
     * 
     * @param integer $id The game ID.
     * 
@@ -360,6 +360,13 @@ class GameController extends AppController {
     */
    public function actionPlay($id) {
       $this->layout = '//layouts/game';
+
+      $id = intval($id);
+      $lock = Yii::app()->db->createCommand("select get_lock('game.$id', 10)")
+              ->queryScalar();
+      if ($lock != 1)
+         throw new CHttpException(500, 'Failed to get game lock');
+
       $game = $this->loadGameById($id);
       if (in_array(yii::app()->user->id, array($game->player1, $game->player2))) {
          if ($game->state)
@@ -387,12 +394,18 @@ class GameController extends AppController {
 
                      // tokens
                      $tokens = array(
-                         new SCToken('debugToken', 'debugToken.gif'),
+//                         new SCToken('debugToken', 'debugToken.gif'),
                          new SCToken('debugToken', 'debugToken2.png')
                      );
 
+                     // card states
+                     $states = array(
+                         new SCState('debugState1', 'debugState1.png'),
+                         new SCState('debugState2', 'debugState2.png'),
+                     );
+
                      // create the game status
-                     $this->scGame = new SCGame($game->graveyard, $game->player1, $game->player2, $tokens);
+                     $this->scGame = new SCGame($game->graveyard, $game->player1, $game->player2, $tokens, $states);
 
                      // decks in the game
                      foreach ($game->decks as $deck) {
@@ -401,12 +414,17 @@ class GameController extends AppController {
                            $cards[] = $c = new SCCard($this->scGame, $deck->userId, $card->card->cardId, $card->card->image);
 
                            // Debug
-                           if (rand(0, 1) > .5)
+                           if (rand(0, 10) > 5)
                               $c->addToken($tokens[0]);
-                           if (rand(0, 1) > .5)
-                              $c->addToken($tokens[1]);
-                        }
+//                           if (rand(0, 10) > 5)
+//                              $c->addToken($tokens[1]);
 
+                           $x = rand(0, 10);
+                           if ($x > 8) 
+                              $c->addState($states[1]);
+                           elseif ($x < 2) 
+                              $c->addState($states[0]);
+                        }
                         $scdeck = new SCDeck($this->scGame, $deck->name, $cards);
 
                         if ($deck->userId == $game->player1)
@@ -506,11 +524,13 @@ class GameController extends AppController {
                   break;
                default:
                   echo SCGame::JSONIndent(json_encode((object) array('result' => 'error', 'motive' => 'Unrecognized action')));
+                  Yii::app()->db->createCommand("select release_lock('game.$id')");
                   yii::app()->end();
             }
 
             $game->state = serialize($this->scGame);
             $game->save();
+            Yii::app()->db->createCommand("select release_lock('game.$id')");
             yii::app()->end();
          }
 
@@ -532,6 +552,7 @@ class GameController extends AppController {
       } else {
          // TODO: the user accessing the game is not a player of the game. Show some error or something.
       }
+      Yii::app()->db->createCommand("select release_lock('game.$id')");
    }
 
    public function actionLeave($id) {

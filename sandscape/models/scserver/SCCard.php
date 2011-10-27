@@ -7,7 +7,7 @@ class SCCard extends SCContainer {
    private $back;
    private $faceUp = false;
    private $player;
-//   private $states;
+   private $states;
    private $tokens;
 
    public function __construct(SCGame $game, $player, $dbId, $face, $back = 'cardback.jpg') {
@@ -16,7 +16,7 @@ class SCCard extends SCContainer {
       $this->dbId = $dbId;
       $this->face = $face;
       $this->back = $back;
-//      $this->states = array();
+      $this->states = array();
       $this->tokens = array();
    }
 
@@ -26,6 +26,14 @@ class SCCard extends SCContainer {
 
    public function removeToken(SCToken $token) {
       unset($this->tokens[$token->getId()]);
+   }
+   
+   public function addState(SCState $state) {
+      $this->states[$state->getId()] = $state;
+   }
+   
+   public function removeState(SCState $state) {
+      unset($this->stated[$state->getId()]);
    }
 
    public function getPlayer() {
@@ -64,6 +72,9 @@ class SCCard extends SCContainer {
       
       $status->tokens = array();
       foreach($this->tokens as $token) $status->tokens [] = $token->getJSONData();
+      
+      $status->states = array();
+      foreach($this->states as $state) $status->states[] = $state->getJSONData();
       
       return $status;
    }

@@ -5,6 +5,7 @@ class SCGame {
    private $all = array();
    private $roots = array();
    private $availableTokens = array();
+   private $availableStates = array();
 
    /**
     *
@@ -27,13 +28,16 @@ class SCGame {
    /**
     * TODO: document this....
     */
-   public function __construct($hasGraveyard, $player1, $player2, $availableTokens, $handWidth = 20, $handHeight = 20, $gameWidth = 100, $gameHeight = 30) {
+   public function __construct($hasGraveyard, $player1, $player2, $availableTokens, $availableStates, $handWidth = 20, $handHeight = 20, $gameWidth = 100, $gameHeight = 30) {
       $this->player1Side = new SCPlayerSide($this, $player1, $hasGraveyard, $handWidth, $handHeight, $gameWidth, $gameHeight);
       $this->player2Side = new SCPlayerSide($this, $player2, $hasGraveyard, $handWidth, $handHeight, $gameWidth, $gameHeight);
       $this->void = new SCContainer($this, false, false);
 
       foreach ($availableTokens as $token)
          $this->availableTokens[$token->getId()] = $token;
+
+      foreach ($availableStates as $state)
+         $this->availableStates[$state->getId()] = $state;
    }
 
    public function __wakeup() {
