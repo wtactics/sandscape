@@ -1,22 +1,23 @@
 <?php Yii::app()->clientScript->registerCssFile('_resources/css/administration.css'); ?>
 <div class="tools-row even">
-    <?php echo CHtml::form('#'); ?>
+    <?php echo CHtml::form($this->createURL('administration/prunechats')); ?>
     <h3>Remove old chat messages</h3>
     <p>
+        <?php echo CHtml::label('Messages older than', 'dates'), '<br />'; ?>
         <?php
-        echo CHtml::label('Messages older than', 'dates'), '<br />',
-        CHtml::textField('dates', null, array('class' => 'text'));
+        $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+            'name' => 'date',
+            'options' => array(
+                'showAnim' => 'fold',
+                'dateFormat' => 'yy-mm-dd'
+            ),
+            'htmlOptions' => array(
+                'style' => 'height:20px;'
+            ),
+        ));
         ?>
-        <br />
+        <br /><br />
         <?php echo CHtml::checkBox('gamemessages'), CHtml::label('Remove game messages?', 'gamemessages'); ?>
-        <br />
-        <?php
-        echo Chtml::radioButtonList('filtermessages', null, array(
-            0 => 'All messages',
-            1 => 'User messages',
-            2 => 'System messages'
-                ), array('class' => 'margined'));
-        ?>
     </p>
     <span>
         <?php echo CHtml::submitButton('Execute', array('class' => 'button')); ?>
@@ -26,7 +27,7 @@
 </div>
 
 <div class="tools-row">
-    <?php echo CHtml::form('#'); ?>
+    <?php echo CHtml::form($this->createURL('administration/removeorphan')); ?>
     <h3>Remove orphan card images</h3>
     <p>
         Remove all card images that are not used any more.

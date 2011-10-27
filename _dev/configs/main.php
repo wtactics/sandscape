@@ -19,7 +19,7 @@ return array(
         'user' => array(
             'allowAutoLogin' => true,
         ),
-        //IMPORNTAT!!: UPDATE DATABASE SETTINGS
+        //IMPORTANT!!: UPDATE DATABASE SETTINGS
         'db' => array(
             'connectionString' => 'mysql:host=127.0.0.1;dbname=<the name of your database>',
             'emulatePrepare' => true,

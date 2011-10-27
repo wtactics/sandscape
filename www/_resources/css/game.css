@@ -68,14 +68,14 @@ body {
 }
 
 #chat {
-    border: 1px solid black;
+    /*border: 1px solid black;
     border-top: none;
     width: 60%;
     position: absolute;
     top: -255px;
     height: 250px;
     left: 20%;
-    background-color: #FFF;
+    background-color: #FFF;*/
 }
 
 #chat ul {

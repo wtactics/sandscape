@@ -98,7 +98,7 @@ class DiceController extends AppController {
      * @since 1.2, Elvish Shaman
      */
     private function loadDiceModel($id) {
-        if (($dice = Dice::model()->findByPk((int) $id)) === null) {
+        if (($dice = Dice::model()->find('active = 1 AND diceId = :id', array(':id' => (int) $id))) === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
         return $dice;

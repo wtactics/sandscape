@@ -356,17 +356,6 @@ function deckSlide (event) {
       }
    }
 }
-function showChat() {
-   if($('#chat').position().top == 0) {
-      $('#chat').animate({
-         top: -255
-      });
-   } else {
-      $('#chat').animate({
-         top: 0
-      });
-   }
-}
 
 function sendMessage(destination) {
    var message = $("#writemessage").val();

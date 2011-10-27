@@ -33,12 +33,10 @@ Yii::app()->clientScript->registerScript('menuhover', "
             <div class="span-22 prepend-1 append-1 last">
                 <?php echo $content; ?>
             </div>
-            <div class="span-22 last">
-                <p id="server-time">Server time: <?php echo date(DATE_W3C); ?></p>
-            </div>
             <div class="span-24" id="footer">
                 &copy; <?php echo date('Y'); ?> <a href="http://sourceforge.net/projects/sandscape">Sandscape</a> & <a href="http://wtactics.org">WTactics</a> Team
                 &nbsp;|&nbsp;Running <em>Sandscape Green Shield</em>
+                <span id="server-time" style="float:right">Server time: <?php echo date(DATE_W3C); ?></span>
             </div>
         </div>
     </body>

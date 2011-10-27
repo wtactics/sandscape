@@ -208,7 +208,7 @@ class CardController extends AppController {
                             continue;
                         }
 
-                        if (($card = Card::model()->find('name LIKE :name', array(':name' => $csvLine[0]))) === null) {
+                        if (($card = Card::model()->find('active = 1 AND name LIKE :name', array(':name' => $csvLine[0]))) === null) {
                             $card = new Card();
                             $card->name = $cvsLine[0];
                         }
@@ -271,7 +271,7 @@ class CardController extends AppController {
      * @since 1.0, Sudden Growth
      */
     private function loadCardModel($id) {
-        if (($card = Card::model()->findByPk((int) $id)) === null) {
+        if (($card = Card::model()->find('active = 1 AND cardId = :id', array(':id' => (int) $id))) === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
         return $card;

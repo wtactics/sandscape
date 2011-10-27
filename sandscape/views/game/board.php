@@ -23,11 +23,20 @@ $this->title = 'Playing';
     <?php
     $this->widget('CTabView', array(
         'tabs' => array(
+            'tab0' => array(
+                'title' => 'Chat',
+                'view' => '_chat',
+                'data' => array('messages' => $messages, 'gameId' => $gameId)
+            ),
             'tab1' => array(
                 'title' => 'Card',
                 'view' => '_card-info',
             ),
             'tab2' => array(
+                'title' => 'Actions',
+                'view' => '_gameactions'
+            ),
+            'tab3' => array(
                 'title' => 'Tools',
                 'view' => '_tools',
                 'data' => array()
@@ -48,28 +57,6 @@ $this->title = 'Playing';
         <div id="deck-slide"><!-- DECK CONTAINER --></div>
     </div>                   
 </div>
-<div id="chat" style="z-index: 999">
-    <ul id="chat-messages">
-        <?php foreach ($messages as $message) { ?>
-            <li class="user-message"><span><strong><?php echo $message->user->name; ?></strong>
-                    [<?php echo Yii::app()->dateFormatter->formatDateTime(strtotime($message->sent), 'short'); ?>]:</span>
-                <?php echo $message->message; ?>
-            </li>
-        <?php } ?>
-    </ul>
-    <div id="controls">
-        <p>
-            <input type="text" class="text" id="writemessage" />
-            <button type="button" onclick="sendMessage('<?php echo $this->createURL('game/sendgamemessage', array('id' => $gameId)); ?>');" id="sendbtn">Send</button>
-        </p>
-        <div id="filters">
-            Filter:
-            <input type="radio" name="filter" id="fshow-all" onchange="filterChatMessages(this);" checked="checked" /> All ::
-            <input type="radio" name="filter" id="fshow-user"onchange="filterChatMessages(this);" /> User ::
-            <input type="radio" name="filter" id="fshow-system" onchange="filterChatMessages(this);" /> System         
-        </div>
-    </div>
-</div>
 
 <!-- LOADER DIVS -->
 <div id="opponent-loader" class="loader" style="display:none;"">
@@ -82,10 +69,4 @@ $this->title = 'Playing';
      <img id="img-loader" src="_resources/images/loader2.gif" />
     <br />
     <span>Building game.</span>
-</div>
-
-<div style="display: none;">
-    <div id="card-details">
-
-    </div>
 </div>

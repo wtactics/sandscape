@@ -162,7 +162,7 @@ class UserController extends AppController {
      * @since 1.0, Sudden Growth
      */
     private function loadUserModel($id) {
-        if (($user = User::model()->findByPk((int) $id)) === null) {
+        if (($user = User::model()->find('active = 1 AND userId = :id', array(':id' => (int) $id))) === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
         return $user;

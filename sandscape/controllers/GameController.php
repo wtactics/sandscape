@@ -80,7 +80,7 @@ class GameController extends AppController {
         $criteria->limit = 15;
         $messages = ChatMessage::model()->findAll($criteria);
 
-        $decks = Deck::model()->findAll('userId = :id', array(':id' => (int) (Yii::app()->user->id)));
+        $decks = Deck::model()->findAll('active = 1 AND userId = :id', array(':id' => (int) (Yii::app()->user->id)));
 
         $this->render('lobby', array(
             'games' => $games,

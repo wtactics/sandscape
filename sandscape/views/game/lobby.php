@@ -71,7 +71,7 @@ $this->title = 'Sandscape Lobby';
                 }
                 ?>
                 <li class="<?php echo $class; ?>" id="game-<?php echo $game->gameId; ?>">
-                    <span><?php echo Yii::app()->dateFormatter->formatDateTime(strtotime($game->created), 'short', false); ?></span>
+                    <span><?php echo date(DATE_W3C, strtotime($game->created)); ?></span>
                     <br />
                     <?php if ($game->running) { ?>
                         <span><?php echo $game->player10->name, '&nbsp;-&nbsp;', $game->player20->name; ?></span>

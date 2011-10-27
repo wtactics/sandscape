@@ -76,7 +76,7 @@ class DeckTemplateController extends AppController {
      * @since 1.1, Green Shield
      */
     private function loadDeckTemplateModel($id) {
-        if (($deck = DeckTemplate::model()->findByPk((int) $id)) === null) {
+        if (($deck = DeckTemplate::model()->find('active = 1 AND deckTemplateId = :id', array(':id' => (int) $id))) === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
         return $deck;
