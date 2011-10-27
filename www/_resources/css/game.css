@@ -152,6 +152,7 @@ input.text:focus {
 div.card {
    margin: 0px;
    padding: 0px;
+   border: 0px transparent;
    width: 81px;
    height: 115px;
 }
@@ -167,9 +168,19 @@ div.card > img.face {
 
 div.card > img.token {
    position: absolute;
-   top: -10px;
-   left: -14px;
+   top: -14px;
+   left: -10px;
    z-index: 1;
+   width: 101px;
+   height: 143px;
+}
+
+
+div.card > img.state {
+   position: absolute;
+   top: -14px;
+   left: -10px;
+   z-index: -1;
    width: 101px;
    height: 143px;
 }

@@ -143,15 +143,14 @@ function checkGameStart() {
                         card = create.cards[i];
                         $('#'+card.id).css({
                            position: 'absolute',
-                           top: -200,
-                           left: -200,
                            visibility: card.visibility
                         })
+                        .css($('#'+card.location).offset())
                         .data('status', card)
                         .addClass('update')
                         .children('img.face').attr('src', '_cards/up/thumbs/' + card.src);
                         
-                        updateTokens($('#'+card.id));
+                        updateCardExtras($('#'+card.id));
                      }
                      $('.card').droppable({
                         drop: function (event, ui) {
@@ -203,13 +202,21 @@ function checkGameStart() {
    });
 }
 
-function updateTokens(card) {
-   if (card.data('status').tokens){
+function updateCardExtras(card) {
+   if (card.data('status')){
       card.find('.token').remove();
       for (var i = 0; i < card.data('status').tokens.length; ++i) {
          $(document.createElement('img'))
          .addClass('token')
          .attr('src', '_tokens/up/thumbs/' + card.data('status').tokens[i].src)
+         .appendTo(card);
+      }
+      
+      card.find('.state').remove();
+      for(var i=0; i<card.data('status').states.length; ++i) {
+         $(document.createElement('img'))
+         .addClass('state')
+         .attr('src', '_states/' + card.data('status').states[i].src)
          .appendTo(card);
       }
    }
@@ -220,7 +227,7 @@ function cyclicPositionUpdate() {
       $('.update').each(function (i, o) {
          o = $(o);
       
-         if (o.data('status')  &&  !o.hasClass('ui-draggable-dragging')  &&  !o.is(':animated'))
+         if (o.data('status')  &&  !o.hasClass('ui-draggable-dragging')  &&  !o.is(':animated')  &&  o.data('status').visibility == 'visible')
          {
             var location = $('#'+o.data('status').location);
             var top = location.offset().top + (o.data('status').offsetHeight ? 20 : 0);
@@ -228,15 +235,18 @@ function cyclicPositionUpdate() {
             
             if (o.offset().top != top  ||  o.offset().left != left) 
             {
+               console.log('updatePosition ' + o.attr('id')+' :: '+ o.offset().top + '-> '+top+' ; '+o.offset().left+' -> '+left);
                o.animate({
-                  top: top,
-                  left: left
+                  top: top+'px',
+                  left: left+'px'
                }, 300)
-            }
+//               console.log('updatePosition ' + o.attr('id')+' :: '+ o.offset().top + '-> '+top+' ; '+o.offset().left+' -> '+left);
                
-            o.css({
-               zIndex: o.data('status').zIndex
-            });
+               
+               o.css({
+                  zIndex: o.data('status').zIndex
+               });
+            }
          }         
       });
    }  
@@ -259,7 +269,7 @@ function doGameUpdate(json) {
          })
          .children('img.face').attr('src',  '_cards/up/thumbs/' + json.update[i].src);
          
-         updateTokens($('#' + json.update[i].id));
+         updateCardExtras($('#' + json.update[i].id));
       }
    }
 }
