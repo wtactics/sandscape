@@ -1,6 +1,11 @@
 <?php
 
-class SCToken {
+/**
+ * Class: SCState
+ *
+ * @author serra
+ */
+class SCState {
 
    private $id;
    private $name;
@@ -26,8 +31,8 @@ class SCToken {
 
    public function getJSONData() {
       return (object) array(
-          'id' => $this->id,
-          'src' => $this->image,
+                  'id' => $this->id,
+                  'src' => $this->image,
       );
    }
 

@@ -59,11 +59,7 @@ class GameController extends AppController {
     public function actionLobby() {
         $this->updateUserActivity();
 
-        $criteria = new CDbCriteria();
-        $criteria->condition = 'ended IS NULL';
-        $criteria->order = 'created DESC';
-        $games = Game::model()->findAll($criteria);
-
+        $games = Game::model()->findAll('ended IS NULL AND private = 0');
         $users = User::model()->findAllAuthenticated()->getData();
 
         $start = ChatMessage::model()->count('gameId IS NULL ORDER BY sent');
@@ -72,15 +68,9 @@ class GameController extends AppController {
         } else {
             $start = 0;
         }
+        $messages = ChatMessage::model()->findAll('gameId IS NULL ORDER BY sent LIMIT :start, 15', array(':start' => (int) $start));
 
-        $criteria = new CDbCriteria();
-        $criteria->condition = 'gameId IS NULL';
-        $criteria->order = 'sent';
-        $criteria->offset = (int) $start;
-        $criteria->limit = 15;
-        $messages = ChatMessage::model()->findAll($criteria);
-
-        $decks = Deck::model()->findAll('active = 1 AND userId = :id', array(':id' => (int) (Yii::app()->user->id)));
+        $decks = Deck::model()->findAll('userId = :id', array(':id' => (int) (Yii::app()->user->id)));
 
         $this->render('lobby', array(
             'games' => $games,
@@ -130,6 +120,45 @@ class GameController extends AppController {
                     );
                 }
                 $this->updateUserActivity();
+            }
+        }
+        echo json_encode($result);
+    }
+
+    /**
+     * Allows for clients to request updates on existing lobby chat messages.
+     * 
+     * The messages are encoded as a JSON object that is sent to the client. For 
+     * a proper request the client must send the ID of the last message he has 
+     * received, only messages with IDs above the given one will be provided.
+     * 
+     * The JSON object is as following:
+     * 
+     * has: integer, the number of messages sent in the response
+     * messages: array, the messages sent
+     *      name: string, the name of the message author
+     *      message: string, the message text
+     *      date: string, the date in which the message was sent, formatted using Yii's settings 
+     * 
+     * last: integer, the ID for the last message being sent
+     * 
+     * @since 1.0, Sudden Growth
+     */
+    public function actionLobbyChatUpdate() {
+        $result = array('has' => 0);
+        if (Yii::app()->request->isPostRequest) {
+            if (isset($_POST['lastupdate'])) {
+                $lastUpdate = (int) $_POST['lastupdate'];
+                $messages = array();
+
+                $cms = ChatMessage::model()->findAll('messageId > :last AND gameId IS NULL', array(':last' => $lastUpdate));
+                foreach ($cms as $cm) {
+                    $messages[] = array(
+                        'name' => $cm->user->name,
+                        'message' => $cm->message,
+                        'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
+                    );
+                }
             }
         }
         echo json_encode($result);
@@ -390,11 +419,21 @@ class GameController extends AppController {
      * @since 1.0, Sudden Growth
      */
     public function actionPlay($id) {
+
         $this->layout = '//layouts/game';
+
+
+        $id = intval($id);
+        $lock = Yii::app()->db->createCommand("SELECT GET_LOCK('game.$id', 10)")->queryScalar();
+        if ($lock != 1) {
+            throw new CHttpException(500, 'Failed to get game lock');
+        }
+
         $game = $this->loadGameById($id);
         if (in_array(yii::app()->user->id, array($game->player1, $game->player2))) {
-            if ($game->state)
+            if ($game->state) {
                 $this->scGame = unserialize($game->state);
+            }
 
             if (isset($_REQUEST['event'])) {
                 switch ($_REQUEST['event']) {
@@ -416,16 +455,39 @@ class GameController extends AppController {
                             $game->running = 1;
                             $game->started = date('Y-m-d H:i:s');
 
+                            // tokens
+                            $tokens = array(
+//                         new SCToken('debugToken', 'debugToken.gif'),
+                                new SCToken('debugToken', 'debugToken2.png')
+                            );
+
+                            // card states
+                            $states = array(
+                                new SCState('debugState1', 'debugState1.png'),
+                                new SCState('debugState2', 'debugState2.png'),
+                            );
+
                             // create the game status
-                            $this->scGame = new SCGame($game->graveyard, $game->player1, $game->player2);
+                            $this->scGame = new SCGame($game->graveyard, $game->player1, $game->player2, $tokens, $states);
 
                             // decks in the game
                             foreach ($game->decks as $deck) {
                                 $cards = array();
                                 foreach ($deck->deckCards as $card) {
-                                    $cards[] = new SCCard($this->scGame, $deck->userId, $card->card->cardId, $card->card->image);
-                                }
+                                    $cards[] = $c = new SCCard($this->scGame, $deck->userId, $card->card->cardId, $card->card->image);
 
+                                    // Debug
+                                    if (rand(0, 10) > 5)
+                                        $c->addToken($tokens[0]);
+//                           if (rand(0, 10) > 5)
+//                              $c->addToken($tokens[1]);
+
+                                    $x = rand(0, 10);
+                                    if ($x > 8)
+                                        $c->addState($states[1]);
+                                    elseif ($x < 2)
+                                        $c->addState($states[0]);
+                                }
                                 $scdeck = new SCDeck($this->scGame, $deck->name, $cards);
 
                                 if ($deck->userId == $game->player1)
@@ -493,7 +555,6 @@ class GameController extends AppController {
                             $result->result = 'ok';
                             $result->clientTime = $_REQUEST['clientTime'];
                             echo SCGame::JSONIndent(json_encode($result));
-//                  die('died in '.get_class($this).' at ' . time() . '  ' . var_export($_REQUEST, true));
                         }
                         break;
                     case 'moveCard':
@@ -506,6 +567,7 @@ class GameController extends AppController {
                             echo SCGame::JSONIndent(json_encode($result));
                         }
                         break;
+
                     case 'cardInfo':
                         $result = array('success' => 0);
                         if ($game->running && $this->scGame && isset($_REQUEST['card'])) {
@@ -549,14 +611,15 @@ class GameController extends AppController {
                         break;
                     default:
                         echo SCGame::JSONIndent(json_encode((object) array('result' => 'error', 'motive' => 'Unrecognized action')));
+                        Yii::app()->db->createCommand("select release_lock('game.$id')");
                         yii::app()->end();
                 }
 
                 $game->state = serialize($this->scGame);
                 $game->save();
+                Yii::app()->db->createCommand("select release_lock('game.$id')");
                 yii::app()->end();
             }
-
 
             $start = ChatMessage::model()->count('gameId = :id ORDER BY sent', array(':id' => (int) $game->gameId));
             if ($start >= 15) {
@@ -579,6 +642,7 @@ class GameController extends AppController {
         } else {
             // TODO: the user accessing the game is not a player of the game. Show some error or something.
         }
+        Yii::app()->db->createCommand("select release_lock('game.$id')");
     }
 
     public function actionLeave($id) {

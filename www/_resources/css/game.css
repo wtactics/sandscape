@@ -107,6 +107,42 @@ table.grid * td {
     height: 122px;
 }
 
+div.card {
+    margin: 0px;
+    padding: 0px;
+    border: 0px transparent;
+    width: 81px;
+    height: 115px;
+}
+
+div.card > img.face {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 0;
+    width: 81px;
+    height: 115px;
+}
+
+div.card > img.token {
+    position: absolute;
+    top: -14px;
+    left: -10px;
+    z-index: 1;
+    width: 101px;
+    height: 143px;
+}
+
+
+div.card > img.state {
+    position: absolute;
+    top: -14px;
+    left: -10px;
+    z-index: -1;
+    width: 101px;
+    height: 143px;
+}
+
 #file-menu {
     position: absolute;
     top: 1px;
@@ -123,7 +159,7 @@ ul#file-menu-items {
     font-size: 12px;
     width: 185px;
     list-style: none;
-    
+
     background-color: #eee;
 }
 
