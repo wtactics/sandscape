@@ -9,14 +9,14 @@ $settings = (object) array('fixDeckNr' => 0, 'decksPerGame' => 0, 'useAnyDice' =
         <?php
         echo CHtml::checkBox('fixdecknr', $settings->fixDeckNr), '&nbsp;',
         CHtml::label('Fix Deck Number', 'fixdecknr'), '&nbsp;',
-        CHtml::image('_resources/images/icons/x16/help.png', '', array('id' => 'fixdecknr-help'));
+        CHtml::image('_resources/images/icon-x16-help.png', '', array('id' => 'fixdecknr-help'));
         ?>
     </p>
     <p>
         <?php
         echo CHtml::label('Decks per game', 'deckspergame'), '<br />',
         CHtml::textField('deckspergame', $settings->decksPerGame, array('class' => 'text')), '&nbsp;',
-        CHtml::image('_resources/images/icons/x16/help.png', '', array('id' => 'deckspergame-help'));
+        CHtml::image('_resources/images/icon-x16-help.png', '', array('id' => 'deckspergame-help'));
         ?>
     </p>
     <hr />
@@ -24,7 +24,7 @@ $settings = (object) array('fixDeckNr' => 0, 'decksPerGame' => 0, 'useAnyDice' =
         <?php
         echo CHtml::checkBox('disabledice', $settings->useAnyDice), '&nbsp;',
         CHtml::label('Disable all dice', 'disabledice'), '&nbsp;',
-        CHtml::image('_resources/images/icons/x16/help.png', '', array('id' => 'disabledice-help'));
+        CHtml::image('_resources/images/icon-x16-help.png', '', array('id' => 'disabledice-help'));
         ?>
     </p>
 </fieldset>

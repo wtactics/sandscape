@@ -59,7 +59,7 @@ class GameController extends AppController {
     public function actionLobby() {
         $this->updateUserActivity();
 
-        $games = Game::model()->findAll('ended IS NULL AND private = 0');
+        $games = Game::model()->findAll('ended IS NULL');
         $users = User::model()->findAllAuthenticated()->getData();
 
         $start = ChatMessage::model()->count('gameId IS NULL ORDER BY sent');
@@ -120,45 +120,6 @@ class GameController extends AppController {
                     );
                 }
                 $this->updateUserActivity();
-            }
-        }
-        echo json_encode($result);
-    }
-
-    /**
-     * Allows for clients to request updates on existing lobby chat messages.
-     * 
-     * The messages are encoded as a JSON object that is sent to the client. For 
-     * a proper request the client must send the ID of the last message he has 
-     * received, only messages with IDs above the given one will be provided.
-     * 
-     * The JSON object is as following:
-     * 
-     * has: integer, the number of messages sent in the response
-     * messages: array, the messages sent
-     *      name: string, the name of the message author
-     *      message: string, the message text
-     *      date: string, the date in which the message was sent, formatted using Yii's settings 
-     * 
-     * last: integer, the ID for the last message being sent
-     * 
-     * @since 1.0, Sudden Growth
-     */
-    public function actionLobbyChatUpdate() {
-        $result = array('has' => 0);
-        if (Yii::app()->request->isPostRequest) {
-            if (isset($_POST['lastupdate'])) {
-                $lastUpdate = (int) $_POST['lastupdate'];
-                $messages = array();
-
-                $cms = ChatMessage::model()->findAll('messageId > :last AND gameId IS NULL', array(':last' => $lastUpdate));
-                foreach ($cms as $cm) {
-                    $messages[] = array(
-                        'name' => $cm->user->name,
-                        'message' => $cm->message,
-                        'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
-                    );
-                }
             }
         }
         echo json_encode($result);
