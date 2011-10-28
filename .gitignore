@@ -1,3 +1,17 @@
+# Default ignore list file for Sandscape.
+#
+# ignore NetBeans IDE project folder
 nbproject/
+# development local folder
 /_dev/ignore/
+# Mac/Windows files
 .DS_Store
+Thumbs.db
+# Card images
+/www/_cards/*.jpg
+/www/_cards/*.png
+/www/_cards/thumbs/*.jpg
+/www/_cards/thumbs/*.png
+# Exclude system card images from ignore  list
+!cardback.jpg
+!noimage.jpg

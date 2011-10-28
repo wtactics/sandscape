@@ -14,37 +14,52 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/game.js', CClientScr
 
 $url = $this->createURL('game/play', array('id' => $gameId));
 $url2 = $this->createUrl('game/gamechatupdate', array('id' => $gameId));
-Yii::app()->clientScript->registerScript('startjs', "lastReceived = {$last};initTable('{$url}', '{$url2}');updateMessageScroll();");
+
+$startJS = <<<JS
+    lastReceived = {$last};
+    initTable('{$url}', '{$url2}');
+    updateMessageScroll();
+
+    $('#file-menu').click(function (e) {
+        $('#file-menu-items').slideToggle('medium');
+    });
+JS;
+Yii::app()->clientScript->registerScript('startjs', $startJS);
 
 $this->title = 'Playing';
 ?>
 
 <div id="info-widget">
-    <?php
-    $this->widget('CTabView', array(
-        'tabs' => array(
-            'tab0' => array(
-                'title' => 'Chat',
-                'view' => '_chat',
-                'data' => array('messages' => $messages, 'gameId' => $gameId)
-            ),
-            'tab1' => array(
-                'title' => 'Card',
-                'view' => '_card-info',
-            ),
-            'tab2' => array(
-                'title' => 'Actions',
-                'view' => '_gameactions'
-            ),
-            'tab3' => array(
-                'title' => 'Tools',
-                'view' => '_tools',
-                'data' => array()
-            )
-        ),
-        'cssFile' => '_resources/css/game-tabs.css'
-    ));
-    ?>
+    <img id="file-menu" src="_resources/images/icon-x32-menu.png" />
+    <ul id="file-menu-items">
+        <li>
+            <a href="#">Dice <span style="float:right">&Gt;</span></a>
+            <ul class="sub-menu">
+                <li><a href="#">D2</a></li>
+                <li><a href="#">D4</a></li>
+                <li><a href="#">D10</a></li>
+            </ul>
+        </li>
+        <li><a href="#">Game <span style="float:right">&Gt;</span></a>
+            <ul class="sub-menu">
+                <li><a href="#">Lost</a></li>
+                <li><a href="#">Pause</a></li>
+            </ul>
+        </li>
+        <li><a href="#">Exit</a></li>
+    </ul>
+    <div id="card-info">
+        <!-- Find the pixel size for 70% height -->
+        <img src="_cards/18e9b964776bbe6c9f6842f1feba8b8b.jpg" height="70%" />
+    </div>
+    <div id="chat" class="ui-corner-all">
+        <ul id="chat-messages">
+            <?php foreach ($messages as $message) { ?>
+                <li class="user-message"><strong><?php echo $message->user->name; ?></strong>: <?php echo $message->message; ?></li>
+            <?php } ?>
+        </ul>
+        <input type="text" id="writemessage" />
+    </div>
 </div>
 <div class="opponent-area"><!-- OPPONENT GAME AREA --></div>
 
@@ -60,13 +75,13 @@ $this->title = 'Playing';
 
 <!-- LOADER DIVS -->
 <div id="opponent-loader" class="loader" style="display:none;"">
-     <img id="img-loader" src="_resources/images/loader2.gif" />
+     <img id="img-loader" src="_resources/images/game-loader.gif" />
     <br />
     <span>Waiting for opponent.</span>
 </div>
 
 <div id="game-loader" class="loader" style="display:none;"">
-     <img id="img-loader" src="_resources/images/loader2.gif" />
+     <img id="img-loader" src="_resources/images/game-loader.gif" />
     <br />
     <span>Building game.</span>
 </div>

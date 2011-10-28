@@ -280,7 +280,7 @@ function requestCardInfo(e) {
 function pack() {   
    $('#info-widget').css({
       width: 350,
-      height: $(window).height() / 2,
+      height: $(window).height() * 0.65,
       top: 0,
       left: 0,
       position: 'absolute'
@@ -295,8 +295,8 @@ function pack() {
     
    $('.hand').css({
       width: 350,
-      height: $(window).height() / 2,
-      top: $(window).height() / 2,
+      height: $(window).height() * 0.35,
+      top: $(window).height() * 0.65,
       left: 0,
       position: 'absolute'
    });  
@@ -392,8 +392,8 @@ function updateMessages(destination) {
       success: function(json) {
          if(json.has) {
             $.each(json.messages, function() {
-               $('#chat-messages').append('<li class="user-message"><span><strong>' + this.name + '</strong>&nbsp;[' 
-                  + this.date + ']:</span>' + this.message + '</li>');
+               $('#chat-messages').append('<li class="user-message"><strong>' + this.name + '</strong>:' 
+                  + this.message + '</li>');
             });
 
             lastReceived = json.last;

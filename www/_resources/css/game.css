@@ -9,31 +9,25 @@
 
 body {
     color: #333;
-    background: url('../images/8.jpg') repeat;
+    background: url('../images/game-background.jpg') repeat;
 }
 
 #game-table {
 }
 
-#top {
-}
-
 #info-widget {
     width: 350px;
-    overflow: auto;
-    /*background: transparent url(../images/hline.png) repeat-x bottom left;*/
-}
-
-#tools-widget {
 }
 
 #card-info {
+    text-align: center;
+    margin-top: 3px;
 }
 
 /* UNIQUE CLASS: This class is handled as if it was an ID */
 .opponent-area {
     height: 100%;
-    /*background: transparent url(../images/hline.png) repeat-x bottom left;*/
+    background: transparent url(../images/game-background-hline.png) repeat-x bottom left;
 }
 
 #play-area {
@@ -45,7 +39,7 @@ body {
 .hand {
     height: 100%;
     width: 350px;
-    background: transparent url(../images/vline.png) repeat-y top right;
+    background: transparent url(../images/game-background-vline.png) repeat-y top right;
 }
 
 #deck-nob {
@@ -68,36 +62,20 @@ body {
 }
 
 #chat {
-    /*border: 1px solid black;
-    border-top: none;
-    width: 60%;
-    position: absolute;
-    top: -255px;
-    height: 250px;
-    left: 20%;
-    background-color: #FFF;*/
+    border: 1px solid white;
+    text-align: center;
 }
 
 #chat ul {
     list-style: none;
-    height: 200px;
+    height: 120px;
     overflow: auto;
-    margin-bottom: 0.5em;
+    font-size: 12px;
 }
 
-#chat #filters {
-    float: left;
-    width: 40%;
-    text-align: right;
-}
-
-#chat p {
-    float: left;
-    text-align: center;
-    width: 58%;
-}
-#chat #controls {
-    clear:both;
+#writemessage {
+    width: 330px;
+    border-color: #666;
 }
 
 table {
@@ -114,31 +92,65 @@ table.grid * td {
 
 /* UNIQUE CLASS: This class is handled as if it was an ID */
 .play {
-    /*background: transparent url(../images/hline.png) repeat-x top left;*/
-}
-
-#chat input.text {
-    background-color: #FFF;
-    border: 1px solid #BBB;
-    color: #000;
-    /*margin:0.5em 0;*/
-    padding: 5px;
-    width: 300px;
-}
-
-input.text:focus {
-    border-color: #666;
 }
 
 .loader {
     position: fixed;
     top: 50%;
     left: 50%;
-    margin-left: -50px; /* half width of the loader gif */
-    margin-top: -50px; /* half height of the loader gif */
+    margin-left: -50px;
+    margin-top: -50px;
     text-align: center;
     z-index: 9999;
     overflow: auto;
-    width: 120px; /* width of the loader gif */
-    height: 122px; /*hight of the loader gif +2px to fix IE8 issue */
+    width: 120px;
+    height: 122px;
+}
+
+#file-menu {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 32px;
+    height: 32px;
+}
+
+ul#file-menu-items {
+    position: absolute;
+    top: 34px;
+    left: 5px;
+    display: none;
+    font-size: 12px;
+    width: 185px;
+    list-style: none;
+    
+    background-color: #eee;
+}
+
+ul#file-menu-items li {
+    list-style: none;
+    display: block;
+    clear: both;
+}
+
+ul#file-menu-items li a{
+    text-decoration: none; 
+    display: block;
+    padding: 10px;
+}
+
+ul#file-menu-items li a:hover {
+}
+
+ul.sub-menu {
+    position: absolute;
+    display: none;
+    list-style: none;
+    width: 185px;
+    background-color: #eee;
+    left: 186px;
+}
+
+ul#file-menu-items li:hover ul.sub-menu {
+    display: block;
 }
