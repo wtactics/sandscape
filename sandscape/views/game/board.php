@@ -33,24 +33,40 @@ $this->title = 'Playing';
     <img id="file-menu" src="_resources/images/icon-x32-menu.png" />
     <ul id="file-menu-items">
         <li>
-            <a href="#">Dice <span style="float:right">&Gt;</span></a>
+            <a href="javascript:;">Chat <span style="float:right">&Gt;</span></a>
             <ul class="sub-menu">
-                <li><a href="#">D2</a></li>
-                <li><a href="#">D4</a></li>
-                <li><a href="#">D10</a></li>
+                <li><a href="#">Show all</a></li>
+                <li><a href="#">Show system</a></li>
+                <li><a href="#">Show user messages</a></li>
             </ul>
         </li>
-        <li><a href="#">Game <span style="float:right">&Gt;</span></a>
+        <?php if (count($dice)) { ?>
+            <li>
+                <a href="javascript:;">Roll Dice <span style="float:right">&Gt;</span></a>
+                <ul class="sub-menu">
+                    <?php foreach ($dice as $die) { ?>
+                        <li>
+                            <a href="javascript:roll(<?php echo $die->diceId; ?>);">
+                                <?php echo $die->name, '&nbsp;(', $die->face, ')'; ?>
+                            </a>
+                        </li>
+                        <?php
+                    }
+                }
+                ?>
+            </ul>
+        </li>
+        <li><a href="javascript:;">Game <span style="float:right">&Gt;</span></a>
             <ul class="sub-menu">
                 <li><a href="#">Lost</a></li>
                 <li><a href="#">Pause</a></li>
             </ul>
         </li>
-        <li><a href="#">Exit</a></li>
+        <li><a href="<?php echo $this->createURL('game/leave', array('id' => $gameId)); ?>">Exit</a></li>
     </ul>
     <div id="card-info">
         <!-- Find the pixel size for 70% height -->
-        <img src="_cards/18e9b964776bbe6c9f6842f1feba8b8b.jpg" height="70%" />
+        <img src="_game/cards/18e9b964776bbe6c9f6842f1feba8b8b.jpg" height="70%" />
     </div>
     <div id="chat" class="ui-corner-all">
         <ul id="chat-messages">

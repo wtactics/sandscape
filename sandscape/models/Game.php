@@ -40,7 +40,7 @@
  * @property User $player10
  * @property User $player20
  * @property Deck $decks
- * @property Die $dice
+ * @property Dice $dice
  * 
  * @since 1.0, Sudden Growth
  */
@@ -82,7 +82,7 @@ class Game extends CActiveRecord {
             'player10' => array(self::BELONGS_TO, 'User', 'player1'),
             'player20' => array(self::BELONGS_TO, 'User', 'player2'),
             'decks' => array(self::MANY_MANY, 'Deck', 'GameDeck(gameId, deckId)'),
-            'dice' => array(self::MANY_MANY, 'Die', 'GameDie(gameId, dieId)')
+            'dice' => array(self::MANY_MANY, 'Dice', 'GameDice(gameId, diceId)')
         );
     }
 

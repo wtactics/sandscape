@@ -50,7 +50,7 @@ $this->title = 'Sandscape Lobby';
     <ul id="gamelist">
         <?php
         foreach ($games as $game) {
-            if (in_array(Yii::app()->user->id, array($game->player1, $game->player2)) && ($game->running || $game->paused)) {
+            if (in_array(Yii::app()->user->id, array($game->player1, $game->player2)) && !$game->ended) {
                 ?>
                 <li class="success">
                     <span>
@@ -59,7 +59,11 @@ $this->title = 'Sandscape Lobby';
                         <?php echo Yii::app()->dateFormatter->formatDateTime(strtotime($game->created), 'short', false); ?>
                     </span>
                     <br />
-                    <span>Opponent: <?php echo (Yii::app()->user->id == $game->player1 ? $game->player20->name : $game->player10->name); ?></span>
+                    <?php if ($game->player2) { ?>
+                        <span>Opponent: <?php echo (Yii::app()->user->id == $game->player1 ? $game->player20->name : $game->player10->name); ?></span>
+                    <?php } else { ?>
+                        <span>No opponent yet.</span>
+                    <?php } ?>
                 </li>
                 <?php
             } else {
@@ -70,7 +74,9 @@ $this->title = 'Sandscape Lobby';
                     $class = 'info join';
                 }
                 ?>
-                <li class="<?php echo $class; ?>" id="game-<?php echo $game->gameId; ?>">
+                <li class="<?php echo $class; ?>">
+                    <input type="hidden" class="hGameId" value="<?php echo $game->gameId; ?>" name="gameId-<?php echo $game->gameId; ?>" />
+                    <input type="hidden" class="hGameDM" value="<?php echo $game->maxDecks; ?>" name="gameDM-<?php echo $game->gameId; ?>" />
                     <span><?php echo date(DATE_W3C, strtotime($game->created)); ?></span>
                     <br />
                     <?php if ($game->running) { ?>
@@ -96,7 +102,14 @@ $this->title = 'Sandscape Lobby';
 
 <div style="display: none">
     <?php
-    $this->renderPartial('_createdlg', array('decks' => $decks));
-    $this->renderPartial('_joindlg', array('decks' => $decks));
+    $this->renderPartial('_createdlg', array(
+        'decks' => $decks,
+        'fixDeckNr' => $fixDeckNr,
+        'decksPerGame' => $decksPerGame
+    ));
+
+    $this->renderPartial('_joindlg', array(
+        'decks' => $decks
+    ));
     ?>
 </div>

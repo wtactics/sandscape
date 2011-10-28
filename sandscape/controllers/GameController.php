@@ -72,11 +72,22 @@ class GameController extends AppController {
 
         $decks = Deck::model()->findAll('userId = :id', array(':id' => (int) (Yii::app()->user->id)));
 
+        $fixDeckNr = 0;
+        $decksPerGame = 1;
+        if (($fixDeckNr = Setting::model()->findByPk('fixdecknr')) !== null) {
+            $fixDeckNr = (int) $fixDeckNr->value;
+            if (($decksPerGame = Setting::model()->findByPk('deckspergame')) !== null) {
+                $decksPerGame = (int) $decksPerGame->value;
+            }
+        }
+
         $this->render('lobby', array(
             'games' => $games,
             'users' => $users,
             'messages' => $messages,
-            'decks' => $decks
+            'decks' => $decks,
+            'decksPerGame' => $decksPerGame,
+            'fixDeckNr' => $fixDeckNr
         ));
     }
 
@@ -279,33 +290,47 @@ class GameController extends AppController {
     public function actionCreate() {
         if (isset($_POST['CreateGame']) && isset($_POST['deckList'])) {
 
-            $game = new Game();
-            $game->player1 = Yii::app()->user->id;
-            $game->created = date('Y-m-d H:i');
-            $game->maxDecks = isset($_POST['maxDecks']) ? (int) $_POST['maxDecks'] : 1;
-            $game->graveyard = isset($_POST['useGraveyard']) ? (int) $_POST['useGraveyard'] : 1;
-            $game->player1Ready = 1;
-
-            if ($game->save()) {
-                $error = false;
-
-                foreach ($_POST['deckList'] as $deckId) {
-                    $gameDeck = new GameDeck();
-                    $gameDeck->gameId = $game->gameId;
-                    $gameDeck->deckId = $deckId;
-                    if (!$gameDeck->save()) {
-                        $error = true;
-                        break;
-                    }
-                }
-
-                if (!$error) {
-                    $this->redirect(array('play', 'id' => $game->gameId));
+            $fixDeckNr = 0;
+            $decksPerGame = 1;
+            if (($fixDeckNr = Setting::model()->findByPk('fixdecknr')) !== null) {
+                $fixDeckNr = (int) $fixDeckNr->value;
+                if (($decksPerGame = Setting::model()->findByPk('deckspergame')) !== null) {
+                    $decksPerGame = (int) $decksPerGame->value;
                 }
             }
-            $this->updateUserActivity();
-        }
 
+            if ($fixDeckNr && isset($_POST['maxDecks']) && ($decksPerGame != (int) $_POST['maxDecks'])) {
+                //TODO: show correct error message
+                $this->redirect(array('lobby'));
+            } else {
+                $game = new Game();
+                $game->player1 = Yii::app()->user->id;
+                $game->created = date('Y-m-d H:i');
+                $game->maxDecks = isset($_POST['maxDecks']) ? (int) $_POST['maxDecks'] : $decksPerGame;
+                $game->graveyard = isset($_POST['useGraveyard']) ? (int) $_POST['useGraveyard'] : 1;
+                $game->player1Ready = 1;
+
+                if ($game->save()) {
+                    $error = false;
+
+                    foreach ($_POST['deckList'] as $deckId) {
+                        $gameDeck = new GameDeck();
+                        $gameDeck->gameId = $game->gameId;
+                        $gameDeck->deckId = $deckId;
+                        if (!$gameDeck->save()) {
+                            $error = true;
+                            break;
+                        }
+                    }
+
+                    if (!$error) {
+                        $this->redirect(array('play', 'id' => $game->gameId));
+                    }
+                }
+            }
+        }
+        $this->updateUserActivity();
+        //TODO: show correct error message
         $this->redirect(array('lobby'));
     }
 
@@ -322,30 +347,45 @@ class GameController extends AppController {
     public function actionJoin() {
         if (isset($_POST['JoinGame']) && isset($_POST['deckList']) && isset($_POST['game'])) {
             $game = $this->loadGameById($_POST['game']);
-
             if ($game->player1 != Yii::app()->user->id) {
-                $game->player2 = Yii::app()->user->id;
-                $game->player2Ready = 1;
-                if ($game->save()) {
-                    $error = false;
-                    foreach ($_POST['deckList'] as $deckId) {
-                        $gameDeck = new GameDeck();
-                        $gameDeck->gameId = $game->gameId;
-                        $gameDeck->deckId = (int) $deckId;
-                        if (!$gameDeck->save()) {
-                            $error = true;
-                            break;
-                        }
-                    }
 
-                    if (!$error) {
-                        $this->redirect(array('play', 'id' => $game->gameId));
+                $fixDeckNr = 0;
+                $decksPerGame = 1;
+                if (($fixDeckNr = Setting::model()->findByPk('fixdecknr')) !== null) {
+                    $fixDeckNr = (int) $fixDeckNr->value;
+                    if (($decksPerGame = Setting::model()->findByPk('deckspergame')) !== null) {
+                        $decksPerGame = (int) $decksPerGame->value;
+                    }
+                }
+
+                $deckCount = count($_POST['deckList']);
+                if ($fixDeckNr && $decksPerGame != $deckCount) {
+                    //TODO: show correct error message
+                    $this->redirect(array('lobby'));
+                } else {
+                    $game->player2 = Yii::app()->user->id;
+                    $game->player2Ready = 1;
+                    if ($game->save()) {
+                        $error = false;
+                        foreach ($_POST['deckList'] as $deckId) {
+                            $gameDeck = new GameDeck();
+                            $gameDeck->gameId = $game->gameId;
+                            $gameDeck->deckId = (int) $deckId;
+                            if (!$gameDeck->save()) {
+                                $error = true;
+                                break;
+                            }
+                        }
+
+                        if (!$error) {
+                            $this->redirect(array('play', 'id' => $game->gameId));
+                        }
                     }
                 }
             }
-            $this->updateUserActivity();
         }
-
+        $this->updateUserActivity();
+        //TODO: show correct error message
         $this->redirect(array('lobby'));
     }
 
@@ -380,10 +420,9 @@ class GameController extends AppController {
      * @since 1.0, Sudden Growth
      */
     public function actionPlay($id) {
-
         $this->layout = '//layouts/game';
 
-
+        //lock record
         $id = intval($id);
         $lock = Yii::app()->db->createCommand("SELECT GET_LOCK('game.$id', 10)")->queryScalar();
         if ($lock != 1) {
@@ -550,6 +589,7 @@ class GameController extends AppController {
                         //TODO: not implemented yet
                         break;
                     case 'roll':
+                        //TODO: proper error message
                         $result = array('success' => 0);
                         if (isset($_POST['dice']) && (int) $_POST['dice']) {
                             $dice = null;
@@ -566,6 +606,7 @@ class GameController extends AppController {
                                 $result['roll'] = rand(1, $dice->face);
                                 $result['dice'] = $dice->name;
                                 $result['face'] = $dice->face;
+                                $result['user'] = Yii::app()->user->name;
                             }
                         }
                         echo json_encode($result);
@@ -582,6 +623,7 @@ class GameController extends AppController {
                 yii::app()->end();
             }
 
+            //getting chat messages
             $start = ChatMessage::model()->count('gameId = :id ORDER BY sent', array(':id' => (int) $game->gameId));
             if ($start >= 15) {
                 $start -= 15;
@@ -594,11 +636,15 @@ class GameController extends AppController {
                 ':start' => (int) $start
                     ));
 
+            //getting game dice
+            $dice = $game->dice;
+            
             $this->updateUserActivity();
             $this->render('board', array(
                 'gameId' => $id,
                 'messages' => $messages,
-                'paused' => $game->paused
+                'paused' => $game->paused,
+                'dice' => $dice
             ));
         } else {
             // TODO: the user accessing the game is not a player of the game. Show some error or something.
