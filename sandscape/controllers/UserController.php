@@ -76,7 +76,7 @@ class UserController extends AppController {
     public function actionUpdate($id) {
         $user = $this->loadUserModel($id);
 
-        $this->performAjaxValidation('user-form', $new);
+        $this->performAjaxValidation('user-form', $user);
 
         if (isset($_POST['User'])) {
             $user->attributes = $_POST['User'];

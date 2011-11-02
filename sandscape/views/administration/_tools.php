@@ -17,7 +17,7 @@
         ));
         ?>
         <br /><br />
-        <?php echo CHtml::checkBox('gamemessages'), CHtml::label('Remove game messages?', 'gamemessages'); ?>
+        <?php echo CHtml::checkBox('gamemessages'), '&nbsp;', CHtml::label('Including game messages?', 'gamemessages'); ?>
     </p>
     <span>
         <?php echo CHtml::submitButton('Execute', array('class' => 'button')); ?>

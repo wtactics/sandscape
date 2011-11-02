@@ -31,9 +31,6 @@
  * @property string $name
  * @property integer $admin
  * @property integer $active
- * @property integer $seeTopDown
- * @property string $token
- * @property string $tokenExpires
  * 
  * The followings are the available model relations:
  * @property ChatMessage[] $chatMessages
@@ -85,8 +82,7 @@ class User extends CActiveRecord {
             'email' => 'E-mail',
             'password' => 'Password',
             'name' => 'Name',
-            'admin' => 'Administrator',
-            'seeTopDown' => 'See inverted cards'
+            'admin' => 'Administrator'
         );
     }
 

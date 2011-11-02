@@ -27,7 +27,7 @@ body {
 /* UNIQUE CLASS: This class is handled as if it was an ID */
 .opponent-area {
     height: 100%;
-    background: transparent url(../images/game-background-hline.png) repeat-x bottom left;
+    /*background: transparent url(../images/game-background-hline.png) repeat-x bottom left;*/
 }
 
 #play-area {
@@ -39,7 +39,7 @@ body {
 .hand {
     height: 100%;
     width: 350px;
-    background: transparent url(../images/game-background-vline.png) repeat-y top right;
+    /*background: transparent url(../images/game-background-vline.png) repeat-y top right;*/
 }
 
 #deck-nob {
@@ -62,7 +62,7 @@ body {
 }
 
 #chat {
-    border: 1px solid white;
+    /*border: 1px solid white;*/
     text-align: center;
 }
 
@@ -143,6 +143,10 @@ div.card > img.state {
     height: 143px;
 }
 
+a {
+    text-decoration: none;
+}
+
 #file-menu {
     position: absolute;
     top: 1px;
@@ -151,33 +155,7 @@ div.card > img.state {
     height: 32px;
 }
 
-ul#file-menu-items {
-    position: absolute;
-    top: 34px;
-    left: 5px;
-    display: none;
-    font-size: 12px;
-    width: 185px;
-    list-style: none;
-
-    background-color: #eee;
-}
-
-ul#file-menu-items li {
-    list-style: none;
-    display: block;
-    clear: both;
-}
-
-ul#file-menu-items li a{
-    text-decoration: none; 
-    display: block;
-    padding: 10px;
-}
-
-ul#file-menu-items li a:hover {
-}
-
+/*
 ul.sub-menu {
     position: absolute;
     display: none;
@@ -189,4 +167,54 @@ ul.sub-menu {
 
 ul#file-menu-items li:hover ul.sub-menu {
     display: block;
+}*/
+
+
+ul#file-menu-items {
+    position: absolute;
+    top: 32px;
+    left: 5px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    display: none;
+
+    font-size: 12px;
+    background-color: #eee;
+}
+
+ul#file-menu-items li {
+    display: block;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    padding: 10px;
+    /* Make sure (in IE) there is no margin between the menu items */
+    float: left;
+}
+
+ul#file-menu-items li a{
+    /* When rollover the menu item, the whole item will be seen as link. */
+    display: block;
+}
+
+ul#file-menu-items li a:hover {
+    padding: 0;
+}
+
+ul#file-menu-items ul.sub-menu {
+    position: absolute;
+    top: 0;
+    /* Display nothing when not 'hovered' */
+    display: none;
+    background-color: #eee;
+    width: 200px;
+}
+
+ul#file-menu-items li ul.sub-menu li{}
+ul#file-menu-items li ul.sub-menu li a:hover{}
+ul#file-menu-items li:hover ul.sub-menu {
+    display: block; /* Make sure the submenu is displayed as blocks as well. */
+    left: 205px; /* Your menu width. The submenu appears there, when you hover a menu item. */ 
 }

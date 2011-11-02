@@ -1,30 +1,26 @@
-<?php
-echo CHtml::form('#');
-
-$settings = (object) array('fixDeckNr' => 0, 'decksPerGame' => 0, 'useAnyDice' => 0);
-?>
+<?php echo CHtml::form($this->createURL('administration/savesettings')); ?>
 <fieldset>
     <legend>Game Settings</legend>
     <p>
         <?php
-        echo CHtml::checkBox('fixdecknr', $settings->fixDeckNr), '&nbsp;',
+        echo CHtml::checkBox('fixdecknr', $settings['fixdecknr']->value), '&nbsp;',
         CHtml::label('Fix Deck Number', 'fixdecknr'), '&nbsp;',
-        CHtml::image('_resources/images/icon-x16-help.png', '', array('id' => 'fixdecknr-help'));
+        CHtml::image('_resources/images/icon-x16-help.png', '', array('id' => 'fixdecknr-help', 'class' => 'helpicon'));
         ?>
     </p>
     <p>
         <?php
         echo CHtml::label('Decks per game', 'deckspergame'), '<br />',
-        CHtml::textField('deckspergame', $settings->decksPerGame, array('class' => 'text')), '&nbsp;',
-        CHtml::image('_resources/images/icon-x16-help.png', '', array('id' => 'deckspergame-help'));
+        CHtml::textField('deckspergame', $settings['deckspergame']->value, array('class' => 'text')), '&nbsp;',
+        CHtml::image('_resources/images/icon-x16-help.png', '', array('id' => 'deckspergame-help', 'class' => 'helpicon'));
         ?>
     </p>
     <hr />
     <p>
         <?php
-        echo CHtml::checkBox('disabledice', $settings->useAnyDice), '&nbsp;',
+        echo CHtml::checkBox('useanydice', $settings['useanydice']->value), '&nbsp;',
         CHtml::label('Disable all dice', 'disabledice'), '&nbsp;',
-        CHtml::image('_resources/images/icon-x16-help.png', '', array('id' => 'disabledice-help'));
+        CHtml::image('_resources/images/icon-x16-help.png', '', array('id' => 'useanydice-help', 'class' => 'helpicon'));
         ?>
     </p>
 </fieldset>
@@ -32,6 +28,6 @@ $settings = (object) array('fixDeckNr' => 0, 'decksPerGame' => 0, 'useAnyDice' =
     <legend>Sandscape Configuration</legend>
 </fieldset>
 <p>
-<?php echo CHtml::submitButton('Save', array('class' => 'button')); ?>
+    <?php echo CHtml::submitButton('Save', array('class' => 'button')); ?>
 </p>
-<?php echo CHtml::endForm(); ?>
+<?php echo CHtml::hiddenField('Settings', 'Settings'), "\n", CHtml::endForm(); ?>

@@ -208,7 +208,7 @@ function updateCardExtras(card) {
         for (var i = 0; i < card.data('status').tokens.length; ++i) {
             $(document.createElement('img'))
             .addClass('token')
-            .attr('src', '_tokens/up/thumbs/' + card.data('status').tokens[i].src)
+            .attr('src', '_game/tokens/thumbs/' + card.data('status').tokens[i].src)
             .appendTo(card);
         }
       
@@ -216,7 +216,7 @@ function updateCardExtras(card) {
         for(var i=0; i<card.data('status').states.length; ++i) {
             $(document.createElement('img'))
             .addClass('state')
-            .attr('src', '_states/' + card.data('status').states[i].src)
+            .attr('src', '_game/states/thumbs/' + card.data('status').states[i].src)
             .appendTo(card);
         }
     }
@@ -233,15 +233,11 @@ function cyclicPositionUpdate() {
                 var top = location.offset().top + (o.data('status').offsetHeight ? 20 : 0);
                 var left = location.offset().left;
             
-                if (o.offset().top != top  ||  o.offset().left != left) 
-                {
-                    console.log('updatePosition ' + o.attr('id')+' :: '+ o.offset().top + '-> '+top+' ; '+o.offset().left+' -> '+left);
+                if (o.offset().top != top  ||  o.offset().left != left) {
                     o.animate({
                         top: top+'px',
                         left: left+'px'
-                    }, 300)
-                    //               console.log('updatePosition ' + o.attr('id')+' :: '+ o.offset().top + '-> '+top+' ; '+o.offset().left+' -> '+left);
-               
+                    }, 300);
                
                     o.css({
                         zIndex: o.data('status').zIndex

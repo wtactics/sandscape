@@ -26,11 +26,6 @@ $form = $this->beginWidget('CActiveForm', array(
     <?php echo $form->error($user, 'email'); ?>
     <p>
         <?php
-        echo $form->checkBox($user, 'seeTopDown'), '&nbsp;', $form->labelEx($user, 'seeTopDown');
-        ?>
-    </p>
-    <p>
-        <?php
         echo $form->checkBox($user, 'admin'), '&nbsp;', $form->labelEx($user, 'admin');
         ?>
     </p>

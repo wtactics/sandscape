@@ -638,7 +638,7 @@ class GameController extends AppController {
 
             //getting game dice
             $dice = $game->dice;
-            
+
             $this->updateUserActivity();
             $this->render('board', array(
                 'gameId' => $id,
@@ -650,6 +650,47 @@ class GameController extends AppController {
             // TODO: the user accessing the game is not a player of the game. Show some error or something.
         }
         Yii::app()->db->createCommand("select release_lock('game.$id')");
+    }
+
+    //TODO: not implemented yet
+    public function actionSpectate() {
+        $this->layout = '//layouts/watch';
+
+        //lock record
+        $id = intval($id);
+//        $lock = Yii::app()->db->createCommand("SELECT GET_LOCK('game.$id', 10)")->queryScalar();
+//        if ($lock != 1) {
+//            throw new CHttpException(500, 'Failed to get game lock');
+//        }
+
+        $game = $this->loadGameById($id);
+//        if (in_array(yii::app()->user->id, array($game->player1, $game->player2))) {
+        if ($game->state) {
+            $this->scGame = unserialize($game->state);
+        }
+
+        //getting chat messages
+        $start = ChatMessage::model()->count('gameId = :id ORDER BY sent', array(':id' => (int) $game->gameId));
+        if ($start >= 15) {
+            $start -= 15;
+        } else {
+            $start = 0;
+        }
+
+        $messages = ChatMessage::model()->findAll('gameId = :id ORDER BY sent LIMIT :start, 15', array(
+            ':id' => (int) $game->gameId,
+            ':start' => (int) $start
+                ));
+
+        $this->updateUserActivity();
+        $this->render('board', array(
+            'gameId' => $id,
+            'messages' => $messages,
+            'paused' => $game->paused,
+        ));
+//        } else {
+//        }
+//        Yii::app()->db->createCommand("select release_lock('game.$id')");
     }
 
     public function actionLeave($id) {
@@ -686,7 +727,7 @@ class GameController extends AppController {
                     array('allow',
                         'actions' => array('index', 'create', 'join', 'lobby',
                             'lobbyChatUpdate', 'play', 'sendGameMessage', 'sendLobbyMessage',
-                            'gameChatUpdate', 'leave'),
+                            'gameChatUpdate', 'leave', 'spectate'),
                         'users' => array('@')
                     )
                         ), parent::accessRules());

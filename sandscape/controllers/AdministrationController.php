@@ -31,14 +31,28 @@ class AdministrationController extends AppController {
         parent::__construct($id, $module);
     }
 
+    /**
+     * Default action that shows the administration section with all the tabs.
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function actionIndex() {
-        $this->render('index');
+        $settings = array();
+        foreach (Setting::model()->findAll() as $setting) {
+            $settings[$setting->key] = (object) array(
+                        'value' => $setting->value,
+                        'description' => $setting->description
+            );
+        }
+        $this->render('index', array('settings' => $settings));
     }
 
     /**
      * Removes <em>ChatMessage</em> records from the database. All messages that 
      * have a <em>sent</em> date lower than the given date will be considered, 
      * also, messages can include game messages but only those created by users.
+     * 
+     * @since 1.2, Elvish Shaman
      */
     public function actionPruneChats() {
 
@@ -53,6 +67,8 @@ class AdministrationController extends AppController {
 
     /**
      * Finds and removes images that are not in use by card objects.
+     * 
+     * @since 1.2, Elvish Shaman
      */
     public function actionRemoveOrphan() {
         $images = CFileHelper::find('', array(
@@ -85,6 +101,58 @@ class AdministrationController extends AppController {
     }
 
     /**
+     * Saves general settings from <em>Settings</em> tab in administration.
+     * 
+     * @since 1.2, Elvish Shaman
+     */
+    public function actionSaveSettings() {
+        //TODO: //NOTE: better way to find if any of the settings are missing
+        //and add descriptions to missing settings.
+        if (isset($_POST['Settings'])) {
+            if (($fixDeckNr = Setting::model()->findByPk('fixdecknr')) === null) {
+                $fixDeckNr = new Setting();
+                $fixDeckNr->key = 'fixdecknr';
+            }
+            $fixDeckNr->value = (int) $_POST['fixdecknr'];
+            $fixDeckNr->save();
+
+            if (($decksPerGame = Setting::model()->findByPk('deckspergame')) === null) {
+                $decksPerGame = new Setting();
+                $decksPerGame->key = 'deckspergame';
+            }
+            $decksPerGame->value = (int) $_POST['deckspergame'];
+            $decksPerGame->save();
+
+            if (($useAnyDice = Setting::model()->findByPk('useanydice')) === null) {
+                $useAnyDice = new Setting();
+                $useAnyDice->key = 'useanydice';
+            }
+            $useAnyDice->value = (int) $_POST['useanydice'];
+            $useAnyDice->save();
+        }
+
+        $this->redirect(array('index'));
+    }
+
+    /**
+     * Saves words to filter in chat messages.
+     * 
+     * @since 1.2, Elvish Shaman
+     */
+    public function actionSaveWords() {
+        if (isset($_POST['wfilter'])) {
+            if (($setting = Setting::model()->findByPk('wordfilter')) === null) {
+                $setting = new Setting();
+                $setting->key = 'wordfilter';
+            }
+            $setting->value = trim($_POST['wfilter']);
+            $setting->save();
+        }
+
+        $this->redirect(array('index'));
+    }
+
+    /**
      *
      * @return array New rules array.
      * 
@@ -93,8 +161,8 @@ class AdministrationController extends AppController {
     public function accessRules() {
         return array_merge(array(
                     array('allow',
-                        'actions' => array('index', 'pruneChats', 'findOrphan',
-                            'clearGames'
+                        'actions' => array('index', 'pruneChats', 'removeOrphan',
+                            'saveSettings', 'saveWords'
                         ),
                         'expression' => '$user->class'
                     )

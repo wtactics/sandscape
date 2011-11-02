@@ -33,7 +33,7 @@ $this->title = 'Playing';
     <img id="file-menu" src="_resources/images/icon-x32-menu.png" />
     <ul id="file-menu-items">
         <li>
-            <a href="javascript:;">Chat <span style="float:right">&Gt;</span></a>
+            <a href="javascript:;">Chat &Gt;</a>
             <ul class="sub-menu">
                 <li><a href="#">Show all</a></li>
                 <li><a href="#">Show system</a></li>
@@ -42,7 +42,7 @@ $this->title = 'Playing';
         </li>
         <?php if (count($dice)) { ?>
             <li>
-                <a href="javascript:;">Roll Dice <span style="float:right">&Gt;</span></a>
+                <a href="javascript:;">Roll Dice &Gt;</a>
                 <ul class="sub-menu">
                     <?php foreach ($dice as $die) { ?>
                         <li>
@@ -50,13 +50,11 @@ $this->title = 'Playing';
                                 <?php echo $die->name, '&nbsp;(', $die->face, ')'; ?>
                             </a>
                         </li>
-                        <?php
-                    }
-                }
-                ?>
-            </ul>
-        </li>
-        <li><a href="javascript:;">Game <span style="float:right">&Gt;</span></a>
+                    <?php } ?>
+                </ul>
+            </li>
+        <?php } ?>
+        <li><a href="javascript:;">Game &Gt;</a>
             <ul class="sub-menu">
                 <li><a href="#">Lost</a></li>
                 <li><a href="#">Pause</a></li>
@@ -68,10 +66,12 @@ $this->title = 'Playing';
         <!-- Find the pixel size for 70% height -->
         <img src="_game/cards/18e9b964776bbe6c9f6842f1feba8b8b.jpg" height="70%" />
     </div>
-    <div id="chat" class="ui-corner-all">
+    <div id="chat">
         <ul id="chat-messages">
             <?php foreach ($messages as $message) { ?>
-                <li class="user-message"><strong><?php echo $message->user->name; ?></strong>: <?php echo $message->message; ?></li>
+                <li class="user-message">
+                    <strong><?php echo $message->user->name; ?></strong>: <?php echo $message->message; ?>
+                </li>
             <?php } ?>
         </ul>
         <input type="text" id="writemessage" />
