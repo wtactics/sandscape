@@ -23,6 +23,16 @@
         CHtml::image('_resources/images/icon-x16-help.png', '', array('id' => 'useanydice-help', 'class' => 'helpicon'));
         ?>
     </p>
+    <p>
+        <?php
+        echo CHtml::label('Spectators can', 'gamechatspectators'), '&nbsp;',
+        CHtml::image('_resources/images/icon-x16-help.png', '', array('id' => 'gamechatspectators-help', 'class' => 'helpicon')),
+        '<br />',
+        CHtml::dropDownList('gamechatspectators', $settings['gamechatspectators']->value, array(
+            0 => 'Be quiet', 1 => 'Speak in chat'
+        ));
+        ?>
+    </p>
 </fieldset>
 <fieldset>
     <legend>Sandscape Configuration</legend>

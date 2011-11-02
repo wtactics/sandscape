@@ -12,6 +12,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
         'name',
         'face',
         array(
+            'name' => 'selected',
+            'filter' => array(0 => 'No', 1 => 'Yes')
+        ),
+        array(
             'header' => 'Actions',
             'class' => 'CButtonColumn',
             'buttons' => array(

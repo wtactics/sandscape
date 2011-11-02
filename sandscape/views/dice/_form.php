@@ -15,6 +15,11 @@
         ?>
     </p>
     <?php echo $form->error($dice, 'face'); ?>
+    <p>
+        <?php echo $form->checkBox($dice, 'selected'), '&nbsp;', $form->labelEx($dice, 'selected'); ?>
+    </p>
+    <?php echo $form->error($dice, 'selected');
+    ?>
 </fieldset>
 <p>
     <?php echo CHtml::submitButton($dice->isNewRecord ? 'Create' : 'Save', array('class' => 'button')); ?>

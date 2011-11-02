@@ -25,7 +25,13 @@
     <p>
         <?php
         echo CHtml::checkBox('useGraveyard', true, array('value' => 1)), '&nbsp;',
-        CHtml::label('Use Graveyard:', 'useGraveyard');
+        CHtml::label('Use Graveyard?', 'useGraveyard');
+        ?>
+    </p>
+    <p>
+        <?php
+        echo CHtml::label('Spectators can:', 'gamechatspectators'), '<br />',
+        CHtml::dropDownList('gamechatspectators', 0, array(0 => 'Be quiet', 1 => 'Speak in chat'));
         ?>
     </p>
     <p>

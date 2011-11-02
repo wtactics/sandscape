@@ -1,6 +1,7 @@
 <?php
-Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.bubblepopup.v2.3.1.min.js', CClientScript::POS_HEAD);
+
 Yii::app()->clientScript->registerCssFile('_resources/css/jquery.bubblepopup.v2.3.1.css');
+Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.bubblepopup.v2.3.1.min.js', CClientScript::POS_HEAD);
 
 $js = <<<JS
 $('.helpicon').CreateBubblePopup({
@@ -18,6 +19,7 @@ $('.helpicon').CreateBubblePopup({
 $('#fixdecknr-help').SetBubblePopupInnerHtml('{$settings['fixdecknr']->description}');
 $('#deckspergame-help').SetBubblePopupInnerHtml('{$settings['deckspergame']->description}');
 $('#useanydice-help').SetBubblePopupInnerHtml('{$settings['useanydice']->description}');
+$('#gamechatspectators-help').SetBubblePopupInnerHtml('{$settings['gamechatspectators']->description}');
 JS;
 
 Yii::app()->clientScript->registerScript('bublesinit', $js);

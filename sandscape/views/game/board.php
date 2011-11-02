@@ -56,7 +56,8 @@ $this->title = 'Playing';
         <?php } ?>
         <li><a href="javascript:;">Game &Gt;</a>
             <ul class="sub-menu">
-                <li><a href="#">Lost</a></li>
+                <li><a href="#">Deck notes</a></li>
+                <li><a href="#">Mark as loss</a></li>
                 <li><a href="#">Pause</a></li>
             </ul>
         </li>

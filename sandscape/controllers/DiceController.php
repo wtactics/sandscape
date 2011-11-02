@@ -22,6 +22,9 @@
  */
 
 /**
+ * Allows administrators to manage dice that will be available for users and their
+ * games.
+ * 
  * @since 1.2, Elvish Shaman
  */
 class DiceController extends AppController {
@@ -31,6 +34,8 @@ class DiceController extends AppController {
     }
 
     /**
+     * Default action, shows a list of existing (active) dice in the system.
+     * 
      * @since 1.2, Elvish Shaman
      */
     public function actionIndex() {
@@ -45,6 +50,8 @@ class DiceController extends AppController {
     }
 
     /**
+     * Allows administrators to create new dice to be used in games.
+     * 
      * @since 1.2, Elvish Shaman
      */
     public function actionCreate() {
@@ -61,6 +68,8 @@ class DiceController extends AppController {
     }
 
     /**
+     * Updates a dice information.
+     * 
      * @since 1.2, Elvish Shaman
      */
     public function actionUpdate($id) {
@@ -77,6 +86,8 @@ class DiceController extends AppController {
     }
 
     /**
+     * Marks selected dice as inactive, removing them from the system.
+     * 
      * @since 1.2, Elvish Shaman
      */
     public function actionDelete($id) {

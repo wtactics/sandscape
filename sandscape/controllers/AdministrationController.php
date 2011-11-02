@@ -129,6 +129,13 @@ class AdministrationController extends AppController {
             }
             $useAnyDice->value = (int) $_POST['useanydice'];
             $useAnyDice->save();
+            
+            if (($gameChatSpectators = Setting::model()->findByPk('gamechatspectators')) === null) {
+                $gameChatSpectators = new Setting();
+                $gameChatSpectators->key = 'gamechatspectators';
+            }
+            $gameChatSpectators->value = (int) $_POST['gamechatspectators'];
+            $gameChatSpectators->save();
         }
 
         $this->redirect(array('index'));
