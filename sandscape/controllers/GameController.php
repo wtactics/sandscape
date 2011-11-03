@@ -434,7 +434,6 @@ class GameController extends AppController {
             if ($game->state) {
                 $this->scGame = unserialize($game->state);
             }
-
             if (isset($_REQUEST['event'])) {
                 switch ($_REQUEST['event']) {
                     /**
@@ -457,14 +456,14 @@ class GameController extends AppController {
 
                             // tokens
                             $tokens = array(
-//                         new SCToken('debugToken', 'debugToken.gif'),
-                                new SCToken('debugToken', 'debugToken2.png')
+                                new SCToken('jumper', 'debugToken.gif'),
+                                new SCToken('badge', 'debugToken2.png')
                             );
 
                             // card states
                             $states = array(
-                                new SCState('debugState1', 'debugState1.png'),
-                                new SCState('debugState2', 'debugState2.png'),
+                                new SCState('yellow', 'debugState1.png'),
+                                new SCState('shadow', 'debugState2.png'),
                             );
 
                             // create the game status
@@ -475,18 +474,6 @@ class GameController extends AppController {
                                 $cards = array();
                                 foreach ($deck->deckCards as $card) {
                                     $cards[] = $c = new SCCard($this->scGame, $deck->userId, $card->card->cardId, $card->card->image);
-
-                                    // Debug
-                                    if (rand(0, 10) > 5)
-                                        $c->addToken($tokens[0]);
-//                           if (rand(0, 10) > 5)
-//                              $c->addToken($tokens[1]);
-
-                                    $x = rand(0, 10);
-                                    if ($x > 8)
-                                        $c->addState($states[1]);
-                                    elseif ($x < 2)
-                                        $c->addState($states[0]);
                                 }
                                 $scdeck = new SCDeck($this->scGame, $deck->name, $cards);
 
@@ -555,6 +542,7 @@ class GameController extends AppController {
                             $result->result = 'ok';
                             $result->clientTime = $_REQUEST['clientTime'];
                             echo SCGame::JSONIndent(json_encode($result));
+//                  die('died in '.get_class($this).' at ' . time() . '  ' . var_export($_REQUEST, true));
                         }
                         break;
                     case 'moveCard':
@@ -567,7 +555,26 @@ class GameController extends AppController {
                             echo SCGame::JSONIndent(json_encode($result));
                         }
                         break;
-
+                    case 'toggleCardToken':
+                        if ($game->running && $this->scGame && isset($_REQUEST['card']) && isset($_REQUEST['token'])) {
+                            $card = $_REQUEST['card'];
+                            $token = $_REQUEST['token'];
+                            $result = $this->scGame->toggleCardToken(Yii::app()->user->id, $card, $token);
+                            $result->result = 'ok';
+                            $result->clientTime = $_REQUEST['clientTime'];
+                            echo SCGame::JSONIndent(json_encode($result));
+                        }
+                        break;
+                    case 'toggleCardState':
+                        if ($game->running && $this->scGame && isset($_REQUEST['card']) && isset($_REQUEST['state'])) {
+                            $card = $_REQUEST['card'];
+                            $state = $_REQUEST['state'];
+                            $result = $this->scGame->toggleCardState(Yii::app()->user->id, $card, $state);
+                            $result->result = 'ok';
+                            $result->clientTime = $_REQUEST['clientTime'];
+                            echo SCGame::JSONIndent(json_encode($result));
+                        }
+                        break;
                     case 'cardInfo':
                         $result = array('success' => 0);
                         if ($game->running && $this->scGame && isset($_REQUEST['card'])) {

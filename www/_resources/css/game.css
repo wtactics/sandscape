@@ -155,21 +155,6 @@ a {
     height: 32px;
 }
 
-/*
-ul.sub-menu {
-    position: absolute;
-    display: none;
-    list-style: none;
-    width: 185px;
-    background-color: #eee;
-    left: 186px;
-}
-
-ul#file-menu-items li:hover ul.sub-menu {
-    display: block;
-}*/
-
-
 ul#file-menu-items {
     position: absolute;
     top: 32px;
@@ -195,7 +180,6 @@ ul#file-menu-items li {
 }
 
 ul#file-menu-items li a{
-    /* When rollover the menu item, the whole item will be seen as link. */
     display: block;
 }
 
@@ -206,7 +190,6 @@ ul#file-menu-items li a:hover {
 ul#file-menu-items ul.sub-menu {
     position: absolute;
     top: 0;
-    /* Display nothing when not 'hovered' */
     display: none;
     background-color: #eee;
     width: 200px;
@@ -215,6 +198,20 @@ ul#file-menu-items ul.sub-menu {
 ul#file-menu-items li ul.sub-menu li{}
 ul#file-menu-items li ul.sub-menu li a:hover{}
 ul#file-menu-items li:hover ul.sub-menu {
-    display: block; /* Make sure the submenu is displayed as blocks as well. */
-    left: 205px; /* Your menu width. The submenu appears there, when you hover a menu item. */ 
+    display: block;
+    left: 205px;
+}
+
+.radialmenuOption {
+    border: 3px solid black;
+    background: white;
+    border-radius: 6px;
+    text-align: center;
+    vertical-align: middle;
+    color: black;
+    /*   width: 48px;*/
+    /*   height: 32px;*/
+    padding: 6px;
+    z-index: 100;
+    cursor: pointer;
 }

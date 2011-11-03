@@ -169,6 +169,38 @@ class SCGame {
       );
    }
 
+   public function toggleCardToken($userId, $card, $token) {
+      $player = $this->getPlayerSide($userId);
+      $opponent = $this->getOpponentSide($userId);
+
+      $card = isset($this->all[$card]) ? $this->all[$card] : null;
+      $token = isset($this->availableTokens[$token]) ? $this->availableTokens[$token] : null;
+
+      if ($card && $token && $card instanceof SCCard && $card->getPlayer() == $userId) {
+         $card->toggleToken($token);
+
+         return (object) array(
+                     'update' => $this->getGameStatus()
+         );
+      }
+   }
+   
+   public function toggleCardState($userId, $card, $state) {
+      $player = $this->getPlayerSide($userId);
+      $opponent = $this->getOpponentSide($userId);
+
+      $card = isset($this->all[$card]) ? $this->all[$card] : null;
+      $state = isset($this->availableStates[$state]) ? $this->availableStates[$state] : null;
+
+      if ($card && $state && $card instanceof SCCard && $card->getPlayer() == $userId) {
+         $card->toggleState($state);
+
+         return (object) array(
+                     'update' => $this->getGameStatus()
+         );
+      }
+   }
+
    public function clientUpdate($userId) {
       $player = $this->getPlayerSide($userId);
       $opponent = $this->getOpponentSide($userId);
@@ -181,6 +213,13 @@ class SCGame {
    public function clientInitialization($userId) {
       $player = $this->getPlayerSide($userId);
       $opponent = $this->getOpponentSide($userId);
+
+      $tokens = array();
+      foreach ($this->availableTokens as $token)
+         $tokens [] = $token->getInfo();
+      
+      $states = array();
+      foreach($this->availableStates as $state) $states[] = $state->getInfo();
 
       return (object) array(
                   'createThis' => (object) array(
@@ -208,6 +247,10 @@ class SCGame {
                           )
                       ),
                       'cards' => $this->getCardInitialization(),
+                  ),
+                  'gameInfo' => (object) array(
+                      'tokens' => $tokens,
+                      'cardStates' => $states
                   )
       );
    }

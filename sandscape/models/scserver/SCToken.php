@@ -23,6 +23,14 @@ class SCToken {
    public function getImage() {
       return $this->image;
    }
+   
+   public function getInfo()
+   {
+      return (object) array(
+          'id' => $this->id,
+          'name' => $this->name
+      );
+   }
 
    public function getJSONData() {
       return (object) array(

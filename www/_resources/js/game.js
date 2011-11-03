@@ -23,9 +23,8 @@ function initTable(base, messageUpUrl) {
     $('#card-info-image').dblclick(function(e){
         alert('Not implemented yet!');
     });
-    checkGameStart();
     
-    chkGameID = setInterval(checkGameStart, 3000);
+    checkGameStart();
     updMessagesID = setInterval(function() {
         updateMessages(messageUpUrl)
     }, 5000);
@@ -43,7 +42,6 @@ function checkGameStart() {
             if(json.result == 'ok') {
                 $('#opponent-loader').remove();
                 $('#game-loader').show();
-                clearInterval(chkGameID);
                 $.ajax({
                     url: bUrl,
                     data: {
@@ -54,6 +52,28 @@ function checkGameStart() {
                     success: function (json) {                       
                         if(json.result == 'ok') {
                             var create = json.createThis;
+                     
+                            // tokens
+                            var tokenMenu = new Array();
+                            $(json.gameInfo.tokens).each(function (i,o) {
+                                tokenMenu.push({
+                                    option : o.name,
+                                    event: function (card) {
+                                        toggleCardToken($(card).attr('id'), o.id)
+                                    }
+                                })
+                            })
+                     
+                            // card states
+                            var statesMenu = new Array();
+                            $(json.gameInfo.cardStates).each(function (i,o) {
+                                statesMenu.push({
+                                    option: o.name,
+                                    event: function (state) {
+                                        toggleCardState($(state).attr('id'), o.id)
+                                    }
+                                })
+                            })
                             
                             //set void object
                             $(document.createElement('div')).attr({
@@ -135,7 +155,6 @@ function checkGameStart() {
                                     stack: '.card',
                                     revert: 'invalid'
                                 })
-                                .dblclick(requestCardInfo)
                                 .appendTo($('body'));
                             }
                             // Cards must be positioned after all cards are in the DOM because there are cards 'inside' other cards
@@ -148,7 +167,22 @@ function checkGameStart() {
                                 .css($('#'+card.location).offset())
                                 .data('status', card)
                                 .addClass('update')
-                                .children('img.face').attr('src', '_game/cards/thumbs/' + card.src);
+                                .radialmenu({
+                                    radius: 60,
+                                    options: [ {
+                                        option: 'info',
+                                        event: function (card) {
+                                            requestCardInfo($(card).attr('id'));
+                                        }
+                                    }, {
+                                        option: 'tokens',
+                                        subMenu: tokenMenu
+                                    }, {
+                                        option: 'card states',
+                                        subMenu: statesMenu
+                                    } ]
+                                })
+                                .children('img.face').attr('src', '_cards/up/thumbs/' + card.src);
                         
                                 updateCardExtras($('#'+card.id));
                             }
@@ -157,9 +191,11 @@ function checkGameStart() {
                                     moveCard(ui.draggable.attr('id'), $(this).attr('id'));
                                     return false;
                                 }
-                            });
+                            })
                      
-                         
+                            //                     .dblclick(requestCardInfo);
+                       
+                       
                             $('#play-area * .grid').droppable({
                                 drop: function(event, ui) {
                                     var card = ui.draggable;
@@ -198,6 +234,10 @@ function checkGameStart() {
                     }
                 });
             }
+            else setTimeout(checkGameStart, 3000);
+        },
+        error: function () {
+            setTimeout(checkGameStart, 3000);
         }
     });
 }
@@ -229,24 +269,22 @@ function cyclicPositionUpdate() {
       
             if (o.data('status')  &&  !o.hasClass('ui-draggable-dragging')  &&  !o.is(':animated')  &&  o.data('status').visibility == 'visible')
             {
-                var location = $('#'+o.data('status').location);
-                var top = location.offset().top + (o.data('status').offsetHeight ? 20 : 0);
-                var left = location.offset().left;
-            
-                if (o.offset().top != top  ||  o.offset().left != left) {
-                    o.animate({
-                        top: top+'px',
-                        left: left+'px'
-                    }, 300);
+                //               console.log('updatePosition ' + o.attr('id')+' :: '+ o.offset().top + '-> '+top+' ; '+o.offset().left+' -> '+left);
+                o.animate({
+                    top: top+'px',
+                    left: left+'px'
+                }, 500)
+                //               console.log('updatePosition ' + o.attr('id')+' :: '+ o.offset().top + '-> '+top+' ; '+o.offset().left+' -> '+left);
                
+                if ($('.ui-draggable-dragging').length == 0) {
                     o.css({
                         zIndex: o.data('status').zIndex
                     });
                 }
-            }         
-        });
-    }  
-    setTimeout(cyclicPositionUpdate, 200);
+            }
+        });         
+    }
+    setTimeout(cyclicPositionUpdate, 300);
 }
 
 function doGameUpdate(json) {
@@ -273,12 +311,12 @@ function doGameUpdate(json) {
 
 function updateGame() {
     clientTime = new Date();
-    if ($('.ui-draggable-dragging').length == 0){
+    if (parseInt($.active) == 0  &&  $('.ui-draggable-dragging').length == 0){
         $.ajax({
             url: bUrl,
             data: {
                 event: 'update',
-                lastChange: lastChange,
+                lastChange: lastChange,           // TODO: Solve the sync problems; This will still disabled until then
                 clientTime: clientTime.getTime()
             },
             dataType: 'json',
@@ -288,6 +326,44 @@ function updateGame() {
                 setTimeout(updateGame, 3000);
             }
         });
+    }
+    else setTimeout(updateGame, 3000);
+}
+
+
+function toggleCardToken(cardId, tokenId){
+    clientTime = new Date();
+    if ($('.ui-draggable-dragging').length == 0) {
+        $.ajax({
+            url: bUrl,
+            data: {
+                event: 'toggleCardToken',
+                card: cardId,
+                token: tokenId,
+                clientTime: clientTime.getTime()
+            },
+            dataType: 'json',
+            type: 'POST',
+            success: doGameUpdate
+        })
+    }
+}
+
+function toggleCardState(cardId, stateId) {
+    clientTime = new Date();
+    if ($('.ui-draggable-dragging').length == 0) {
+        $.ajax({
+            url: bUrl,
+            data: {
+                event: 'toggleCardState',
+                card: cardId, 
+                state: stateId,
+                clientTime: clientTime.getTime()
+            },
+            dataType: 'json',
+            type: 'POST',
+            success: doGameUpdate
+        })
     }
 }
 
@@ -330,19 +406,19 @@ function moveCard(cardId, destinationId) {
     });
 }
 
-function requestCardInfo(e) {
+function requestCardInfo(id) {
     $.ajax({
         url: bUrl,
         data: {
             event: 'cardInfo',
-            card: $(this).attr('id')
+            card: id
         },
         type: 'POST',
         dataType: 'json',
         success: function (json) {
             if(json.success) {
                 $('#card-info-name').html(json.name);
-                $('#card-info-image').attr('src', '_game/cards/thumbs/' + json.image);
+                $('#card-info-image').attr('src', '_cards/up/thumbs/' + json.image);
                 $('#card-info-states').html(json.states);
                 $('#card-info-rules').html(json.rules);
             }
