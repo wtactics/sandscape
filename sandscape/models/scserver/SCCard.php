@@ -27,13 +27,27 @@ class SCCard extends SCContainer {
    public function removeToken(SCToken $token) {
       unset($this->tokens[$token->getId()]);
    }
-   
+
+   public function toggleToken(SCToken $token) {
+      if (isset($this->tokens[$token->getId()]))
+         $this->removeToken($token);
+      else
+         $this->addToken($token);
+   }
+
    public function addState(SCState $state) {
       $this->states[$state->getId()] = $state;
    }
-   
+
    public function removeState(SCState $state) {
-      unset($this->stated[$state->getId()]);
+      unset($this->states[$state->getId()]);
+   }
+
+   public function toggleState(SCState $state) {
+      if (isset($this->states[$state->getId()]))
+         $this->removeState($state);
+      else
+         $this->addState($state);
    }
 
    public function getPlayer() {
@@ -64,18 +78,20 @@ class SCCard extends SCContainer {
       }
       return 'visible';
    }
-   
+
    public function getStatus() {
       $status = parent::getStatus();
       $status->src = $this->getSrc();
       $status->visibility = $this->getVisibility();
-      
+
       $status->tokens = array();
-      foreach($this->tokens as $token) $status->tokens [] = $token->getJSONData();
-      
+      foreach ($this->tokens as $token)
+         $status->tokens [] = $token->getJSONData();
+
       $status->states = array();
-      foreach($this->states as $state) $status->states[] = $state->getJSONData();
-      
+      foreach ($this->states as $state)
+         $status->states[] = $state->getJSONData();
+
       return $status;
    }
 

@@ -184,3 +184,17 @@ div.card > img.state {
    width: 101px;
    height: 143px;
 }
+
+.radialmenuOption {
+   border: 3px solid black;
+   background: white;
+   border-radius: 6px;
+   text-align: center;
+   vertical-align: middle;
+   color: black;
+/*   width: 48px;*/
+/*   height: 32px;*/
+   padding: 6px;
+   z-index: 100;
+   cursor: pointer;
+}

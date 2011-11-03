@@ -11,6 +11,7 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.bubblepopup.v
 Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.jgrowl.minimized.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.simplemodal.1.4.1.min.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile('_resources/js/game.js', CClientScript::POS_HEAD);
+Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.radialmenu.min.js', CClientScript::POS_HEAD);
 
 $url = $this->createURL('game/play', array('id' => $gameId));
 $url2 = $this->createUrl('game/gamechatupdate', array('id' => $gameId));
