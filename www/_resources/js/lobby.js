@@ -23,7 +23,9 @@ function initLobby(url) {
     });
         
     $('.spectate').click(function(e) {
-        alert('Spectating a game is not implemented yet!');
+        $('#specgame').val($(this).children('.hGameId').val());
+        $('#spectatedlg').modal();
+        
     });
 }
 

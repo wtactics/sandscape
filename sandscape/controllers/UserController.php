@@ -154,6 +154,11 @@ class UserController extends AppController {
         $this->render('view', array('user' => $user));
     }
 
+    public function actionGames() {
+        //TODO: not implemented yet
+        $this->render('games');
+    }
+
     /**
      * Loads a <em>User</em> model from the database
      * @param integer $id The user ID.
@@ -182,7 +187,7 @@ class UserController extends AppController {
     public function accessRules() {
         return array_merge(array(
                     array('allow',
-                        'actions' => array('account', 'profile', 'view'),
+                        'actions' => array('account', 'profile', 'view', 'games'),
                         'users' => array('@')
                     ),
                     array('allow',

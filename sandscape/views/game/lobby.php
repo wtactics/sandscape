@@ -111,5 +111,7 @@ $this->title = 'Sandscape Lobby';
     $this->renderPartial('_joindlg', array(
         'decks' => $decks
     ));
+
+    $this->renderPartial('_spectatedlg');
     ?>
 </div>

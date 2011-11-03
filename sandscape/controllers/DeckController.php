@@ -222,6 +222,10 @@ class DeckController extends AppController {
         $this->redirect(array('index'));
     }
 
+    public function actionView($id) {
+        //TODO: not implemented yet
+    }
+
     /**
      * Retrieves a Deck model from the database.
      * 
