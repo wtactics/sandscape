@@ -182,7 +182,7 @@ function checkGameStart() {
                                         subMenu: statesMenu
                                     } ]
                                 })
-                                .children('img.face').attr('src', '_cards/up/thumbs/' + card.src);
+                                .children('img.face').attr('src', '_game/cards/thumbs/' + card.src);
                         
                                 updateCardExtras($('#'+card.id));
                             }
@@ -418,7 +418,7 @@ function requestCardInfo(id) {
         success: function (json) {
             if(json.success) {
                 $('#card-info-name').html(json.name);
-                $('#card-info-image').attr('src', '_cards/up/thumbs/' + json.image);
+                $('#card-info-image').attr('src', '_game/cards/thumbs/' + json.image);
                 $('#card-info-states').html(json.states);
                 $('#card-info-rules').html(json.rules);
             }
