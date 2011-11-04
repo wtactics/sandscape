@@ -96,6 +96,7 @@ class SCGame {
                       ($this->player2Side->getPlayerId() == $userId ? $this->player1Side : null));
 
       $this->roots [$side->getPlayableArea()->getId()] = $side->getPlayableArea();
+      $side->getPlayableArea()->setInvertYOffset(true);
 
       return $side;
    }
@@ -150,18 +151,26 @@ class SCGame {
       );
    }
 
-   public function moveCard($userId, $card, $location) {
+   public function moveCard($userId, $card, $location, $xOffset = 0, $yOffset = 0) {
       $player = $this->getPlayerSide($userId);
       $opponent = $this->getOpponentSide($userId);
-
+      
       $card = isset($this->all[$card]) ? $this->all[$card] : null;
       $location = isset($this->all[$location]) ? $this->all[$location] : null;
 
       if ($card && $location && $card instanceof SCCard && $card->isMovable() && $location->isDroppable() && $card->getPlayer() == $userId && $card !== $location && !$location->isInside($card)) {
          if ($card->getParent())
             $oldLocation = $card->getParent();
-         if ($location->push($card) && $oldLocation)
+         if ($location->push($card) && $oldLocation) {
             $oldLocation->remove($card);
+         }
+      }
+      if ($card) {
+         $card->setXOffset($xOffset);
+         $card->setYOffset($yOffset);
+         
+         file_put_contents('/tmp/debug.txt', var_export($_REQUEST, true));
+//         file_put_contents('/tmp/debug.txt', self::JSONIndent(json_encode($card->getStatus())));
       }
 
       return (object) array(
@@ -184,7 +193,7 @@ class SCGame {
          );
       }
    }
-   
+
    public function toggleCardState($userId, $card, $state) {
       $player = $this->getPlayerSide($userId);
       $opponent = $this->getOpponentSide($userId);
@@ -217,9 +226,10 @@ class SCGame {
       $tokens = array();
       foreach ($this->availableTokens as $token)
          $tokens [] = $token->getInfo();
-      
+
       $states = array();
-      foreach($this->availableStates as $state) $states[] = $state->getInfo();
+      foreach ($this->availableStates as $state)
+         $states[] = $state->getInfo();
 
       return (object) array(
                   'createThis' => (object) array(
@@ -229,11 +239,11 @@ class SCGame {
                       'player' => (object) array(
                           'hand' => (object) array(
                               'id' => $player->getHand()->getId(),
-                              'html' => $player->getHand()->getHTML(),
+//                              'html' => $player->getHand()->getHTML(),
                           ),
                           'playableArea' => (object) array(
                               'id' => $player->getPlayableArea()->getId(),
-                              'html' => $player->getPlayableArea()->getHTML(),
+//                              'html' => $player->getPlayableArea()->getHTML(),
                           ),
                           'decks' => $player->getDecksInitialization(),
                           'graveyard' => $player->getGraveyard() ? (object) array(
@@ -243,7 +253,7 @@ class SCGame {
                       'opponent' => (object) array(
                           'playableArea' => (object) array(
                               'id' => $opponent->getPlayableArea()->getId(),
-                              'html' => $opponent->getPlayableArea()->getReversedHTML(),
+//                              'html' => $opponent->getPlayableArea()->getReversedHTML(),
                           )
                       ),
                       'cards' => $this->getCardInitialization(),

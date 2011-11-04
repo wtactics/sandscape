@@ -487,7 +487,9 @@ class GameController extends AppController {
                   if ($game->running && $this->scGame && isset($_REQUEST['card']) && isset($_REQUEST['location'])) {
                      $card = $_REQUEST['card'];
                      $location = $_REQUEST['location'];
-                     $result = $this->scGame->moveCard(Yii::app()->user->id, $card, $location);
+                     $xOffset = isset($_REQUEST['xOffset']) ? floatval($_REQUEST['xOffset']) : 0;
+                     $yOffset = isset($_REQUEST['yOffset']) ? floatval($_REQUEST['yOffset']) : 0;
+                     $result = $this->scGame->moveCard(Yii::app()->user->id, $card, $location, $xOffset, $yOffset);
                      $result->result = 'ok';
                      $result->clientTime = $_REQUEST['clientTime'];
                      echo SCGame::JSONIndent(json_encode($result));

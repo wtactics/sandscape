@@ -16,6 +16,11 @@ class SCContainer {
     private $max;
     protected $elements;
     private $parent = null;
+    // @var float location inside parent, in percentage
+    private $xOffset = 0;
+    private $yOffset = 0;
+    // @var boolean 
+    private $invertYOffset = false;
 
     public function __construct(SCGame $game, $movable, $droppable, $max = null) {
         $this->game = $game;
@@ -24,6 +29,10 @@ class SCContainer {
         $this->droppable = $droppable;
 
         $this->elements = array();
+    }
+
+    public function __wakeup() {
+        $this->invertYOffset = false;
     }
 
     public function setId($id) {
@@ -37,10 +46,12 @@ class SCContainer {
         return $this->id;
     }
 
-    public function push(SCCard $scCard) {
+    public function push(SCCard $scCard, $xOffset = 0, $yOffset = 0) {
         if ($this->max === null || count($this->elements < $this->max)) {
             array_push($this->elements, $scCard);
             $scCard->setParent($this);
+            $scCard->setXOffset($xOffset);
+            $scCard->setYOffset($yOffset);
             return true;
         }
         else
@@ -51,6 +62,8 @@ class SCContainer {
         $pos = array_search($card, $this->elements, true);
         if ($pos !== false) {
             unset($this->elements[$pos]);
+            $card->setXOffset(0);
+            $card->setYOffset(0);
             return $card;
         }
         else
@@ -58,14 +71,16 @@ class SCContainer {
     }
 
     /**
-     * //TODO: ...
      * 
      * @return SCCard
      */
     public function pop() {
         $e = array_pop($this->elements);
-        if ($e)
+        if ($e) {
             $e->setParent(null);
+            $e->setXOffset(0);
+            $e->setYOffset(0);
+        }
         return $e;
     }
 
@@ -84,6 +99,22 @@ class SCContainer {
         $this->parent = $parent;
     }
 
+    public function getXOffset() {
+        return $this->xOffset;
+    }
+
+    public function setXOffset($xOffset) {
+        $this->xOffset = $xOffset;
+    }
+
+    public function getYOffset() {
+        return $this->yOffset;
+    }
+
+    public function setYOffset($yOffset) {
+        $this->yOffset = $yOffset;
+    }
+
     public function isMovable() {
         return $this->movable;
     }
@@ -99,9 +130,23 @@ class SCContainer {
     public function isDroppable() {
         return $this->droppable;
     }
-    
+
     public function getZIndex() {
-       return 50;
+        return 50;
+    }
+
+    public function setInvertYOffset($invertYOffset) {
+        $this->invertYOffset = $invertYOffset;
+    }
+
+    public function invertY() {
+        $o = $this;
+        while ($o) {
+            if ($o->invertYOffset)
+                return true;
+            $o = $o->getParent();
+        }
+        return false;
     }
 
     public function getStatus() {
@@ -110,25 +155,26 @@ class SCContainer {
         return (object) array(
                     'id' => $this->getId(),
                     'location' => ($root && $this->getParent() ? $this->getParent()->getId() : $this->game->getVoid()->getId()),
-                    'offsetHeight' => ( $this->getParent() && $this->getParent()->isMovable() ? 1 : 0),
+                    'xOffset' => $this->getXOffset(),
+                    'yOffset' => $this->getYOffset(),
+                    'invertY' => $this->invertY(),
                     'zIndex' => $this->getZIndex()
         );
     }
-    
+
     /**
      * Checks if the container is inside the other container
      * @param SCContainer $container 
      * @return boolean
      */
-    public function isInside(SCContainer $container)
-    {
-       $o = $this;
-       while ($o->getParent())
-       {
-          if ($o === $container) return true;
-          $o = $o->getParent();
-       }
-       return false;
+    public function isInside(SCContainer $container) {
+        $o = $this;
+        while ($o->getParent()) {
+            if ($o === $container)
+                return true;
+            $o = $o->getParent();
+        }
+        return false;
     }
 
     public function __toString() {

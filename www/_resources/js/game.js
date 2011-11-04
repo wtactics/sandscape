@@ -88,16 +88,11 @@ function checkGameStart() {
                      .appendTo($('body'));
     
                      //Player area: left hand, decks and play zone
-                     $('.hand').html(create.player.hand.html).attr('id', create.player.hand.id);
-                     $('.hand > table').css({
-                        height: $('.hand').height()
-                     });
+                     $('.hand')
+                     .attr('id', create.player.hand.id)
                             
-                            
-                     $('.play').html(create.player.playableArea.html).attr('id', create.player.playableArea.id);
-                     $('.play > table').css({
-                        height: $('.play').height()
-                     });
+                     $('.play')
+                     .attr('id', create.player.playableArea.id)
 
                      for(i = 0; i < create.player.decks.length; i++) {
                         $(document.createElement('img'))
@@ -134,12 +129,6 @@ function checkGameStart() {
                             
                      //Opponent area (top window zone)
                      $('.opponent-area').attr('id', create.opponent.playableArea.id)
-                     .html(create.opponent.playableArea.html);
-                            
-                     $('.opponent-area > table').css({
-                        height: $('.opponent-area').height() 
-                     });
-                        
                      
                      var card;
                      for(i = 0; i < create.cards.length; i++) {
@@ -157,14 +146,20 @@ function checkGameStart() {
                         })
                         .appendTo($('body'));
                      }
+                     
                      // Cards must be positioned after all cards are in the DOM because there are cards 'inside' other cards
                      for(i = 0; i < create.cards.length; i++) {
                         card = create.cards[i];
+                        var location = $('#'+card.location);
+                        
                         $('#'+card.id).css({
                            position: 'absolute',
                            visibility: card.visibility
                         })
-                        .css($('#'+card.location).offset())
+                        .css({
+                           top:  -200, //location.offset().top + card.yOffset * location.height(),
+                           left: -200 // location.offset().left + card.xOffset * location.width()
+                        })
                         .data('status', card)
                         .addClass('update')
                         .radialmenu({
@@ -186,33 +181,25 @@ function checkGameStart() {
                         
                         updateCardExtras($('#'+card.id));
                      }
+                     
                      $('.card').droppable({
                         drop: function (event, ui) {
-                           moveCard(ui.draggable.attr('id'), $(this).attr('id'));
+                           moveCard(ui.draggable.attr('id'), $(this).attr('id'), 0, .2);
                            return false;
                         }
                      })
                      
-                     //                     .dblclick(requestCardInfo);
-                       
-                       
-                     $('#play-area * .grid').droppable({
+                     $('.play, .hand').droppable({
                         drop: function(event, ui) {
                            var card = ui.draggable;
-                           $(this).find('td').each(function (i, o) {
-                              o = $(o);
-                              if (                                 
-                                 card.offset().left >= o.offset().left - 1 &&  
-                                 card.offset().left < o.offset().left + o.width() + 2  &&  
-                                 card.offset().top >= o.offset().top - 1 && 
-                                 card.offset().top < o.offset().top + o.height() + 2
-                                 ) {
-                                 moveCard(ui.draggable.attr('id'), o.attr('id'));
-                                 return false;
-                              }
-                           });
+                           
+                           var xOffset = (card.offset().left - $(this).offset().left) / $(this).width();
+                           var yOffset = (card.offset().top - $(this).offset().top) / $(this).height();
+                           
+                           moveCard(card.attr('id'), $(this).attr('id'), xOffset, yOffset);
+                           return false;
                         }
-                     });
+                     })
                                                         
                      //Configure and set deck-nob widget
                      $(document.createElement('img')).attr({
@@ -269,18 +256,17 @@ function cyclicPositionUpdate() {
       
          if (o.data('status')  &&  !o.hasClass('ui-draggable-dragging')  &&  !o.is(':animated')  &&  o.data('status').visibility == 'visible')
          {
-            var location = $('#'+o.data('status').location);
-            var top = location.offset().top + (o.data('status').offsetHeight ? 20 : 0);
-            var left = location.offset().left;
+            var data = o.data('status');
+            var location = $('#'+data.location);
+            var top = location.offset().top + Math.round(data.yOffset * location.height());
+            var left = location.offset().left + Math.round(data.xOffset * location.width());
             
             if (o.offset().top != top  ||  o.offset().left != left) 
             {
-               //               console.log('updatePosition ' + o.attr('id')+' :: '+ o.offset().top + '-> '+top+' ; '+o.offset().left+' -> '+left);
                o.animate({
                   top: top+'px',
                   left: left+'px'
                }, 500)
-               //               console.log('updatePosition ' + o.attr('id')+' :: '+ o.offset().top + '-> '+top+' ; '+o.offset().left+' -> '+left);
                
                if ($('.ui-draggable-dragging').length == 0) {
                   o.css({
@@ -393,7 +379,7 @@ function drawCard(deckId) {
    });
 }
 
-function moveCard(cardId, destinationId) {
+function moveCard(cardId, destinationId, xOffset, yOffset) {
    stopPositionUpdate = true;
    clientTime = new Date();
    $.ajax({
@@ -402,6 +388,8 @@ function moveCard(cardId, destinationId) {
          event: 'moveCard',
          card: cardId,
          location: destinationId,
+         xOffset: xOffset,
+         yOffset: yOffset,
          clientTime: clientTime.getTime()
       },
       dataType: 'json',
@@ -431,7 +419,6 @@ function requestCardInfo(id) {
          }
       }
    })
-                                
 }
 
 function pack() {   

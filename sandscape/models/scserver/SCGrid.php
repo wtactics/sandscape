@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * DEPRECATED
+ */
+
 class SCGrid extends SCContainer {
 
     private $cells;

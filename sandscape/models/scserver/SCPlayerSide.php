@@ -12,8 +12,8 @@ class SCPlayerSide {
    public function __construct(SCGame $game, $playerId, $hasGraveyard, $handWidth, $handHeight, $gameWidth, $gameHeight) {
       $this->game = $game;
       $this->playerId = $playerId;
-      $this->hand = new SCGrid($game, $handHeight, $handWidth);
-      $this->playableArea = new SCGrid($game, $gameHeight, $gameWidth);
+      $this->hand = new SCContainer($game, false, true); // new SCGrid($game, $handHeight, $handWidth);
+      $this->playableArea = new SCContainer($game, false, true); // new SCGrid($game, $gameHeight, $gameWidth);
       if ($hasGraveyard)
          $this->graveyard = new SCContainer($game, false, false);
 
@@ -56,7 +56,6 @@ class SCPlayerSide {
    }
 
    public function drawCard($deckId) {
-//      die('died in '.get_class($this).' at ' . time() . '  ' . var_export($_REQUEST, true));
       if (isset($this->decks[$deckId])) {
          $deck = $this->decks[$deckId];
          $card = $deck->pop();
