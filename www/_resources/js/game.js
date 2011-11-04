@@ -13,7 +13,8 @@ var globals = {
         updID: 0
     },
     time: new Date(),
-    stopPositionUpdate: false
+    stopPositionUpdate: false,
+    updatingGame: false
 }
 
 function init() {
@@ -158,28 +159,25 @@ function checkGameStart() {
                                     position: 'absolute',
                                     visibility: card.visibility
                                 })
-                                .css({
-                                    top:  -200, //location.offset().top + card.yOffset * location.height(),
-                                    left: -200 // location.offset().left + card.xOffset * location.width()
-                                })
+                                .css($('#deck-slide').offset())
                                 .data('status', card)
                                 .addClass('update')
                                 .radialmenu({
                                     radius: 60,
                                     options: [ {
-                                            option: 'info',
-                                            event: function (card) {
-                                                requestCardInfo($(card).attr('id'));
-                                            }
-                                        }, {
-                                            option: 'tokens',
-                                            subMenu: tokenMenu
-                                        }, {
-                                            option: 'card states',
-                                            subMenu: statesMenu
-                                        } ]
+                                        option: 'info',
+                                        event: function (card) {
+                                            requestCardInfo($(card).attr('id'));
+                                        }
+                                    }, {
+                                        option: 'tokens',
+                                        subMenu: tokenMenu
+                                    }, {
+                                        option: 'card states',
+                                        subMenu: statesMenu
+                                    } ]
                                 })
-                                .children('img.face').attr('src', '_game/cards/thumbs/' + card.src);
+                                .children('img.face').attr('src', '_game/cards/thumbs/' + (card.invertY ? 'inverted/' : '') + card.src);
                         
                                 updateCardExtras($('#'+card.id));
                             }
@@ -236,7 +234,7 @@ function updateCardExtras(card) {
         for (var i = 0; i < card.data('status').tokens.length; ++i) {
             $(document.createElement('img'))
             .addClass('token')
-            .attr('src', '_game/tokens/thumbs/' + card.data('status').tokens[i].src)
+            .attr('src', '_game/tokens/thumbs/' + (card.data('status').invertY ? 'inverted/' : '') + card.data('status').tokens[i].src)
             .appendTo(card);
         }
       
@@ -244,7 +242,7 @@ function updateCardExtras(card) {
         for(i = 0; i<card.data('status').states.length; ++i) {
             $(document.createElement('img'))
             .addClass('state')
-            .attr('src', '_game/states/thumbs/' + card.data('status').states[i].src)
+            .attr('src', '_game/states/thumbs/' + (card.data('status').invertY ? 'inverted/' : '') + card.data('status').states[i].src)
             .appendTo(card);
         }
     }
@@ -259,8 +257,12 @@ function cyclicPositionUpdate() {
                 &&  !o.is(':animated')  &&  o.data('status').visibility == 'visible') {
                 var data = o.data('status');
                 var location = $('#'+data.location);
-                var top = location.offset().top + Math.round(data.yOffset * location.height());
+                var top;
                 var left = location.offset().left + Math.round(data.xOffset * location.width());
+                
+                if (!o.data('status').invertY) top = location.offset().top + Math.round(data.yOffset * location.height());
+                else top = location.offset().top + Math.round((1 - o.data('status').yOffset) * location.height()) - o.height();
+                
                 o.animate({
                     top: top+'px',
                     left: left+'px'
@@ -291,22 +293,24 @@ function doGameUpdate(json) {
                 zIndex: json.update[i].zIndex,
                 visibility: json.update[i].visibility
             })
-            .children('img.face').attr('src',  '_game/cards/thumbs/' + json.update[i].src);
+            .children('img.face').attr('src',  '_game/cards/thumbs/' + (json.update[i].invertY ? 'inverted/' : '') + json.update[i].src);
          
             updateCardExtras($('#' + json.update[i].id));
         }
     }
+    globals.updatingGame = false;
 }
 
 
 function updateGame() {
     globals.time = new Date();
-    if (parseInt($.active) == 0  &&  $('.ui-draggable-dragging').length == 0){
+    if (!globals.updatingGame  &&  parseInt($.active) == 0  &&  $('.ui-draggable-dragging').length == 0){
+        globals.updatingGame = true;
         $.ajax({
             url: globals.game.url,
             data: {
                 event: 'update',
-                // TODO: Solve the sync problems; This will still disabled until then
+                // TODO: Solve the sync problems; lastChange will still disabled until then
                 lastChange: globals.game.lastChange,
                 clientTime: globals.time.getTime()
             },
@@ -323,6 +327,7 @@ function updateGame() {
 
 
 function toggleCardToken(cardId, tokenId){
+    globals.updatingGame = true;
     globals.time = new Date();
     if ($('.ui-draggable-dragging').length == 0) {
         $.ajax({
@@ -341,6 +346,7 @@ function toggleCardToken(cardId, tokenId){
 }
 
 function toggleCardState(cardId, stateId) {
+    globals.updatingGame = true;
     globals.time = new Date();
     if ($('.ui-draggable-dragging').length == 0) {
         $.ajax({
@@ -359,6 +365,7 @@ function toggleCardState(cardId, stateId) {
 }
 
 function drawCard(deckId) {
+    globals.updatingGame = true;
     globals.stopPositionUpdate = true;
     globals.time = new Date();
     $.ajax({
@@ -378,6 +385,7 @@ function drawCard(deckId) {
 }
 
 function moveCard(cardId, destinationId, xOffset, yOffset) {
+    globals.updatingGame = true;
     globals.stopPositionUpdate = true;
     globals.time = new Date();
     $.ajax({
@@ -400,7 +408,7 @@ function moveCard(cardId, destinationId, xOffset, yOffset) {
 }
 
 function requestCardInfo(id) {
-    /*    $.ajax({
+/*    $.ajax({
         url: globals.game.url,
         data: {
             event: 'cardInfo',
