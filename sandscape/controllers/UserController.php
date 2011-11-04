@@ -76,7 +76,7 @@ class UserController extends AppController {
     public function actionUpdate($id) {
         $user = $this->loadUserModel($id);
 
-        $this->performAjaxValidation('user-form', $new);
+        $this->performAjaxValidation('user-form', $user);
 
         if (isset($_POST['User'])) {
             $user->attributes = $_POST['User'];
@@ -154,6 +154,11 @@ class UserController extends AppController {
         $this->render('view', array('user' => $user));
     }
 
+    public function actionGames() {
+        //TODO: not implemented yet
+        $this->render('games');
+    }
+
     /**
      * Loads a <em>User</em> model from the database
      * @param integer $id The user ID.
@@ -162,7 +167,7 @@ class UserController extends AppController {
      * @since 1.0, Sudden Growth
      */
     private function loadUserModel($id) {
-        if (($user = User::model()->findByPk((int) $id)) === null) {
+        if (($user = User::model()->find('active = 1 AND userId = :id', array(':id' => (int) $id))) === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
         return $user;
@@ -182,7 +187,7 @@ class UserController extends AppController {
     public function accessRules() {
         return array_merge(array(
                     array('allow',
-                        'actions' => array('account', 'profile', 'view'),
+                        'actions' => array('account', 'profile', 'view', 'games'),
                         'users' => array('@')
                     ),
                     array('allow',

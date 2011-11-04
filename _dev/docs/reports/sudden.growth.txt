@@ -1,0 +1,70 @@
+Sudden Growth, v1.0
+===================
+
+Focus
+-----
+
+Restart project development and assure a steady/continuous, or at least predictable, 
+development pace. Bring all code up-to-date and remove any reference to StaySimple CMS. 
+The current code is a complete mess with mixed Yii usage and some tests with StaySimple CMS. 
+These should have been made in a new branch but I was dumb enough to ignore that 
+and made complete mess with the code.
+
+The main objective has shifted to create a usable system in the shortest amount of 
+time possible and most of the commits for this iteration will be made of general 
+code updates, moving files, and other actions that will break any semblance of 
+stable system, it won't be possible for other developers or interested users to 
+keep track of changes and to test the system and it's features. I'm hopping I can 
+solve this mess in a 2 or 3 day sprint.
+
+[horizontal]
+Planned tasks:: Create demo system with auto update using git; +
+User management (admin); +
+Base lobby functionality: Game creation; Join game; Lobby chat; User listing; Game listing; +
+Profile and user actions: Profile editing; Login; Register; Deck creation; +
+Game layout;
+
+Difficulties
+------------
+
+Developing in PHP all day and coming to a project that uses, yet again, this technology 
+at the end of the day has taken a toll on the development progress. The all project 
+went on hiatus almost for 5 moths and is way behind schedule. Currently the main 
+difficulties are related to messed up code with mixed platforms.
+
+Most of the existing features have either been re-implemented or have been removed 
+and several bugs were introduced that we don't have time to solve. The biggest 
+problem was the forced pace that I imposed on the development, that fast pace 
+development resulted in several crippled features that need to be corrected with 
+time as soon as users start given back feedback.
+
+Also, giving the confusion I was in, tasks have been made with little regard to 
+how the were planed (implementing features from other iterations, adding new features 
+and removing planned ones).
+
+Restarting the all development was hard, both on the code sanity and my own :)
+
+Achievements
+------------
+
+Although there were several problems I still managed to develop the all main system 
+in the few 4 or 5 days that I've been working for, and the current version 1.0 can 
+be considered a usable enough version to guarantee that users can use and test the 
+application.
+
+While code was being developed, most of the supporting tools were updated, the 
+SourceForge page has better descriptions with more information, the Trac system 
+is working and most ideas have been moved to it and the wiki is being updated on 
+a more steady page. Also there is already a new sub forum 
+footnote:[http://chaosrealm.net/wtactics/forum/viewforum.php?f=14] in WTactics 
+forum that can be used.
+
+I consider this iteration to be a complete failure because it was late, out of 
+control and did not produce quality code, although it produced much code.
+
+Next
+----
+
+The next iteration will have to keep the goal of a usable system in a short amount 
+of time while bringing the development speed down and restoring proper control to 
+the development process.

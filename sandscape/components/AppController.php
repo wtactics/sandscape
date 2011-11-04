@@ -68,6 +68,7 @@ class AppController extends CController {
                 'items' => array(
                     array('label' => 'Cards', 'url' => array('card/index')),
                     array('label' => 'Deck Templates', 'url' => array('decktemplate/index')),
+                    array('label' => 'Dice', 'url' => array('dice/index')),
                     array('label' => 'Users', 'url' => array('user/index')),
                 ),
                 'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class
@@ -76,6 +77,7 @@ class AppController extends CController {
             array('label' => 'Account', 'url' => array('user/account'),
                 'items' => array(
                     array('label' => 'Decks', 'url' => array('deck/index')),
+                    array('label' => 'Games', 'url' => array('user/games')),
                     array('label' => 'Profile', 'url' => array('user/profile')),
                     array('label' => 'Logout', 'url' => array('site/logout')),
                 ),
@@ -97,7 +99,7 @@ class AppController extends CController {
     public final function performAjaxValidation($form, $model) {
         if (isset($_POST['ajax']) && ($_POST['ajax'] === $form || (is_array($form) && in_array($_POST['ajax'], $form)))) {
             echo CActiveForm::validate($model);
-            
+
             Yii::app()->end();
         }
     }

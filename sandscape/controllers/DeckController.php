@@ -188,7 +188,7 @@ class DeckController extends AppController {
                 $dktc = new DeckTemplateCard();
                 $dktc->deckTemplateId = $template->deckTemplateId;
                 $dktc->cardId = $dkc->cardId;
-                
+
                 //NOTE: ignoring save errors
                 $dktc->save();
             }
@@ -202,7 +202,7 @@ class DeckController extends AppController {
      */
     public function actionFromTemplate() {
         if (isset($_POST['preconslst']) && (int) $_POST['preconslst']) {
-            if (($template = DeckTemplate::model()->findByPk((int) $_POST['preconslst'])) !== null) {
+            if (($template = DeckTemplate::model()->find('active = 1 AND deckTemplateId = :id', array(':id' => (int) $_POST['preconslst']))) !== null) {
                 $deck->name = $template->name;
                 $deck->created = date('Y-m-d H:i:s');
                 if ($deck->save()) {
@@ -222,6 +222,10 @@ class DeckController extends AppController {
         $this->redirect(array('index'));
     }
 
+    public function actionView($id) {
+        //TODO: not implemented yet
+    }
+
     /**
      * Retrieves a Deck model from the database.
      * 
@@ -231,7 +235,7 @@ class DeckController extends AppController {
      * @since 1.0, Sudden Growth
      */
     private function loadDeckModel($id) {
-        if (($deck = Deck::model()->findByPk((int) $id)) === null) {
+        if (($deck = Deck::model()->find('active = 1 AND deckId = :id', array(':id' => (int) $id))) === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
         return $deck;

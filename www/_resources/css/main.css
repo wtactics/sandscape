@@ -9,7 +9,7 @@
 
 body {
     color: #333;
-    background: #E0E0E0 url(../images/top-bg.png) repeat-x;
+    background: #E0E0E0 url(../images/site-background-top.png) repeat-x;
 }
 
 #header {
@@ -130,4 +130,15 @@ a:hover {
 .button:hover {
     color: #FFF;
     background-color: #9A5D0D
+}
+
+#server-time {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    text-align: right;
+    float:right;
+    font-size: 11px;
+    font-weight: bold;
+    font-family: "Courier New", Courier, monospace;
 }

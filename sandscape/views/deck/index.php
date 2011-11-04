@@ -25,10 +25,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ),
         array(
             'header' => 'Actions',
-            'class' => 'CButtonColumn',
-            'buttons' => array(
-                'view' => array('visible' => 'false'),
-            )
+            'class' => 'CButtonColumn'
         ),
     ),
 ));

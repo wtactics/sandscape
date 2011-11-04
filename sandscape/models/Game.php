@@ -25,20 +25,23 @@
  * This is the model class for table "Game".
  *
  * The followings are the available columns in table 'Game':
- * @property string $gameId
- * @property string $player1
- * @property string $player2
+ * @property integer $gameId
+ * @property integer $player1
+ * @property integer $player2
  * @property string $created
  * @property string $started
  * @property string $ended
  * @property integer $running
- * @property integer $private
+ * @property integer $paused
  * @property string $state
  *
  * The followings are the available model relations:
  * @property ChatMessage[] $chatMessages
  * @property User $player10
  * @property User $player20
+ * @property Deck $decks
+ * @property Dice $dice
+ * @property User $winner
  * 
  * @since 1.0, Sudden Growth
  */
@@ -64,10 +67,14 @@ class Game extends CActiveRecord {
      */
     public function rules() {
         return array(
-            array('running, private', 'numerical', 'integerOnly' => true),
+            array('running, paused', 'numerical', 'integerOnly' => true),
             array('started, ended', 'safe'),
             //search
-            array('player1, player2, created, started, ended, running, private', 'safe', 'on' => 'search'),
+            array(
+                'player1, player2, created, started, ended, running, paused, winnerId',
+                'safe',
+                'on' => 'search'
+            ),
         );
     }
 
@@ -79,7 +86,9 @@ class Game extends CActiveRecord {
             'chatMessages' => array(self::HAS_MANY, 'ChatMessage', 'gameId'),
             'player10' => array(self::BELONGS_TO, 'User', 'player1'),
             'player20' => array(self::BELONGS_TO, 'User', 'player2'),
-            'decks' => array(self::MANY_MANY, 'Deck', 'GameDeck(gameId, deckId)')
+            'decks' => array(self::MANY_MANY, 'Deck', 'GameDeck(gameId, deckId)'),
+            'dice' => array(self::MANY_MANY, 'Dice', 'GameDice(gameId, diceId)'),
+            'winner' => array(self::BELONGS_TO, 'User', 'winnerId'),
         );
     }
 
@@ -95,11 +104,12 @@ class Game extends CActiveRecord {
             'started' => 'Started',
             'ended' => 'Ended',
             'running' => 'Running',
-            'private' => 'Private',
+            'paused' => 'Paused',
             'maxDecks' => 'Max. number of decks',
             'graveyard' => 'Game has graveyard',
             'player1Ready' => 'Player 1 is ready',
             'player2Ready' => 'Player 2 is ready',
+            'winnerId' => 'Winner'
         );
     }
 
@@ -114,13 +124,14 @@ class Game extends CActiveRecord {
     public function search() {
         $criteria = new CDbCriteria();
 
-        $criteria->compare('player1', $this->player1, true);
-        $criteria->compare('player2', $this->player2, true);
+        $criteria->compare('player1', $this->player1);
+        $criteria->compare('player2', $this->player2);
         $criteria->compare('created', $this->created, true);
         $criteria->compare('started', $this->started, true);
         $criteria->compare('ended', $this->ended, true);
         $criteria->compare('running', $this->running);
-        $criteria->compare('private', $this->private);
+        $criteria->compare('paused', $this->paused);
+        $criteria->compare('winnerId', $this->winnerId);
 
         return new CActiveDataProvider('Game', array('criteria' => $criteria));
     }

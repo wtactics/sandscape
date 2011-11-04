@@ -1,8 +1,8 @@
 -- Setting table will store configuration options for Sandscape and the games.
 CREATE TABLE `Setting` (
 `key` VARCHAR( 50 ) NOT NULL PRIMARY KEY ,
-`value` VARCHAR( 255 ) NOT NULL ,
-`description` VARCHAR( 255 ) NULL
+`value` TEXT NOT NULL ,
+`description` TEXT NULL
 ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
 -- Some of the current existing settings

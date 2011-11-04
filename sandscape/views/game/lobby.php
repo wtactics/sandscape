@@ -50,7 +50,7 @@ $this->title = 'Sandscape Lobby';
     <ul id="gamelist">
         <?php
         foreach ($games as $game) {
-            if (in_array(Yii::app()->user->id, array($game->player1, $game->player2)) && $game->running) {
+            if (in_array(Yii::app()->user->id, array($game->player1, $game->player2)) && !$game->ended) {
                 ?>
                 <li class="success">
                     <span>
@@ -59,7 +59,11 @@ $this->title = 'Sandscape Lobby';
                         <?php echo Yii::app()->dateFormatter->formatDateTime(strtotime($game->created), 'short', false); ?>
                     </span>
                     <br />
-                    <span>Opponent: <?php echo (Yii::app()->user->id == $game->player1 ? $game->player20->name : $game->player10->name); ?></span>
+                    <?php if ($game->player2) { ?>
+                        <span>Opponent: <?php echo (Yii::app()->user->id == $game->player1 ? $game->player20->name : $game->player10->name); ?></span>
+                    <?php } else { ?>
+                        <span>No opponent yet.</span>
+                    <?php } ?>
                 </li>
                 <?php
             } else {
@@ -70,8 +74,10 @@ $this->title = 'Sandscape Lobby';
                     $class = 'info join';
                 }
                 ?>
-                <li class="<?php echo $class; ?>" id="game-<?php echo $game->gameId; ?>">
-                    <span><?php echo Yii::app()->dateFormatter->formatDateTime(strtotime($game->created), 'short', false); ?></span>
+                <li class="<?php echo $class; ?>">
+                    <input type="hidden" class="hGameId" value="<?php echo $game->gameId; ?>" name="gameId-<?php echo $game->gameId; ?>" />
+                    <input type="hidden" class="hGameDM" value="<?php echo $game->maxDecks; ?>" name="gameDM-<?php echo $game->gameId; ?>" />
+                    <span><?php echo date(DATE_W3C, strtotime($game->created)); ?></span>
                     <br />
                     <?php if ($game->running) { ?>
                         <span><?php echo $game->player10->name, '&nbsp;-&nbsp;', $game->player20->name; ?></span>
@@ -88,18 +94,24 @@ $this->title = 'Sandscape Lobby';
 <hr />
 <div class="span-18 centered">
     <input type="text" class="text" id="writemessage" />
-    <button type="button" onclick="sendMessage('<?php echo $this->createURL('game/sendlobbymessage'); ?>');" id="sendbtn">Send</button>
+    <button type="button" class="button" onclick="sendMessage('<?php echo $this->createURL('game/sendlobbymessage'); ?>');" id="sendbtn">Send</button>
 </div>
 <div class="span-4 last">
     <a href="javascript:;" onclick="$('#createdlg').modal();">Create</a>
-    &nbsp;:&nbsp;
-    <a href="javascript:;" onclick="alert('Private games are not not implemented yet!');//$('#joinprivatedlg').modal();">Private Game</a>
 </div>
 
 <div style="display: none">
     <?php
-    $this->renderPartial('_createdlg', array('decks' => $decks));
-    $this->renderPartial('_joindlg', array('decks' => $decks));
-    $this->renderPartial('_joinprivatedlg', array('decks' => $decks));
+    $this->renderPartial('_createdlg', array(
+        'decks' => $decks,
+        'fixDeckNr' => $fixDeckNr,
+        'decksPerGame' => $decksPerGame
+    ));
+
+    $this->renderPartial('_joindlg', array(
+        'decks' => $decks
+    ));
+
+    $this->renderPartial('_spectatedlg');
     ?>
 </div>

@@ -1,0 +1,77 @@
+Elvish Scout
+============
+
+Focus
+-----
+
+The goal is to study the base feature set, develop the data model and create the 
+infrastructure to be used by the project. I will also try to test some small but 
+important UI features using the selected technologies.
+
+It's not important to create a playable version of the game, I should concentrate 
+on stableshing a maintainable development pace, that can be followed easily and 
+that accounts for periods of inactivity, for that, this iteration should strive 
+to create a solid development infrastructure.
+
+[horizontal]
+Planned tasks:: Stable data model; +
+UI layout; +
+Working chat application; +
+Login; +
+Spike Solutions: Card movement dragging; Card flipping; Snap to grid; Chat application;
+
+Difficulties
+------------
+
+Most difficulties in this iteration were due to UI gestures and interaction being 
+tested. jQuery has proven to help with the all UI but it's still JavaScript inside 
+a browser: too much work in too small things.
+
+Stable data model: Given that I have never played any CCG game, even if testingother 
+virtual CCGs that exist, I had some trouble figure out what really was needed and 
+what is my wrong impressions of the game, gained by watching friends play Magic the Gathering.
+
+UI layout: The usual web constraints apply to the project, creating a UI inside 
+the browser window, that allows users to properly play the game and at the same 
+time offering several extra tools is proving to be a chanlange. UI design is stable 
+for now, but will most like need to be revised when testing begins.
+
+Login: No problem with login system.
+
+Card movement dragging: Movement shows a few quirks, cards sometimes jump to a 
+position a bit far from the mouse pointer.
+
+Card flipping: Proper flipping is insane... Flipping a card involves getting a 
+new card from the deck in a motion that shows the card being turned. Given that 
+correct 2D is not available in a browser, features are limited, creating such and 
+interaction would wast to much time. Existing plugins for jQuery are way to heavy 
+and meant only to other application types.
+
+Snap to grid: Sometimes works, some others doesn't. Snapping to an area in the 
+board is unnecessary, if the user is to have complete freedom, snapping would only 
+serve to annoy. Snapping cards to one another is useful but collides with drag'n drop.
+
+Chat application: Getting the correct message order, already planning for the 
+future when IDs reset. Using dates falls under the awful date handling abilities 
+of JavaScript. Further testing needs to be made.
+
+Achievements
+------------
+
+I consider this iteration to be a success as it allowed my to properly test all 
+the things I had doubts about. I was able to create the basic drag, snap, and flip 
+actions that make up for the main user interaction with the game. UI design seems 
+to be usable enough to be put into production.
+
+Integrating yii framework was easy and the development process is coming into shape, 
+it doesn't feel much of a burden to maintain, though another developer in the team 
+could really make a difference.
+
+Next
+----
+
+Has this iteration focus was not in providing a usable application, the next 
+iteration should try to revert that and offer a complete and playable game. Even 
+if the used cards are not correctly shown or are not the correct one.
+
+In short, to have a game ready for testing must be the main objective.

@@ -22,11 +22,6 @@ $form = $this->beginWidget('CActiveForm', array(
         ?>
     </p>
     <?php echo $form->error($user, 'email'); ?>
-    <p>
-        <?php
-        echo $form->checkBox($user, 'seeTopDown'), '&nbsp;', $form->labelEx($user, 'seeTopDown');
-        ?>
-    </p>
 </fieldset>
 <p>
     <?php echo CHtml::submitButton('Save', array('class' => 'button')); ?>
