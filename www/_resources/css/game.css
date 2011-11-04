@@ -62,8 +62,11 @@ body {
 }
 
 #chat {
-    /*border: 1px solid white;*/
+    border: 5px solid lightgrey;
     text-align: center;
+    border-radius: 16px;
+    -moz-border-radius: 16px;
+    background: #FFF;
 }
 
 #chat ul {
@@ -206,6 +209,7 @@ ul#file-menu-items li:hover ul.sub-menu {
     border: 3px solid black;
     background: white;
     border-radius: 6px;
+    -moz-border-radius: 6px;
     text-align: center;
     vertical-align: middle;
     color: black;

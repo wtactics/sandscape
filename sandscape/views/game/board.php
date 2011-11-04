@@ -4,9 +4,6 @@ if (count($messages)) {
     $last = end($messages);
     $last = $last->messageId;
 }
-
-Yii::app()->clientScript->registerCoreScript('jquery');
-Yii::app()->clientScript->registerCoreScript('jquery.ui');
 Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.bubblepopup.v2.3.1.min.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.jgrowl.minimized.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.simplemodal.1.4.1.min.js', CClientScript::POS_HEAD);
@@ -68,7 +65,7 @@ $this->title = 'Playing';
         <!-- Find the pixel size for 70% height -->
         <img src="_game/cards/18e9b964776bbe6c9f6842f1feba8b8b.jpg" height="70%" />
     </div>
-    <div id="chat">
+    <div id="chat" class="ui-corner-all">
         <ul id="chat-messages">
             <?php foreach ($messages as $message) { ?>
                 <li class="user-message">
