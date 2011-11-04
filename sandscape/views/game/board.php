@@ -10,62 +10,28 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.simplemodal.1
 Yii::app()->clientScript->registerScriptFile('_resources/js/game.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.radialmenu.min.js', CClientScript::POS_HEAD);
 
-$url = $this->createURL('game/play', array('id' => $gameId));
-$url2 = $this->createUrl('game/gamechatupdate', array('id' => $gameId));
+$playUrl = $this->createURL('game/play', array('id' => $gameId));
+$sendMessageUrl = $this->createUrl('game/sendgamemessage', array('id' => $gameId));
+$updateMessageUrl = $this->createUrl('game/gamechatupdate', array('id' => $gameId));
 
 $startJS = <<<JS
-    lastReceived = {$last};
-    initTable('{$url}', '{$url2}');
-    updateMessageScroll();
+globals.chat.sendUrl = '{$sendMessageUrl}';
+globals.chat.updateUrl = '{$updateMessageUrl}';
+globals.chat.lastReceived = {$last};
+globals.game.url = '{$playUrl}';
+    
+init();
+updateMessageScroll();
 
-    $('#file-menu').click(function (e) {
-        $('#file-menu-items').slideToggle('medium');
-    });
 JS;
 Yii::app()->clientScript->registerScript('startjs', $startJS);
 
 $this->title = 'Playing';
 ?>
 
-<div id="info-widget">
-    <img id="file-menu" src="_resources/images/icon-x32-menu.png" />
-    <ul id="file-menu-items">
-        <li>
-            <a href="javascript:;">Chat &Gt;</a>
-            <ul class="sub-menu">
-                <li><a href="#">Show all</a></li>
-                <li><a href="#">Show system</a></li>
-                <li><a href="#">Show user messages</a></li>
-            </ul>
-        </li>
-        <?php if (count($dice)) { ?>
-            <li>
-                <a href="javascript:;">Roll Dice &Gt;</a>
-                <ul class="sub-menu">
-                    <?php foreach ($dice as $die) { ?>
-                        <li>
-                            <a href="javascript:roll(<?php echo $die->diceId; ?>);">
-                                <?php echo $die->name, '&nbsp;(', $die->face, ')'; ?>
-                            </a>
-                        </li>
-                    <?php } ?>
-                </ul>
-            </li>
-        <?php } ?>
-        <li><a href="javascript:;">Game &Gt;</a>
-            <ul class="sub-menu">
-                <li><a href="#">Deck notes</a></li>
-                <li><a href="#">Mark as loss</a></li>
-                <li><a href="#">Pause</a></li>
-            </ul>
-        </li>
-        <li><a href="<?php echo $this->createURL('game/leave', array('id' => $gameId)); ?>">Exit</a></li>
-    </ul>
-    <div id="card-info">
-        <!-- Find the pixel size for 70% height -->
-        <img src="_game/cards/18e9b964776bbe6c9f6842f1feba8b8b.jpg" height="70%" />
-    </div>
-    <div id="chat" class="ui-corner-all">
+<div id="left-column">
+    <img id="card-info" src="_game/cards/18e9b964776bbe6c9f6842f1feba8b8b.jpg" />
+    <div id="chat">
         <ul id="chat-messages">
             <?php foreach ($messages as $message) { ?>
                 <li class="user-message">
@@ -75,14 +41,13 @@ $this->title = 'Playing';
         </ul>
         <input type="text" id="writemessage" />
     </div>
+    <div class="hand"><!-- PLAYER HAND AREA --></div>
 </div>
 <div class="opponent-area"><!-- OPPONENT GAME AREA --></div>
 
 <div id="play-area">
-    <div class="hand"><!-- PLAYER HAND AREA --></div>
     <div class="play"><!-- PLAYER CENTER AREA, CARD AREA --></div>
 
-    <!-- <img id="deck-nob" src="_cards/up/thumbs/cardback.jpg" /> -->
     <div id="deck-widget">
         <div id="deck-slide"><!-- DECK CONTAINER --></div>
     </div>                   

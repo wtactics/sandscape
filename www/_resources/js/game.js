@@ -1,38 +1,40 @@
-var globals = new function() {
-//TODO: move globals here
+var globals = {
+    chat: {
+        lastReceived: 0, 
+        updID: 0, 
+        sendUrl: '', 
+        updateUrl:''
+    },
+    game: {
+        lastChange: 0, 
+        running: false, 
+        url: '', 
+        chkID: 0, 
+        updID: 0
+    },
+    time: new Date(),
+    stopPositionUpdate: false
 }
 
-//Global control variables
-//TODO: //NOTE: shouldn't this be placed in a global object for easier control 
-//and maintenance
-var lastChange = 0;
-var lastReceived = 0;
-var gameRunning = false;
-var bUrl;
-var chkGameID;
-var updGameID;
-var updMessagesID;
-var clientTime = new Date();
-var stopPositionUpdate = false;
-
-function initTable(base, messageUpUrl) {
-    bUrl = base
-    
+function init() {
     $('#opponent-loader').show();
-    pack();
-    $('#card-info-image').dblclick(function(e){
-        alert('Not implemented yet!');
+    
+    $('#writemessage').keypress(function(e) {
+        if(e.which == 13) {
+            sendMessage();
+        }
     });
     
+    pack();
     checkGameStart();
-    updMessagesID = setInterval(function() {
-        updateMessages(messageUpUrl)
+    globals.chat.updID = setInterval(function() {
+        updateMessages(globals.chat.updateUrl);
     }, 5000);
 }
 
 function checkGameStart() {
     $.ajax({
-        url: bUrl,
+        url: globals.game.url,
         data: {
             event: 'startGame'
         },
@@ -40,10 +42,10 @@ function checkGameStart() {
         dataType: 'json',
         success: function (json) {
             if(json.result == 'ok') {
-                $('#opponent-loader').remove();
+                $('#opponent-loader').hide();
                 $('#game-loader').show();
                 $.ajax({
-                    url: bUrl,
+                    url: globals.game.url,
                     data: {
                         event: 'startUp'
                     },
@@ -192,10 +194,6 @@ function checkGameStart() {
                                     return false;
                                 }
                             })
-                     
-                            //                     .dblclick(requestCardInfo);
-                       
-                       
                             $('#play-area * .grid').droppable({
                                 drop: function(event, ui) {
                                     var card = ui.draggable;
@@ -223,7 +221,7 @@ function checkGameStart() {
                             .click(deckSlide)
                             .appendTo($('body'));
 
-                            gameRunning = true;
+                            globals.game.running = true;
                             $('#game-loader').fadeOut('slow', function () {
                                 $('#game-loader').remove();
                             }); 
@@ -253,7 +251,7 @@ function updateCardExtras(card) {
         }
       
         card.find('.state').remove();
-        for(var i=0; i<card.data('status').states.length; ++i) {
+        for(i = 0; i<card.data('status').states.length; ++i) {
             $(document.createElement('img'))
             .addClass('state')
             .attr('src', '_game/states/thumbs/' + card.data('status').states[i].src)
@@ -263,18 +261,16 @@ function updateCardExtras(card) {
 }
 
 function cyclicPositionUpdate() {
-    if (!stopPositionUpdate){
+    if (!globals.stopPositionUpdate){
         $('.update').each(function (i, o) {
             o = $(o);
       
-            if (o.data('status')  &&  !o.hasClass('ui-draggable-dragging')  &&  !o.is(':animated')  &&  o.data('status').visibility == 'visible')
-            {
-                //               console.log('updatePosition ' + o.attr('id')+' :: '+ o.offset().top + '-> '+top+' ; '+o.offset().left+' -> '+left);
+            if (o.data('status')  &&  !o.hasClass('ui-draggable-dragging')  
+                &&  !o.is(':animated')  &&  o.data('status').visibility == 'visible') {
                 o.animate({
                     top: top+'px',
                     left: left+'px'
                 }, 500)
-                //               console.log('updatePosition ' + o.attr('id')+' :: '+ o.offset().top + '-> '+top+' ; '+o.offset().left+' -> '+left);
                
                 if ($('.ui-draggable-dragging').length == 0) {
                     o.css({
@@ -288,10 +284,10 @@ function cyclicPositionUpdate() {
 }
 
 function doGameUpdate(json) {
-    if(json.result == 'ok'  &&  parseInt(json.clientTime) == clientTime.getTime()) {
-        if (json.lastChange) lastChange = json.lastChange;
+    if(json.result == 'ok'  &&  parseInt(json.clientTime) == globals.time.getTime()) {
+        if (json.lastChange) globals.game.lastChange = json.lastChange;
  
-        for(i = 0; i < json.update.length; i++) {
+        for(var i = 0; i < json.update.length; i++) {
             $('#' + json.update[i].id).data('status', json.update[i]);
             if(!$('#' + json.update[i].id).hasClass('update')) $('#' + json.update[i].id).addClass('movable');
          
@@ -310,14 +306,15 @@ function doGameUpdate(json) {
 
 
 function updateGame() {
-    clientTime = new Date();
+    globals.time = new Date();
     if (parseInt($.active) == 0  &&  $('.ui-draggable-dragging').length == 0){
         $.ajax({
-            url: bUrl,
+            url: globals.game.url,
             data: {
                 event: 'update',
-                lastChange: lastChange,           // TODO: Solve the sync problems; This will still disabled until then
-                clientTime: clientTime.getTime()
+                // TODO: Solve the sync problems; This will still disabled until then
+                lastChange: globals.game.lastChange,
+                clientTime: globals.time.getTime()
             },
             dataType: 'json',
             type: 'POST',
@@ -332,15 +329,15 @@ function updateGame() {
 
 
 function toggleCardToken(cardId, tokenId){
-    clientTime = new Date();
+    globals.time = new Date();
     if ($('.ui-draggable-dragging').length == 0) {
         $.ajax({
-            url: bUrl,
+            url: globals.game.url,
             data: {
                 event: 'toggleCardToken',
                 card: cardId,
                 token: tokenId,
-                clientTime: clientTime.getTime()
+                clientTime: globals.time.getTime()
             },
             dataType: 'json',
             type: 'POST',
@@ -350,15 +347,15 @@ function toggleCardToken(cardId, tokenId){
 }
 
 function toggleCardState(cardId, stateId) {
-    clientTime = new Date();
+    globals.time = new Date();
     if ($('.ui-draggable-dragging').length == 0) {
         $.ajax({
-            url: bUrl,
+            url: globals.game.url,
             data: {
                 event: 'toggleCardState',
                 card: cardId, 
                 state: stateId,
-                clientTime: clientTime.getTime()
+                clientTime: globals.time.getTime()
             },
             dataType: 'json',
             type: 'POST',
@@ -368,47 +365,47 @@ function toggleCardState(cardId, stateId) {
 }
 
 function drawCard(deckId) {
-    stopPositionUpdate = true;
-    clientTime = new Date();
+    globals.stopPositionUpdate = true;
+    globals.time = new Date();
     $.ajax({
-        url: bUrl,
+        url: globals.game.url,
         data: {
             event: 'drawCard',
             deck: deckId,
-            clientTime: clientTime.getTime()
+            clientTime: globals.time.getTime()
         },
         dataType: 'json',
         type: 'POST',
         success: doGameUpdate,
         complete: function () {
-            stopPositionUpdate = false;
+            globals.stopPositionUpdate = false;
         }
     });
 }
 
 function moveCard(cardId, destinationId) {
-    stopPositionUpdate = true;
-    clientTime = new Date();
+    globals.stopPositionUpdate = true;
+    globals.time = new Date();
     $.ajax({
-        url: bUrl,
+        url: globals.game.url,
         data: {
             event: 'moveCard',
             card: cardId,
             location: destinationId,
-            clientTime: clientTime.getTime()
+            clientTime: globals.time.getTime()
         },
         dataType: 'json',
         type: 'POST',
         success: doGameUpdate,
         complete: function () {
-            stopPositionUpdate = false;
+            globals.stopPositionUpdate = false;
         }
     });
 }
 
 function requestCardInfo(id) {
-    $.ajax({
-        url: bUrl,
+/*    $.ajax({
+        url: globals.game.url,
         data: {
             event: 'cardInfo',
             card: id
@@ -424,38 +421,33 @@ function requestCardInfo(id) {
             }
         }
     })
-                                
+*/                              
 }
 
-function pack() {   
-    $('#info-widget').css({
-        width: 350,
-        height: $(window).height() * 0.65,
+function pack() {
+    $('#left-column').css({
+        height: $(window).height(),
         top: 0,
         left: 0,
         position: 'absolute'
     });
-    $('.opponent-area').css({
-        width: $(window).width() - 350,
-        height: $(window).height() / 2,
-        top: 0,
-        left: 350,
-        position: 'absolute'
-    });
-    
     $('.hand').css({
-        width: 350,
-        height: $(window).height() * 0.35,
-        top: $(window).height() * 0.65,
-        left: 0,
-        position: 'absolute'
+        height: $(window).height() - 515
     });  
     
+    $('.opponent-area').css({
+        width: $(window).width() - 250,
+        height: $(window).height() / 2,
+        top: 0,
+        left: 250,
+        position: 'absolute'
+    });
+    
     $('.play').css({
-        width: $(window).width() - 350,
+        width: $(window).width() - 250,
         height: $(window).height() / 2,
         top: $(window).height() / 2,
-        left: 350,
+        left: 250,
         position: 'absolute'
     });
 }
@@ -486,7 +478,7 @@ function bubbles() {
 }
 
 function deckSlide (event) {
-    if(gameRunning) {
+    if(globals.game.running) {
         if($('#deck-widget').width() > 0) {
             $('#deck-slide img').each(function() {
                 if( $(this).HasBubblePopup() ){
@@ -507,12 +499,12 @@ function deckSlide (event) {
     }
 }
 
-function sendMessage(destination) {
+function sendMessage(e) {
     var message = $("#writemessage").val();
     if(message.length > 0) {
         $.ajax({
             type: "POST",
-            url: destination,
+            url: globals.chat.sendUrl,
             data: {
                 'gamemessage': message
             },
@@ -522,7 +514,7 @@ function sendMessage(destination) {
                     $('#chat-messages').append('<li class="user-message"><span><strong>' + json.name + '</strong>&nbsp;[' 
                         + json.date + ']:</span>' + message + '</li>');
                     
-                    lastReceived = json.id;
+                    globals.chat.lastReceived = json.id;
                     updateMessageScroll();
                 }
             }
@@ -531,12 +523,12 @@ function sendMessage(destination) {
     }
 }
 
-function updateMessages(destination) {
+function updateMessages() {
     $.ajax({
         type: "POST",
-        url: destination,
+        url: globals.chat.updateUrl,
         data: {
-            'lastupdate': lastReceived
+            'lastupdate': globals.chat.lastReceived
         },
         dataType: 'json',
         success: function(json) {
@@ -546,7 +538,7 @@ function updateMessages(destination) {
                         + this.message + '</li>');
                 });
 
-                lastReceived = json.last;
+                globals.chat.lastReceived = json.last;
                 updateMessageScroll();
             }
         }
@@ -576,7 +568,7 @@ function lost() {
 
 function roll(dice) {
     $.ajax({
-        url: bUrl,
+        url: globals.game.url,
         data: {
             event: 'roll',
             dice: dice

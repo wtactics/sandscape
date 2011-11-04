@@ -15,18 +15,51 @@ body {
 #game-table {
 }
 
-#info-widget {
-    width: 350px;
+#left-column {
+    width: 250px;
+    background: yellow;
+    /*
+    width: 348px;
+    border-right: 2px solid #CCC;
+    */
 }
 
 #card-info {
+    width: 250px;
+    height: 350px;
+}
+
+#chat {
+    border: 5px solid lightgrey;
+    border-radius: 16px;
+    -moz-border-radius: 16px;
+    background: #FFF;
+    font-size: 10px;
+    color: #AAA;
+    height: 150px;
     text-align: center;
-    margin-top: 3px;
+}
+
+#chat ul {
+    margin: 0;
+    padding: 0;
+    border: none;
+    list-style: none;
+    height: 130px;
+    overflow: auto;
+}
+
+#writemessage {
+    background-color: blue;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    width: 96%;
 }
 
 /* UNIQUE CLASS: This class is handled as if it was an ID */
 .opponent-area {
     height: 100%;
+    background-color: red;
     /*background: transparent url(../images/game-background-hline.png) repeat-x bottom left;*/
 }
 
@@ -37,8 +70,8 @@ body {
 
 /* UNIQUE CLASS: This class is handled as if it was an ID */
 .hand {
-    height: 100%;
-    width: 350px;
+    width: 100%;
+    background-color: green;
     /*background: transparent url(../images/game-background-vline.png) repeat-y top right;*/
 }
 
@@ -61,26 +94,6 @@ body {
     height: 115px;
 }
 
-#chat {
-    border: 5px solid lightgrey;
-    text-align: center;
-    border-radius: 16px;
-    -moz-border-radius: 16px;
-    background: #FFF;
-}
-
-#chat ul {
-    list-style: none;
-    height: 120px;
-    overflow: auto;
-    font-size: 12px;
-}
-
-#writemessage {
-    width: 330px;
-    border-color: #666;
-}
-
 table {
     width: 100%;
 }
@@ -95,6 +108,7 @@ table.grid * td {
 
 /* UNIQUE CLASS: This class is handled as if it was an ID */
 .play {
+    background-color: white;
 }
 
 .loader {
@@ -213,8 +227,6 @@ ul#file-menu-items li:hover ul.sub-menu {
     text-align: center;
     vertical-align: middle;
     color: black;
-    /*   width: 48px;*/
-    /*   height: 32px;*/
     padding: 6px;
     z-index: 100;
     cursor: pointer;
