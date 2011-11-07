@@ -4,12 +4,18 @@ if (count($messages)) {
     $last = end($messages);
     $last = $last->messageId;
 }
-Yii::app()->clientScript->registerCoreScript('jquery.ui');
 
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/game.common.css');
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/game.play.css');
+Yii::app()->clientScript->registerCssFile('_resources/css/thirdparty/jquery.bubblepopup.v2.3.1.css');
+Yii::app()->clientScript->registerCssFile('_resources/css/thirdparty/jquery.jgrowl.css');
+//
+Yii::app()->clientScript->registerCoreScript('jquery.ui');
+//
 Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.bubblepopup.v2.3.1.min.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.jgrowl.minimized.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.simplemodal.1.4.1.min.js', CClientScript::POS_HEAD);
-Yii::app()->clientScript->registerScriptFile('_resources/js/game.js', CClientScript::POS_HEAD);
+Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/game.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.radialmenu.min.js', CClientScript::POS_HEAD);
 
 $playUrl = $this->createURL('game/play', array('id' => $gameId));

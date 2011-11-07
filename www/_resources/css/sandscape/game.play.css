@@ -1,0 +1,44 @@
+#chat {
+    /*Merging CSS, see game.common.css*/
+    height: 150px;
+}
+
+/* UNIQUE CLASS: This class is handled as if it was an ID */
+.opponent-area {
+    height: 100%;
+    /*background: transparent url(../../images/game-background-hline.png) repeat-x bottom left;*/
+}
+
+#play-area {
+    height: 100%;
+    overflow: hidden;
+}
+
+/* UNIQUE CLASS: This class is handled as if it was an ID */
+.hand {
+    width: 100%;
+    /*background: transparent url(../../images/game-background-vline.png) repeat-y top right;*/
+}
+
+#deck-nob {
+    position: absolute;
+    top: 55%;
+    right: 5px;
+}
+
+#deck-widget {
+    height: 115px;
+    position: absolute;
+    right: 86px;
+    top: 55%;
+    overflow: hidden; 
+    width: 0;
+}
+
+#deck-slide {
+    height: 115px;
+}
+
+/* UNIQUE CLASS: This class is handled as if it was an ID */
+.play {
+}
