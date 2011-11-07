@@ -1,7 +1,7 @@
 <?php
 
-Yii::app()->clientScript->registerCssFile('_resources/css/jquery.bubblepopup.v2.3.1.css');
-Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.bubblepopup.v2.3.1.min.js', CClientScript::POS_HEAD);
+Yii::app()->clientScript->registerCssFile('_resources/css/thirdparty/jquery.bubblepopup.v2.3.1.css');
+Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.bubblepopup.v2.3.1.min.js', CClientScript::POS_HEAD);
 
 $js = <<<JS
 $('.helpicon').CreateBubblePopup({

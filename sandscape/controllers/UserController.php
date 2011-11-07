@@ -156,7 +156,14 @@ class UserController extends AppController {
 
     public function actionGames() {
         //TODO: not implemented yet
-        $this->render('games');
+        $filter = new Game();
+        $filter->unsetAttributes();
+        if (isset($_POST['Game'])) {
+            $filter->attributes = $_POST['Game'];
+        }
+
+        $games = Game::model()->findAll('player1 = :id OR player2 = :id', array(':id' => Yii::app()->user->id));
+        $this->render('games', array('games' => $games, 'filter' => $filter));
     }
 
     /**

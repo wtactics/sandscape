@@ -218,16 +218,3 @@ ul#file-menu-items li:hover ul.sub-menu {
     display: block;
     left: 205px;
 }
-
-.radialmenuOption {
-    border: 3px solid black;
-    background: white;
-    border-radius: 6px;
-    -moz-border-radius: 6px;
-    text-align: center;
-    vertical-align: middle;
-    color: black;
-    padding: 6px;
-    z-index: 100;
-    cursor: pointer;
-}

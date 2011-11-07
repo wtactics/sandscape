@@ -7,12 +7,12 @@ if (count($messages)) {
     $last = $last->messageId;
 }
 
-Yii::app()->clientScript->registerCssFile('_resources/css/lobby.css');
-Yii::app()->clientScript->registerCssFile('_resources/css/modal.css');
-Yii::app()->clientScript->registerScriptFile('_resources/js/lobby.js');
-Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.simplemodal.1.4.1.min.js');
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/lobby.css');
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/modal.css');
+Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/lobby.js');
+Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.simplemodal.1.4.1.min.js');
 
-Yii::app()->clientScript->registerScript('msgsjs', "lastReceived = {$last}; initLobby('{$url}');updateMessageScroll();");
+Yii::app()->clientScript->registerScript('msgsjs', "lastReceived = {$last};\ninitLobby('{$url}');\nupdateMessageScroll();");
 
 $this->title = 'Sandscape Lobby';
 ?>

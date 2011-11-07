@@ -662,8 +662,8 @@ class GameController extends AppController {
     }
 
     //TODO: not implemented yet
-    public function actionSpectate() {
-        $this->layout = '//layouts/watch';
+    public function actionSpectate($id) {
+        $this->layout = '//layouts/game';
 
         //lock record
         $id = intval($id);
@@ -671,12 +671,11 @@ class GameController extends AppController {
 //        if ($lock != 1) {
 //            throw new CHttpException(500, 'Failed to get game lock');
 //        }
-
         $game = $this->loadGameById($id);
 //        if (in_array(yii::app()->user->id, array($game->player1, $game->player2))) {
-        if ($game->state) {
-            $this->scGame = unserialize($game->state);
-        }
+//        if ($game->state) {
+//            $this->scGame = unserialize($game->state);
+//        }
 
         //getting chat messages
         $start = ChatMessage::model()->count('gameId = :id ORDER BY sent', array(':id' => (int) $game->gameId));
@@ -692,7 +691,7 @@ class GameController extends AppController {
                 ));
 
         $this->updateUserActivity();
-        $this->render('board', array(
+        $this->render('watch', array(
             'gameId' => $id,
             'messages' => $messages,
             'paused' => $game->paused,

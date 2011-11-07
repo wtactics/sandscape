@@ -1,7 +1,7 @@
 <?php
 $this->title = 'Edit Profile';
 
-Yii::app()->clientScript->registerCssFile('_resources/css/forms.css');
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms.css');
 ?>
 
 <h2>Edit Profile</h2>
@@ -19,6 +19,6 @@ $this->widget('CTabView', array(
             'data' => array('pwdModel' => $pwdModel)
         )
     ),
-    'cssFile' => '_resources/css/tabs.css'
+    'cssFile' => '_resources/css/sandscape/tabs.css'
 ));
 ?>

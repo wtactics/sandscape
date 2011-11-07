@@ -1,8 +1,8 @@
 <?php
 $this->title = 'Decks';
 
-Yii::app()->clientScript->registerCssFile('_resources/css/modal.css');
-Yii::app()->clientScript->registerScriptFile('_resources/js/jquery.simplemodal.1.4.1.min.js');
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/modal.css');
+Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.simplemodal.1.4.1.min.js');
 ?>
 <h2>Manage Decks</h2>
 <div class="span-22 last">
