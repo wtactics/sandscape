@@ -5,6 +5,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'game-grid',
     'dataProvider' => $filter->search(),
     'filter' => $filter,
+    'ajaxUrl' => $this->createURL('user/games'),
     'columns' => array(
         //array(
         //    'header' => 'Opponent',  
@@ -16,13 +17,15 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ),
         array(
             'name' => 'started',
-            'type' => 'date',
-            'value' => 'strtotime($data->started)'
+            'type' => 'raw',
+            //TODO: use correct date format
+            'value' => '($data->started ? date("d/m/Y", strtotime($data->started)) : "")'
         ),
         array(
             'name' => 'ended',
-            'type' => 'date',
-            'value' => 'strtotime($data->ended)'
+            'type' => 'raw',
+            //TODO: use correct date format
+            'value' => '($data->ended ? date("d/m/Y", strtotime($data->ended)) : "")'
         ),
         array(
             'name' => 'running',
@@ -36,6 +39,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'header' => 'Actions',
             'class' => 'CButtonColumn',
             'buttons' => array(
+                'view' => array(
+                    'url' => "Yii::app()->createUrl('user/viewGame', array('id' => \$data->gameId))",
+                ),
                 'delete' => array('visible' => 'false'),
                 'update' => array('visible' => 'false')
             )

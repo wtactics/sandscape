@@ -26,8 +26,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
         array(
             'header' => 'Actions',
             'class' => 'CButtonColumn'
-        ),
-    ),
+        )
+    )
 ));
 ?>
 <div style="display: none">
