@@ -1,6 +1,7 @@
 <?php
 Yii::app()->clientScript->registerCoreScript('jquery.ui');
 
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms.css');
 Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/deck.css');
 Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/deck.js', CClientScript::POS_END);
 

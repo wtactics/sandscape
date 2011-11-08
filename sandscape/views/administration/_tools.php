@@ -1,4 +1,3 @@
-<?php Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/administration.css'); ?>
 <div class="tools-row even">
     <?php echo CHtml::form($this->createURL('administration/prunechats')); ?>
     <h3>Remove old chat messages</h3>

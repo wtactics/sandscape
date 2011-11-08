@@ -97,7 +97,7 @@ $this->title = 'Sandscape Lobby';
     <button type="button" class="button" onclick="sendMessage('<?php echo $this->createURL('game/sendlobbymessage'); ?>');" id="sendbtn">Send</button>
 </div>
 <div class="span-4 last">
-    <a href="javascript:;" onclick="$('#createdlg').modal();">Create</a>
+    <a href="javascript:;" onclick="$('#createdlg').modal();" class="button">Create Game</a>
 </div>
 
 <div style="display: none">
