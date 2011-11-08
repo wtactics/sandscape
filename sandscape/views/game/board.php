@@ -15,12 +15,12 @@ Yii::app()->clientScript->registerCoreScript('jquery.ui');
 Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.bubblepopup.v2.3.1.min.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.jgrowl.minimized.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.simplemodal.1.4.1.min.js', CClientScript::POS_HEAD);
-Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/game.js', CClientScript::POS_HEAD);
+Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/game.play.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.radialmenu.min.js', CClientScript::POS_HEAD);
 
 $playUrl = $this->createURL('game/play', array('id' => $gameId));
-$sendMessageUrl = $this->createUrl('game/sendgamemessage', array('id' => $gameId));
-$updateMessageUrl = $this->createUrl('game/gamechatupdate', array('id' => $gameId));
+$sendMessageUrl = $this->createUrl('game/sendmessage', array('id' => $gameId));
+$updateMessageUrl = $this->createUrl('game/chatupdate', array('id' => $gameId));
 
 $startJS = <<<JS
 globals.chat.sendUrl = '{$sendMessageUrl}';
@@ -38,7 +38,9 @@ $this->title = 'Playing';
 ?>
 
 <div id="left-column">
-    <img id="card-info" src="_game/cards/18e9b964776bbe6c9f6842f1feba8b8b.jpg" />
+    <div id="card-info">
+        <img id="card-image" src="_game/cards/cardback.jpg" />
+    </div>
     <div id="chat">
         <ul id="chat-messages">
             <?php foreach ($messages as $message) { ?>

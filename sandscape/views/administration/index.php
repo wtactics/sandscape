@@ -21,6 +21,7 @@ $('#fixdecknr-help').SetBubblePopupInnerHtml('{$settings['fixdecknr']->descripti
 $('#deckspergame-help').SetBubblePopupInnerHtml('{$settings['deckspergame']->description}');
 $('#useanydice-help').SetBubblePopupInnerHtml('{$settings['useanydice']->description}');
 $('#gamechatspectators-help').SetBubblePopupInnerHtml('{$settings['gamechatspectators']->description}');
+$('#cardscapeurl-help').SetBubblePopupInnerHtml('{$settings['cardscapeurl']->description}');
 JS;
 
 Yii::app()->clientScript->registerScript('bublesinit', $js);

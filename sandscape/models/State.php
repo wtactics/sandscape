@@ -1,6 +1,6 @@
 <?php
 
-/* Token.php
+/* State.php
  * 
  * This file is part of SandScape.
  *
@@ -29,7 +29,7 @@
  * 
  * @since 1.2, Elvish Shaman
  */
-class Token extends CActiveRecord {
+class State extends CActiveRecord {
 
     public static function model($className=__CLASS__) {
         return parent::model($className);

@@ -16,7 +16,7 @@ body {
 }
 
 #left-column {
-    width: 250px;
+    width: 270px;
     /*
     width: 348px;
     border-right: 2px solid #CCC;
@@ -24,8 +24,13 @@ body {
 }
 
 #card-info {
+    width: 270px;
+    height: 382px;
+}
+
+#card-image {
+    /* //TODO: remove */
     width: 250px;
-    height: 350px;
 }
 
 #chat {

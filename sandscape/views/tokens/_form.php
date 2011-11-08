@@ -24,25 +24,8 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'deck-form'));
 <div class="span-7">
     <h3>Cards in Deck</h3>
     <input type="text" class="textsmaller" />
-    <ul id="selected-cards">
-        <?php
-        $items = array();
-        foreach ($deck->deckCards as $dc) {
-            if (!isset($items[$dc->cardId])) {
-                $items[$dc->cardId]['name'] = $dc->card->name;
-                $items[$dc->cardId]['count'] = 1;
-            } else {
-                $items[$dc->cardId]['count'] += 1;
-            }
-        }
+    <ul>
 
-        foreach ($items as $key => $item) {
-            ?>
-            <li id="c<?php echo $key; ?>">
-                <?php echo $item['name']; ?>
-                <span class="card-count"><?php echo $item['count']; ?></span>
-            </li>
-        <?php } ?>
     </ul>
 </div>
 <div class="span-1">
@@ -55,16 +38,20 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'deck-form'));
 <div class="span-7">
     <h3>Available Cards</h3>
     <input type="text" class="textsmaller" />
-    <ul id="available-cards">
-        <?php foreach ($cards as $card) { ?>
-            <li class="available" id="a<?php echo $card->cardId; ?>"><?php echo $card->name; ?></li>
-        <?php } ?>
-    </ul>
+    <?php
+    $items = array();
+    foreach ($cards as $card) {
+        $items[$card->cardId] = $card->name;
+    }
+    //$this->widget('zii.widgets.jui.CJuiSelectable', array(
+    //    'items' => $items,
+    //    'tagName' => 'ul'
+    //));
+    ?>
 </div>
 <div class="span-7 last centered">
     <h3>Preview</h3>
-    <!-- //TODO: remove the fixed width -->
-    <img src="_game/cards/cardback.jpg" width="250px" id="previewImage" />
+    <img src="_game/cards/cardback.jpg" width="250px"/>
 </div>
 <?php
 $this->endWidget();

@@ -3,10 +3,7 @@ Yii::app()->clientScript->registerCoreScript('jquery.ui');
 
 Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms.css');
 Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/deck.css');
-Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/deck.js', CClientScript::POS_HEAD);
-
-$url = $this->createUrl('decks/imagepreview');
-Yii::app()->clientScript->registerScript('init', "init('{$url}');");
+Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/deck.js', CClientScript::POS_END);
 
 $this->title = ($deck->isNewRecord ? 'Create Deck' : 'Edit Deck');
 ?>

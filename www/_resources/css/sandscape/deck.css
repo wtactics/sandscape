@@ -1,5 +1,5 @@
 /*Base: 9A5D0D, other: 735124, 643A04, CD8F40, CDA066*/
-#existingcards {
+/*#existingcards {
     height: 470px;
     overflow: auto;
 }
@@ -22,4 +22,12 @@
     position: absolute;
     margin:0;
     padding:0;
+}*/
+
+#selected-cards {
+    min-height: 100px;
+}
+
+li {
+    list-style: none;
 }

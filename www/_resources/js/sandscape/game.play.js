@@ -150,7 +150,8 @@ function checkGameStart() {
                                 .appendTo($('body'));
                             }
                      
-                            // Cards must be positioned after all cards are in the DOM because there are cards 'inside' other cards
+                            // Cards must be positioned after all cards are in the 
+                            // DOM because there are cards 'inside' other cards
                             for(i = 0; i < create.cards.length; i++) {
                                 card = create.cards[i];
                                 var location = $('#'+card.location);
@@ -177,7 +178,8 @@ function checkGameStart() {
                                         subMenu: statesMenu
                                     } ]
                                 })
-                                .children('img.face').attr('src', '_game/cards/thumbs/' + (card.invertY ? 'inverted/' : '') + card.src);
+                                .children('img.face').attr('src', '_game/cards/thumbs/' 
+                                    + (card.invertY ? 'inverted/' : '') + card.src);
                         
                                 updateCardExtras($('#'+card.id));
                             }
@@ -224,6 +226,9 @@ function checkGameStart() {
         },
         error: function () {
             setTimeout(checkGameStart, 3000);
+        }, 
+        complete: function () {
+            $('#game-loader').hide();
         }
     });
 }
@@ -234,7 +239,8 @@ function updateCardExtras(card) {
         for (var i = 0; i < card.data('status').tokens.length; ++i) {
             $(document.createElement('img'))
             .addClass('token')
-            .attr('src', '_game/tokens/thumbs/' + (card.data('status').invertY ? 'inverted/' : '') + card.data('status').tokens[i].src)
+            .attr('src', '_game/tokens/thumbs/' + (card.data('status').invertY ? 'inverted/' : '') 
+                + card.data('status').tokens[i].src)
             .appendTo(card);
         }
       
@@ -242,7 +248,8 @@ function updateCardExtras(card) {
         for(i = 0; i<card.data('status').states.length; ++i) {
             $(document.createElement('img'))
             .addClass('state')
-            .attr('src', '_game/states/thumbs/' + (card.data('status').invertY ? 'inverted/' : '') + card.data('status').states[i].src)
+            .attr('src', '_game/states/thumbs/' + (card.data('status').invertY ? 'inverted/' : '') 
+                + card.data('status').states[i].src)
             .appendTo(card);
         }
     }
@@ -293,7 +300,8 @@ function doGameUpdate(json) {
                 zIndex: json.update[i].zIndex,
                 visibility: json.update[i].visibility
             })
-            .children('img.face').attr('src',  '_game/cards/thumbs/' + (json.update[i].invertY ? 'inverted/' : '') + json.update[i].src);
+            .children('img.face').attr('src',  '_game/cards/thumbs/' + (json.update[i].invertY ? 'inverted/' : '') 
+                + json.update[i].src);
          
             updateCardExtras($('#' + json.update[i].id));
         }
@@ -408,7 +416,7 @@ function moveCard(cardId, destinationId, xOffset, yOffset) {
 }
 
 function requestCardInfo(id) {
-/*    $.ajax({
+    $.ajax({
         url: globals.game.url,
         data: {
             event: 'cardInfo',
@@ -418,14 +426,12 @@ function requestCardInfo(id) {
         dataType: 'json',
         success: function (json) {
             if(json.success) {
-                $('#card-info-name').html(json.name);
-                $('#card-info-image').attr('src', '_game/cards/thumbs/' + json.image);
-                $('#card-info-states').html(json.states);
-                $('#card-info-rules').html(json.rules);
+            //TODO: show image, states and tokens
+            } else {
+                $('#card-image').attr('src', '_game/cards/cardback.jpg');
             }
         }
     })
-     */
 }
 
 function pack() {
@@ -436,11 +442,11 @@ function pack() {
         position: 'absolute'
     });
     $('.hand').css({
-        height: $(window).height() - 515
+        height: $(window).height() - 543
     });  
     
     $('.opponent-area').css({
-        width: $(window).width() - 250,
+        width: $(window).width() - 270,
         height: $(window).height() / 2,
         top: 0,
         left: 250,
@@ -448,10 +454,10 @@ function pack() {
     });
     
     $('.play').css({
-        width: $(window).width() - 250,
+        width: $(window).width() - 270,
         height: $(window).height() / 2,
         top: $(window).height() / 2,
-        left: 250,
+        left: 270,
         position: 'absolute'
     });
 }
@@ -564,10 +570,6 @@ function filterChatMessages(elem) {
         $('li.user-message').hide();
         $('li.user-system').show();
     }    
-}
-
-function lost() {
-    alert('Not implemented yet!');
 }
 
 function roll(dice) {

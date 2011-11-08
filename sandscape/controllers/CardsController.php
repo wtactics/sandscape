@@ -71,28 +71,25 @@ class CardsController extends AppController {
             $path = Yii::getPathOfAlias('webroot') . '/_game/cards';
             $upfile = CUploadedFile::getInstance($new, 'image');
 
-            if ($new->save()) {
-                if ($upfile !== null) {
-                    $name = $upfile->name;
+            if ($upfile !== null) {
+                $name = $upfile->name;
 
-                    $sizes = getimagesize($upfile->tempName);
-                    $imgFactory = PhpThumbFactory::create($upfile->tempName);
+                $sizes = getimagesize($upfile->tempName);
+                $imgFactory = PhpThumbFactory::create($upfile->tempName);
 
-                    //250 width, 354 height
-                    if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
-                        $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
-                    }
-
-                    $imgFactory->save($path . '/' . $name);
-                    $imgFactory->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)->save($path . '/thumbs/' . $name);
-                    $imgFactory->rotateImageNDegrees(180)->save($path . '/thumbs/reversed/' . $name);
-
-                    $new->image = $name;
-                    $new->save();
+                //250 width, 354 height
+                if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
+                    $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
                 }
 
-                $this->redirect(array('update', 'id' => $new->cardId));
+                $imgFactory->save($path . '/' . $name);
+                $imgFactory->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)->save($path . '/thumbs/' . $name);
+                $imgFactory->rotateImageNDegrees(180)->save($path . '/thumbs/reversed/' . $name);
+
+                $new->image = $name;
+                $new->save();
             }
+            $this->redirect(array('update', 'id' => $new->cardId));
         }
 
         $this->render('edit', array('card' => $new));

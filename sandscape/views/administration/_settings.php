@@ -36,6 +36,14 @@
 </fieldset>
 <fieldset>
     <legend>Sandscape Configuration</legend>
+    <p>
+        <?php
+        echo CHtml::label('Cardscape URL', 'cardscapeurl'), '&nbsp;',
+        CHtml::image('_resources/images/icon-x16-question-balloon.png', '', array('id' => 'cardscapeurl-help', 'class' => 'helpicon')),
+        '<br />',
+        CHtml::textField('cardscapeurl', $settings['cardscapeurl']->value, array('class' => 'text'));
+        ?>
+    </p>
 </fieldset>
 <p>
     <?php echo CHtml::submitButton('Save', array('class' => 'button')); ?>

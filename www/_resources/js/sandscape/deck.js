@@ -1,4 +1,49 @@
-$(function () {
+var imageUrl;
+
+//TODO: finish this...
+function init(url) {
+    imageUrl = url;
+    
+    $('#selected-cards').droppable({
+        accept: '.available'
+    })
+    .dblclick(function(e) {
+        })
+    .click(function (e) {
+        loadPreviewImage(parseInt($(this).attr('id').substr(1), 10));
+    });
+    
+    $('#available-cards li').draggable({
+        appendTo: 'body',
+        helper: 'clone',
+        revert: 'invalid'
+    })
+    .dblclick(function (e) {
+        })
+    .click(function (e) {
+        loadPreviewImage(parseInt($(this).attr('id').substr(1), 10));
+    });
+}
+
+function loadPreviewImage(id) {
+    $.ajax({
+        url: imageUrl,
+        data: {
+            card: id 
+        },
+        type: 'POST',
+        dataType: 'json',
+        success: function (json) {
+            if(json.success) {
+                $('#previewImage').attr('src', '_game/cards/' + json.image);
+            } else {
+                $('#previewImage').attr('src', '_game/cards/cardback.jpg');
+            }
+        }
+    });
+}
+
+/*$(function () {
     //Configure draggables for existing cards
     //These cards can be dragged using a helper clone function and dropped in 
     //the #usecards area.
@@ -72,12 +117,12 @@ $(function () {
     $('.chosen').each(function(index) {
         configureSelectedCard($(this));
     });
-});
+});*/
 
-function configureSelectedCard(card) {
+/*function configureSelectedCard(card) {
     card.draggable({
         containment: 'body',
         stack: '.chosen'
     });
     
-}
+}*/

@@ -227,6 +227,24 @@ class DecksController extends AppController {
     }
 
     /**
+     * Loads a card image from the database and returns the result as a JSON 
+     * encoded object to be used by AJAX calls.
+     * 
+     * @since 1.2, Elvish Shaman
+     */
+    public function actionImagePreview() {
+        $result = array('success' => 0);
+        if (isset($_POST['card']) && (int) $_POST['card'] != 0) {
+            if (($card = Card::model()->findByPk((int) $_POST['card'])) !== null) {
+                $result['success'] = 1;
+                $result['image'] = $card->image;
+            }
+        }
+
+        echo json_encode($result);
+    }
+
+    /**
      * Allows users to view deck information whitout the distractions of the 
      * editing interface.
      * 
@@ -265,7 +283,7 @@ class DecksController extends AppController {
         return array_merge(array(
                     array('allow',
                         'actions' => array('index', 'create', 'update', 'delete',
-                            'fromTemplate', 'view'),
+                            'fromTemplate', 'view', 'imagePreview'),
                         'users' => array('@')
                     ),
                     array('allow',
