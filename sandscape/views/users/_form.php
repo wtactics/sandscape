@@ -33,4 +33,5 @@ $form = $this->beginWidget('CActiveForm', array(
 <p>
     <?php echo CHtml::submitButton($user->isNewRecord ? 'Create' : 'Save', array('class' => 'button')); ?>
 </p>
-<?php $this->endWidget(); ?>
+<?php
+$this->endWidget();

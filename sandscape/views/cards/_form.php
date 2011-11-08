@@ -15,21 +15,21 @@ $form = $this->beginWidget('CActiveForm', array(
         <p>
             <?php
             echo $form->labelEx($card, 'name'), '<br />',
-            $form->textField($card, 'name', array('size' => 60, 'maxlength' => 150, 'class' => 'text'));
+            $form->textField($card, 'name', array('maxlength' => 150, 'class' => 'text'));
             ?>
         </p>
         <?php echo $form->error($card, 'name'); ?>
         <p>
             <?php
             echo $form->labelEx($card, 'cardscapeId'), '<br />',
-            $form->textField($card, 'cardscapeId', array('size' => 10, 'class' => 'text'));
+            $form->textField($card, 'cardscapeId', array('class' => 'text'));
             ?>
         <p>
             <?php echo $form->error($card, 'cardscapeId'); ?>
         <p>
             <?php
             echo $form->labelEx($card, 'rules'), '<br />',
-            $form->textArea($card, 'rules', array('rows' => 4, 'cols' => 50, 'class' => 'text'));
+            $form->textArea($card, 'rules', array('rows' => 4, 'cols' => 50));
             ?>
         </p>
         <?php echo $form->error($card, 'rules'); ?>
@@ -40,7 +40,7 @@ $form = $this->beginWidget('CActiveForm', array(
         <legend>Card Image</legend>
         <?php
         if (!$card->isNewRecord) {
-            echo CHtml::image('_cards/up/' . $card->image);
+            echo CHtml::image('_game/cards/' . $card->image);
         }
         ?>
         <p>
@@ -55,4 +55,5 @@ $form = $this->beginWidget('CActiveForm', array(
     </p>
 </div>
 
-<?php $this->endWidget(); ?>
+<?php
+$this->endWidget();

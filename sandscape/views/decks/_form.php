@@ -53,4 +53,5 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'deck-form'));
     <h3>Preview</h3>
     <img src="_game/cards/cardback.jpg" width="250px"/>
 </div>
-<?php $this->endWidget(); ?>
+<?php
+$this->endWidget();

@@ -1,4 +1,4 @@
-<?php 
+<?php
 $this->title = 'Recover your password';
 Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms.css');
 
@@ -20,4 +20,5 @@ $form = $this->beginWidget('CActiveForm', array(
         <?php echo CHtml::submitButton('Send', array('class' => 'button')); ?>
     </p>
 </div>
-<?php $this->endWidget(); ?>
+<?php
+$this->endWidget();

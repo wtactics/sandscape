@@ -34,6 +34,16 @@
  * @property integer $running
  * @property integer $paused
  * @property string $state
+ * 
+ * @property integer $maxDecks
+ * @property integer $graveyard
+ * @property integer $player1Ready
+ * @property integer $player2Ready
+ * 
+ * @property integer $lastChange
+ * @property integer $acceptUser
+ * @property integer $winnerId
+ * @property integer $spectatorsSpeak
  *
  * The followings are the available model relations:
  * @property ChatMessage[] $chatMessages
@@ -89,6 +99,7 @@ class Game extends CActiveRecord {
             'decks' => array(self::MANY_MANY, 'Deck', 'GameDeck(gameId, deckId)'),
             'dice' => array(self::MANY_MANY, 'Dice', 'GameDice(gameId, diceId)'),
             'winner' => array(self::BELONGS_TO, 'User', 'winnerId'),
+            'accept' => array(self::BELONGS_TO, 'User', '$acceptUser'),
         );
     }
 
@@ -109,6 +120,7 @@ class Game extends CActiveRecord {
             'graveyard' => 'Game has graveyard',
             'player1Ready' => 'Player 1 is ready',
             'player2Ready' => 'Player 2 is ready',
+            'acceptUser' => 'Accept only',
             'winnerId' => 'Winner'
         );
     }

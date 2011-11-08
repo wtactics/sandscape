@@ -34,4 +34,5 @@ $form = $this->beginWidget('CActiveForm', array(
 <p>
     <?php echo CHtml::submitButton('Change', array('class' => 'button')); ?>
 </p>
-<?php $this->endWidget(); ?>
+<?php
+$this->endWidget();

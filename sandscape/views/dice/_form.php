@@ -1,6 +1,6 @@
 <?php $form = $this->beginWidget('CActiveForm', array('id' => 'dice-form')); ?>
 <fieldset>
-    <legend>Dice information</legend>
+    <legend>Die information</legend>
     <p>
         <?php
         echo $form->labelEx($dice, 'name'), '<br />',
@@ -16,12 +16,13 @@
     </p>
     <?php echo $form->error($dice, 'face'); ?>
     <p>
-        <?php echo $form->checkBox($dice, 'selected'), '&nbsp;', $form->labelEx($dice, 'selected'); ?>
+        <?php echo $form->checkBox($dice, 'enabled'), '&nbsp;', $form->labelEx($dice, 'enabled'); ?>
     </p>
-    <?php echo $form->error($dice, 'selected');
+    <?php echo $form->error($dice, 'enabled');
     ?>
 </fieldset>
 <p>
     <?php echo CHtml::submitButton($dice->isNewRecord ? 'Create' : 'Save', array('class' => 'button')); ?>
 </p>
-<?php $this->endWidget(); ?>
+<?php
+$this->endWidget();

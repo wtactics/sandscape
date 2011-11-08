@@ -26,4 +26,5 @@ $form = $this->beginWidget('CActiveForm', array(
 <p>
     <?php echo CHtml::submitButton('Save', array('class' => 'button')); ?>
 </p>
-<?php $this->endWidget(); ?>
+<?php
+$this->endWidget();

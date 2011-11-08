@@ -24,7 +24,8 @@
     </p>
 </fieldset>
 <p>
-    <?php echo CHtml::submitButton('Upload', array('class' => 'button')); ?>
+    <?php echo CHtml::submitButton('Upload', array('class' => 'button', 'name' => 'Upload')); ?>
 </p>
 
-<?php echo CHtml::endForm(); ?>
+<?php
+echo CHtml::endForm();

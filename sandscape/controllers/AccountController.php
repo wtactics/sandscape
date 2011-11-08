@@ -105,6 +105,16 @@ class AccountController extends AppController {
     }
 
     /**
+     *
+     * @param type $id 
+     * 
+     * @since 1.2, Elvish Shaman
+     */
+    public function actionViewGame($id) {
+        //TODO: not implemented yet!
+    }
+
+    /**
      * Loads a <em>User</em> model from the database
      * @param integer $id The user ID.
      * @return User The loaded user model.
@@ -128,7 +138,7 @@ class AccountController extends AppController {
     public function accessRules() {
         return array_merge(array(
                     array('allow',
-                        'actions' => array('index', 'games', 'profile'),
+                        'actions' => array('index', 'games', 'profile', 'viewGame'),
                         'users' => array('@')
                     )
                         ), parent::accessRules());

@@ -40,4 +40,5 @@
 <p>
     <?php echo CHtml::submitButton('Save', array('class' => 'button')); ?>
 </p>
-<?php echo CHtml::hiddenField('Settings', 'Settings'), "\n", CHtml::endForm(); ?>
+<?php
+echo CHtml::hiddenField('Settings', 'Settings'), "\n", CHtml::endForm();

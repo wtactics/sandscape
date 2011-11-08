@@ -56,7 +56,6 @@ class Card extends CActiveRecord {
             array('name, rules', 'required'),
             array('name', 'length', 'max' => 150),
             array('cardscapeId', 'numerical', 'integerOnly' => true),
-            array('image', 'file', 'types' => 'jpg, jpeg, png'),
             //search
             array('name, rules, cardscapeId', 'safe', 'on' => 'search'),
         );

@@ -29,6 +29,11 @@
  */
 class CardsController extends AppController {
 
+    private static $NORMAL_WIDTH = 250;
+    private static $NORMAL_HEIGHT = 354;
+    private static $SMALL_WIDTH = 81;
+    private static $SMALL_HEIGHT = 115;
+
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
     }
@@ -61,33 +66,26 @@ class CardsController extends AppController {
 
         if (isset($_POST['Card'])) {
             $new->attributes = $_POST['Card'];
-            if ($new->save()) {
+            //TODO: check that the image file is not already in the server or that 
+            //no other file with the same name exists
+            $path = Yii::getPathOfAlias('webroot') . '/_game/cards';
+            $upfile = CUploadedFile::getInstance($new, 'image');
 
-                $path = Yii::getPathOfAlias('webroot') . '/_cards';
-                $upfile = CUploadedFile::getInstance($new, 'image');
+            if ($new->save()) {
                 if ($upfile !== null) {
-                    $name = md5('[CARDID=' . $new->cardId . ']=' . $upfile->name) . '.' . $upfile->extensionName;
+                    $name = $upfile->name;
 
                     $sizes = getimagesize($upfile->tempName);
                     $imgFactory = PhpThumbFactory::create($upfile->tempName);
 
-                    //320 width
-                    if ($sizes[0] > 320) {
-                        $imgFactory->resize(320, 453);
+                    //250 width, 354 height
+                    if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
+                        $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
                     }
 
-                    //453 height
-                    if ($sizes[1] > 453) {
-                        $imgFactory->resize(320, 453);
-                    }
-                    $imgFactory->save($path . '/up/' . $name);
-                    $imgFactory->resize(81, 115)->save($path . '/up/thumbs/' . $name);
-
-                    $imgFactory = PhpThumbFactory::create($path . '/up/' . $name);
-                    $imgFactory->rotateImageNDegrees(180)->save($path . '/down/' . $name);
-
-                    $imgFactory = PhpThumbFactory::create($path . '/down/' . $name);
-                    $imgFactory->resize(81, 115)->save($path . '/down/thumbs/' . $name);
+                    $imgFactory->save($path . '/' . $name);
+                    $imgFactory->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)->save($path . '/thumbs/' . $name);
+                    $imgFactory->rotateImageNDegrees(180)->save($path . '/thumbs/reversed/' . $name);
 
                     $new->image = $name;
                     $new->save();
@@ -115,7 +113,7 @@ class CardsController extends AppController {
         if (isset($_POST['Card'])) {
             $card->attributes = $_POST['Card'];
             if ($card->save()) {
-                $path = Yii::getPathOfAlias('webroot') . '/_cards';
+                $path = Yii::getPathOfAlias('webroot') . '/_game/cards';
                 $upfile = CUploadedFile::getInstance($new, 'image');
                 if ($upfile !== null) {
 
@@ -123,41 +121,31 @@ class CardsController extends AppController {
                     if ($card->image) {
                         //Don't really care if removable fails, will delete orphan 
                         //cards at a later time.
-                        unlink($path . '/up/' . $card->image);
-                        unlink($path . '/up/thumbs/' . $card->image);
-                        unlink($path . '/down/' . $card->image);
-                        unlink($path . '/up/thumbs/' . $card->image);
+                        unlink($path . '/' . $card->image);
+                        unlink($path . '/thumbs/' . $card->image);
+                        unlink($path . '/thumbs/reversed/' . $card->image);
 
                         $card->image = null;
                     }
 
-                    $name = md5('[CARDID=' . $new->cardId . ']=' . $upfile->name) . '.' . $upfile->extensionName;
+                    $name = $upfile->name;
 
                     $sizes = getimagesize($upfile->tempName);
                     $imgFactory = PhpThumbFactory::create($upfile->tempName);
 
-                    //320 width
-                    if ($sizes[0] > 320) {
-                        $imgFactory->resize(320, 453);
+                    //250 width, 354 height
+                    if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
+                        $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
                     }
 
-                    //453 height
-                    if ($sizes[1] > 453) {
-                        $imgFactory->resize(320, 453);
-                    }
-                    $imgFactory->save($path . '/up/' . $name);
-                    $imgFactory->resize(81, 115)->save($path . '/up/thumbs/' . $name);
-
-                    $imgFactory = PhpThumbFactory::create($path . '/up/' . $name);
-                    $imgFactory->rotateImageNDegrees(180)->save($path . '/down/' . $name);
-
-                    $imgFactory = PhpThumbFactory::create($path . '/down/' . $name);
-                    $imgFactory->resize(81, 115)->save($path . '/down/thumbs/' . $name);
+                    $imgFactory->save($path . '/' . $name);
+                    $imgFactory->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)->save($path . '/thumbs/' . $name);
+                    $imgFactory->rotateImageNDegrees(180)->save($path . '/thumbs/reversed/' . $name);
 
                     $new->image = $name;
                     $new->save();
                 }
-                $this->redirect(array('view', 'id' => $card->cardId));
+                $this->redirect(array('update', 'id' => $card->cardId));
             }
         }
 
@@ -203,75 +191,62 @@ class CardsController extends AppController {
      * @since 1.2, Elvish Shaman
      */
     public function actionImport() {
-        //card name; card rules; card image; cardscape id
         if (isset($_POST['Upload'])) {
             $upfile = CUploadedFile::getInstanceByName('archive');
             if ($upfile !== null) {
                 $destination = Yii::app()->assetManager->basePath . '/import/';
-                $path = Yii::getPathOfAlias('webroot') . '/_cards';
+                $path = Yii::getPathOfAlias('webroot') . '/_game/cards';
+                if (!$upfile->error) {
+                    $zip = new ZipArchive();
+                    if ($zip->open($upfile->tempName) === true) {
+                        $zip->extractTo($destination);
+                        $zip->close();
 
-                $zip = new ZipArchive();
-                if ($zip->open($upfile->tempName) === true) {
-                    $zip->extractTo($destination);
-                    $zip->close();
+                        unlink($upfile->tempName);
 
-                    unlink($upfile->tempName);
+                        if (($fh = fopen($destination . 'cards/cards.csv', 'r')) !== false) {
+                            while (($csvLine = fgetcsv($fh, 2500, ',')) !== FALSE) {
+                                if (!isset($csvLine[2])) {
+                                    continue;
+                                }
 
-                    if (($fh = fopen('cards.csv', 'r')) !== false) {
-                        while (($csvLine = fgetcsv($fh, 2500, ',')) !== FALSE) {
-                            if (!isset($cvsLine[2])) {
-                                continue;
+                                if (($card = Card::model()->find('name LIKE :name', array(':name' => $csvLine[0]))) === null) {
+                                    $card = new Card();
+                                    $card->name = $csvLine[0];
+                                }
+                                $card->active = 1;
+                                $card->rules = $csvLine[1];
+                                if (isset($csvLine[3]) && (int) $csvLine[3] != 0) {
+                                    $card->cardscapeId = (int) $csvLine[3];
+                                }
+
+                                $name = $csvLine[2];
+                                if (!is_file($path . '/' . $name)) {
+                                    $sizes = getimagesize($destination . 'cards/images/' . $csvLine[2]);
+                                    $imgFactory = PhpThumbFactory::create($destination . 'cards/images/' . $csvLine[2]);
+
+                                    //250 width, 354 height
+                                    if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
+                                        $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
+                                    }
+
+                                    $imgFactory->save($path . '/' . $name);
+                                    $imgFactory->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)->save($path . '/thumbs/' . $name);
+                                    $imgFactory->rotateImageNDegrees(180)->save($path . '/thumbs/reversed/' . $name);
+
+                                    $card->image = $name;
+                                }
+                                if (!$card->save()) {
+                                    //TODO: add errors to the list
+                                }
                             }
-
-                            if (($card = Card::model()->find('active = 1 AND name LIKE :name', array(':name' => $csvLine[0]))) === null) {
-                                $card = new Card();
-                                $card->name = $cvsLine[0];
-                            }
-                            $card->rules = $cvsLine[1];
-                            if (isset($cvsLine[3])) {
-                                $card->cardscapeId = (int) $cvsLine[3];
-                            }
-
-                            $card->save();
-                            //NOTE: Do we really need the extension at the end? 
-                            //Can't we just use the MD5 hash?
-                            $partials = explode('.', $cvsLine[2]);
-                            $ext = array_pop($partials);
-                            $name = implode('.', $partials);
-
-                            $sizes = getimagesize($destination . 'cards/' . $cvsLine[2]);
-                            $imgFactory = PhpThumbFactory::create($destination . 'cards/' . $cvsLine[2]);
-
-                            $name = md5('[CARDID=' . $card->cardId . ']=' . $name . '.' . $ext);
-                            if (is_file($path . '/up/' . $name)) {
-                                continue;
-                            }
-
-                            //320 width
-                            if ($sizes[0] > 320) {
-                                $imgFactory->resize(320, 453);
-                            }
-
-                            //453 height
-                            if ($sizes[1] > 453) {
-                                $imgFactory->resize(320, 453);
-                            }
-                            $imgFactory->save($path . '/up/' . $name);
-                            $imgFactory->resize(81, 115)->save($path . '/up/thumbs/' . $name);
-
-                            $imgFactory = PhpThumbFactory::create($path . '/up/' . $name);
-                            $imgFactory->rotateImageNDegrees(180)->save($path . '/down/' . $name);
-
-                            $imgFactory = PhpThumbFactory::create($path . '/down/' . $name);
-                            $imgFactory->resize(81, 115)->save($path . '/down/thumbs/' . $name);
-
-                            $card->image = $name;
-                            $card->save();
-                            //
+                            fclose($fh);
+                            //TODO: remove the import folder, recursive file removal.
                         }
-                        fclose($fh);
                     }
                 }
+            } else {
+                //TODO: show error message
             }
         }
 

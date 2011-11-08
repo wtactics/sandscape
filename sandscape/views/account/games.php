@@ -30,17 +30,21 @@ $this->widget('zii.widgets.grid.CGridView', array(
         array(
             'name' => 'running',
             'filter' => array(0 => 'No', 1 => 'Yes'),
+            'type' => 'raw',
+            'value' => '($data->running ? \'<span class="yes">Yes</span>\' : \'<span class="no">No</span>\')'
         ),
         array(
             'name' => 'paused',
             'filter' => array(0 => 'No', 1 => 'Yes'),
+            'type' => 'raw',
+            'value' => '($data->paused ? \'<span class="yes">Yes</span>\' : \'<span class="no">No</span>\')'
         ),
         array(
             'header' => 'Actions',
             'class' => 'CButtonColumn',
             'buttons' => array(
                 'view' => array(
-                    'url' => "Yii::app()->createUrl('user/viewGame', array('id' => \$data->gameId))",
+                    'url' => "Yii::app()->createUrl('account/viewgame', array('id' => \$data->gameId))",
                 ),
                 'delete' => array('visible' => 'false'),
                 'update' => array('visible' => 'false')

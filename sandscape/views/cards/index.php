@@ -1,9 +1,9 @@
 <?php $this->title = 'Cards'; ?>
 <h2>Card List</h2>
 <div class="span-22 last">
-    <a href="<?php echo $this->createURL('create'); ?>">New Card</a>
+    <a href="<?php echo $this->createURL('create'); ?>">Create Card</a>
     &nbsp;:&nbsp;
-    <a href="<?php echo $this->createURL('import'); ?>">Import</a>
+    <a href="<?php echo $this->createURL('import'); ?>">CSV Import</a>
 </div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -18,4 +18,3 @@ $this->widget('zii.widgets.grid.CGridView', array(
         )
     )
 ));
-?>

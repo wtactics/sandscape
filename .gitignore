@@ -12,6 +12,8 @@ Thumbs.db
 /www/_game/cards/*.png
 /www/_game/cards/thumbs/*.jpg
 /www/_game/cards/thumbs/*.png
+/www/_game/cards/thumbs/reversed/*.jpg
+/www/_game/cards/thumbs/reversed/*.png
 # Exclude system card images from ignore  list
 !cardback.jpg
 !noimage.jpg

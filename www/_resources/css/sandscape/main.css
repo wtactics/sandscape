@@ -142,3 +142,11 @@ a:hover {
     font-weight: bold;
     font-family: "Courier New", Courier, monospace;
 }
+
+.yes {
+    color: green;
+}
+
+.no {
+    color: red;
+}

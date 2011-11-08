@@ -2,7 +2,7 @@
 ALTER TABLE `Game` CHANGE `private` `paused` TINYINT NOT NULL DEFAULT 0, 
 ADD `acceptUser` INT UNSIGNED NULL ;
 
-ALTER TABLE `Game` ADD CONSTRAINT `fkGameAccpUser` FOREIGN KEY (`acceptUser`) REFERENCES `User` (`userId`) ;
+ALTER TABLE `Game` ADD CONSTRAINT `fkGameAcceptUser` FOREIGN KEY (`acceptUser`) REFERENCES `User` (`userId`) ;
 
 -- Create Dice table to manage available dice
 -- Yes, I know Dice is plural and Die is the correct word, but it's also a reserved 

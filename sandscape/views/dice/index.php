@@ -1,7 +1,7 @@
 <?php $this->title = 'Dice'; ?>
 <h2>Manage Dice</h2>
 <div class="span-22 last">
-    <a href="<?php echo $this->createURL('create'); ?>">New Dice</a>
+    <a href="<?php echo $this->createURL('create'); ?>">Create Dice</a>
 </div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -12,8 +12,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
         'name',
         'face',
         array(
-            'name' => 'selected',
-            'filter' => array(0 => 'No', 1 => 'Yes')
+            'name' => 'enabled',
+            'filter' => array(0 => 'No', 1 => 'Yes'),
+            'type' => 'raw',
+            'value' => '($data->enabled ? \'<span class="yes">Yes</span>\' : \'<span class="no">No</span>\')'
         ),
         array(
             'header' => 'Actions',
@@ -24,4 +26,3 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ),
     ),
 ));
-?>

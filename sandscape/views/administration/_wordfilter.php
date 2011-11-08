@@ -9,4 +9,5 @@
 <p>
     <?php echo CHtml::submitButton('Save', array('class' => 'button')); ?>
 </p>
-<?php Chtml::endForm(); ?>
+<?php
+Chtml::endForm();

@@ -26,7 +26,6 @@
  * @property string $name
  * @property integer $face
  * @property integer $enabled
- * @property integer $selected
  * @property integer $active
  *
  * Relations:
@@ -48,9 +47,9 @@ class Dice extends CActiveRecord {
         return array(
             array('face, name', 'required'),
             array('name', 'length', 'max' => 150),
-            array('face, enabled, selected', 'numerical', 'integerOnly' => true),
+            array('face, enabled', 'numerical', 'integerOnly' => true),
             //search
-            array('name, face', 'safe', 'on' => 'search'),
+            array('name, face, enabled', 'safe', 'on' => 'search'),
         );
     }
 
@@ -66,7 +65,7 @@ class Dice extends CActiveRecord {
             'name' => 'Name',
             'enabled' => 'Enabled',
             'face' => 'Nr. Faces',
-            'selected' => 'Available for play'
+            'enabled' => 'Available for play'
         );
     }
 
@@ -81,7 +80,7 @@ class Dice extends CActiveRecord {
 
         $criteria->compare('name', $this->name, true);
         $criteria->compare('face', $this->face);
-        $criteria->compare('selected', $this->selected);
+        $criteria->compare('enabled', $this->enabled);
         $criteria->compare('active', 1);
 
         return new CActiveDataProvider('Dice', array('criteria' => $criteria));

@@ -44,5 +44,3 @@ $form = $this->beginWidget('CActiveForm', array(
 </p>
 <?php
 $this->endWidget();
-
-
