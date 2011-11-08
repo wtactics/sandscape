@@ -45,147 +45,7 @@ class GameController extends AppController {
      * @since 1.0, Sudden Growth
      */
     public function actionIndex() {
-        $this->redirect(array('lobby'));
-    }
-
-    /**
-     * Default action is to send users to the game lobby.
-     * 
-     * The game lobby offers a way to create games, join existing games and exchange
-     * messages between other users.
-     * 
-     * @since 1.0, Sudden Growth
-     */
-    public function actionLobby() {
-        $this->updateUserActivity();
-
-        $games = Game::model()->findAll('ended IS NULL');
-        $users = User::model()->findAllAuthenticated()->getData();
-
-        $start = ChatMessage::model()->count('gameId IS NULL ORDER BY sent');
-        if ($start >= 15) {
-            $start -= 15;
-        } else {
-            $start = 0;
-        }
-        $messages = ChatMessage::model()->findAll('gameId IS NULL ORDER BY sent LIMIT :start, 15', array(':start' => (int) $start));
-
-        $decks = Deck::model()->findAll('userId = :id', array(':id' => (int) (Yii::app()->user->id)));
-
-        $fixDeckNr = 0;
-        $decksPerGame = 1;
-        if (($fixDeckNr = Setting::model()->findByPk('fixdecknr')) !== null) {
-            $fixDeckNr = (int) $fixDeckNr->value;
-            if (($decksPerGame = Setting::model()->findByPk('deckspergame')) !== null) {
-                $decksPerGame = (int) $decksPerGame->value;
-            }
-        }
-
-        $this->render('lobby', array(
-            'games' => $games,
-            'users' => $users,
-            'messages' => $messages,
-            'decks' => $decks,
-            'decksPerGame' => $decksPerGame,
-            'fixDeckNr' => $fixDeckNr
-        ));
-    }
-
-    /**
-     * Registers a new message in the lobby chat.
-     * 
-     * A new message is sent by the chat client as a POST parameter and the 
-     * correct database object is created and stored. Simple word filtering is 
-     * applied to the message before being stored, due to the way chats work
-     * the user that sent the message will still see the unfiltered message.
-     * 
-     * If successful, a JSON object is sent back with the message information 
-     * that the client didn't had, like the author's name or the new message's ID.
-     * 
-     * The JSON object format is:
-     * 
-     * success: integer, 0 or 1 telling the client if the action was successful
-     * id: integer, the new ID for the registered message
-     * name: string, the name of the user sending the message
-     * date: string, the date in which the message was sent, as created by the 
-     *  database and formatted using Yii's settings
-     * 
-     * @since 1.0, Sudden Growth
-     */
-    public function actionSendLobbyMessage() {
-        $result = array('success' => 0);
-        if (Yii::app()->request->isPostRequest) {
-            if (isset($_POST['chatmessage'])) {
-                $cm = new ChatMessage();
-
-                $cm->message = $this->chatWordFilter($_POST['chatmessage']);
-                $cm->userId = Yii::app()->user->id;
-
-                if ($cm->save()) {
-                    $cm->refresh();
-                    $result = array(
-                        'success' => 1,
-                        'id' => $cm->messageId,
-                        'name' => Yii::app()->user->name,
-                        'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
-                    );
-                }
-                $this->updateUserActivity();
-            }
-        }
-        echo json_encode($result);
-    }
-
-    /**
-     * Allows for clients to request updates on existing lobby chat messages.
-     * 
-     * The messages are encoded as a JSON object that is sent to the client. For 
-     * a proper request the client must send the ID of the last message he has 
-     * received, only messages with IDs above the given one will be provided.
-     * 
-     * The JSON object is as following:
-     * 
-     * has: integer, the number of messages sent in the response
-     * messages: array, the messages sent
-     *      name: string, the name of the message author
-     *      message: string, the message text
-     *      date: string, the date in which the message was sent, formatted using Yii's settings 
-     * 
-     * last: integer, the ID for the last message being sent
-     * 
-     * @since 1.0, Sudden Growth
-     */
-    public function actionLobbyChatUpdate() {
-        $result = array('has' => 0);
-        if (Yii::app()->request->isPostRequest) {
-            if (isset($_POST['lastupdate'])) {
-                $lastUpdate = (int) $_POST['lastupdate'];
-                $messages = array();
-
-                $cms = ChatMessage::model()->findAll('messageId > :last AND gameId IS NULL', array(':last' => $lastUpdate));
-                foreach ($cms as $cm) {
-                    $messages[] = array(
-                        'name' => $cm->user->name,
-                        'message' => $cm->message,
-                        'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
-                    );
-                }
-                $count = count($messages);
-
-                $last = $lastUpdate;
-                if ($count) {
-                    $last = end($cms)->messageId;
-                }
-                $result = array(
-                    'has' => $count,
-                    'messages' => $messages,
-                    'last' => $last
-                );
-                $this->updateUserActivity();
-            }
-        }
-
-        echo json_encode($result);
+        $this->redirect('lobby/index');
     }
 
     /**
@@ -198,9 +58,9 @@ class GameController extends AppController {
      *  
      * @param integer $id The game ID.
      * 
-     * @since 1.0, Sudden Growth
+     * @since 1.2, Elvish Shaman
      */
-    public function actionSendGameMessage($id) {
+    public function actionSendMessage($id) {
         $result = array('success' => 0);
         if (Yii::app()->request->isPostRequest) {
             $game = $this->loadGameById($id);
@@ -237,7 +97,7 @@ class GameController extends AppController {
      * 
      * @since 1.0, Sudden Growth
      */
-    public function actionGameChatUpdate($id) {
+    public function actionChatUpdate($id) {
         $result = array('has' => 0);
         if (Yii::app()->request->isPostRequest) {
             $game = $this->loadGameById($id);
@@ -274,119 +134,6 @@ class GameController extends AppController {
             }
         }
         echo json_encode($result);
-    }
-
-    /**
-     * Creates a new game and redirects the first player to the game area.
-     * 
-     * The game is created with the configuration submitted by the user (number 
-     * of decks, if the game uses graveyard), the user is added to the game and 
-     * marked as ready.
-     * 
-     * If the game was successfully created, the user is redirected to game/play
-     * 
-     * @since 1.0, Sudden Growth
-     */
-    public function actionCreate() {
-        if (isset($_POST['CreateGame']) && isset($_POST['deckList'])) {
-
-            $fixDeckNr = 0;
-            $decksPerGame = 1;
-            if (($fixDeckNr = Setting::model()->findByPk('fixdecknr')) !== null) {
-                $fixDeckNr = (int) $fixDeckNr->value;
-                if (($decksPerGame = Setting::model()->findByPk('deckspergame')) !== null) {
-                    $decksPerGame = (int) $decksPerGame->value;
-                }
-            }
-
-            if ($fixDeckNr && isset($_POST['maxDecks']) && ($decksPerGame != (int) $_POST['maxDecks'])) {
-                //TODO: show correct error message
-                $this->redirect(array('lobby'));
-            } else {
-                $game = new Game();
-                $game->player1 = Yii::app()->user->id;
-                $game->created = date('Y-m-d H:i');
-                $game->maxDecks = isset($_POST['maxDecks']) ? (int) $_POST['maxDecks'] : $decksPerGame;
-                $game->graveyard = isset($_POST['useGraveyard']) ? (int) $_POST['useGraveyard'] : 1;
-                $game->player1Ready = 1;
-
-                if ($game->save()) {
-                    $error = false;
-
-                    foreach ($_POST['deckList'] as $deckId) {
-                        $gameDeck = new GameDeck();
-                        $gameDeck->gameId = $game->gameId;
-                        $gameDeck->deckId = $deckId;
-                        if (!$gameDeck->save()) {
-                            $error = true;
-                            break;
-                        }
-                    }
-
-                    if (!$error) {
-                        $this->redirect(array('play', 'id' => $game->gameId));
-                    }
-                }
-            }
-        }
-        $this->updateUserActivity();
-        //TODO: show correct error message
-        $this->redirect(array('lobby'));
-    }
-
-    /**
-     * Allows a user to join a previously created game. The game ID will be given 
-     * as a POST parameter and the uer ID will be taken from the user making the 
-     * request.
-     * 
-     * If the user is allowed to join the game, then it is set as player 2 and 
-     * made ready. After that the user will be redirected to the play area.
-     * 
-     * @since 1.0, Sudden Growth
-     */
-    public function actionJoin() {
-        if (isset($_POST['JoinGame']) && isset($_POST['deckList']) && isset($_POST['game'])) {
-            $game = $this->loadGameById($_POST['game']);
-            if ($game->player1 != Yii::app()->user->id) {
-
-                $fixDeckNr = 0;
-                $decksPerGame = 1;
-                if (($fixDeckNr = Setting::model()->findByPk('fixdecknr')) !== null) {
-                    $fixDeckNr = (int) $fixDeckNr->value;
-                    if (($decksPerGame = Setting::model()->findByPk('deckspergame')) !== null) {
-                        $decksPerGame = (int) $decksPerGame->value;
-                    }
-                }
-
-                $deckCount = count($_POST['deckList']);
-                if ($fixDeckNr && $decksPerGame != $deckCount) {
-                    //TODO: show correct error message
-                    $this->redirect(array('lobby'));
-                } else {
-                    $game->player2 = Yii::app()->user->id;
-                    $game->player2Ready = 1;
-                    if ($game->save()) {
-                        $error = false;
-                        foreach ($_POST['deckList'] as $deckId) {
-                            $gameDeck = new GameDeck();
-                            $gameDeck->gameId = $game->gameId;
-                            $gameDeck->deckId = (int) $deckId;
-                            if (!$gameDeck->save()) {
-                                $error = true;
-                                break;
-                            }
-                        }
-
-                        if (!$error) {
-                            $this->redirect(array('play', 'id' => $game->gameId));
-                        }
-                    }
-                }
-            }
-        }
-        $this->updateUserActivity();
-        //TODO: show correct error message
-        $this->redirect(array('lobby'));
     }
 
     /**
@@ -447,9 +194,9 @@ class GameController extends AppController {
                      */
                     case 'startGame':
                         if (!$game->player1Ready || !$game->player2Ready) {
-                            echo SCGame::JSONIndent(json_encode((object) array('result' => 'wait')));
+                            echo json_encode((object) array('result' => 'wait'));
                         } elseif ($game->running) {
-                            echo SCGame::JSONIndent(json_encode((object) array('result' => 'ok')));
+                            echo json_encode((object) array('result' => 'ok'));
                         } elseif ($game->player1Ready && $game->player2Ready && !$game->running && yii::app()->user->id == $game->player1) {
                             $game->running = 1;
                             $game->started = date('Y-m-d H:i:s');
@@ -483,10 +230,10 @@ class GameController extends AppController {
                                     $this->scGame->addPlayer2Deck($scdeck);
                             }
                             $game->lastChange = time();
-                            echo SCGame::JSONIndent(json_encode((object) array('result' => 'ok')));
+                            echo json_encode((object) array('result' => 'ok'));
                         }
                         else {
-                            echo SCGame::JSONIndent(json_encode((object) array('result' => 'wait')));
+                            echo json_encode((object) array('result' => 'wait'));
                         }
                         break;
                     /**
@@ -501,10 +248,10 @@ class GameController extends AppController {
                             $result = $this->scGame->clientInitialization(yii::app()->user->id);
                             $result->result = 'ok';
                             $result->lastChange = $game->lastChange;
-                            echo SCGame::JSONIndent(json_encode($result));
+                            echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         }
                         else
-                            echo SCGame::JSONIndent(json_encode((object) array('result' => 'wait', 'motive' => 'Game not started')));
+                            echo json_encode((object) array('result' => 'wait', 'motive' => 'Game not started'));
                         break;
                     /**
                      * UPDATE: updates the client status
@@ -520,9 +267,9 @@ class GameController extends AppController {
                                 $result->result = 'ok';
                                 $result->lastChange = $game->lastChange;
                                 $result->clientTime = $_REQUEST['clientTime'];
-                                echo SCGame::JSONIndent(json_encode($result));
+                                echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                             } else {
-                                echo SCGame::JSONIndent(json_encode((object) array('result' => 'wait', 'motive' => 'Game not changed since last updade')));
+                                echo json_encode((object) array('result' => 'wait', 'motive' => 'Game not changed since last updade'));
                             }
                         }
                         break;
@@ -541,20 +288,19 @@ class GameController extends AppController {
                             $result = $this->scGame->drawCard(Yii::app()->user->id, $deck);
                             $result->result = 'ok';
                             $result->clientTime = $_REQUEST['clientTime'];
-                            echo SCGame::JSONIndent(json_encode($result));
-//                  die('died in '.get_class($this).' at ' . time() . '  ' . var_export($_REQUEST, true));
+                            echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         }
                         break;
                     case 'moveCard':
                         if ($game->running && $this->scGame && isset($_REQUEST['card']) && isset($_REQUEST['location'])) {
                             $card = $_REQUEST['card'];
                             $location = $_REQUEST['location'];
-                     $xOffset = isset($_REQUEST['xOffset']) ? floatval($_REQUEST['xOffset']) : 0;
-                     $yOffset = isset($_REQUEST['yOffset']) ? floatval($_REQUEST['yOffset']) : 0;
-                     $result = $this->scGame->moveCard(Yii::app()->user->id, $card, $location, $xOffset, $yOffset);
+                            $xOffset = isset($_REQUEST['xOffset']) ? floatval($_REQUEST['xOffset']) : 0;
+                            $yOffset = isset($_REQUEST['yOffset']) ? floatval($_REQUEST['yOffset']) : 0;
+                            $result = $this->scGame->moveCard(Yii::app()->user->id, $card, $location, $xOffset, $yOffset);
                             $result->result = 'ok';
                             $result->clientTime = $_REQUEST['clientTime'];
-                            echo SCGame::JSONIndent(json_encode($result));
+                            echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         }
                         break;
                     case 'toggleCardToken':
@@ -564,7 +310,7 @@ class GameController extends AppController {
                             $result = $this->scGame->toggleCardToken(Yii::app()->user->id, $card, $token);
                             $result->result = 'ok';
                             $result->clientTime = $_REQUEST['clientTime'];
-                            echo SCGame::JSONIndent(json_encode($result));
+                            echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         }
                         break;
                     case 'toggleCardState':
@@ -574,7 +320,7 @@ class GameController extends AppController {
                             $result = $this->scGame->toggleCardState(Yii::app()->user->id, $card, $state);
                             $result->result = 'ok';
                             $result->clientTime = $_REQUEST['clientTime'];
-                            echo SCGame::JSONIndent(json_encode($result));
+                            echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         }
                         break;
                     case 'cardInfo':
@@ -592,7 +338,7 @@ class GameController extends AppController {
                                 );
                             }
                         }
-                        echo json_encode($result);
+                        echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         break;
                     case 'gamePause':
                         //TODO: not implemented yet
@@ -618,10 +364,10 @@ class GameController extends AppController {
                                 $result['user'] = Yii::app()->user->name;
                             }
                         }
-                        echo json_encode($result);
+                        echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         break;
                     default:
-                        echo SCGame::JSONIndent(json_encode((object) array('result' => 'error', 'motive' => 'Unrecognized action')));
+                        echo json_encode((object) array('result' => 'error', 'motive' => 'Unrecognized action'));
                         Yii::app()->db->createCommand("select release_lock('game.$id')");
                         yii::app()->end();
                 }
@@ -676,7 +422,6 @@ class GameController extends AppController {
 //        if ($game->state) {
 //            $this->scGame = unserialize($game->state);
 //        }
-
         //getting chat messages
         $start = ChatMessage::model()->count('gameId = :id ORDER BY sent', array(':id' => (int) $game->gameId));
         if ($start >= 15) {
@@ -733,9 +478,7 @@ class GameController extends AppController {
     public function accessRules() {
         return array_merge(array(
                     array('allow',
-                        'actions' => array('index', 'create', 'join', 'lobby',
-                            'lobbyChatUpdate', 'play', 'sendGameMessage', 'sendLobbyMessage',
-                            'gameChatUpdate', 'leave', 'spectate'),
+                        'actions' => array('index', 'play', 'sendMessage', 'chatUpdate', 'leave', 'spectate'),
                         'users' => array('@')
                     )
                         ), parent::accessRules());
@@ -762,6 +505,67 @@ class GameController extends AppController {
         }
 
         return $message;
+    }
+
+    /**
+     * This method will indent a JSON string with proper spaces and alignment in 
+     * order to ease debug of JSON messages.
+     * 
+     * This should only be used in development mode, please use the 
+     * <strong>YII_DEBUG</strong> macro to check if this method should be used.
+     * 
+     * @param string $json The JSON string to indent.
+     * 
+     * @return string Indented JSON string.
+     */
+    private function jsonIndent($json) {
+        $result = '';
+        $pos = 0;
+        $strLen = strlen($json);
+        $indentStr = '  ';
+        $newLine = "\n";
+        $prevChar = '';
+        $outOfQuotes = true;
+
+        for ($i = 0; $i <= $strLen; $i++) {
+
+            // Grab the next character in the string.
+            $char = substr($json, $i, 1);
+
+            // Are we inside a quoted string?
+            if ($char == '"' && $prevChar != '\\') {
+                $outOfQuotes = !$outOfQuotes;
+
+                // If this character is the end of an element,
+                // output a new line and indent the next line.
+            } else if (($char == '}' || $char == ']') && $outOfQuotes) {
+                $result .= $newLine;
+                $pos--;
+                for ($j = 0; $j < $pos; $j++) {
+                    $result .= $indentStr;
+                }
+            }
+
+            // Add the character to the result string.
+            $result .= $char;
+
+            // If the last character was the beginning of an element,
+            // output a new line and indent the next line.
+            if (($char == ',' || $char == '{' || $char == '[') && $outOfQuotes) {
+                $result .= $newLine;
+                if ($char == '{' || $char == '[') {
+                    $pos++;
+                }
+
+                for ($j = 0; $j < $pos; $j++) {
+                    $result .= $indentStr;
+                }
+            }
+
+            $prevChar = $char;
+        }
+
+        return $result;
     }
 
 }

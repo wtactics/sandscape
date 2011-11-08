@@ -1,6 +1,6 @@
 <?php
 
-/* DeckTemplateController.php
+/* PreConsController.php
  * 
  * This file is part of SandScape.
  *
@@ -22,11 +22,12 @@
  */
 
 /**
- * Handles basic deck template actions
+ * Handles basic deck template (or pre-constructed deck), actions.
+ * This class was renamed from <em>DeckTemplateController</em>.
  * 
- * @since 1.1, Green Shield
+ * @since 1.2, Elvish Shaman
  */
-class DeckTemplateController extends AppController {
+class PreConsController extends AppController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
@@ -35,7 +36,7 @@ class DeckTemplateController extends AppController {
     /**
      * 
      * 
-     * @since 1.1, Green Shield
+     * @since 1.2, Elvish Shaman
      */
     public function actionIndex() {
         $filter = new DeckTemplate('search');
@@ -52,7 +53,7 @@ class DeckTemplateController extends AppController {
      * 
      * @param integer $id The deck's database ID.
      * 
-     * @since 1.1, Green Shield
+     * @since 1.2, Elvish Shaman
      */
     public function actionDelete($id) {
         if (Yii::app()->request->isPostRequest) {

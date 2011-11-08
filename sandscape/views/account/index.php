@@ -1,13 +1,18 @@
 <?php
-$this->title = 'Edit Profile';
+$this->title = 'Account';
 
 Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms.css');
 ?>
 
-<h2>Edit Profile</h2>
+<h2>Account</h2>
 <?php
 $this->widget('CTabView', array(
     'tabs' => array(
+        'tStats' => array(
+            'title' => 'Stats',
+            'view' => '_stats',
+            'data' => array()
+        ),
         'tGeneral' => array(
             'title' => 'General',
             'view' => '_personal',
@@ -21,4 +26,3 @@ $this->widget('CTabView', array(
     ),
     'cssFile' => '_resources/css/sandscape/tabs.css'
 ));
-?>

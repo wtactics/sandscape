@@ -62,28 +62,24 @@ class AppController extends CController {
             array('label' => 'Home', 'url' => array('site/index')),
             array('label' => 'About', 'url' => array('site/about')),
             //visible only to authenticated users
-            array('label' => 'Play', 'url' => array('game/lobby'), 'visible' => !Yii::app()->user->isGuest),
+            array('label' => 'Play', 'url' => array('lobby/index'), 'visible' => !Yii::app()->user->isGuest),
             //visible only to administrators
             array('label' => 'Administration', 'url' => array('administration/index'),
                 'items' => array(
-                    array('label' => 'Cards', 'url' => array('card/index')),
-                    array('label' => 'Templates', 'url' => array('decktemplate/index')),
-//                    array('label' => 'G',
-//                        'items' => array(
+                    array('label' => 'Cards', 'url' => array('cards/index')),
+                    array('label' => 'Pre Cons', 'url' => array('precons/index')),
                     array('label' => 'Dice', 'url' => array('dice/index')),
                     array('label' => 'Events', 'url' => array('dice/index')),
-                    array('label' => 'Tokens', 'url' => array('dice/index')),
-//                            )),
-                    array('label' => 'Users', 'url' => array('user/index')),
+                    array('label' => 'Tokens', 'url' => array('tokens/index')),
+                    array('label' => 'Users', 'url' => array('users/index')),
                 ),
                 'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class
             ),
             //visible only to authenticated users
-            array('label' => 'Account', 'url' => array('user/account'),
+            array('label' => 'Account', 'url' => array('account/index'),
                 'items' => array(
-                    array('label' => 'Decks', 'url' => array('deck/index')),
-                    array('label' => 'Games', 'url' => array('user/games')),
-                    array('label' => 'Profile', 'url' => array('user/profile')),
+                    array('label' => 'Decks', 'url' => array('decks/index')),
+                    array('label' => 'Games', 'url' => array('account/games')),
                     array('label' => 'Logout', 'url' => array('site/logout')),
                 ),
                 'visible' => !Yii::app()->user->isGuest

@@ -1,6 +1,6 @@
 <?php
 
-/* DeckController.php
+/* DecksController.php
  * 
  * This file is part of SandScape.
  *
@@ -23,10 +23,11 @@
 
 /**
  * Handles all deck management actions that users can perform.
+ * This class was renamed from <em>DeckController</em>.
  * 
- * @since 1.0, Sudden Growth
+ * @since 1.2, Elvish Shaman
  */
-class DeckController extends AppController {
+class DecksController extends AppController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
@@ -37,7 +38,7 @@ class DeckController extends AppController {
      * The filter is applied in the view since it's there that the search method 
      * is called.
      * 
-     * @since 1.0, Sudden Growth
+     * @since 1.2, Elvish Shaman
      */
     public function actionIndex() {
         $this->updateUserActivity();
@@ -57,7 +58,7 @@ class DeckController extends AppController {
      * Creates a new deck and redirects the user to the <em>update</em> action 
      * uppon success.
      * 
-     * @since 1.0, Sudden Growth
+     * @since 1.2, Elvish Shaman
      */
     public function actionCreate() {
         $this->updateUserActivity();
@@ -97,7 +98,7 @@ class DeckController extends AppController {
      * 
      * @param integer $id The deck ID to update.
      * 
-     * @since 1.0, Sudden Growth
+     * @since 1.2, Elvish Shaman
      */
     public function actionUpdate($id) {
         $this->updateUserActivity();
@@ -152,7 +153,7 @@ class DeckController extends AppController {
      * 
      * @param integer $id The deck's database ID.
      * 
-     * @since 1.0, Sudden Growth
+     * @since 1.2, Elvish Shaman
      */
     public function actionDelete($id) {
         if (Yii::app()->request->isPostRequest) {
@@ -174,7 +175,7 @@ class DeckController extends AppController {
      * 
      * @param integer $id The deck's ID.
      * 
-     * @since 1.1, Green Shield
+     * @since 1.2, Elvish Shaman
      */
     public function actionMakeTemplate($id) {
         $deck = $this->loadDeckModel($id);
@@ -202,7 +203,10 @@ class DeckController extends AppController {
      */
     public function actionFromTemplate() {
         if (isset($_POST['preconslst']) && (int) $_POST['preconslst']) {
-            if (($template = DeckTemplate::model()->find('active = 1 AND deckTemplateId = :id', array(':id' => (int) $_POST['preconslst']))) !== null) {
+            if (($template = DeckTemplate::model()->find('active = 1 AND deckTemplateId = :id', array(
+                ':id' => (int) $_POST['preconslst']))
+                    ) !== null) {
+
                 $deck->name = $template->name;
                 $deck->created = date('Y-m-d H:i:s');
                 if ($deck->save()) {
@@ -222,6 +226,14 @@ class DeckController extends AppController {
         $this->redirect(array('index'));
     }
 
+    /**
+     * Allows users to view deck information whitout the distractions of the 
+     * editing interface.
+     * 
+     * @param integer $id The deck ID for the deck we want to view.
+     * 
+     * @since 1.2, Elvish Shaman
+     */
     public function actionView($id) {
         //TODO: not implemented yet
     }
@@ -229,10 +241,11 @@ class DeckController extends AppController {
     /**
      * Retrieves a Deck model from the database.
      * 
-     * @param integer $id The model's database ID
-     * @return  Deck The loaded model or null if no model was found for the given ID
+     * @param integer $id The model's database ID.
+     * @return Deck The loaded model or null if no model was found for the 
+     * given ID.
      * 
-     * @since 1.0, Sudden Growth
+     * @since 1.2, Elvish Shaman
      */
     private function loadDeckModel($id) {
         if (($deck = Deck::model()->find('active = 1 AND deckId = :id', array(':id' => (int) $id))) === null) {
@@ -246,12 +259,13 @@ class DeckController extends AppController {
      * 
      * @return array
      * 
-     * @since 1.0, Sudden Growth
+     * @since 1.2, Elvish Shaman
      */
     public function accessRules() {
         return array_merge(array(
                     array('allow',
-                        'actions' => array('index', 'create', 'update', 'delete', 'fromTemplate'),
+                        'actions' => array('index', 'create', 'update', 'delete',
+                            'fromTemplate', 'view'),
                         'users' => array('@')
                     ),
                     array('allow',

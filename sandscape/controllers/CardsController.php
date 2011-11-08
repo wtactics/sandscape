@@ -1,6 +1,6 @@
 <?php
 
-/* CardController.php
+/* CardsController.php
  * 
  * This file is part of SandScape.
  *
@@ -23,15 +23,20 @@
 
 /**
  * Handles card administration available to administrations.
+ * This class was renamed from <em>CardController</em>.
  * 
- * @since 1.0, Sudden Growth
+ * @since 1.2, Elvish Shaman
  */
-class CardController extends AppController {
+class CardsController extends AppController {
+
+    public function __construct($id, $module = null) {
+        parent::__construct($id, $module);
+    }
 
     /**
      * Default administration action that lists all existing cards.
      * 
-     * @since 1.0, Sudden Growth
+     * @since 1.2, Elvish Shaman
      */
     public function actionIndex() {
         $filter = new Card('search');
@@ -48,7 +53,7 @@ class CardController extends AppController {
      * Creates a new card and allows for image uploads, creating all the necessary 
      * thumbs and reverted copies.
      * 
-     * @since 1.1, Green Shield
+     * @since 1.2, Elvish Shaman
      */
     public function actionCreate() {
         $new = new Card();
@@ -100,7 +105,7 @@ class CardController extends AppController {
      * 
      * @param integer $id The card ID we want to update.
      * 
-     * @since 1.1, Green Shield
+     * @since 1.2, Elvish Shaman
      */
     public function actionUpdate($id) {
         $card = $this->loadCardModel($id);
@@ -159,17 +164,12 @@ class CardController extends AppController {
         $this->render('edit', array('card' => $card));
     }
 
-    public function actionView($id) {
-        //TODO: not implemented yet, incomplete
-        $this->render('view', array('card' => $this->loadCardModel($id)));
-    }
-
     /**
      * Deletes a card by making it inactive.
      * 
      * @param integer $id The card ID.
      * 
-     * @since 1.1, Green Shield
+     * @since 1.2, Elvish Shaman
      */
     public function actionDelete($id) {
         if (Yii::app()->user->class && Yii::app()->request->isPostRequest) {
@@ -186,75 +186,91 @@ class CardController extends AppController {
         }
     }
 
+    /**
+     * Allows administrators to import cards from CSV files.
+     * The cards must be inside a <em>ZIP</em> archive, with a file named 
+     * <strong>cards.csv</em> listing all the cards and with all images inside a 
+     * folder named <strong>images</em>.
+     * 
+     * CSV file must have the following fields, in the order:
+     *  - name, the name of the card, required field
+     *  - rules, the rules text for the card, required field
+     *  - image, the image file to use, this file needs to be inside a folder 
+     *  named <em>images</em>, this is a required field
+     *  - cardscape ID, the ID for cardscape system if this is a card imported 
+     *  from Cardscape
+     * 
+     * @since 1.2, Elvish Shaman
+     */
     public function actionImport() {
-        //TODO: untested, the code hasn't been properly tested.
         //card name; card rules; card image; cardscape id
+        if (isset($_POST['Upload'])) {
+            $upfile = CUploadedFile::getInstanceByName('archive');
+            if ($upfile !== null) {
+                $destination = Yii::app()->assetManager->basePath . '/import/';
+                $path = Yii::getPathOfAlias('webroot') . '/_cards';
 
-        $upfile = CUploadedFile::getInstanceByName('archive');
-        if ($upfile !== null) {
-            $destination = Yii::app()->assetManager->basePath . '/import/';
-            $path = Yii::getPathOfAlias('webroot') . '/_cards';
+                $zip = new ZipArchive();
+                if ($zip->open($upfile->tempName) === true) {
+                    $zip->extractTo($destination);
+                    $zip->close();
 
-            $zip = new ZipArchive();
-            if ($zip->open($upfile->tempName) === true) {
-                $zip->extractTo($destination);
-                $zip->close();
+                    unlink($upfile->tempName);
 
-                unlink($upfile->tempName);
+                    if (($fh = fopen('cards.csv', 'r')) !== false) {
+                        while (($csvLine = fgetcsv($fh, 2500, ',')) !== FALSE) {
+                            if (!isset($cvsLine[2])) {
+                                continue;
+                            }
 
-                if (($fh = fopen('cards.csv', 'r')) !== false) {
-                    while (($csvLine = fgetcsv($fh, 2500, ',')) !== FALSE) {
-                        if (!isset($cvsLine[2])) {
-                            continue;
+                            if (($card = Card::model()->find('active = 1 AND name LIKE :name', array(':name' => $csvLine[0]))) === null) {
+                                $card = new Card();
+                                $card->name = $cvsLine[0];
+                            }
+                            $card->rules = $cvsLine[1];
+                            if (isset($cvsLine[3])) {
+                                $card->cardscapeId = (int) $cvsLine[3];
+                            }
+
+                            $card->save();
+                            //NOTE: Do we really need the extension at the end? 
+                            //Can't we just use the MD5 hash?
+                            $partials = explode('.', $cvsLine[2]);
+                            $ext = array_pop($partials);
+                            $name = implode('.', $partials);
+
+                            $sizes = getimagesize($destination . 'cards/' . $cvsLine[2]);
+                            $imgFactory = PhpThumbFactory::create($destination . 'cards/' . $cvsLine[2]);
+
+                            $name = md5('[CARDID=' . $card->cardId . ']=' . $name . '.' . $ext);
+                            if (is_file($path . '/up/' . $name)) {
+                                continue;
+                            }
+
+                            //320 width
+                            if ($sizes[0] > 320) {
+                                $imgFactory->resize(320, 453);
+                            }
+
+                            //453 height
+                            if ($sizes[1] > 453) {
+                                $imgFactory->resize(320, 453);
+                            }
+                            $imgFactory->save($path . '/up/' . $name);
+                            $imgFactory->resize(81, 115)->save($path . '/up/thumbs/' . $name);
+
+                            $imgFactory = PhpThumbFactory::create($path . '/up/' . $name);
+                            $imgFactory->rotateImageNDegrees(180)->save($path . '/down/' . $name);
+
+                            $imgFactory = PhpThumbFactory::create($path . '/down/' . $name);
+                            $imgFactory->resize(81, 115)->save($path . '/down/thumbs/' . $name);
+
+                            $card->image = $name;
+                            $card->save();
+                            //
                         }
-
-                        if (($card = Card::model()->find('active = 1 AND name LIKE :name', array(':name' => $csvLine[0]))) === null) {
-                            $card = new Card();
-                            $card->name = $cvsLine[0];
-                        }
-                        $card->rules = $cvsLine[1];
-                        if (isset($cvsLine[3])) {
-                            $card->cardscapeId = (int) $cvsLine[3];
-                        }
-
-                        $card->save();
-                        //NOTE: Do we really need the extension at the end? 
-                        //Can't we just use the MD5 hash?
-                        $partials = explode('.', $cvsLine[2]);
-                        $ext = array_pop($partials);
-                        $name = implode('.', $partials);
-
-                        $sizes = getimagesize($destination . 'cards/' . $cvsLine[2]);
-                        $imgFactory = PhpThumbFactory::create($destination . 'cards/' . $cvsLine[2]);
-
-                        $name = md5('[CARDID=' . $card->cardId . ']=' . $name . '.' . $ext);
-                        if (is_file($path . '/up/' . $name)) {
-                            continue;
-                        }
-
-                        //320 width
-                        if ($sizes[0] > 320) {
-                            $imgFactory->resize(320, 453);
-                        }
-
-                        //453 height
-                        if ($sizes[1] > 453) {
-                            $imgFactory->resize(320, 453);
-                        }
-                        $imgFactory->save($path . '/up/' . $name);
-                        $imgFactory->resize(81, 115)->save($path . '/up/thumbs/' . $name);
-
-                        $imgFactory = PhpThumbFactory::create($path . '/up/' . $name);
-                        $imgFactory->rotateImageNDegrees(180)->save($path . '/down/' . $name);
-
-                        $imgFactory = PhpThumbFactory::create($path . '/down/' . $name);
-                        $imgFactory->resize(81, 115)->save($path . '/down/thumbs/' . $name);
-
-                        $card->image = $name;
-                        $card->save();
-                        //
+                        fclose($fh);
                     }
-                    fclose($fh);
                 }
             }
         }
@@ -268,11 +284,11 @@ class CardController extends AppController {
      * @param integer $id The ID for the card.
      * @return Card The card model.
      * 
-     * @since 1.0, Sudden Growth
+     * @since 1.2, Elvish Shaman
      */
     private function loadCardModel($id) {
         if (($card = Card::model()->find('active = 1 AND cardId = :id', array(':id' => (int) $id))) === null) {
-            throw new CHttpException(404, 'The requested page does not exist.');
+            throw new CHttpException(404, 'The requested card does not exist.');
         }
         return $card;
     }
@@ -282,7 +298,7 @@ class CardController extends AppController {
      * 
      * @return array The merged rules array.
      * 
-     * @since 1.0, Sudden Growth
+     * @since 1.2, Elvish Shaman
      */
     public function accessRules() {
         return array_merge(array(
