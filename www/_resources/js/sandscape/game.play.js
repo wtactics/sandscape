@@ -179,7 +179,7 @@ function checkGameStart() {
                                     } ]
                                 })
                                 .children('img.face').attr('src', '_game/cards/thumbs/' 
-                                    + (card.invertY ? 'inverted/' : '') + card.src);
+                                    + (card.invertY ? 'reversed/' : '') + card.src);
                         
                                 updateCardExtras($('#'+card.id));
                             }
@@ -221,8 +221,9 @@ function checkGameStart() {
                         }
                     }
                 });
+            } else  {
+                setTimeout(checkGameStart, 3000);
             }
-            else setTimeout(checkGameStart, 3000);
         },
         error: function () {
             setTimeout(checkGameStart, 3000);
@@ -239,7 +240,7 @@ function updateCardExtras(card) {
         for (var i = 0; i < card.data('status').tokens.length; ++i) {
             $(document.createElement('img'))
             .addClass('token')
-            .attr('src', '_game/tokens/thumbs/' + (card.data('status').invertY ? 'inverted/' : '') 
+            .attr('src', '_game/tokens/thumbs/' + (card.data('status').invertY ? 'reversed/' : '') 
                 + card.data('status').tokens[i].src)
             .appendTo(card);
         }
@@ -248,7 +249,7 @@ function updateCardExtras(card) {
         for(i = 0; i<card.data('status').states.length; ++i) {
             $(document.createElement('img'))
             .addClass('state')
-            .attr('src', '_game/states/thumbs/' + (card.data('status').invertY ? 'inverted/' : '') 
+            .attr('src', '_game/states/thumbs/' + (card.data('status').invertY ? 'reversed/' : '') 
                 + card.data('status').states[i].src)
             .appendTo(card);
         }
@@ -300,7 +301,7 @@ function doGameUpdate(json) {
                 zIndex: json.update[i].zIndex,
                 visibility: json.update[i].visibility
             })
-            .children('img.face').attr('src',  '_game/cards/thumbs/' + (json.update[i].invertY ? 'inverted/' : '') 
+            .children('img.face').attr('src',  '_game/cards/thumbs/' + (json.update[i].invertY ? 'reversed/' : '') 
                 + json.update[i].src);
          
             updateCardExtras($('#' + json.update[i].id));

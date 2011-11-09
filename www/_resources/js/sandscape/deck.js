@@ -6,8 +6,8 @@ function init(url) {
     
     $('#selected-cards').droppable({
         accept: '.available'
-    })
-    .dblclick(function(e) {
+    });
+    $('#selected-cards li').dblclick(function(e) {
         })
     .click(function (e) {
         loadPreviewImage(parseInt($(this).attr('id').substr(1), 10));

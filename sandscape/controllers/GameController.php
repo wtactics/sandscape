@@ -202,16 +202,16 @@ class GameController extends AppController {
                             $game->started = date('Y-m-d H:i:s');
 
                             // tokens
-                            $tokens = array(
-                                new SCToken('jumper', 'debugToken.gif'),
-                                new SCToken('badge', 'debugToken2.png')
-                            );
+                            $tokens = array();
+                            foreach (Token::model()->find() as $token) {
+                                $tokens[] = new SCToken($token->name, $token->image);
+                            }
 
                             // card states
-                            $states = array(
-                                new SCState('yellow', 'debugState1.png'),
-                                new SCState('shadow', 'debugState2.png'),
-                            );
+                            $states = array();
+                            foreach (State::model()->find() as $state) {
+                                $states[] = new SCState($state->name, $state->image);
+                            }
 
                             // create the game status
                             $this->scGame = new SCGame($game->graveyard, $game->player1, $game->player2, $tokens, $states);
@@ -249,9 +249,9 @@ class GameController extends AppController {
                             $result->result = 'ok';
                             $result->lastChange = $game->lastChange;
                             echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
-                        }
-                        else
+                        } else {
                             echo json_encode((object) array('result' => 'wait', 'motive' => 'Game not started'));
+                        }
                         break;
                     /**
                      * UPDATE: updates the client status
@@ -330,10 +330,10 @@ class GameController extends AppController {
                                 $card = Card::model()->findByPk((int) $cardId);
                                 $result = array(
                                     'success' => 1,
-                                    'name' => $card->name,
-                                    'rules' => $card->rules,
                                     'image' => $card->image,
-                                    //TODO: add states when they become available
+                                    //TODO: add tokens and states that are affecting 
+                                    //the card.
+                                    //Will need to search in the scGame instance
                                     'states' => ''
                                 );
                             }
@@ -357,11 +357,13 @@ class GameController extends AppController {
                             }
 
                             if ($dice !== null) {
-                                $result['success'] = 1;
-                                $result['roll'] = rand(1, $dice->face);
-                                $result['dice'] = $dice->name;
-                                $result['face'] = $dice->face;
-                                $result['user'] = Yii::app()->user->name;
+                                $result = array(
+                                    'success' => 1,
+                                    'roll' => rand(1, $dice->face),
+                                    'dice' => $dice->name,
+                                    'face' => $dice->face,
+                                    'user' => Yii::app()->user->name
+                                );
                             }
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
@@ -402,7 +404,9 @@ class GameController extends AppController {
                 'dice' => $dice
             ));
         } else {
-            // TODO: the user accessing the game is not a player of the game. Show some error or something.
+            //unlock the game record before redirecting
+            Yii::app()->db->createCommand("select release_lock('game.$id')");
+            $this->redirect(array('spectate', 'id' => $id));
         }
         Yii::app()->db->createCommand("select release_lock('game.$id')");
     }
@@ -449,7 +453,7 @@ class GameController extends AppController {
     public function actionLeave($id) {
         $this->updateUserActivity();
         //TODO: not implemented yet, close game, notify all clients, dispose states.
-        $this->redirect(array('lobby'));
+        $this->redirect('lobby/index');
     }
 
     /**
@@ -478,7 +482,8 @@ class GameController extends AppController {
     public function accessRules() {
         return array_merge(array(
                     array('allow',
-                        'actions' => array('index', 'play', 'sendMessage', 'chatUpdate', 'leave', 'spectate'),
+                        'actions' => array('index', 'play', 'sendMessage',
+                            'chatUpdate', 'leave', 'spectate'),
                         'users' => array('@')
                     )
                         ), parent::accessRules());

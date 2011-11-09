@@ -27,6 +27,7 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'deck-form'));
     <ul id="selected-cards">
         <?php
         $items = array();
+        $total = 0;
         foreach ($deck->deckCards as $dc) {
             if (!isset($items[$dc->cardId])) {
                 $items[$dc->cardId]['name'] = $dc->card->name;
@@ -34,6 +35,7 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'deck-form'));
             } else {
                 $items[$dc->cardId]['count'] += 1;
             }
+            $total += 1;
         }
 
         foreach ($items as $key => $item) {
@@ -44,6 +46,7 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'deck-form'));
             </li>
         <?php } ?>
     </ul>
+    <p>Total cards in deck: <?php echo $total; ?></p>
 </div>
 <div class="span-1">
     <!-- <p><button type="button" class="button">&lt;</button></p>
