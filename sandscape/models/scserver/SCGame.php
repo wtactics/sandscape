@@ -2,6 +2,10 @@
 
 class SCGame {
 
+    /**
+     *
+     * @var SCContainer[]  
+     */
     private $all = array();
     private $roots = array();
     private $availableTokens = array();
@@ -279,6 +283,19 @@ class SCGame {
         }
 
         return 0;
+    }
+
+    /**
+     *
+     * @param type $cardId
+     * @return StdClass 
+     */
+    public function getCardStatus($cardId) {
+        if (isset($this->all[$cardId])) {
+            return $this->all[$cardId]->getStatus();
+        }
+
+        return null;
     }
 
 }

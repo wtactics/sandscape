@@ -154,7 +154,6 @@ function checkGameStart() {
                             // DOM because there are cards 'inside' other cards
                             for(i = 0; i < create.cards.length; i++) {
                                 card = create.cards[i];
-                                var location = $('#'+card.location);
                         
                                 $('#'+card.id).css({
                                     position: 'absolute',
@@ -165,18 +164,28 @@ function checkGameStart() {
                                 .addClass('update')
                                 .radialmenu({
                                     radius: 60,
-                                    options: [ {
-                                        option: 'info',
+                                    options: [{
+                                        option: 'Details',
                                         event: function (card) {
                                             requestCardInfo($(card).attr('id'));
                                         }
                                     }, {
-                                        option: 'tokens',
+                                        option: 'Tokens',
                                         subMenu: tokenMenu
                                     }, {
-                                        option: 'card states',
+                                        option: 'States',
                                         subMenu: statesMenu
-                                    } ]
+                                    }, {
+                                        option: 'Give',
+                                        event: function (card) {
+                                            alert('Not implemented yet!');
+                                        }
+                                    }, {
+                                        option: 'Label',
+                                        event: function (card) {
+                                            alert('Not implemented yet!');
+                                        }
+                                    }]
                                 })
                                 .children('img.face').attr('src', '_game/cards/thumbs/' 
                                     + (card.invertView ? 'reversed/' : '') + card.src);
@@ -211,13 +220,13 @@ function checkGameStart() {
                             .click(deckSlide)
                             .appendTo($('body'));
 
-                            globals.game.running = true;
-                            $('#game-loader').fadeOut('slow', function () {
-                                $('#game-loader').remove();
-                            }); 
-                     
+                            globals.game.running = true;                     
                             setTimeout(updateGame, 3000);
                             cyclicPositionUpdate();
+                            
+                            $('#game-loader').fadeOut('slow', function () {
+                                $('#game-loader').remove();
+                            });
                         }
                     }
                 });
@@ -227,9 +236,6 @@ function checkGameStart() {
         },
         error: function () {
             setTimeout(checkGameStart, 3000);
-        }, 
-        complete: function () {
-            $('#game-loader').hide();
         }
     });
 }
@@ -326,7 +332,7 @@ function updateGame() {
             data: {
                 event: 'update',
                 // TODO: Solve the sync problems; lastChange will still disabled until then
-//                lastChange: globals.game.lastChange,
+                //                lastChange: globals.game.lastChange,
                 clientTime: globals.time.getTime()
             },
             dataType: 'json',
@@ -432,8 +438,25 @@ function requestCardInfo(id) {
         type: 'POST',
         dataType: 'json',
         success: function (json) {
+            $('#card-info .temp').remove();
             if(json.success) {
-            //TODO: show image, states and tokens
+                var owner = $('#card-info');
+                $('#card-image').attr('src', '_game/cards/' + json.status.src);
+                //TODO: implement token and state information, as well as any other
+                //info that affect cards (labels, counters, etc)
+                /*for(var i = 0; i < json.status.tokens.length; i++) {
+                    $(document.createElement('img'))
+                    .addClass('temp')
+                    //.attr('src', json.status.tokens[i].src)
+                    .appendTo(owner);
+                }
+                
+                for(i = 0; i < json.status.states.length; i++) {
+                    $(document.createElement('img'))
+                    .addClass('temp')
+                    //.attr('src', json.status.tokens[i].src)
+                    .appendTo(owner);
+                }*/               
             } else {
                 $('#card-image').attr('src', '_game/cards/cardback.jpg');
             }
@@ -456,7 +479,7 @@ function pack() {
         width: $(window).width() - 270,
         height: $(window).height() / 2,
         top: 0,
-        left: 250,
+        left: 270,
         position: 'absolute'
     });
     
@@ -528,8 +551,8 @@ function sendMessage(e) {
             dataType: 'json',
             success: function(json) {
                 if(json.success) {
-                    $('#chat-messages').append('<li class="user-message"><span><strong>' + json.name + '</strong>&nbsp;[' 
-                        + json.date + ']:</span>' + message + '</li>');
+                    $('#chat-messages').append('<li class="user-message"><strong>' 
+                        + json.name + '</strong>:' + message + '</li>');
                     
                     globals.chat.lastReceived = json.id;
                     updateMessageScroll();
@@ -551,8 +574,8 @@ function updateMessages() {
         success: function(json) {
             if(json.has) {
                 $.each(json.messages, function() {
-                    $('#chat-messages').append('<li class="user-message"><strong>' + this.name + '</strong>:' 
-                        + this.message + '</li>');
+                    $('#chat-messages').append('<li class="user-message"><strong>' 
+                        + this.name + '</strong>:' + this.message + '</li>');
                 });
 
                 globals.chat.lastReceived = json.last;

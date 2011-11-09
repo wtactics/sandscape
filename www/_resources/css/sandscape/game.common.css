@@ -9,14 +9,15 @@
 
 body {
     color: #333;
-    background: url('../../images/game-background.jpg') repeat;
+    background-color: #746f5d;        
+    /*background: url('../../images/game-background.jpg') repeat;*/
 }
 
 #game-table {
 }
 
 #left-column {
-    width: 270px;
+    width: 270px;    
     /*
     width: 348px;
     border-right: 2px solid #CCC;
@@ -26,11 +27,17 @@ body {
 #card-info {
     width: 270px;
     height: 382px;
+    /*text-align: center;
+    padding-top: 14px;*/
+    /*border-right: 1px solid #4B421E;*/
 }
 
 #card-image {
     /* //TODO: remove */
     width: 250px;
+    position: absolute;
+    top: 14px;
+    left: 10px;
 }
 
 #chat {
@@ -39,7 +46,6 @@ body {
     -moz-border-radius: 16px;
     background: #FFF;
     font-size: 10px;
-    color: #AAA;
     text-align: center;
 }
 
@@ -180,7 +186,7 @@ ul#file-menu-items li:hover ul.sub-menu {
 }
 
 .radialmenuOption {
-    border: 3px solid black;
+    border: 1px solid #4297D7;
     background: white;
     border-radius: 6px;
     -moz-border-radius: 6px;
@@ -191,3 +197,17 @@ ul#file-menu-items li:hover ul.sub-menu {
     z-index: 100;
     cursor: pointer;
 }
+
+/*
+COLOURS FOR CHAT MESSAGES
+
+Opponent:
+ - action: #d68e64
+ - text: #000
+
+Own:
+ - text: #bfbfbf
+ - action: #5e0000
+
+Card name: #7ca8e0
+*/

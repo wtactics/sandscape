@@ -326,17 +326,10 @@ class GameController extends AppController {
                     case 'cardInfo':
                         $result = array('success' => 0);
                         if ($game->running && $this->scGame && isset($_REQUEST['card'])) {
-                            if (($cardId = $this->scGame->getCardDBId($_REQUEST['card'])) != 0) {
-                                $card = Card::model()->findByPk((int) $cardId);
-                                $result = array(
-                                    'success' => 1,
-                                    'image' => $card->image,
-                                    //TODO: add tokens and states that are affecting 
-                                    //the card.
-                                    //Will need to search in the scGame instance
-                                    'states' => ''
-                                );
-                            }
+                            $result = array(
+                                'success' => 1,
+                                'status' => $this->scGame->getCardStatus($_REQUEST['card'])
+                            );
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         break;
