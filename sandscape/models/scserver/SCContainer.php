@@ -20,7 +20,7 @@ class SCContainer {
     private $xOffset = 0;
     private $yOffset = 0;
     // @var boolean 
-    private $invertYOffset = false;
+    private $invertView = false;
 
     public function __construct(SCGame $game, $movable, $droppable, $max = null) {
         $this->game = $game;
@@ -32,7 +32,7 @@ class SCContainer {
     }
 
     public function __wakeup() {
-        $this->invertYOffset = false;
+        $this->invertView = false;
     }
 
     public function setId($id) {
@@ -135,14 +135,14 @@ class SCContainer {
         return 50;
     }
 
-    public function setInvertYOffset($invertYOffset) {
-        $this->invertYOffset = $invertYOffset;
+    public function setInvertView($invertView) {
+        $this->invertView = $invertView;
     }
 
-    public function invertY() {
+    public function invertView() {
         $o = $this;
         while ($o) {
-            if ($o->invertYOffset)
+            if ($o->invertView)
                 return true;
             $o = $o->getParent();
         }
@@ -157,7 +157,7 @@ class SCContainer {
                     'location' => ($root && $this->getParent() ? $this->getParent()->getId() : $this->game->getVoid()->getId()),
                     'xOffset' => $this->getXOffset(),
                     'yOffset' => $this->getYOffset(),
-                    'invertY' => $this->invertY(),
+                    'invertView' => $this->invertView(),
                     'zIndex' => $this->getZIndex()
         );
     }

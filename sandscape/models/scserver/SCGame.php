@@ -98,7 +98,7 @@ class SCGame {
                         ($this->player2Side->getPlayerId() == $userId ? $this->player1Side : null));
 
         $this->roots [$side->getPlayableArea()->getId()] = $side->getPlayableArea();
-        $side->getPlayableArea()->setInvertYOffset(true);
+        $side->getPlayableArea()->setInvertView(true);
 
         return $side;
     }

@@ -179,7 +179,7 @@ function checkGameStart() {
                                     } ]
                                 })
                                 .children('img.face').attr('src', '_game/cards/thumbs/' 
-                                    + (card.invertY ? 'reversed/' : '') + card.src);
+                                    + (card.invertView ? 'reversed/' : '') + card.src);
                         
                                 updateCardExtras($('#'+card.id));
                             }
@@ -240,7 +240,7 @@ function updateCardExtras(card) {
         for (var i = 0; i < card.data('status').tokens.length; ++i) {
             $(document.createElement('img'))
             .addClass('token')
-            .attr('src', '_game/tokens/thumbs/' + (card.data('status').invertY ? 'reversed/' : '') 
+            .attr('src', '_game/tokens/thumbs/' + (card.data('status').invertView ? 'reversed/' : '') 
                 + card.data('status').tokens[i].src)
             .appendTo(card);
         }
@@ -249,7 +249,7 @@ function updateCardExtras(card) {
         for(i = 0; i<card.data('status').states.length; ++i) {
             $(document.createElement('img'))
             .addClass('state')
-            .attr('src', '_game/states/thumbs/' + (card.data('status').invertY ? 'reversed/' : '') 
+            .attr('src', '_game/states/thumbs/' + (card.data('status').invertView ? 'reversed/' : '') 
                 + card.data('status').states[i].src)
             .appendTo(card);
         }
@@ -266,11 +266,17 @@ function cyclicPositionUpdate() {
                 var data = o.data('status');
                 var location = $('#'+data.location);
                 var top;
-                var left = location.offset().left + Math.round(data.xOffset * location.width());
+                var left;
                 
-                if (!o.data('status').invertY) top = location.offset().top + Math.round(data.yOffset * location.height());
-                else top = location.offset().top + Math.round((1 - o.data('status').yOffset) * location.height()) - o.height();
-                
+                if (!o.data('status').invertView) {
+                    top = location.offset().top + Math.round(data.yOffset * location.height());
+                    left = location.offset().left + Math.round(data.xOffset * location.width());
+                }
+                else {
+                    top = location.offset().top + Math.round((1 - o.data('status').yOffset) * location.height()) - o.height();
+                    left = location.offset().left + Math.round((1 - o.data('status').xOffset) * location.width()) - o.width();
+                }
+                    
                 o.animate({
                     top: top+'px',
                     left: left+'px'
@@ -301,7 +307,7 @@ function doGameUpdate(json) {
                 zIndex: json.update[i].zIndex,
                 visibility: json.update[i].visibility
             })
-            .children('img.face').attr('src',  '_game/cards/thumbs/' + (json.update[i].invertY ? 'reversed/' : '') 
+            .children('img.face').attr('src',  '_game/cards/thumbs/' + (json.update[i].invertView ? 'reversed/' : '') 
                 + json.update[i].src);
          
             updateCardExtras($('#' + json.update[i].id));
@@ -320,7 +326,7 @@ function updateGame() {
             data: {
                 event: 'update',
                 // TODO: Solve the sync problems; lastChange will still disabled until then
-                lastChange: globals.game.lastChange,
+//                lastChange: globals.game.lastChange,
                 clientTime: globals.time.getTime()
             },
             dataType: 'json',
