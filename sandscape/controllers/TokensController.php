@@ -64,26 +64,29 @@ class TokensController extends AppController {
 
                 $sizes = getimagesize($upfile->tempName);
                 $imgFactory = PhpThumbFactory::create($upfile->tempName);
+
                 //250 + 20 width, 354 + 28 height
                 if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
                     $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
                 }
-                $imgFactory->save($path . '/' . $name);
-                $imgFactory->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)->save($path . '/thumbs/' . $name);
-                $imgFactory->rotateImageNDegrees(180)->save($path . '/thumbs/reversed/' . $name);
+                $imgFactory->save($path . '/' . $name)
+                        ->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)
+                        ->save($path . '/thumbs/' . $name)
+                        ->rotateImageNDegrees(180)
+                        ->save($path . '/thumbs/reversed/' . $name);
 
                 $new->image = $name;
                 $new->save();
             }
 
-            $this->redirect(array('update', 'id' => $new->cardId));
+            $this->redirect(array('update', 'id' => $new->tokenId));
         }
 
         $this->render('edit', array('token' => $new));
     }
 
     public function actionUpdate($id) {
-        $token = new Token();
+        $token = $this->loadTokenModel($id);
         $this->performAjaxValidation('token-form', $token);
 
         if (isset($_POST['Token'])) {
@@ -102,15 +105,17 @@ class TokensController extends AppController {
                 if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
                     $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
                 }
-                $imgFactory->save($path . '/' . $name);
-                $imgFactory->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)->save($path . '/thumbs/' . $name);
-                $imgFactory->rotateImageNDegrees(180)->save($path . '/thumbs/reversed/' . $name);
+                $imgFactory->save($path . '/' . $name)
+                        ->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)
+                        ->save($path . '/thumbs/' . $name)
+                        ->rotateImageNDegrees(180)
+                        ->save($path . '/thumbs/reversed/' . $name);
 
                 $token->image = $name;
                 $token->save();
             }
 
-            $this->redirect(array('update', 'id' => $token->cardId));
+            $this->redirect(array('update', 'id' => $token->tokenId));
         }
 
         $this->render('edit', array('token' => $token));

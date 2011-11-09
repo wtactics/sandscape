@@ -36,7 +36,7 @@ class State extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'Token';
+        return 'State';
     }
 
     public function rules() {
@@ -66,7 +66,7 @@ class State extends CActiveRecord {
         $criteria->compare('name', $this->name, true);
         $criteria->compare('active', 1);
 
-        return new CActiveDataProvider('Token', array('criteria' => $criteria));
+        return new CActiveDataProvider('State', array('criteria' => $criteria));
     }
 
 }

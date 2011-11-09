@@ -203,13 +203,13 @@ class GameController extends AppController {
 
                             // tokens
                             $tokens = array();
-                            foreach (Token::model()->find() as $token) {
+                            foreach (Token::model()->findAll('active = 1') as $token) {
                                 $tokens[] = new SCToken($token->name, $token->image);
                             }
 
                             // card states
                             $states = array();
-                            foreach (State::model()->find() as $state) {
+                            foreach (State::model()->findAll('active = 1') as $state) {
                                 $states[] = new SCState($state->name, $state->image);
                             }
 

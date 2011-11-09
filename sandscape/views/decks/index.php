@@ -6,9 +6,9 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.si
 ?>
 <h2>Manage Decks</h2>
 <div class="span-22 last">
-    <a href="<?php echo $this->createURL('create'); ?>">New Deck</a>
+    <a href="<?php echo $this->createURL('create'); ?>">Create Deck</a>
     &nbsp;:&nbsp;
-    <a href="javascript:;" onclick="$('#precons').modal();">Pre-cons</a>
+    <a href="javascript:;" onclick="$('#precons').modal();">Pre-constructed Decks</a>
 </div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(

@@ -68,22 +68,25 @@ class StatesController extends AppController {
                 if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
                     $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
                 }
-                $imgFactory->save($path . '/' . $name);
-                $imgFactory->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)->save($path . '/thumbs/' . $name);
-                $imgFactory->rotateImageNDegrees(180)->save($path . '/thumbs/reversed/' . $name);
+                $imgFactory->save($path . '/' . $name)
+                        ->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)
+                        ->save($path . '/thumbs/' . $name)
+                        ->rotateImageNDegrees(180)
+                        ->save($path . '/thumbs/reversed/' . $name);
 
                 $new->image = $name;
                 $new->save();
             }
 
-            $this->redirect(array('update', 'id' => $new->cardId));
+            $this->redirect(array('update', 'id' => $new->stateId));
         }
 
         $this->render('edit', array('state' => $new));
     }
 
     public function actionUpdate($id) {
-        $state = new State();
+        $state = $this->loadStateModel($id);
+        
         $this->performAjaxValidation('state-form', $state);
 
         if (isset($_POST['State'])) {
@@ -102,15 +105,17 @@ class StatesController extends AppController {
                 if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
                     $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
                 }
-                $imgFactory->save($path . '/' . $name);
-                $imgFactory->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)->save($path . '/thumbs/' . $name);
-                $imgFactory->rotateImageNDegrees(180)->save($path . '/thumbs/reversed/' . $name);
+                $imgFactory->save($path . '/' . $name)
+                        ->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)
+                        ->save($path . '/thumbs/' . $name)
+                        ->rotateImageNDegrees(180)
+                        ->save($path . '/thumbs/reversed/' . $name);
 
                 $state->image = $name;
                 $state->save();
             }
 
-            $this->redirect(array('update', 'id' => $state->cardId));
+            $this->redirect(array('update', 'id' => $state->stateId));
         }
 
         $this->render('edit', array('state' => $state));

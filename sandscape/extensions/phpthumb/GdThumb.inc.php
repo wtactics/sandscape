@@ -117,6 +117,9 @@ class GdThumb extends ThumbBase {
                 break;
             case 'PNG':
                 $this->oldImage = imagecreatefrompng($this->fileName);
+                //Added for alpha loss
+                imagealphablending($this->oldImage, true);
+                imagesavealpha($this->oldImage, true);
                 break;
             case 'STRING':
                 $this->oldImage = imagecreatefromstring($this->fileName);
@@ -455,6 +458,9 @@ class GdThumb extends ThumbBase {
         }
 
         $this->workingImage = imagerotate($this->oldImage, $degrees, 0);
+        //Added to correct alpha loss
+        imagealphablending($this->workingImage, true);
+        imagesavealpha($this->workingImage, true);
 
         $newWidth = $this->currentDimensions['height'];
         $newHeight = $this->currentDimensions['width'];
