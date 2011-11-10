@@ -133,7 +133,6 @@ class GameController extends AppController {
                 $this->updateUserActivity();
             }
         }
-        //header('Content-Type: text/html; charset=UTF-8');
         echo json_encode($result);
     }
 
@@ -378,9 +377,6 @@ class GameController extends AppController {
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         break;
-                    case 'gamePause':
-                        //TODO: not implemented yet
-                        break;
                     /**
                      * Rolls one of the existing dice.
                      */
@@ -507,7 +503,7 @@ class GameController extends AppController {
      */
     private function loadGameById($id) {
         if (($game = Game::model()->findByPk((int) $id)) === null) {
-            throw new CHttpException(404, 'The requested page does not exist.');
+            throw new CHttpException(404, 'The game you\'re requestion doesn\'t exist.');
         }
 
         return $game;

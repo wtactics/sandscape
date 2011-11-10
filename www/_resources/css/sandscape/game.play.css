@@ -2,7 +2,8 @@
     /*Merging CSS, see game.common.css*/
     height: 150px;
 }
-#chat ul {
+
+#content-view {
     height: 130px;
 }
 

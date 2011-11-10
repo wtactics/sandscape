@@ -8,6 +8,6 @@ VALUES ('useanydice', 1, 'If active, users can choose any dice available in the 
 
 -- Adding new fields to Game table
 ALTER TABLE `Game` ADD `winnerId` INT UNSIGNED NULL, 
-`spectatorsSpeak` TINYINT NOT NULL DEFAULT 0 ;
+ADD `spectatorsSpeak` TINYINT NOT NULL DEFAULT 0 ;
 
 ALTER TABLE `Game` ADD CONSTRAINT `fkGameUserWinner` FOREIGN KEY (`winnerId`) REFERENCES `User`(`userId`) ;

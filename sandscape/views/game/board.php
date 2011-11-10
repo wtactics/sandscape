@@ -29,7 +29,6 @@ globals.chat.lastReceived = {$last};
 globals.game.url = '{$playUrl}';
     
 init();
-updateMessageScroll();
 
 JS;
 Yii::app()->clientScript->registerScript('startjs', $startJS);
@@ -46,19 +45,24 @@ $this->title = 'Playing';
         $this->widget('zii.widgets.jui.CJuiSlider', array(
             'id' => 'chat-slider',
             'options' => array(
+                'max' => 0,
+                'animate' => true,
                 'orientation' => 'vertical',
-                //js:function(event, ui) { $("#TextBoxId").val(ui.value);}
-                'slide' => 'js:scrollMessages'
+                'slide' => 'js:sliderScroll',
+                'change' => 'js:sliderChange',
+                'create' => 'js:sliderSetValue'
             )
         ));
         ?>
-        <ul id="chat-messages">
-            <?php foreach ($messages as $message) { ?>
-                <li class="user-message">
-                    <strong><?php echo $message->user->name; ?></strong>: <?php echo $message->message; ?>
-                </li>
-            <?php } ?>
-        </ul>
+        <div id="content-view">
+            <ul id="chat-messages">
+                <?php foreach ($messages as $message) { ?>
+                    <li class="user-message">
+                        <strong><?php echo $message->user->name; ?></strong>: <?php echo $message->message; ?>
+                    </li>
+                <?php } ?>
+            </ul>
+        </div>
         <input type="text" id="writemessage" />
     </div>
     <div class="hand"><!-- PLAYER HAND AREA --></div>
@@ -86,6 +90,7 @@ $this->title = 'Playing';
     <span>Building game.</span>
 </div>
 
+<!-- IN-GAME MENU -->
 <div id="game-menu">
     <img id="menu-slider" src="_resources/images/game-menu-slider.png" />
     <ul id="menu-elements">
@@ -107,11 +112,11 @@ $this->title = 'Playing';
                 <li><a href="javascript:filterChatMessages(2);">System</a></li>
             </ul>
         </li>
-        <li><a href="javascript:alert('Not implemented yet!')">Notes</a></li>
         <li><a href="javascript:exit();">Exit</a></li>
     </ul>
 </div>
 
+<!-- EXIT GAME DIALOG -->
 <div id="exit-dialog">
 
 </div>

@@ -19,7 +19,7 @@ var globals = {
 
 function init() {
     $('#writemessage').keypress(function(e) {
-        if(e.which == 13) {
+        if(e.keyCode == 13) {
             sendMessage();
         }
     });
@@ -45,15 +45,13 @@ function init() {
                 $('#menu-slider').data('on', true);
             });
         }
-    });   
+    });
     
     //start game creation
     $('#opponent-loader').show();
     pack();
     checkGameStart();
-    globals.chat.updID = setInterval(function() {
-        updateMessages(globals.chat.updateUrl);
-    }, 5000);
+    setTimeout(updateMessages, 1000);
 }
 
 function checkGameStart() {
@@ -128,19 +126,19 @@ function checkGameStart() {
                                     radius: 30,
                                     options: [{
                                         //draw card to hand
-                                        option: '<img src="_resources/images/icon-x16-hand.png" alt="Draw to Hand" />',
+                                        option: '<img src="_resources/images/icon-x16-hand.png" title="Draw to Hand" />',
                                         event: function(deck) {
                                             drawCard($(deck).attr('id'));
                                         }
                                     },{
                                         //shuffle
-                                        option: '<img src="_resources/images/icon-x16-suffle.png" alt="Suffle Deck" />',
+                                        option: '<img src="_resources/images/icon-x16-suffle.png" title="Suffle Deck" />',
                                         event: function(deck) {
                                             shuffleDeck($(deck).attr('id'));
                                         }
                                     }, {
                                         //draw card to table
-                                        option: '<img src="_resources/images/icon-x16-hand-table.png" alt="Draw to Table" />',
+                                        option: '<img src="_resources/images/icon-x16-hand-table.png" title="Draw to Table" />',
                                         event: function(deck) {
                                             drawCardToTable($(deck).attr('id'));
                                         }
@@ -161,19 +159,19 @@ function checkGameStart() {
                                     radius: 30,
                                     options: [{
                                         //draw card to hand
-                                        option: '<img src="_resources/images/icon-x16-hand.png" alt="Draw to Hand" />',
+                                        option: '<img src="_resources/images/icon-x16-hand.png" title="Draw to Hand" />',
                                         event: function(graveyard) {
                                         //drawCard($(deck).attr('id'));
                                         }
                                     },{
                                         //shuffle
-                                        option: '<img src="_resources/images/icon-x16-suffle.png" alt="Suffle Deck" />',
+                                        option: '<img src="_resources/images/icon-x16-suffle.png" title="Suffle Deck" />',
                                         event: function(graveyard) {
                                         //shuffleDeck($(deck).attr('id'));
                                         }
                                     }, {
                                         //draw card to table
-                                        option: '<img src="_resources/images/icon-x16-hand-table.png" alt="Draw to Table" />',
+                                        option: '<img src="_resources/images/icon-x16-hand-table.png" title="Draw to Table" />',
                                         event: function(graveyard) {
                                         //drawCardToTable($(deck).attr('id'));
                                         }
@@ -228,39 +226,39 @@ function checkGameStart() {
                                     radius: 60,
                                     options: [{
                                         //details
-                                        option: '<img src="_resources/images/icon-x16-eye.png" />',
+                                        option: '<img src="_resources/images/icon-x16-eye.png" title="Card Details" />',
                                         event: function (card) {
                                             requestCardInfo($(card).attr('id'));
                                         }
                                     }, {
                                         //tokens
-                                        option: '<img src="_resources/images/icon-x16-bookmarks.png" />',
+                                        option: '<img src="_resources/images/icon-x16-bookmarks.png" title="Tokens" />',
                                         subMenu: tokenMenu
                                     }, {
                                         //states
-                                        option: '<img src="_resources/images/icon-x16-hand-state.png" />',
+                                        option: '<img src="_resources/images/icon-x16-hand-state.png" title="States" />',
                                         subMenu: statesMenu
                                     }, {
                                         //give card to opponent
-                                        option: '<img src="_resources/images/icon-x16-hand-give.png" />',
+                                        option: '<img src="_resources/images/icon-x16-hand-give.png" title="Give to Opponent" />',
                                         event: function(card) {
                                             alert('Give not implemented yet!');
                                         }
                                     }, {
                                         //send card to graveyard
-                                        option: '<img src="_resources/images/icon-x16-headstone.png" />',
+                                        option: '<img src="_resources/images/icon-x16-headstone.png" title="Send to Graveyard" />',
                                         event: function(card) {
                                             alert('Graveyard not implemented yet!');
                                         }
                                     }, {
                                         //flip the card
-                                        option: '<img src="_resources/images/icon-x16-flip" />',
+                                        option: '<img src="_resources/images/icon-x16-flip" title="Flip Card" />',
                                         event: function(card) {
                                             flipCard($(card).attr('id'));
                                         }
                                     }, {
                                         //edit label
-                                        option: '<img src="_resources/images/icon-x16-label.png" />',
+                                        option: '<img src="_resources/images/icon-x16-label.png" title="Custom Label" />',
                                         event: function (card) {
                                             alert('Label not implemented yet!');
                                         }
@@ -634,7 +632,7 @@ function sendMessage(e) {
                         + json.name + '</strong>:' + message + '</li>');
                     
                     globals.chat.lastReceived = json.id;
-                    updateMessageScroll();
+                    chatToBottom();
                 }
             }
         });
@@ -658,14 +656,29 @@ function updateMessages() {
                 });
 
                 globals.chat.lastReceived = json.last;
-                updateMessageScroll();
             }
+        },
+        complete: function() {
+            chatToBottom();
+            setTimeout(updateMessages, 5000);
         }
+        
     });
 }
 
-function updateMessageScroll() {
-//$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
+function sliderSetValue(event, ui) {
+    $('#chat-slider').slider('option', 'value', -($('#chat-messages').height() - 130));
+}
+
+function chatToBottom() {
+    var sl = $('#chat-slider'), cm = $('#chat-messages');
+    var h = -(cm.height() - 130);
+    
+    sl.slider('option', 'min', h).slider('option', 'value', h);
+    
+    cm.animate({
+        top: sl.slider('option', 'value')
+    }, 'slow');
 }
 
 function filterChatMessages(filter) {
@@ -695,17 +708,27 @@ function roll(diceId) {
         dataType: 'json',
         success: function(json) {
             if(json.success) {
+                //TODO: proper message in chat and in jGrowl
                 alert('Rolled ' + json.roll);
-                //$('#chat-messages').append('<li class="system-message">' + json.user + 
-                //    'rolled ' + json.dice + '(1, ' + json.face + '): ' + json.roll + '</li>');
+            //$('#chat-messages').append('<li class="system-message">' + json.user + 
+            //    'rolled ' + json.dice + '(1, ' + json.face + '): ' + json.roll + '</li>');
             } else {
-                //$('#chat-messages').append('<li class="system-message">Dice roll failed.</li>');
-            }
+        //$('#chat-messages').append('<li class="system-message">Dice roll failed.</li>');
+        }
         }
     });
 }
 
-function scrollMessages(event, ui) {
+function sliderChange(e, ui) {
+    $('#chat-messages').css({
+        top: ui.value
+    });
+}
+
+function sliderScroll(e, ui) {   
+    $('#chat-messages').css({
+        top: ui.value
+    });
 }
 
 function exit() {

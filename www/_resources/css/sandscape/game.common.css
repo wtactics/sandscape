@@ -75,19 +75,31 @@ ul {
 }
 
 #chat ul {
+    position: absolute;
+    left: 0;
     margin: 0;
     padding: 0;
     border: none;
     list-style: none;
-    overflow: hidden;
     margin-bottom: 3px;
 }
 
+#content-view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    width: 100%;
+}
+
 #writemessage {
+    position: absolute;
+    bottom: 0;
+    left: 3px;
     border: 1px solid #CCC;
     border-radius: 4px;
     -moz-border-radius: 4px;
-    width: 96%;
+    width: 200px;
 }
 
 /*

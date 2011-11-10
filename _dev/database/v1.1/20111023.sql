@@ -1,3 +1,3 @@
 ALTER TABLE `User` CHANGE `name` `name` VARCHAR( 15 ) NOT NULL UNIQUE ;
 
-ALTER TABLE `Card` CHANGE `image` VARCHAR( 36 ) NULL ;
+ALTER TABLE `Card` CHANGE `image` `image` VARCHAR( 36 ) NULL ;
