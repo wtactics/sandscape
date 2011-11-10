@@ -66,7 +66,6 @@ class LoginForm extends CFormModel {
 
         if ($this->credentials->errorCode === Credentials::ERROR_NONE) {
             //remember for 7 days
-            //TODO: make this configurable in the user's profile
             $duration = $this->rememberMe ? 3600 * 24 * 7 : 0;
             Yii::app()->user->login($this->credentials, $duration);
 

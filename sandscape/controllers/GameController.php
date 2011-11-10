@@ -418,17 +418,10 @@ class GameController extends AppController {
             }
 
             //getting chat messages
-            $start = ChatMessage::model()->count('gameId = :id ORDER BY sent', array(':id' => (int) $game->gameId));
-            if ($start >= 15) {
-                $start -= 15;
-            } else {
-                $start = 0;
-            }
-
-            $messages = ChatMessage::model()->findAll('gameId = :id ORDER BY sent LIMIT :start, 15', array(
-                ':id' => (int) $game->gameId,
-                ':start' => (int) $start
-                    ));
+            $messages = ChatMessage::model()->findAll('gameId = :id ORDER BY sent', array(
+                ':id' => (int) $game->gameId
+                    )
+            );
 
             //getting game dice
             $dice = $game->dice;
@@ -438,7 +431,8 @@ class GameController extends AppController {
                 'gameId' => $id,
                 'messages' => $messages,
                 'paused' => $game->paused,
-                'dice' => $dice
+                'dice' => $dice,
+                'user' => Yii::app()->user->name
             ));
         } else {
             //unlock the game record before redirecting

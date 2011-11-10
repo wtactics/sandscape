@@ -27,6 +27,7 @@ globals.chat.sendUrl = '{$sendMessageUrl}';
 globals.chat.updateUrl = '{$updateMessageUrl}';
 globals.chat.lastReceived = {$last};
 globals.game.url = '{$playUrl}';
+globals.user = '{$user}';
     
 init();
 

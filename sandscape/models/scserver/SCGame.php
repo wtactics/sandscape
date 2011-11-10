@@ -289,23 +289,6 @@ class SCGame {
     }
 
     /**
-     * Returns the database ID for the card that has the given internal ID.
-     * 
-     * @param string $cardId The ID used to identify the <em>SCCard</em> object and for 
-     * which we want the corresponding <em>Card</em> object ID.
-     * 
-     * @return integer The database ID if the card exists, zero otherwise.
-     */
-    //TODO: remove
-    public function getCardDBId($cardId) {
-        if (isset($this->all[$cardId])) {
-            return $this->all[$cardId]->getDbId();
-        }
-
-        return 0;
-    }
-
-    /**
      *
      * @param type $cardId
      * @return StdClass 

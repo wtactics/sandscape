@@ -94,12 +94,12 @@ ul {
 
 #writemessage {
     position: absolute;
-    bottom: 0;
-    left: 3px;
+    bottom: 2px;
+    left: 10px;
     border: 1px solid #CCC;
     border-radius: 4px;
     -moz-border-radius: 4px;
-    width: 200px;
+    width: 230px;
 }
 
 /*

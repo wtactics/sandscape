@@ -14,7 +14,8 @@ var globals = {
     },
     time: new Date(),
     stopPositionUpdate: false,
-    updatingGame: false
+    updatingGame: false,
+    user: ''
 }
 
 function init() {
@@ -656,10 +657,10 @@ function updateMessages() {
                 });
 
                 globals.chat.lastReceived = json.last;
+                chatToBottom();
             }
         },
         complete: function() {
-            chatToBottom();
             setTimeout(updateMessages, 5000);
         }
         
@@ -761,9 +762,8 @@ function shuffleDeck(deckId) {
         },
         dataType: 'json',
         type: 'POST',
-        success: function (json) {
-        //alert(json.success);
-        //TODO: warn users with jGrowl and chat message
+        success: function (json) {  
+            //$.jGrowl(globals.user + ' shuffled deck (add deck name).');
         }
     });   
 }
