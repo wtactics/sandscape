@@ -277,6 +277,7 @@ class SCGame {
      * 
      * @return integer The database ID if the card exists, zero otherwise.
      */
+    //TODO: remove
     public function getCardDBId($cardId) {
         if (isset($this->all[$cardId])) {
             return $this->all[$cardId]->getDbId();
@@ -290,9 +291,32 @@ class SCGame {
      * @param type $cardId
      * @return StdClass 
      */
-    public function getCardStatus($cardId) {
+    public function getCardStatus($userId, $cardId) {
         if (isset($this->all[$cardId])) {
+            $player = $this->getPlayerSide($userId);
+            $opponent = $this->getOpponentSide($userId);
+
             return $this->all[$cardId]->getStatus();
+        }
+
+        return null;
+    }
+
+    /**
+     *
+     * @param int $userId
+     * @param int $cardId
+     * 
+     * @return SCCard
+     */
+    public function flipCard($userId, $cardId) {
+        if (isset($this->all[$cardId])) {
+            $player = $this->getPlayerSide($userId);
+            $opponent = $this->getOpponentSide($userId);
+
+            $this->all[$cardId]->flip();
+
+            return $this->all[$cardId];
         }
 
         return null;

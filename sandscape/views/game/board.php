@@ -87,5 +87,27 @@ $this->title = 'Playing';
 </div>
 
 <div id="game-menu">
-    <img src="_resources/images/game-menu-slider.png" />
+    <img id="menu-slider" src="_resources/images/game-menu-slider.png" />
+    <ul id="menu-elements">
+        <li>
+            <a href="javascript:;">Dice</a>
+            <ul id="sub-menu">
+                <li><a href="javascript:roll(10)">D10</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;">Chat</a>
+            <ul>
+                <li><a href="javascript:filterChatMessages(0);">All</a></li>
+                <li><a href="javascript:filterChatMessages(1);">User</a></li>
+                <li><a href="javascript:filterChatMessages(2);">System</a></li>
+            </ul>
+        </li>
+        <li><a href="javascript:alert('Not implemented yet!')">Notes</a></li>
+        <li><a href="javascript:exit();">Exit</a></li>
+    </ul>
+</div>
+
+<div id="exit-dialog">
+
 </div>

@@ -18,14 +18,37 @@ var globals = {
 }
 
 function init() {
-    $('#opponent-loader').show();
-    
     $('#writemessage').keypress(function(e) {
         if(e.which == 13) {
             sendMessage();
         }
     });
     
+    //create game menu: slider hidden in the right
+    $('#menu-slider').data('on', false).click(function(e) {
+        if($(this).data('on')) {
+            //menu is visible: slide menu up, slide menu image right
+            $('#menu-elements').slideToggle(100, function() {
+                $('#game-menu').animate({
+                    right: -170
+                });
+                //mark as hidden
+                $('#menu-slider').data('on', false);
+            });
+        } else {
+            //menu is hidden: slide menu image left, slide menu down
+            $('#game-menu').animate({
+                right: 0
+            }, 'slow', function() {
+                $('#menu-elements').slideToggle(100);
+                //mark as visible
+                $('#menu-slider').data('on', true);
+            });
+        }
+    });   
+    
+    //start game creation
+    $('#opponent-loader').show();
     pack();
     checkGameStart();
     globals.chat.updID = setInterval(function() {
@@ -91,11 +114,8 @@ function checkGameStart() {
                             .appendTo($('body'));
     
                             //Player area: left hand, decks and play zone
-                            $('.hand')
-                            .attr('id', create.player.hand.id)
-                            
-                            $('.play')
-                            .attr('id', create.player.playableArea.id)
+                            $('.hand').attr('id', create.player.hand.id)
+                            $('.play').attr('id', create.player.playableArea.id)
 
                             for(i = 0; i < create.player.decks.length; i++) {
                                 $(document.createElement('img'))
@@ -165,33 +185,40 @@ function checkGameStart() {
                                 .radialmenu({
                                     radius: 60,
                                     options: [{
-                                        option: '',//'<img src="_resources/images/icon-x16-eye.png" />',
+                                        //details
+                                        option: '<img src="_resources/images/icon-x16-eye.png" />',
                                         event: function (card) {
                                             requestCardInfo($(card).attr('id'));
                                         }
                                     }, {
-                                        option: '',//'<img src="_resources/images/icon-x16-bookmarks.png" />',
+                                        //tokens
+                                        option: '<img src="_resources/images/icon-x16-bookmarks.png" />',
                                         subMenu: tokenMenu
                                     }, {
-                                        option: '',//'<img src="_resources/images/icon-x16-hand-point.png" />',
+                                        //states
+                                        option: '<img src="_resources/images/icon-x16-hand-point.png" />',
                                         subMenu: statesMenu
                                     }, {
-                                        option: '',//'<img src="_resources/images/icon-x16-hand-give.png" />',
+                                        //give card to opponent
+                                        option: '<img src="_resources/images/icon-x16-hand-give.png" />',
                                         event: function(card) {
                                             alert('Give not implemented yet!');
                                         }
                                     }, {
-                                        option: '',//'<img src="_resources/images/icon-x16-headstone.png" />',
+                                        //send card to graveyard
+                                        option: '<img src="_resources/images/icon-x16-headstone.png" />',
                                         event: function(card) {
                                             alert('Graveyard not implemented yet!');
                                         }
                                     }, {
-                                        option: '',//'<img src="_resources/images/icon-x16-flip" />',
+                                        //flip the card
+                                        option: '<img src="_resources/images/icon-x16-flip" />',
                                         event: function(card) {
-                                            alert('Flip not implemented yet!');
+                                            flipCard($(card).attr('id'));
                                         }
                                     }, {
-                                        option: '',//'<img src="_resources/images/icon-x16-label.png" />',
+                                        //edit label
+                                        option: '<img src="_resources/images/icon-x16-label.png" />',
                                         event: function (card) {
                                             alert('Label not implemented yet!');
                                         }
@@ -452,21 +479,23 @@ function requestCardInfo(id) {
             if(json.success) {
                 var owner = $('#card-info');
                 $('#card-image').attr('src', '_game/cards/' + json.status.src);
-            //TODO: implement token and state information, as well as any other
-            //info that affect cards (labels, counters, etc)
-            /*for(var i = 0; i < json.status.tokens.length; i++) {
+                //TODO: implement token and state information, as well as any other
+                //info that affect cards (labels, counters, etc)
+                for(var i = 0; i < json.status.tokens.length; i++) {
                     $(document.createElement('img'))
                     .addClass('temp')
-                    //.attr('src', json.status.tokens[i].src)
+                    .css('z-index', 1)
+                    .attr('src', '_game/tokens/' + json.status.tokens[i].src)
                     .appendTo(owner);
                 }
                 
                 for(i = 0; i < json.status.states.length; i++) {
                     $(document.createElement('img'))
                     .addClass('temp')
-                    //.attr('src', json.status.tokens[i].src)
+                    .css('z-index', -1)
+                    .attr('src', '_game/states/' + json.status.states[i].src)
                     .appendTo(owner);
-                }*/               
+                }
             } else {
                 $('#card-image').attr('src', '_game/cards/cardback.jpg');
             }
@@ -599,25 +628,28 @@ function updateMessageScroll() {
 //$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
 }
 
-function filterChatMessages(elem) {
-    if(elem.id == 'fshow-all') {
-        $('li.user-message').show();
-        $('li.user-system').show();
-    } else if(elem.id == 'fshow-user') {
-        $('li.user-message').show();
-        $('li.user-system').hide();
-    } else if(elem.id == 'fshow-system') {
-        $('li.user-message').hide();
-        $('li.user-system').show();
-    }    
+function filterChatMessages(filter) {
+    switch(filter) {
+        case 0:
+            $('li.user-message').show();
+            $('li.user-system').show();
+            break;
+        case 1:
+            $('li.user-message').show();
+            $('li.user-system').hide();
+            break;
+        case 2:
+            $('li.user-message').hide();
+            $('li.user-system').show();
+    }
 }
 
-function roll(dice) {
-    $.ajax({
+function roll(diceId) {
+/*$.ajax({
         url: globals.game.url,
         data: {
             event: 'roll',
-            dice: dice
+            dice: diceId
         },
         type: 'POST',
         dataType: 'json',
@@ -629,8 +661,29 @@ function roll(dice) {
                 $('#chat-messages').append('<li class="system-message">Dice roll failed.</li>');
             }
         }
-    });
+    });*/
 }
 
 function scrollMessages(event, ui) {
+}
+
+function exit() {
+}
+
+function flipCard(id) {
+    $.ajax({
+        url: globals.game.url,
+        data: {
+            event: 'flipCard',
+            card: id
+        },
+        type: 'POST',
+        dataType: 'json',
+        success: function (json) {
+            if(json.success) {
+                $('#' + id).attr('src', '_game/cards/thumbs/' 
+                    + (json.status.invertView ? 'reversed/' : '') + json.status.src);
+            }
+        }
+    });
 }

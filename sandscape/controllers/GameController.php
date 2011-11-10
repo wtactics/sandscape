@@ -275,10 +275,10 @@ class GameController extends AppController {
                         }
                         break;
                     /**
-                     * DRAWCARD: draws a card from a deck
+                     * Draws a card from a deck.
                      * 
                      * Params:
-                     *    deck - id from deck element
+                     *  deck - id from deck element
                      * 
                      * out.result:
                      *    'ok'
@@ -324,12 +324,40 @@ class GameController extends AppController {
                             echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         }
                         break;
+                    /**
+                     * Gets the card information for clients to show as bigger
+                     * images in the top left information area.
+                     * 
+                     * Params:
+                     *  card - The card element ID
+                     * 
+                     * out.success:
+                     * out.status:
+                     */
                     case 'cardInfo':
                         $result = array('success' => 0);
                         if ($game->running && $this->scGame && isset($_REQUEST['card'])) {
                             $result = array(
                                 'success' => 1,
-                                'status' => $this->scGame->getCardStatus($_REQUEST['card'])
+                                'status' => $this->scGame->getCardStatus(Yii::app()->user->id, $_REQUEST['card'])
+                            );
+                        }
+                        echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
+                        break;
+                    /**
+                     * Flips a card. If the card is facing up it will be changed 
+                     * to face down, if it's facing down then the card will be changed
+                     * so that it is facinf up.
+                     */
+                    case 'flipCard':
+                        $result = array('success' => 0);
+                        if ($game->running && $this->scGame && isset($_REQUEST['card'])) {
+
+                            $card = $this->scGame->flipCard(Yii::app()->user->id, $_REQUEST['card']);
+
+                            $result = array(
+                                'success' => $card !== null ? 1 : 0,
+                                'status' => $card !== null ? $card->getStatus() : null
                             );
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
@@ -337,8 +365,10 @@ class GameController extends AppController {
                     case 'gamePause':
                         //TODO: not implemented yet
                         break;
+                    /**
+                     * Rolls one of the existing dice.
+                     */
                     case 'roll':
-                        //TODO: proper error message
                         $result = array('success' => 0);
                         if (isset($_POST['dice']) && (int) $_POST['dice']) {
                             $dice = null;
@@ -362,6 +392,10 @@ class GameController extends AppController {
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         break;
+                    /**
+                     * Defaults to unrecognized action message and terminates the 
+                     * execution.
+                     */
                     default:
                         echo json_encode((object) array('result' => 'error', 'motive' => 'Unrecognized action'));
                         Yii::app()->db->createCommand("select release_lock('game.$id')");
