@@ -169,6 +169,8 @@ class GameController extends AppController {
      */
     public function actionPlay($id) {
         $this->layout = '//layouts/game';
+        //flag used by moveCard and moveCardToTable, defaults to hand 
+        $toHand = true;
 
         //lock record
         $id = intval($id);
@@ -226,14 +228,12 @@ class GameController extends AppController {
                                 $scdeck = new SCDeck($this->scGame, $deck->name, $cards);
 
                                 if ($deck->userId == $game->player1)
-                                    $this->scGame->addPlayer1Deck($scdeck);
-                                elseif ($deck->userId == $game->player2)
+                                    $this->scGame->addPlayer1Deck($scdeck); elseif ($deck->userId == $game->player2)
                                     $this->scGame->addPlayer2Deck($scdeck);
                             }
                             $game->lastChange = time();
                             echo json_encode((object) array('result' => 'ok'));
-                        }
-                        else {
+                        } else {
                             echo json_encode((object) array('result' => 'wait'));
                         }
                         break;
@@ -283,10 +283,13 @@ class GameController extends AppController {
                      * out.result:
                      *    'ok'
                      */
+                    case 'drawCardToTable':
+                        //default is set in the method's first lines
+                        $toHand = false;
                     case 'drawCard':
                         if ($game->running && $this->scGame && isset($_REQUEST['deck'])) {
                             $deck = $_REQUEST['deck'];
-                            $result = $this->scGame->drawCard(Yii::app()->user->id, $deck);
+                            $result = $this->scGame->drawCard(Yii::app()->user->id, $deck, $toHand);
                             $result->result = 'ok';
                             $result->clientTime = $_REQUEST['clientTime'];
                             echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
@@ -362,6 +365,19 @@ class GameController extends AppController {
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         break;
+                    /**
+                     * Shuffles the array of cards for the given deck.
+                     */
+                    case 'shuffleDeck':
+                        $result = array('success' => 0);
+                        if ($game->running && $this->scGame && isset($_REQUEST['deck'])) {
+
+                            $result = array(
+                                'success' => $this->scGame->shuffleDeck(Yii::app()->user->id, $_REQUEST['deck'])
+                            );
+                        }
+                        echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
+                        break;
                     case 'gamePause':
                         //TODO: not implemented yet
                         break;
@@ -370,17 +386,14 @@ class GameController extends AppController {
                      */
                     case 'roll':
                         $result = array('success' => 0);
-                        if (isset($_POST['dice']) && (int) $_POST['dice']) {
-                            $dice = null;
-                            if (GameDice::model()->find('gameId = :id AND diceId = :dice', array(
-                                        ':id' => $game->gameId,
-                                        ':face' => (int) $_POST['dice']
-                                    )) !== null) {
+                        if ($game->running && $this->scGame && isset($_POST['dice']) && (int) $_POST['dice']) {
+                            if (($gd = GameDice::model()->find('gameId = :id AND diceId = :dice', array(
+                                ':id' => $game->gameId,
+                                ':dice' => (int) $_POST['dice']
+                                    ))) !== null) {
 
-                                $dice = Dice::model()->find('active = 1 AND diceId = :id', array(':id' => (int) $_POST['dice']));
-                            }
+                                $dice = $gd->dice;
 
-                            if ($dice !== null) {
                                 $result = array(
                                     'success' => 1,
                                     'roll' => rand(1, $dice->face),

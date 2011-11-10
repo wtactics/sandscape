@@ -124,8 +124,27 @@ function checkGameStart() {
                                     src: '_game/cards/thumbs/cardback.jpg'
                                 })
                                 .data('deck-name', create.player.decks[i].name)
-                                .click(function() {
-                                    drawCard($(this).attr('id'));
+                                .radialmenu({
+                                    radius: 30,
+                                    options: [{
+                                        //draw card to hand
+                                        option: '<img src="_resources/images/icon-x16-hand.png" alt="Draw to Hand" />',
+                                        event: function(deck) {
+                                            drawCard($(deck).attr('id'));
+                                        }
+                                    },{
+                                        //shuffle
+                                        option: '<img src="_resources/images/icon-x16-suffle.png" alt="Suffle Deck" />',
+                                        event: function(deck) {
+                                            shuffleDeck($(deck).attr('id'));
+                                        }
+                                    }, {
+                                        //draw card to table
+                                        option: '<img src="_resources/images/icon-x16-hand-table.png" alt="Draw to Table" />',
+                                        event: function(deck) {
+                                            drawCardToTable($(deck).attr('id'));
+                                        }
+                                    }]
                                 })
                                 .appendTo($('#deck-slide'));
                             }
@@ -137,6 +156,29 @@ function checkGameStart() {
                                     src: '_game/cards/thumbs/noimage.jpg'
                                 })
                                 .data('deck-name', 'Graveyard')
+                                //TODO: graveyard actions
+                                .radialmenu({
+                                    radius: 30,
+                                    options: [{
+                                        //draw card to hand
+                                        option: '<img src="_resources/images/icon-x16-hand.png" alt="Draw to Hand" />',
+                                        event: function(graveyard) {
+                                        //drawCard($(deck).attr('id'));
+                                        }
+                                    },{
+                                        //shuffle
+                                        option: '<img src="_resources/images/icon-x16-suffle.png" alt="Suffle Deck" />',
+                                        event: function(graveyard) {
+                                        //shuffleDeck($(deck).attr('id'));
+                                        }
+                                    }, {
+                                        //draw card to table
+                                        option: '<img src="_resources/images/icon-x16-hand-table.png" alt="Draw to Table" />',
+                                        event: function(graveyard) {
+                                        //drawCardToTable($(deck).attr('id'));
+                                        }
+                                    }]
+                                })
                                 .appendTo($('#deck-slide'));
                             }
                             
@@ -196,7 +238,7 @@ function checkGameStart() {
                                         subMenu: tokenMenu
                                     }, {
                                         //states
-                                        option: '<img src="_resources/images/icon-x16-hand-point.png" />',
+                                        option: '<img src="_resources/images/icon-x16-hand-state.png" />',
                                         subMenu: statesMenu
                                     }, {
                                         //give card to opponent
@@ -479,8 +521,6 @@ function requestCardInfo(id) {
             if(json.success) {
                 var owner = $('#card-info');
                 $('#card-image').attr('src', '_game/cards/' + json.status.src);
-                //TODO: implement token and state information, as well as any other
-                //info that affect cards (labels, counters, etc)
                 for(var i = 0; i < json.status.tokens.length; i++) {
                     $(document.createElement('img'))
                     .addClass('temp')
@@ -645,7 +685,7 @@ function filterChatMessages(filter) {
 }
 
 function roll(diceId) {
-/*$.ajax({
+    $.ajax({
         url: globals.game.url,
         data: {
             event: 'roll',
@@ -655,13 +695,14 @@ function roll(diceId) {
         dataType: 'json',
         success: function(json) {
             if(json.success) {
-                $('#chat-messages').append('<li class="system-message">' + json.user + 
-                    'rolled ' + json.dice + '(1, ' + json.face + '): ' + json.roll + '</li>');
+                alert('Rolled ' + json.roll);
+                //$('#chat-messages').append('<li class="system-message">' + json.user + 
+                //    'rolled ' + json.dice + '(1, ' + json.face + '): ' + json.roll + '</li>');
             } else {
-                $('#chat-messages').append('<li class="system-message">Dice roll failed.</li>');
+                //$('#chat-messages').append('<li class="system-message">Dice roll failed.</li>');
             }
         }
-    });*/
+    });
 }
 
 function scrollMessages(event, ui) {
@@ -686,4 +727,40 @@ function flipCard(id) {
             }
         }
     });
+}
+
+function shuffleDeck(deckId) {
+    $.ajax({
+        url: globals.game.url,
+        data: {
+            event: 'shuffleDeck',
+            deck: deckId
+        },
+        dataType: 'json',
+        type: 'POST',
+        success: function (json) {
+        //alert(json.success);
+        //TODO: warn users with jGrowl and chat message
+        }
+    });   
+}
+
+function drawCardToTable(deckId) {
+    globals.updatingGame = true;
+    globals.stopPositionUpdate = true;
+    globals.time = new Date();
+    $.ajax({
+        url: globals.game.url,
+        data: {
+            event: 'drawCardToTable',
+            deck: deckId,
+            clientTime: globals.time.getTime()
+        },
+        dataType: 'json',
+        type: 'POST',
+        success: doGameUpdate,
+        complete: function () {
+            globals.stopPositionUpdate = false;
+        }
+    });   
 }

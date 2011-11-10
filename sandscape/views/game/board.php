@@ -89,15 +89,19 @@ $this->title = 'Playing';
 <div id="game-menu">
     <img id="menu-slider" src="_resources/images/game-menu-slider.png" />
     <ul id="menu-elements">
-        <li>
-            <a href="javascript:;">Dice</a>
-            <ul id="sub-menu">
-                <li><a href="javascript:roll(10)">D10</a></li>
-            </ul>
-        </li>
+        <?php if (count($dice)) { ?>
+            <li>
+                <a href="javascript:;">Dice</a>
+                <ul class="sub-menu">
+                    <?php foreach ($dice as $die) { ?>
+                        <li><a href="javascript:roll(<?php echo $die->diceId; ?>)"><?php echo $die->name; ?></a></li>
+                    <?php } ?>
+                </ul>
+            </li>
+        <?php } ?>
         <li>
             <a href="javascript:;">Chat</a>
-            <ul>
+            <ul class="sub-menu">
                 <li><a href="javascript:filterChatMessages(0);">All</a></li>
                 <li><a href="javascript:filterChatMessages(1);">User</a></li>
                 <li><a href="javascript:filterChatMessages(2);">System</a></li>
