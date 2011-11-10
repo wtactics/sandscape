@@ -2,6 +2,9 @@
     /*Merging CSS, see game.common.css*/
     height: 150px;
 }
+#chat ul {
+    height: 130px;
+}
 
 /* UNIQUE CLASS: This class is handled as if it was an ID */
 .opponent-area {
@@ -44,3 +47,16 @@
 /* UNIQUE CLASS: This class is handled as if it was an ID */
 .play {
 }
+
+#chat-slider {
+    position: absolute;
+    height: 120px;
+    top: 5px;
+    right: 5px;
+}
+
+/*.slider {
+}
+
+.ui-slider-handle {
+}*/

@@ -14,6 +14,7 @@ body {
 }
 
 #game-table {
+    /*overflow: hidden;*/
 }
 
 #left-column {
@@ -41,12 +42,16 @@ body {
 }
 
 #chat {
+    /*Position to make slider work*/
+    position: relative;
     border: 5px solid lightgrey;
     border-radius: 16px;
     -moz-border-radius: 16px;
     background: #FFF;
     font-size: 10px;
     text-align: center;
+    padding: 0;
+    
 }
 
 #chat ul {
@@ -54,8 +59,8 @@ body {
     padding: 0;
     border: none;
     list-style: none;
-    height: 130px;
-    overflow: auto;
+    overflow: hidden;
+    margin-bottom: 3px;
 }
 
 #writemessage {
@@ -211,3 +216,13 @@ Own:
 
 Card name: #7ca8e0
 */
+
+#menu-slider {
+    
+}
+
+#game-menu {
+    position: absolute;
+    right: 0px;
+    top: 50px;
+}

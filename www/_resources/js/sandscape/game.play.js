@@ -165,25 +165,35 @@ function checkGameStart() {
                                 .radialmenu({
                                     radius: 60,
                                     options: [{
-                                        option: 'Details',
+                                        option: '',//'<img src="_resources/images/icon-x16-eye.png" />',
                                         event: function (card) {
                                             requestCardInfo($(card).attr('id'));
                                         }
                                     }, {
-                                        option: 'Tokens',
+                                        option: '',//'<img src="_resources/images/icon-x16-bookmarks.png" />',
                                         subMenu: tokenMenu
                                     }, {
-                                        option: 'States',
+                                        option: '',//'<img src="_resources/images/icon-x16-hand-point.png" />',
                                         subMenu: statesMenu
                                     }, {
-                                        option: 'Give',
-                                        event: function (card) {
-                                            alert('Not implemented yet!');
+                                        option: '',//'<img src="_resources/images/icon-x16-hand-give.png" />',
+                                        event: function(card) {
+                                            alert('Give not implemented yet!');
                                         }
                                     }, {
-                                        option: 'Label',
+                                        option: '',//'<img src="_resources/images/icon-x16-headstone.png" />',
+                                        event: function(card) {
+                                            alert('Graveyard not implemented yet!');
+                                        }
+                                    }, {
+                                        option: '',//'<img src="_resources/images/icon-x16-flip" />',
+                                        event: function(card) {
+                                            alert('Flip not implemented yet!');
+                                        }
+                                    }, {
+                                        option: '',//'<img src="_resources/images/icon-x16-label.png" />',
                                         event: function (card) {
-                                            alert('Not implemented yet!');
+                                            alert('Label not implemented yet!');
                                         }
                                     }]
                                 })
@@ -442,9 +452,9 @@ function requestCardInfo(id) {
             if(json.success) {
                 var owner = $('#card-info');
                 $('#card-image').attr('src', '_game/cards/' + json.status.src);
-                //TODO: implement token and state information, as well as any other
-                //info that affect cards (labels, counters, etc)
-                /*for(var i = 0; i < json.status.tokens.length; i++) {
+            //TODO: implement token and state information, as well as any other
+            //info that affect cards (labels, counters, etc)
+            /*for(var i = 0; i < json.status.tokens.length; i++) {
                     $(document.createElement('img'))
                     .addClass('temp')
                     //.attr('src', json.status.tokens[i].src)
@@ -586,7 +596,7 @@ function updateMessages() {
 }
 
 function updateMessageScroll() {
-    $('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
+//$('#chat-messages').scrollTop($('#chat-messages')[0].scrollHeight);
 }
 
 function filterChatMessages(elem) {
@@ -620,4 +630,7 @@ function roll(dice) {
             }
         }
     });
+}
+
+function scrollMessages(event, ui) {
 }

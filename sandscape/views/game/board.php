@@ -42,6 +42,16 @@ $this->title = 'Playing';
         <img id="card-image" src="_game/cards/cardback.jpg" />
     </div>
     <div id="chat">
+        <?php
+        $this->widget('zii.widgets.jui.CJuiSlider', array(
+            'id' => 'chat-slider',
+            'options' => array(
+                'orientation' => 'vertical',
+                //js:function(event, ui) { $("#TextBoxId").val(ui.value);}
+                'slide' => 'js:scrollMessages'
+            )
+        ));
+        ?>
         <ul id="chat-messages">
             <?php foreach ($messages as $message) { ?>
                 <li class="user-message">
@@ -64,14 +74,18 @@ $this->title = 'Playing';
 </div>
 
 <!-- LOADER DIVS -->
-<div id="opponent-loader" class="loader" style="display:none;"">
-     <img id="img-loader" src="_resources/images/game-loader.gif" />
+<div id="opponent-loader" class="loader" style="display:none;">
+    <img id="img-loader" src="_resources/images/game-loader.gif" />
     <br />
     <span>Waiting for opponent.</span>
 </div>
 
-<div id="game-loader" class="loader" style="display:none;"">
-     <img id="img-loader" src="_resources/images/game-loader.gif" />
+<div id="game-loader" class="loader" style="display:none;">
+    <img id="img-loader" src="_resources/images/game-loader.gif" />
     <br />
     <span>Building game.</span>
+</div>
+
+<div id="game-menu">
+    <img src="_resources/images/game-menu-slider.png" />
 </div>

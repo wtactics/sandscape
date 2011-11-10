@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html>
-    <head>        
+    <head>
+        <meta charset="UTF-8" />
         <title><?php echo $this->title; ?></title>
     </head>
     <body>

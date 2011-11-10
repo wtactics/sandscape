@@ -133,6 +133,7 @@ class GameController extends AppController {
                 $this->updateUserActivity();
             }
         }
+        //header('Content-Type: text/html; charset=UTF-8');
         echo json_encode($result);
     }
 
