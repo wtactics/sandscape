@@ -588,8 +588,9 @@ function sendMessage(e) {
                 dataType: 'json',
                 success: function(json) {
                     if(json.success) {
-                        $('#chat-messages').append('<li class="user-message"><strong>' 
-                            + json.name + '</strong>:' + message + '</li>');
+                        //TODO: add message received from server
+                        //$('#chat-messages').append('<li class="user-message"><strong>' 
+                        //    + json.name + '</strong>:' + message + '</li>');
                     
                         globals.chat.lastReceived = json.id;
                         chatToBottom();
@@ -668,13 +669,8 @@ function roll(diceId) {
         dataType: 'json',
         success: function(json) {
             if(json.success) {
-                //TODO: proper message in chat and in jGrowl
-                alert('Rolled ' + json.roll);
-            //$('#chat-messages').append('<li class="system-message">' + json.user + 
-            //    'rolled ' + json.dice + '(1, ' + json.face + '): ' + json.roll + '</li>');
-            } else {
-        //$('#chat-messages').append('<li class="system-message">Dice roll failed.</li>');
-        }
+                $.jGrowl(json.dice + ' rolled for (1 - ' + json.face + '): '+ json.roll);
+            }
         }
     });
 }
@@ -719,7 +715,7 @@ function shuffleDeck(deckId) {
         dataType: 'json',
         type: 'POST',
         success: function (json) {  
-        //$.jGrowl(globals.user + ' shuffled deck (add deck name).');
+            $.jGrowl('Deck shuffled.');
         }
     });   
 }
@@ -768,14 +764,14 @@ function menuSlide() {
 function setLabel() {
     globals.updatingGame = true;
     globals.stopPositionUpdate = true;
-    //globals.time = new Date();
+    globals.time = new Date();
     $.ajax({
         url: globals.game.url,
         data: {
             event: 'label',
             card: $('#label-card-id').val(),
-            label: $('#label-text').val()
-        //clientTime: globals.time.getTime()
+            label: $('#label-text').val(),
+            clientTime: globals.time.getTime()
         },
         dataType: 'json',
         type: 'POST',
@@ -852,8 +848,8 @@ function shuffleGraveyard() {
         },
         dataType: 'json',
         type: 'POST',
-        success: function (json) {  
-        //$.jGrowl(globals.user + ' shuffled deck (add deck name).');
+        success: function (json) {
+            $.jGrowl('Graveyard shuffled.');
         }
     });    
 }

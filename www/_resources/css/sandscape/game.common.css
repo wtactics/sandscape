@@ -92,19 +92,25 @@ ul {
     width: 230px;
 }
 
-/*
-COLOURS FOR CHAT MESSAGES
+/* COLOURS FOR CHAT MESSAGES */
+.player2-action {
+    color: #D68E64;
+}
 
-Opponent:
- - action: #d68e64
- - text: #000
+.player2-text {
+    color: #000;
+}
 
-Own:
- - text: #bfbfbf
- - action: #5e0000
+.player1-action {
+    color: #5E0000;
+}
+.player1-text {
+    color: #BFBFBF;    
+}
 
-Card name: #7ca8e0
-*/
+.card-name {
+    color: #7CA8E0;
+}
 
 .loader {
     position: fixed;
@@ -208,7 +214,10 @@ div.card > img.state {
 }
 
 #game-menu {
+}
 
+#game-menu a {
+    color: #CCC;
 }
 
 #menu-elements {
@@ -218,8 +227,9 @@ div.card > img.state {
     margin-left: 0.8em;
 }
 
-#menu-elements li, .sub-menu li {
-    font-size: 14px;
+#menu-elements li a {
+    display: block;
+    padding: 0.3em;
 }
 
 .clearfix {

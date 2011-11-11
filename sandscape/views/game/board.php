@@ -10,6 +10,7 @@ Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/game.play' .
 //
 Yii::app()->clientScript->registerCoreScript('jquery.ui');
 //
+Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.jgrowl.min.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.simplemodal.1.4.1.min.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/game.play' . (YII_DEBUG ? '' : '.min') . '.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.radialmenu.min.js', CClientScript::POS_HEAD);
@@ -94,7 +95,7 @@ $this->title = 'Playing';
             <ul id="menu-elements">
                 <?php if (count($dice)) { ?>
                     <li>
-                        <a href="javascript:;">Dice</a>
+                        <a href="javascript:;" class="list-header">Dice &Gt;</a>
                         <ul class="sub-menu">
                             <?php foreach ($dice as $die) { ?>
                                 <li><a href="javascript:roll(<?php echo $die->diceId; ?>)"><?php echo $die->name; ?></a></li>
@@ -103,7 +104,7 @@ $this->title = 'Playing';
                     </li>
                 <?php } ?>
                 <li>
-                    <a href="javascript:;">Chat</a>
+                    <a href="javascript:;" class="list-header">Chat Messages &Gt;</a>
                     <ul class="sub-menu">
                         <li><a href="javascript:filterChatMessages(0);">All</a></li>
                         <li><a href="javascript:filterChatMessages(1);">User</a></li>

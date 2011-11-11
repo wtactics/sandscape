@@ -394,8 +394,7 @@ class GameController extends AppController {
                                     'success' => 1,
                                     'roll' => rand(1, $dice->face),
                                     'dice' => $dice->name,
-                                    'face' => $dice->face,
-                                    'user' => Yii::app()->user->name
+                                    'face' => $dice->face
                                 );
                             }
                         }
