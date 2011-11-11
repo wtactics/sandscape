@@ -13,36 +13,12 @@
     background: transparent url(../../images/game-background-hline.png) repeat-x bottom left;
 }
 
-#play-area {
-    height: 100%;
-    overflow: hidden;
-}
-
 /* UNIQUE CLASS: This class is handled as if it was an ID */
 .hand {
     width: 100%;
     background-color: #BAB39E;
     border-radius: 4px;
     -moz-border-radius: 4px;
-}
-
-#deck-nob {
-    position: absolute;
-    top: 55%;
-    right: 5px;
-}
-
-#deck-widget {
-    height: 115px;
-    position: absolute;
-    right: 86px;
-    top: 55%;
-    overflow: hidden; 
-    width: 0;
-}
-
-#deck-slide {
-    height: 115px;
 }
 
 /* UNIQUE CLASS: This class is handled as if it was an ID */
@@ -56,8 +32,38 @@
     right: 5px;
 }
 
-/*.slider {
+#decks {
+    width: 100%;
+    height: 100%;
 }
 
-.ui-slider-handle {
-}*/
+.deck-info {
+}
+
+.deck-info-left {
+    width: 169px;
+    float: left;
+}
+
+.deck-info-right {
+    width: 81px;
+    float: left;
+}
+
+#decks h3 {
+    text-align: center;
+    font-style: italic;
+}
+
+.label {
+    position: absolute;
+    width: 80px;
+    font-size: 10px;
+    height: 14px;
+    bottom: 3px;
+    left: 10px;
+    background-color: #222;
+    color: #FFF;
+    padding: 3px;
+    z-index: 2;
+}

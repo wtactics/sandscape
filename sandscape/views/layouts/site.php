@@ -20,7 +20,7 @@ Yii::app()->clientScript->registerScript('menuhover', "
         <![endif]-->
 
         <!-- css -->
-        <link href="_resources/css/sandscape/main.css" rel="stylesheet" type="text/css" media="screen, projection" />
+        <link href="_resources/css/sandscape/main<?php echo (YII_DEBUG ? '' : '.min'); ?>.css" rel="stylesheet" type="text/css" media="screen, projection" />
 
         <title><?php echo $this->title; ?></title>
     </head>
@@ -34,7 +34,7 @@ Yii::app()->clientScript->registerScript('menuhover', "
                 <?php echo $content; ?>
             </div>
             <div class="span-24" id="footer">
-                &copy; <?php echo date('Y'); ?> <a href="http://sourceforge.net/projects/sandscape">Sandscape</a> & <a href="http://wtactics.org">WTactics</a> Team
+                &copy; <?php echo date('Y'); ?> <a href="http://sourceforge.net/projects/sandscape">Sandscape</a> & <a href="http://www.wtactics.org">WTactics.org</a> Team
                 &nbsp;|&nbsp;Running <em>Sandscape Green Shield</em>
                 <span id="server-time"><?php echo date('Y-m-d H:i:s'); ?></span>
             </div>

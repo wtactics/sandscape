@@ -5,17 +5,13 @@ if (count($messages)) {
     $last = $last->messageId;
 }
 
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/game.common.css');
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/game.play.css');
-Yii::app()->clientScript->registerCssFile('_resources/css/thirdparty/jquery.bubblepopup.v2.3.1.css');
-Yii::app()->clientScript->registerCssFile('_resources/css/thirdparty/jquery.jgrowl.css');
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/game.common' . (YII_DEBUG ? '' : '.min') . '.css');
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/game.play' . (YII_DEBUG ? '' : '.min') . '.css');
 //
 Yii::app()->clientScript->registerCoreScript('jquery.ui');
 //
-Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.bubblepopup.v2.3.1.min.js', CClientScript::POS_HEAD);
-Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.jgrowl.minimized.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.simplemodal.1.4.1.min.js', CClientScript::POS_HEAD);
-Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/game.play.js', CClientScript::POS_HEAD);
+Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/game.play' . (YII_DEBUG ? '' : '.min') . '.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.radialmenu.min.js', CClientScript::POS_HEAD);
 
 $playUrl = $this->createURL('game/play', array('id' => $gameId));
@@ -39,6 +35,7 @@ $this->title = 'Playing';
 
 <div id="left-column">
     <div id="card-info">
+        <div class="big-label" style="display:none;"></div>
         <img id="card-image" src="_game/cards/cardback.jpg" />
     </div>
     <div id="chat">
@@ -69,14 +66,9 @@ $this->title = 'Playing';
     <div class="hand"><!-- PLAYER HAND AREA --></div>
 </div>
 <div class="opponent-area"><!-- OPPONENT GAME AREA --></div>
+<div class="play"><!-- PLAYER 1 GAME AREA --></div>
 
-<div id="play-area">
-    <div class="play"><!-- PLAYER CENTER AREA, CARD AREA --></div>
-
-    <div id="deck-widget">
-        <div id="deck-slide"><!-- DECK CONTAINER --></div>
-    </div>                   
-</div>
+<!-- EXTRA DOM ELEMENTS -->
 
 <!-- LOADER DIVS -->
 <div id="opponent-loader" class="loader" style="display:none;">
@@ -92,32 +84,51 @@ $this->title = 'Playing';
 </div>
 
 <!-- IN-GAME MENU -->
-<div id="game-menu">
-    <img id="menu-slider" src="_resources/images/game-menu-slider.png" />
-    <ul id="menu-elements">
-        <?php if (count($dice)) { ?>
-            <li>
-                <a href="javascript:;">Dice</a>
-                <ul class="sub-menu">
-                    <?php foreach ($dice as $die) { ?>
-                        <li><a href="javascript:roll(<?php echo $die->diceId; ?>)"><?php echo $die->name; ?></a></li>
-                    <?php } ?>
-                </ul>
-            </li>
-        <?php } ?>
-        <li>
-            <a href="javascript:;">Chat</a>
-            <ul class="sub-menu">
-                <li><a href="javascript:filterChatMessages(0);">All</a></li>
-                <li><a href="javascript:filterChatMessages(1);">User</a></li>
-                <li><a href="javascript:filterChatMessages(2);">System</a></li>
+<img id="menu-slider" src="_resources/images/game-slider-nob.png" />
+<div id="menu-wrapper">
+    <div id="menu-header">
+        <img src="_resources/images/game-slider-title.png" />
+    </div>
+    <div id="menu-content">
+        <div id="game-menu">
+            <ul id="menu-elements">
+                <?php if (count($dice)) { ?>
+                    <li>
+                        <a href="javascript:;">Dice</a>
+                        <ul class="sub-menu">
+                            <?php foreach ($dice as $die) { ?>
+                                <li><a href="javascript:roll(<?php echo $die->diceId; ?>)"><?php echo $die->name; ?></a></li>
+                            <?php } ?>
+                        </ul>
+                    </li>
+                <?php } ?>
+                <li>
+                    <a href="javascript:;">Chat</a>
+                    <ul class="sub-menu">
+                        <li><a href="javascript:filterChatMessages(0);">All</a></li>
+                        <li><a href="javascript:filterChatMessages(1);">User</a></li>
+                        <li><a href="javascript:filterChatMessages(2);">System</a></li>
+                    </ul>
+                </li>
+                <li><a href="javascript:exit();">Exit</a></li>
             </ul>
-        </li>
-        <li><a href="javascript:exit();">Exit</a></li>
-    </ul>
+        </div>
+        <div id="decks"><!-- DECKS PLACED HERE --></div>
+    </div>
+</div>
+
+<!-- LABEL DIALOG -->
+<div style="display:none;">
+    <div id="label-dlg">
+        <input type="text" id="label-text" />
+        <button type="button" onclick="setLabel();">Save</button>
+        <input type="hidden" id="label-card-id" />
+    </div>
 </div>
 
 <!-- EXIT GAME DIALOG -->
-<div id="exit-dialog">
+<div style="display:none;">
+    <div id="exit-dialog">
 
+    </div>
 </div>

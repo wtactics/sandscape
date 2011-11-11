@@ -1,5 +1,5 @@
 <?php
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/administration.css');
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/administration' . (YII_DEBUG ? '' : '.min') . '.css');
 
 Yii::app()->clientScript->registerCssFile('_resources/css/thirdparty/jquery.bubblepopup.v2.3.1.css');
 Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.bubblepopup.v2.3.1.min.js', CClientScript::POS_HEAD);
@@ -52,7 +52,7 @@ $this->title = 'Sandscape Administration';
                 'data' => array('words' => $settings['wordfilter']->value)
             )
         ),
-        'cssFile' => '_resources/css/sandscape/tabs.css'
+        'cssFile' => '_resources/css/sandscape/tabs' . (YII_DEBUG ? '' : '.min') . '.css'
     ));
     ?>
 </div>

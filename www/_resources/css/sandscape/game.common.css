@@ -10,8 +10,6 @@
 body {
     color: #333;
     background-color: #746f5d;
-    overflow: hidden;
-    /*background: url('../../images/game-background.jpg') repeat;*/
 }
 
 a {
@@ -28,23 +26,15 @@ ul {
 }
 
 #game-table {
-    /*overflow: hidden;*/
 }
 
 #left-column {
-    width: 270px;    
-    /*
-    width: 348px;
-    border-right: 2px solid #CCC;
-    */
+    width: 270px;
 }
 
 #card-info {
     width: 270px;
     height: 382px;
-    /*text-align: center;
-    padding-top: 14px;*/
-    /*border-right: 1px solid #4B421E;*/
 }
 
 #card-info .temp {
@@ -116,18 +106,6 @@ Own:
 Card name: #7ca8e0
 */
 
-table {
-    width: 100%;
-}
-
-table.grid {
-    border-collapse: collapse;
-}
-
-table.grid * td {
-    border: 1px solid transparent;
-}
-
 .loader {
     position: fixed;
     top: 50%;
@@ -190,28 +168,83 @@ div.card > img.state {
     cursor: pointer;
 }
 
-#menu-slider {
+#menu-wrapper {
+    position: absolute;
+    overflow: hidden;
+    width: 0;
+    top: 0;
+    right: 0;
+    height: 100%;
+}
 
+#menu-header {
+    position:absolute;
+    top:0;
+    left: 0;
+    background: url(../../images/game-slider-background.png) repeat-x;
+    width: 100%;
+    height: 52px;
+}
+
+#menu-content {
+    position: absolute;
+    left: 0;
+    top: 55px;
+    width: 250px;
+    z-index: 60;
+    background: #2A1508;
+    border: 0;
+    border-left: 1px solid #FFF;
+    border-bottom: 1px solid #FFF;
+    border-bottom-left-radius: 4px;
+    -moz-border-radius-bottomleft: 4px;
+    padding-left: 0.5em;
+}
+
+#menu-slider {
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 #game-menu {
-    position: absolute;
-    right: -170px;
-    top: 5px;
-    z-index: 60;
+
 }
 
 #menu-elements {
-    display: none;
-    /*background: #FFF;*/
 }
 
-#menu-elements, .sub-menu {
+.sub-menu {
     margin-left: 0.8em;
 }
 
 #menu-elements li, .sub-menu li {
     font-size: 14px;
-    padding: 5px;
-    /*border-bottom: 1px solid #AAA;*/
+}
+
+.clearfix {
+    clear: both;
+}
+
+#simplemodal-overlay {
+    background-color: #000;
+}
+
+#simplemodal-container {
+    background-color: #CCC;
+    border: 8px solid #FFF;
+}
+
+.big-label {
+    position: absolute;
+    width: 200px;
+    font-size: 12px;
+    height: 16px;
+    top: 330px;
+    left: 40px;
+    background-color: #222;
+    color: #FFF;
+    padding: 3px;
+    /* Z above tokens */
+    z-index: 2;
 }

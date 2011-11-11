@@ -21,6 +21,9 @@
  * http://wtactics.org
  */
 
+/**
+ * @since 1.0, Sudden Growth
+ */
 class SCDeck extends SCContainer {
 
     private $name;
@@ -35,10 +38,6 @@ class SCDeck extends SCContainer {
 
     public function getName() {
         return $this->name;
-    }
-
-    public function shuffle() {
-        return shuffle($this->elements);
     }
 
 }

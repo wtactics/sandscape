@@ -30,6 +30,7 @@ class SCCard extends SCContainer {
     private $player;
     private $states;
     private $tokens;
+    private $label;
 
     public function __construct(SCGame $game, $player, $dbId, $face, $back = 'cardback.jpg') {
         parent::__construct($game, false, true, 1);
@@ -90,11 +91,13 @@ class SCCard extends SCContainer {
             return $this->back;
     }
 
+    //NOTE: Serra doesn't like this code, I don't blame him, but he wrote it!
     public function getVisibility() {
         $o = $this->getParent();
         while ($o) {
-            if ($o instanceof SCDeck)
+            if ($o instanceof SCDeck || $o instanceof SCGraveyard)
                 return 'hidden';
+
             $o = $o->getParent();
         }
         return 'visible';
@@ -113,6 +116,7 @@ class SCCard extends SCContainer {
         foreach ($this->states as $state)
             $status->states[] = $state->getJSONData();
 
+        $status->label = $this->label;
         return $status;
     }
 
@@ -135,8 +139,21 @@ class SCCard extends SCContainer {
         return $z;
     }
 
+    /**
+     * @since 1.2, Elvish Shaman
+     */
     public function flip() {
         $this->faceUp = !$this->faceUp;
+    }
+
+    /**
+     *
+     * @param string $label 
+     * 
+     * @since 1.2, Elvish Shaman
+     */
+    public function setLabel($label) {
+        $this->label = $label;
     }
 
 }

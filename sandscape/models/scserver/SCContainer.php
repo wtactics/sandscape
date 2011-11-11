@@ -21,6 +21,9 @@
  * http://wtactics.org
  */
 
+/**
+ * @since 1.0, Sudden Growth
+ */
 class SCContainer {
 
     /**
@@ -199,6 +202,16 @@ class SCContainer {
         return 'ID: ' . $this->id . ', isMovable: ' . ($this->movable ? 'true' : 'false')
                 . ', isDroppable: ' . ($this->droppable ? 'true' : 'false') . ', max of '
                 . $this->max . ', element count: ' . count($this->elements);
+    }
+
+    /**
+     *
+     * @return bool 
+     * 
+     * @since 1.2, Elvish Shaman
+     */
+    public function shuffle() {
+        return shuffle($this->elements);
     }
 
 }

@@ -65,11 +65,11 @@ class GameController extends AppController {
         if (Yii::app()->request->isPostRequest) {
             $game = $this->loadGameById($id);
             if (($game->player1 == Yii::app()->user->id || $game->player2 == Yii::app()->user->id)
-                    && isset($_POST['gamemessage'])) {
+                    && isset($_REQUEST['gamemessage'])) {
 
                 $cm = new ChatMessage();
 
-                $cm->message = $this->chatWordFilter($_POST['gamemessage']);
+                $cm->message = $this->chatWordFilter($_REQUEST['gamemessage']);
                 $cm->userId = Yii::app()->user->id;
                 $cm->gameId = $id;
 
@@ -102,9 +102,9 @@ class GameController extends AppController {
         if (Yii::app()->request->isPostRequest) {
             $game = $this->loadGameById($id);
             if (($game->player1 == Yii::app()->user->id || $game->player2 == Yii::app()->user->id)
-                    && isset($_POST['lastupdate'])) {
+                    && isset($_REQUEST['lastupdate'])) {
 
-                $lastUpdate = (int) $_POST['lastupdate'];
+                $lastUpdate = (int) $_REQUEST['lastupdate'];
                 $messages = array();
 
                 $cms = ChatMessage::model()->findAll('messageId > :last AND gameId = :id', array(
@@ -382,10 +382,10 @@ class GameController extends AppController {
                      */
                     case 'roll':
                         $result = array('success' => 0);
-                        if ($game->running && $this->scGame && isset($_POST['dice']) && (int) $_POST['dice']) {
+                        if ($game->running && $this->scGame && isset($_REQUEST['dice']) && (int) $_REQUEST['dice']) {
                             if (($gd = GameDice::model()->find('gameId = :id AND diceId = :dice', array(
                                 ':id' => $game->gameId,
-                                ':dice' => (int) $_POST['dice']
+                                ':dice' => (int) $_REQUEST['dice']
                                     ))) !== null) {
 
                                 $dice = $gd->dice;
@@ -398,6 +398,46 @@ class GameController extends AppController {
                                     'user' => Yii::app()->user->name
                                 );
                             }
+                        }
+                        echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
+                        break;
+                    case 'label':
+                        $result = array('success' => 0);
+                        if ($game->running && $this->scGame && isset($_REQUEST['label']) && isset($_REQUEST['card'])) {
+                            $card = $this->scGame->placeLabel(Yii::app()->user->id, $_REQUEST['card'], $_REQUEST['label']);
+
+                            $result = array(
+                                'success' => 1,
+                                'status' => $card !== null ? $card->getStatus() : null
+                            );
+                        }
+                        echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
+                        break;
+                    case 'toGraveyard':
+                        $result = array('success' => 0);
+                        if ($game->running && $this->scGame && isset($_REQUEST['card'])) {
+                            $this->scGame->moveToGraveyard(Yii::app()->user->id, $_REQUEST['card']);
+                        }
+                        echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
+                        break;
+                    case 'fromGraveyardToTable':
+                        //default is set in the method's first lines
+                        $toHand = false;
+                    case 'fromGraveyard':
+                        if ($game->running && $this->scGame) {
+                            $result = $this->scGame->drawFromGraveyard(Yii::app()->user->id, $toHand);
+                            $result->result = 'ok';
+                            $result->clientTime = $_REQUEST['clientTime'];
+                            echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
+                        }
+                        break;
+                    case 'shuffleGraveyard':
+                        $result = array('success' => 0);
+                        if ($game->running && $this->scGame) {
+
+                            $result = array(
+                                'success' => $this->scGame->shuffleGraveyard(Yii::app()->user->id)
+                            );
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         break;

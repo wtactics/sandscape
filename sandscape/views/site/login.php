@@ -1,6 +1,6 @@
 <?php 
 $this->title = 'Login';
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms.css');
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms' . (YII_DEBUG ? '' : '.min') . '.css');
 ?>
 <h2>Login</h2>
 <div class="span-11">

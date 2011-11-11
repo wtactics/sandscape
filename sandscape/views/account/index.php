@@ -1,7 +1,7 @@
 <?php
 $this->title = 'Account';
 
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms.css');
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms' . (YII_DEBUG ? '' : '.min') . '.css');
 ?>
 
 <h2>Account</h2>
@@ -24,5 +24,5 @@ $this->widget('CTabView', array(
             'data' => array('pwdModel' => $pwdModel)
         )
     ),
-    'cssFile' => '_resources/css/sandscape/tabs.css'
+    'cssFile' => '_resources/css/sandscape/tabs' . (YII_DEBUG ? '' : '.min') . '.css'
 ));

@@ -7,9 +7,9 @@ if (count($messages)) {
     $last = $last->messageId;
 }
 
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/lobby.css');
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/modal.css');
-Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/lobby.js');
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/lobby.' . (YII_DEBUG ? '' : '.min') . 'css');
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/modal.' . (YII_DEBUG ? '' : '.min') . 'css');
+Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/lobby.' . (YII_DEBUG ? '' : '.min') . 'js');
 Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.simplemodal.1.4.1.min.js');
 
 Yii::app()->clientScript->registerScript('msgsjs', "lastReceived = {$last};\ninitLobby('{$url}');\nupdateMessageScroll();");

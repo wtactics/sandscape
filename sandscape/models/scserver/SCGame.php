@@ -21,6 +21,9 @@
  * http://wtactics.org
  */
 
+/**
+ * @since 1.0, Sudden Growth
+ */
 class SCGame {
 
     /**
@@ -310,6 +313,8 @@ class SCGame {
      * @param int $cardId
      * 
      * @return SCCard
+     * 
+     * @since 1.2, Elvish Shaman
      */
     public function flipCard($userId, $cardId) {
         if (isset($this->all[$cardId])) {
@@ -324,11 +329,104 @@ class SCGame {
         return null;
     }
 
+    /**
+     *
+     * @param type $userId
+     * @param type $deckId
+     * @return type 
+     * 
+     * @since 1.2, Elvish Shaman
+     */
     public function shuffleDeck($userId, $deckId) {
         $player = $this->getPlayerSide($userId);
         $opponent = $this->getOpponentSide($userId);
 
         return $player->shuffleDeck($deckId);
+    }
+
+    /**
+     *
+     * @param type $userId
+     * @param type $cardId
+     * @param type $label
+     * @return type 
+     * 
+     * @since 1.2, Elvish Shaman
+     */
+    public function placeLabel($userId, $cardId, $label = '') {
+        $card = null;
+        if (isset($this->all[$cardId])) {
+            $player = $this->getPlayerSide($userId);
+            $opponent = $this->getOpponentSide($userId);
+
+            $card = $this->all[$cardId];
+            $card->setLabel($label);
+        }
+
+        //TODO: return game status?
+        return $card;
+    }
+
+    /**
+     *
+     * @param type $userId
+     * @param type $cardId
+     * @return type 
+     * 
+     * @since 1.2, Elvish Shaman
+     */
+    public function moveToGraveyard($userId, $cardId) {
+        $player = $this->getPlayerSide($userId);
+        $opponent = $this->getOpponentSide($userId);
+
+        $card = isset($this->all[$cardId]) ? $this->all[$cardId] : null;
+        if ($card && $card instanceof SCCard && $card->isMovable()
+                && $card->getPlayer() == $userId
+                && ($grave = $player->getGraveyard()) !== null) {
+
+            if ($card->getParent()) {
+                $oldLocation = $card->getParent();
+            }
+
+            if ($grave->push($card) && $oldLocation) {
+                $oldLocation->remove($card);
+            }
+        }
+
+        return (object) array(
+                    'update' => $this->getGameStatus()
+        );
+    }
+
+    /**
+     *
+     * @param type $userId
+     * @param type $toHand
+     * @return type 
+     * 
+     * @since 1.2, Elvish Shaman
+     */
+    public function drawFromGraveyard($userId, $toHand = true) {
+        $player = $this->getPlayerSide($userId);
+        $opponent = $this->getOpponentSide($userId);
+
+        $player->drawFromGraveyard($toHand);
+
+        return (object) array('update' => $this->getGameStatus());
+    }
+
+    /**
+     *
+     * @param type $userId
+     * @return type 
+     * 
+     * @since 1.2, Elvish Shaman
+     */
+    public function shuffleGraveyard($userId) {
+        $player = $this->getPlayerSide($userId);
+        $opponent = $this->getOpponentSide($userId);
+
+        return $player->shuffleGraveyard();
     }
 
 }

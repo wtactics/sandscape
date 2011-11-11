@@ -21,6 +21,9 @@
  * http://wtactics.org
  */
 
+/**
+ * @since 1.0, Sudden Growth
+ */
 class SCPlayerSide {
 
     private $game;
@@ -36,7 +39,7 @@ class SCPlayerSide {
         $this->hand = new SCContainer($game, false, true); // new SCGrid($game, $handHeight, $handWidth);
         $this->playableArea = new SCContainer($game, false, true); // new SCGrid($game, $gameHeight, $gameWidth);
         if ($hasGraveyard)
-            $this->graveyard = new SCContainer($game, false, false);
+            $this->graveyard = new SCGraveyard($game);
 
         $this->decks = array();
     }
@@ -49,14 +52,26 @@ class SCPlayerSide {
         return $this->playerId;
     }
 
+    /**
+     *
+     * @return SCGraveyard
+     */
     public function getGraveyard() {
         return $this->graveyard;
     }
 
+    /**
+     *
+     * @return SCContainer
+     */
     public function getHand() {
         return $this->hand;
     }
 
+    /**
+     *
+     * @return SCContainer
+     */
     public function getPlayableArea() {
         return $this->playableArea;
     }
@@ -92,9 +107,51 @@ class SCPlayerSide {
         }
     }
 
+    /**
+     *
+     * @param type $deckId
+     * @return type 
+     * 
+     * @since 1.2, Elvish Shaman
+     */
     public function shuffleDeck($deckId) {
         if (isset($this->decks[$deckId])) {
             return $this->decks[$deckId]->shuffle();
+        }
+
+        return false;
+    }
+
+    /**
+     *
+     * @param bool $toHand 
+     * 
+     * @since 1.2, Elvish Shaman
+     */
+    public function drawFromGraveyard($toHand = true) {
+        if ($this->graveyard) {
+            $card = $this->graveyard->pop();
+            if ($card) {
+                $card->setMovable(true);
+                if ($toHand) {
+                    $card->setFaceUp(true);
+                    $this->hand->push($card);
+                } else {
+                    $this->playableArea->push($card);
+                }
+            }
+        }
+    }
+
+    /**
+     *
+     * @return bool
+     * 
+     * @since 1.2, Elvish Shaman
+     */
+    public function shuffleGraveyard() {
+        if ($this->graveyard) {
+            return $this->graveyard->shuffle();
         }
 
         return false;

@@ -19,37 +19,13 @@ var globals = {
 }
 
 function init() {
-    $('#writemessage').keypress(function(e) {
-        if(e.keyCode == 13) {
-            sendMessage();
-        }
-    });
+    $('#writemessage').keypress(sendMessage);
+    $('#menu-slider').click(menuSlide);
+    $('#menu-header').click(menuSlide);
     
-    //create game menu: slider hidden in the right
-    $('#menu-slider').data('on', false).click(function(e) {
-        if($(this).data('on')) {
-            //menu is visible: slide menu up, slide menu image right
-            $('#menu-elements').slideToggle(100, function() {
-                $('#game-menu').animate({
-                    right: -170
-                });
-                //mark as hidden
-                $('#menu-slider').data('on', false);
-            });
-        } else {
-            //menu is hidden: slide menu image left, slide menu down
-            $('#game-menu').animate({
-                right: 0
-            }, 'slow', function() {
-                $('#menu-elements').slideToggle(100);
-                //mark as visible
-                $('#menu-slider').data('on', true);
-            });
-        }
-    });
+    $('#opponent-loader').show();
     
     //start game creation
-    $('#opponent-loader').show();
     pack();
     checkGameStart();
     setTimeout(updateMessages, 1000);
@@ -116,81 +92,105 @@ function checkGameStart() {
                             $('.hand').attr('id', create.player.hand.id)
                             $('.play').attr('id', create.player.playableArea.id)
 
-                            for(i = 0; i < create.player.decks.length; i++) {
+                            var i, id, left, right, decks = create.player.decks, dest = $('#decks');
+                            for(i = 0; i < decks.length; i++) {
+                                id = decks[i].id;
+                                                             
+                                left = $(document.createElement('div'))
+                                .addClass('deck-info-left');
+                               
+                                right = $(document.createElement('div'))
+                                .addClass('deck-info-right');
+                               
+                                $(document.createElement('a'))
+                                .attr('href', 'javascript:;')
+                                .click(function(e) {
+                                    drawCard(id);
+                                })
+                                .html('Draw to Hand')
+                                .appendTo(left);
+                                left.append('<br />');
+                               
+                                $(document.createElement('a'))
+                                .attr('href', 'javascript:;')
+                                .click(function(e) {
+                                    drawCardToTable(id);
+                                })
+                                .html('Draw to Table')
+                                .appendTo(left);
+                                left.append('<br />');
+                               
+                                $(document.createElement('a'))
+                                .attr('href', 'javascript:;')
+                                .click(function(e) {
+                                    shuffleDeck(id);
+                                })
+                                .html('Shuffle')
+                                .appendTo(left);
+                                left.append('<br />');
+                               
                                 $(document.createElement('img'))
                                 .attr({
-                                    id: create.player.decks[i].id, 
+                                    id: decks[i].id, 
                                     src: '_game/cards/thumbs/cardback.jpg'
                                 })
-                                .data('deck-name', create.player.decks[i].name)
-                                .radialmenu({
-                                    radius: 30,
-                                    options: [{
-                                        //draw card to hand
-                                        option: '<img src="_resources/images/icon-x16-hand.png" title="Draw to Hand" />',
-                                        event: function(deck) {
-                                            drawCard($(deck).attr('id'));
-                                        }
-                                    },{
-                                        //shuffle
-                                        option: '<img src="_resources/images/icon-x16-suffle.png" title="Suffle Deck" />',
-                                        event: function(deck) {
-                                            shuffleDeck($(deck).attr('id'));
-                                        }
-                                    }, {
-                                        //draw card to table
-                                        option: '<img src="_resources/images/icon-x16-hand-table.png" title="Draw to Table" />',
-                                        event: function(deck) {
-                                            drawCardToTable($(deck).attr('id'));
-                                        }
-                                    }]
-                                })
-                                .appendTo($('#deck-slide'));
+                                .appendTo(right);
+                                
+                                $(document.createElement('div'))
+                                .addClass('deck-info')
+                                .append('<h3>' + decks[i].name + '</h3>')
+                                .append(left)
+                                .append(right)                             
+                                .appendTo(dest);
+                                
+                                dest.append('<div class="clearfix"></div>');
                             }
                             
-                            if(create.player.graveyard) {
+                            if(create.player.graveyard) {                                                             
+                                left = $(document.createElement('div'))
+                                .addClass('deck-info-left');
+                               
+                                right = $(document.createElement('div'))
+                                .addClass('deck-info-right');
+                               
+                                $(document.createElement('a'))
+                                .attr('href', 'javascript:;')
+                                .click(drawFromGraveyard)
+                                .html('Draw to Hand')
+                                .appendTo(left);
+                                left.append('<br />');
+                               
+                                $(document.createElement('a'))
+                                .attr('href', 'javascript:;')
+                                .click(drawFromGraveyardToTable)
+                                .html('Draw to Table')
+                                .appendTo(left);
+                                left.append('<br />');
+                               
+                                $(document.createElement('a'))
+                                .attr('href', 'javascript:;')
+                                .click(shuffleGraveyard)
+                                .html('Shuffle')
+                                .appendTo(left);
+                                left.append('<br />');
+                               
                                 $(document.createElement('img'))
                                 .attr({
                                     id: create.player.graveyard.id,
                                     src: '_game/cards/thumbs/noimage.jpg'
                                 })
-                                .data('deck-name', 'Graveyard')
-                                //TODO: graveyard actions
-                                .radialmenu({
-                                    radius: 30,
-                                    options: [{
-                                        //draw card to hand
-                                        option: '<img src="_resources/images/icon-x16-hand.png" title="Draw to Hand" />',
-                                        event: function(graveyard) {
-                                        //drawCard($(deck).attr('id'));
-                                        }
-                                    },{
-                                        //shuffle
-                                        option: '<img src="_resources/images/icon-x16-suffle.png" title="Suffle Deck" />',
-                                        event: function(graveyard) {
-                                        //shuffleDeck($(deck).attr('id'));
-                                        }
-                                    }, {
-                                        //draw card to table
-                                        option: '<img src="_resources/images/icon-x16-hand-table.png" title="Draw to Table" />',
-                                        event: function(graveyard) {
-                                        //drawCardToTable($(deck).attr('id'));
-                                        }
-                                    }]
-                                })
-                                .appendTo($('#deck-slide'));
+                                .appendTo(right);
+                                
+                                $(document.createElement('div'))
+                                .addClass('deck-info')
+                                .append('<h3>Graveyard</h3>')
+                                .append(left)
+                                .append(right)                             
+                                .appendTo(dest);
+                                
+                                dest.append('<div class="clearfix"></div>');
                             }
-                            
-                            //Configure deck widgets
-                            //Define positions for existing decks
-                            $('#deck-slide').children('img').each(function(index) {
-                                $(this).css({
-                                    left: index * 85, 
-                                    top: 0,
-                                    position: 'absolute'
-                                });
-                            })
-                            
+                                                        
                             //Opponent area (top window zone)
                             $('.opponent-area').attr('id', create.opponent.playableArea.id)
                      
@@ -208,62 +208,76 @@ function checkGameStart() {
                                     stack: '.card',
                                     revert: 'invalid'
                                 })
+                                .append($(document.createElement('div'))
+                                    .addClass('label'))
                                 .appendTo($('body'));
                             }
                      
                             // Cards must be positioned after all cards are in the 
                             // DOM because there are cards 'inside' other cards
+                            var opts, useGrave = (create.player.graveyard != null);
                             for(i = 0; i < create.cards.length; i++) {
                                 card = create.cards[i];
+                                
+                                opts = [{
+                                    //details
+                                    option: '<img src="_resources/images/icon-x16-eye.png" title="Card Details" />',
+                                    event: function (card) {
+                                        requestCardInfo($(card).attr('id'));
+                                    }
+                                }, {
+                                    //tokens
+                                    option: '<img src="_resources/images/icon-x16-bookmarks.png" title="Tokens" />',
+                                    subMenu: tokenMenu
+                                }, {
+                                    //states
+                                    option: '<img src="_resources/images/icon-x16-hand-state.png" title="States" />',
+                                    subMenu: statesMenu
+                                }, {
+                                    //give card to opponent
+                                    option: '<img src="_resources/images/icon-x16-hand-give.png" title="Give to Opponent" />',
+                                    event: function(card) {
+                                        giveCard($(card).attr('id'));
+                                    }
+                                }, {
+                                    //flip the card
+                                    option: '<img src="_resources/images/icon-x16-flip" title="Flip Card" />',
+                                    event: function(card) {
+                                        flipCard($(card).attr('id'));
+                                    }
+                                }, {
+                                    //edit label
+                                    option: '<img src="_resources/images/icon-x16-label.png" title="Custom Label" />',
+                                    event: function (card) {
+                                        $('#label-text').val($(card).find('.label').html());
+                                        $('#label-card-id').val($(card).attr('id'));
+                                        $('#label-dlg').modal();
+                                    }
+                                }]
+                            
+                                if(useGrave) {
+                                    opts.push({
+                                        //send card to graveyard
+                                        option: '<img src="_resources/images/icon-x16-headstone.png" title="Send to Graveyard" />',
+                                        event: function(card) {
+                                            moveToGraveyard($(card).attr('id'));
+                                        }
+                                    });
+                                }
                         
                                 $('#'+card.id).css({
                                     position: 'absolute',
                                     visibility: card.visibility
                                 })
-                                .css($('#deck-slide').offset())
+                                .css({
+                                    top: 350, 
+                                    left: -250
+                                })
                                 .data('status', card)
                                 .addClass('update')
                                 .radialmenu({
                                     radius: 60,
-                                    options: [{
-                                        //details
-                                        option: '<img src="_resources/images/icon-x16-eye.png" title="Card Details" />',
-                                        event: function (card) {
-                                            requestCardInfo($(card).attr('id'));
-                                        }
-                                    }, {
-                                        //tokens
-                                        option: '<img src="_resources/images/icon-x16-bookmarks.png" title="Tokens" />',
-                                        subMenu: tokenMenu
-                                    }, {
-                                        //states
-                                        option: '<img src="_resources/images/icon-x16-hand-state.png" title="States" />',
-                                        subMenu: statesMenu
-                                    }, {
-                                        //give card to opponent
-                                        option: '<img src="_resources/images/icon-x16-hand-give.png" title="Give to Opponent" />',
-                                        event: function(card) {
-                                            alert('Give not implemented yet!');
-                                        }
-                                    }, {
-                                        //send card to graveyard
-                                        option: '<img src="_resources/images/icon-x16-headstone.png" title="Send to Graveyard" />',
-                                        event: function(card) {
-                                            alert('Graveyard not implemented yet!');
-                                        }
-                                    }, {
-                                        //flip the card
-                                        option: '<img src="_resources/images/icon-x16-flip" title="Flip Card" />',
-                                        event: function(card) {
-                                            flipCard($(card).attr('id'));
-                                        }
-                                    }, {
-                                        //edit label
-                                        option: '<img src="_resources/images/icon-x16-label.png" title="Custom Label" />',
-                                        event: function (card) {
-                                            alert('Label not implemented yet!');
-                                        }
-                                    }]
+                                    options: opts
                                 })
                                 .children('img.face').attr('src', '_game/cards/thumbs/' 
                                     + (card.invertView ? 'reversed/' : '') + card.src);
@@ -276,7 +290,8 @@ function checkGameStart() {
                                     moveCard(ui.draggable.attr('id'), $(this).attr('id'), 0, .2);
                                     return false;
                                 }
-                            })
+                            });
+                            
                             $('.play, .hand').droppable({
                                 drop: function(event, ui) {
                                     var card = ui.draggable;
@@ -287,16 +302,7 @@ function checkGameStart() {
                                     moveCard(card.attr('id'), $(this).attr('id'), xOffset, yOffset);
                                     return false;
                                 }
-                            })
-                                                        
-                            //Configure and set deck-nob widget
-                            $(document.createElement('img')).attr({
-                                id: 'deck-nob',
-                                src: '_resources/images/game-deck-nob.png'
-                            })
-                            .css('z-index', 100)
-                            .click(deckSlide)
-                            .appendTo($('body'));
+                            });
 
                             globals.game.running = true;                     
                             setTimeout(updateGame, 3000);
@@ -330,13 +336,17 @@ function updateCardExtras(card) {
         }
       
         card.find('.state').remove();
-        for(i = 0; i<card.data('status').states.length; ++i) {
+        for(i = 0; i < card.data('status').states.length; ++i) {
             $(document.createElement('img'))
             .addClass('state')
             .attr('src', '_game/states/thumbs/' + (card.data('status').invertView ? 'reversed/' : '') 
                 + card.data('status').states[i].src)
             .appendTo(card);
         }
+        
+        card.find('.label')
+        .css('display', card.data('status').label ? '' : 'none')
+        .html(card.data('status').label);
     }
 }
 
@@ -409,8 +419,8 @@ function updateGame() {
             url: globals.game.url,
             data: {
                 event: 'update',
-                // TODO: Solve the sync problems; lastChange will still disabled until then
-                //                lastChange: globals.game.lastChange,
+                // TODO: Solve the sync problems; lastChange will still disabled 
+                // until then: lastChange: globals.game.lastChange,
                 clientTime: globals.time.getTime()
             },
             dataType: 'json',
@@ -535,7 +545,12 @@ function requestCardInfo(id) {
                     .attr('src', '_game/states/' + json.status.states[i].src)
                     .appendTo(owner);
                 }
+                
+                owner.find('.big-label')
+                .css('display', json.status.label ? '' : 'none')
+                .html(json.status.label);
             } else {
+                
                 $('#card-image').attr('src', '_game/cards/cardback.jpg');
             }
         }
@@ -570,74 +585,29 @@ function pack() {
     });
 }
 
-function bubbles() {   
-    $('#deck-slide img').CreateBubblePopup({
-        position: 'top',
-        align: 'center',
-        tail: {
-            align: 'center'
-        },
-
-        themeName: 'all-black',
-        themePath: '_resources/images/jqBubblePopup',
-        alwaysVisible: false,
-        closingDelay: 100
-    });
-    
-    var text;
-    $('#deck-slide img').each(function(index) {
-        text = $(this).data('deck-name');
-        
-        if(text.length == 0) {
-            text = 'Unknown Deck';
-        }
-        $(this).SetBubblePopupInnerHtml(text);
-    })
-}
-
-function deckSlide (event) {
-    if(globals.game.running) {
-        if($('#deck-widget').width() > 0) {
-            $('#deck-slide img').each(function() {
-                if( $(this).HasBubblePopup() ){
-                    $(this).RemoveBubblePopup();
-                }
-            });    
-       
-            $('#deck-widget').animate({
-                width: 0
-            });
-        } else {
-            $('#deck-widget').animate({
-                width: $('#deck-slide').children('img').length * 85
-            }, function() {
-                bubbles();
-            });
-        }
-    }
-}
-
 function sendMessage(e) {
-    var message = $("#writemessage").val();
-    if(message.length > 0) {
-        $.ajax({
-            type: "POST",
-            url: globals.chat.sendUrl,
-            data: {
-                'gamemessage': message
-            },
-            dataType: 'json',
-            success: function(json) {
-                if(json.success) {
-                    $('#chat-messages').append('<li class="user-message"><strong>' 
-                        + json.name + '</strong>:' + message + '</li>');
+    if(e.keyCode == 13) {
+        var message = $("#writemessage").val();
+        if(message.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: globals.chat.sendUrl,
+                data: {
+                    'gamemessage': message
+                },
+                dataType: 'json',
+                success: function(json) {
+                    if(json.success) {
+                        $('#chat-messages').append('<li class="user-message"><strong>' 
+                            + json.name + '</strong>:' + message + '</li>');
                     
-                    globals.chat.lastReceived = json.id;
-                    chatToBottom();
+                        globals.chat.lastReceived = json.id;
+                        chatToBottom();
+                    }
                 }
-            }
-        });
-        $("#writemessage").val('');
+            });
+            $("#writemessage").val('');
+        }
     }
 }
 
@@ -732,9 +702,6 @@ function sliderScroll(e, ui) {
     });
 }
 
-function exit() {
-}
-
 function flipCard(id) {
     $.ajax({
         url: globals.game.url,
@@ -763,7 +730,7 @@ function shuffleDeck(deckId) {
         dataType: 'json',
         type: 'POST',
         success: function (json) {  
-            //$.jGrowl(globals.user + ' shuffled deck (add deck name).');
+        //$.jGrowl(globals.user + ' shuffled deck (add deck name).');
         }
     });   
 }
@@ -785,5 +752,142 @@ function drawCardToTable(deckId) {
         complete: function () {
             globals.stopPositionUpdate = false;
         }
-    });   
+    });
+}
+
+function menuSlide() {
+    if(globals.game.running) {
+        var wrapper = $('#menu-wrapper');
+        if(wrapper.width() > 0) {       
+            wrapper.animate({
+                width: 0
+            });
+            $('#menu-slider').animate({
+                right: 0
+            });
+        } else {
+            wrapper.animate({
+                width: 250
+            });
+            $('#menu-slider').animate({
+                right: 250
+            });
+        }
+    }
+}
+
+function setLabel() {
+    globals.updatingGame = true;
+    globals.stopPositionUpdate = true;
+    //globals.time = new Date();
+    $.ajax({
+        url: globals.game.url,
+        data: {
+            event: 'label',
+            card: $('#label-card-id').val(),
+            label: $('#label-text').val()
+        //clientTime: globals.time.getTime()
+        },
+        dataType: 'json',
+        type: 'POST',
+        success: doGameUpdate,
+        complete: function () {
+            globals.stopPositionUpdate = false;
+        }
+    });
+}
+
+function moveToGraveyard(cardId) {
+    globals.updatingGame = true;
+    globals.stopPositionUpdate = true;
+    globals.time = new Date();
+    $.ajax({
+        url: globals.game.url,
+        data: {
+            event: 'toGraveyard',
+            card: cardId,
+            clientTime: globals.time.getTime()
+        },
+        dataType: 'json',
+        type: 'POST',
+        success: doGameUpdate,
+        complete: function () {
+            globals.stopPositionUpdate = false;
+        }
+    });
+}
+
+function giveCard(cardId) {
+/*
+globals.updatingGame = true;
+    globals.stopPositionUpdate = true;
+    //globals.time = new Date();
+    $.ajax({
+        url: globals.game.url,
+        data: {
+            event: 'label',
+            card: $('#label-card-id').val(),
+            label: $('#label-text').val()
+        //clientTime: globals.time.getTime()
+        },
+        dataType: 'json',
+        type: 'POST',
+        success: doGameUpdate,
+        complete: function () {
+            globals.stopPositionUpdate = false;
+        }
+    });
+     */
+}
+
+function drawFromGraveyard() {
+    globals.updatingGame = true;
+    globals.stopPositionUpdate = true;
+    globals.time = new Date();
+    $.ajax({
+        url: globals.game.url,
+        data: {
+            event: 'fromGraveyard',
+            clientTime: globals.time.getTime()
+        },
+        dataType: 'json',
+        type: 'POST',
+        success: doGameUpdate,
+        complete: function () {
+            globals.stopPositionUpdate = false;
+        }
+    });
+}
+
+function drawFromGraveyardToTable() {
+    globals.updatingGame = true;
+    globals.stopPositionUpdate = true;
+    globals.time = new Date();
+    $.ajax({
+        url: globals.game.url,
+        data: {
+            event: 'fromGraveyardToTable',
+            clientTime: globals.time.getTime()
+        },
+        dataType: 'json',
+        type: 'POST',
+        success: doGameUpdate,
+        complete: function () {
+            globals.stopPositionUpdate = false;
+        }
+    });
+}
+
+function shuffleGraveyard() {
+    $.ajax({
+        url: globals.game.url,
+        data: {
+            event: 'shuffleGraveyard'
+        },
+        dataType: 'json',
+        type: 'POST',
+        success: function (json) {  
+        //$.jGrowl(globals.user + ' shuffled deck (add deck name).');
+        }
+    });    
 }

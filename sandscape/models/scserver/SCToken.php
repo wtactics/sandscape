@@ -21,6 +21,9 @@
  * http://wtactics.org
  */
 
+/**
+ * @since 1.2, Elvish Shaman
+ */
 class SCToken {
 
     private $id;

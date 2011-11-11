@@ -15,6 +15,10 @@
     Only the <em>cardscape ID</em> is optional, all other attributes are required. 
     The image file should be the name of the file found in the <em>images</em> folder.
 </p>
+<p>
+    Uploading files is limited by your server's settings. If you are unable to send big files, 
+    consider splitting the archive in smaller files.
+</p>
 
 <?php echo CHtml::form($this->createUrl('cards/import'), 'post', array('enctype' => 'multipart/form-data')); ?>
 <fieldset>

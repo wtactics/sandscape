@@ -1,5 +1,5 @@
 <?php
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms.css');
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms' . (YII_DEBUG ? '' : '.min') . '.css');
 
 $this->title = ($token->isNewRecord ? 'Create Token' : 'Edit Token');
 ?>
