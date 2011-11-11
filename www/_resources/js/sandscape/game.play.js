@@ -232,12 +232,6 @@ function checkGameStart() {
                                     option: '<img src="_resources/images/icon-x16-hand-state.png" title="States" />',
                                     subMenu: statesMenu
                                 }, {
-                                    //give card to opponent
-                                    option: '<img src="_resources/images/icon-x16-hand-give.png" title="Give to Opponent" />',
-                                    event: function(card) {
-                                        giveCard($(card).attr('id'));
-                                    }
-                                }, {
                                     //flip the card
                                     option: '<img src="_resources/images/icon-x16-flip" title="Flip Card" />',
                                     event: function(card) {
@@ -810,29 +804,6 @@ function moveToGraveyard(cardId) {
             globals.stopPositionUpdate = false;
         }
     });
-}
-
-function giveCard(cardId) {
-/*
-globals.updatingGame = true;
-    globals.stopPositionUpdate = true;
-    //globals.time = new Date();
-    $.ajax({
-        url: globals.game.url,
-        data: {
-            event: 'label',
-            card: $('#label-card-id').val(),
-            label: $('#label-text').val()
-        //clientTime: globals.time.getTime()
-        },
-        dataType: 'json',
-        type: 'POST',
-        success: doGameUpdate,
-        complete: function () {
-            globals.stopPositionUpdate = false;
-        }
-    });
-     */
 }
 
 function drawFromGraveyard() {
