@@ -28,7 +28,7 @@ if (($dh = opendir($jsPath))) {
             $name = explode('.js', $js);
             $name = $name[0];
 
-            system("java -jar yuicompressor-2.4.6.jar -v {$jsPath}/{$name}.js -o {$jsPath}{$name}.min.js --charset utf-8");
+            system("java -jar yuicompressor-2.4.6.jar -v {$jsPath}/{$name}.js -o {$jsPath}/{$name}.min.js --charset utf-8");
         }
     }
     closedir($dh);

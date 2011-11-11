@@ -52,10 +52,10 @@ function checkGameStart() {
                     dataType: 'json',
                     success: function (json) {                       
                         if(json.result == 'ok') {
-                            var create = json.createThis;
-                     
+                            var create = json.createThis, tokenMenu = new Array(), statesMenu = new Array(),
+                            card, i, id, left, right, decks, dest = $('#decks'), opts, useGrave;
+                            
                             // tokens
-                            var tokenMenu = new Array();
                             $(json.gameInfo.tokens).each(function (i,o) {
                                 tokenMenu.push({
                                     option : o.name,
@@ -66,7 +66,6 @@ function checkGameStart() {
                             })
                      
                             // card states
-                            var statesMenu = new Array();
                             $(json.gameInfo.cardStates).each(function (i,o) {
                                 statesMenu.push({
                                     option: o.name,
@@ -92,7 +91,7 @@ function checkGameStart() {
                             $('.hand').attr('id', create.player.hand.id)
                             $('.play').attr('id', create.player.playableArea.id)
 
-                            var i, id, left, right, decks = create.player.decks, dest = $('#decks');
+                            decks = create.player.decks;
                             for(i = 0; i < decks.length; i++) {
                                 id = decks[i].id;
                                                              
@@ -194,7 +193,6 @@ function checkGameStart() {
                             //Opponent area (top window zone)
                             $('.opponent-area').attr('id', create.opponent.playableArea.id)
                      
-                            var card;
                             for(i = 0; i < create.cards.length; i++) {
                                 card = create.cards[i];
                                 
@@ -215,7 +213,7 @@ function checkGameStart() {
                      
                             // Cards must be positioned after all cards are in the 
                             // DOM because there are cards 'inside' other cards
-                            var opts, useGrave = (create.player.graveyard != null);
+                            useGrave = (create.player.graveyard != null);
                             for(i = 0; i < create.cards.length; i++) {
                                 card = create.cards[i];
                                 
@@ -294,12 +292,12 @@ function checkGameStart() {
                             
                             $('.play, .hand').droppable({
                                 drop: function(event, ui) {
-                                    var card = ui.draggable;
+                                    var card = ui.draggable, xOffset, yOffset, me = $(this);
                            
-                                    var xOffset = (card.offset().left - $(this).offset().left) / $(this).width();
-                                    var yOffset = (card.offset().top - $(this).offset().top) / $(this).height();
+                                    xOffset= (card.offset().left - me.offset().left) / me.width();
+                                    yOffset = (card.offset().top - me.offset().top) / me.height();
                            
-                                    moveCard(card.attr('id'), $(this).attr('id'), xOffset, yOffset);
+                                    moveCard(card.attr('id'), me.attr('id'), xOffset, yOffset);
                                     return false;
                                 }
                             });
@@ -326,8 +324,9 @@ function checkGameStart() {
 
 function updateCardExtras(card) {
     if (card.data('status')){
+        var i;
         card.find('.token').remove();
-        for (var i = 0; i < card.data('status').tokens.length; ++i) {
+        for (i = 0; i < card.data('status').tokens.length; ++i) {
             $(document.createElement('img'))
             .addClass('token')
             .attr('src', '_game/tokens/thumbs/' + (card.data('status').invertView ? 'reversed/' : '') 
@@ -357,10 +356,7 @@ function cyclicPositionUpdate() {
       
             if (o.data('status')  &&  !o.hasClass('ui-draggable-dragging')  
                 &&  !o.is(':animated')  &&  o.data('status').visibility == 'visible') {
-                var data = o.data('status');
-                var location = $('#'+data.location);
-                var top;
-                var left;
+                var data = o.data('status'), location = $('#'+data.location), top, left;
                 
                 if (!o.data('status').invertView) {
                     top = location.offset().top + Math.round(data.yOffset * location.height());
@@ -528,9 +524,9 @@ function requestCardInfo(id) {
         success: function (json) {
             $('#card-info .temp').remove();
             if(json.success) {
-                var owner = $('#card-info');
+                var owner = $('#card-info'), i;
                 $('#card-image').attr('src', '_game/cards/' + json.status.src);
-                for(var i = 0; i < json.status.tokens.length; i++) {
+                for(i = 0; i < json.status.tokens.length; i++) {
                     $(document.createElement('img'))
                     .addClass('temp')
                     .css('z-index', 1)
@@ -642,8 +638,7 @@ function sliderSetValue(event, ui) {
 }
 
 function chatToBottom() {
-    var sl = $('#chat-slider'), cm = $('#chat-messages');
-    var h = -(cm.height() - 130);
+    var sl = $('#chat-slider'), cm = $('#chat-messages'), h = -(cm.height() - 130);
     
     sl.slider('option', 'min', h).slider('option', 'value', h);
     
