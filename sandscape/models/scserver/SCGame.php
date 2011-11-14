@@ -2,22 +2,22 @@
 
 /* SCGame.php
  * 
- * This file is part of SandScape.
+ * This file is part of Sandscape.
  *
- * SandScape is free software: you can redistribute it and/or modify
+ * Sandscape is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
- * SandScape is distributed in the hope that it will be useful,
+ * Sandscape is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Sandscape.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (c) 2011, the SandScape team and WTactics project.
+ * Copyright (c) 2011, the Sandscape team and WTactics project.
  * http://wtactics.org
  */
 
@@ -72,24 +72,55 @@ class SCGame {
         $this->roots = array();
     }
 
+    /**
+     *
+     * @param SCContainer $c 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function register(SCContainer $c) {
         $this->all[$c->getId()] = $c;
     }
 
+    /**
+     *
+     * @param SCContainer $c 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function unregister(SCContainer $c) {
         unset($this->all[$c->getId()]);
     }
 
+    /**
+     *
+     * @param SCContainer $scc
+     * @return type 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function getRoot(SCContainer $scc) {
         if (isset($this->roots[$scc->getId()]))
             return $this->roots[$scc->getId()];
         return null;
     }
 
+    /**
+     *
+     * @param SCDeck $deck 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function addPlayer1Deck(SCDeck $deck) {
         $this->player1Side->addDeck($deck);
     }
 
+    /**
+     *
+     * @param SCDeck $deck 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function addPlayer2Deck(SCDeck $deck) {
         $this->player2Side->addDeck($deck);
     }
@@ -99,6 +130,8 @@ class SCGame {
      * 
      * @param  integer $userId User who originated the request.
      * @return SCPlayerSide 
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function getPlayerSide($userId) {
         $side = ($this->player1Side->getPlayerId() == $userId ? $this->player1Side :
@@ -120,6 +153,8 @@ class SCGame {
      * @param  integer $userId  User who originated the request.
      * 
      * @return SCPlayerSide
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function getOpponentSide($userId) {
         $side = ($this->player1Side->getPlayerId() == $userId ? $this->player2Side :
@@ -139,6 +174,8 @@ class SCGame {
      * Returns the cards initialization.
      * 
      * @return array
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function getCardInitialization() {
         $update = array();
@@ -157,6 +194,8 @@ class SCGame {
      * I have the feeling that this one will try to bite me in the ass later. 
      * 
      * @return array
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function getGameStatus() {
         $update = array();
@@ -170,6 +209,15 @@ class SCGame {
         return $update;
     }
 
+    /**
+     *
+     * @param type $userId
+     * @param type $deck
+     * @param type $toHand
+     * @return type 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function drawCard($userId, $deck, $toHand = true) {
         $player = $this->getPlayerSide($userId);
         $opponent = $this->getOpponentSide($userId);
@@ -179,6 +227,17 @@ class SCGame {
         return (object) array('update' => $this->getGameStatus());
     }
 
+    /**
+     *
+     * @param type $userId
+     * @param type $card
+     * @param type $location
+     * @param type $xOffset
+     * @param type $yOffset
+     * @return type 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function moveCard($userId, $card, $location, $xOffset = 0, $yOffset = 0) {
         $player = $this->getPlayerSide($userId);
         $opponent = $this->getOpponentSide($userId);
@@ -207,6 +266,15 @@ class SCGame {
         );
     }
 
+    /**
+     *
+     * @param type $userId
+     * @param type $card
+     * @param type $token
+     * @return type 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function toggleCardToken($userId, $card, $token) {
         $player = $this->getPlayerSide($userId);
         $opponent = $this->getOpponentSide($userId);
@@ -223,6 +291,15 @@ class SCGame {
         }
     }
 
+    /**
+     *
+     * @param type $userId
+     * @param type $card
+     * @param type $state
+     * @return type 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function toggleCardState($userId, $card, $state) {
         $player = $this->getPlayerSide($userId);
         $opponent = $this->getOpponentSide($userId);
@@ -239,6 +316,13 @@ class SCGame {
         }
     }
 
+    /**
+     *
+     * @param type $userId
+     * @return type 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function clientUpdate($userId) {
         $player = $this->getPlayerSide($userId);
         $opponent = $this->getOpponentSide($userId);
@@ -248,6 +332,13 @@ class SCGame {
         );
     }
 
+    /**
+     *
+     * @param type $userId
+     * @return type 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function clientInitialization($userId) {
         $player = $this->getPlayerSide($userId);
         $opponent = $this->getOpponentSide($userId);
@@ -295,6 +386,8 @@ class SCGame {
      *
      * @param type $cardId
      * @return StdClass 
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function getCardStatus($userId, $cardId) {
         if (isset($this->all[$cardId])) {

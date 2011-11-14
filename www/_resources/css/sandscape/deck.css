@@ -1,36 +1,13 @@
 /*Base: 9A5D0D, other: 735124, 643A04, CD8F40, CDA066*/
-/*#existingcards {
-    height: 470px;
-    overflow: auto;
-}
-
-#existingcards img {
-   float: left;
-    margin: 0.3em 0.3em 0 0;
-}
-
-#usecards {
-    min-height: 470px;
-    position: relative;
-    background-color: #E0E0E0;
-}
-
-.available {
-}
-
-.chosen {
-    position: absolute;
-    margin:0;
-    padding:0;
-}*/
 li {
     list-style: none;
+    cursor: pointer;
 }
 
 #selected-cards {
     min-height: 100px;
 }
 
-#selected-cards li span {
+#selected-cards li span.card-count {
     float: right;
 }

@@ -1,5 +1,3 @@
-alter table Game
-add lastChange int unsigned;
+ALTER TABLE `Game` ADD `lastChange` INT UNSIGNED;
 
-alter table Game
-change state state longtext;
+ALTER TABLE `Game` CHANGE `state` `state` LONGTEXT;

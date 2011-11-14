@@ -2,50 +2,49 @@
 
 /* Game.php
  * 
- * This file is part of SandScape.
+ * This file is part of Sandscape.
  *
- * SandScape is free software: you can redistribute it and/or modify
+ * Sandscape is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
- * SandScape is distributed in the hope that it will be useful,
+ * Sandscape is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Sandscape.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (c) 2011, the SandScape team and WTactics project.
+ * Copyright (c) 2011, the Sandscape team and WTactics project.
  * http://wtactics.org
  */
 
 /**
- * This is the model class for table "Game".
- *
- * The followings are the available columns in table 'Game':
- * @property integer $gameId
- * @property integer $player1
- * @property integer $player2
+ * 
+ * 
+ * @property int $gameId
+ * @property int $player1
+ * @property int $player2
  * @property string $created
  * @property string $started
  * @property string $ended
- * @property integer $running
- * @property integer $paused
+ * @property int $running
+ * @property int $paused
  * @property string $state
  * 
- * @property integer $maxDecks
- * @property integer $graveyard
- * @property integer $player1Ready
- * @property integer $player2Ready
+ * @property int $maxDecks
+ * @property int $graveyard
+ * @property int $player1Ready
+ * @property int $player2Ready
  * 
- * @property integer $lastChange
- * @property integer $acceptUser
- * @property integer $winnerId
- * @property integer $spectatorsSpeak
+ * @property int $lastChange
+ * @property int $acceptUser
+ * @property int $winnerId
+ * @property int $spectatorsSpeak
  *
- * The followings are the available model relations:
+ * Relations:
  * @property ChatMessage[] $chatMessages
  * @property User $player10
  * @property User $player20
@@ -58,23 +57,16 @@
 class Game extends CActiveRecord {
 
     /**
-     * Returns the static model of the specified AR class.
-     * @return Game the static model class
+     * @return Game
      */
     public static function model($className=__CLASS__) {
         return parent::model($className);
     }
 
-    /**
-     * @return string the associated database table name
-     */
     public function tableName() {
         return 'Game';
     }
 
-    /**
-     * @return array validation rules for model attributes.
-     */
     public function rules() {
         return array(
             array('running, paused', 'numerical', 'integerOnly' => true),
@@ -88,9 +80,6 @@ class Game extends CActiveRecord {
         );
     }
 
-    /**
-     * @return array relational rules.
-     */
     public function relations() {
         return array(
             'chatMessages' => array(self::HAS_MANY, 'ChatMessage', 'gameId'),
@@ -103,9 +92,6 @@ class Game extends CActiveRecord {
         );
     }
 
-    /**
-     * @return array customized attribute labels (name=>label)
-     */
     public function attributeLabels() {
         return array(
             'gameId' => 'ID',

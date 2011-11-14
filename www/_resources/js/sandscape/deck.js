@@ -1,33 +1,76 @@
-var imageUrl;
+var globals = {
+    imageUrl: ''
+}
 
-//TODO: finish this...
+
 function init(url) {
-    imageUrl = url;
+    globals.imageUrl = url;
+    var avCards = $('#available-cards'), selCards = $('#selected-cards');
     
-    $('#selected-cards').droppable({
-        accept: '.available'
-    });
-    $('#selected-cards li').dblclick(function(e) {
-        })
-    .click(function (e) {
-        loadPreviewImage(parseInt($(this).attr('id').substr(1), 10));
+    $('#filterSelected').keyup(function (e) {
+        var me = $(this);
+        if(me.val().length) {
+            filter(selCards.find('li'), me.val());
+        } else {
+            selCards.find('li:hidden').show();
+        }
     });
     
-    $('#available-cards li').draggable({
-        appendTo: 'body',
-        helper: 'clone',
-        revert: 'invalid'
+    $('#filterAvailable').keyup(function (e) {
+        var me = $(this);
+        if(me.val().length) {
+            filter(avCards.find('li'), me.val());
+        } else {
+            avCards.find('li:hidden').show();
+        }
+    });
+    
+    //left column, cards in deck
+    selCards.droppable({
+        accept: '.available',
+        drop: dropCard
     })
-    .dblclick(function (e) {
-        })
+    .find('li').draggable({
+        appendTo: 'body',
+        revert: 'invalid',
+        helper: inDeckDragHelper
+    })
+    .dblclick(removeSelectedCard)
     .click(function (e) {
         loadPreviewImage(parseInt($(this).attr('id').substr(1), 10));
+    })
+    .find('img')
+    .click(removeSeveral);
+    
+    //right column, available cards
+    avCards.droppable({
+        accept: '.in-deck',
+        drop: dropRemoveCard
+    })
+    .find('li').draggable({
+        appendTo: 'body',
+        revert: 'invalid',
+        helper: function() {
+            return $(document.createElement('div'))
+            .append($(document.createElement('img'))
+                .attr('src', '_resources/images/icon-x16-small-plus.png'))
+            .append($(this).text());
+        }
+    })
+    .dblclick(selectCard)
+    .click(function (e) {
+        loadPreviewImage(parseInt($(this).attr('id').substr(1), 10));
+    });
+    
+    //add extra information that controlls adding and removal of new cards to deck
+    $('#hiddenIds input[name="selected\\[\\]"]').each(function() {
+        $(this).data('for', 's' + $(this).val());
     });
 }
 
 function loadPreviewImage(id) {
     $.ajax({
-        url: imageUrl,
+        url: globals.imageUrl,
         data: {
             card: id 
         },
@@ -43,86 +86,141 @@ function loadPreviewImage(id) {
     });
 }
 
-/*$(function () {
-    //Configure draggables for existing cards
-    //These cards can be dragged using a helper clone function and dropped in 
-    //the #usecards area.
-    $('.available').draggable({
-        appendTo: '#usecards',
-        containment: 'body', 
-        stack: '.available',
-        helper: function(event, ui) {
-            return $(document.createElement('img')).attr('src', $(this).attr('src'));            
-        },
-        start: function(event, ui) {            
-            $(this).css('opacity', '0.6');
-        },
-        stop: function (event, ui) {
-            $(this).css('opacity', '1');
-        }
-    });
+function dropCard(event, ui) {
+    var dropin = $(this), idValue = 's' + ui.draggable.attr('id').substr(1);
+    addCard(dropin, ui.draggable, dropin.find('#' + idValue), $('#card-total'))
+}
 
-    //Configure the #usercards area where selected cards are dropped.
-    //Whenever a card is dropped, two new elements are created: the visible card 
-    //that the user can manipulate and the hidden field that carries the card's 
-    //ID to the server
-    $('#usecards').droppable({
-        accept: '.available',
-        drop: function(event, ui) {
-            var destination  = $('#usecards');
-            var cardCount = destination.children().length, top = 0, left = 0, mv = parseInt(cardCount / 14, 10);
-            
-            if(cardCount > 0) {
-                top =  mv * 40;
-                left = (cardCount - (14  * mv)) * 25;
+function selectCard(e) {
+    var dropin = $('#selected-cards'), origin = $(this), idValue = 's' + origin.attr('id').substr(1);
+    addCard(dropin, origin, dropin.find('#' + idValue), $('#card-total'));
+}
+
+function addCard(dropin, origin, existing, total) {
+    var count = 1, span, idValue = origin.attr('id').substr(1);
+    
+    if(existing.length) {
+        span = existing.find('.card-count');
+        span.html(parseInt(span.html(), 10) + 1);
+    } else {
+        $(document.createElement('li'))
+        .attr('id', 's' + idValue)
+        .addClass('in-deck')
+        .draggable({
+            appendTo: 'body',
+            revert: 'invalid',
+            helper: inDeckDragHelper
+        })
+        .append($(document.createElement('img'))
+            .attr('src', '_resources/images/icon-x16-small-cross.png')
+            .click(removeSeveral))
+        .append(origin.text())
+        .append($(document.createElement('span'))
+            .addClass('card-count')
+            .html(count))
+        .dblclick(removeSelectedCard)
+        .click(function (e) {
+            loadPreviewImage(parseInt($(this).attr('id').substr(1), 10));
+        })
+        .appendTo(dropin);
+    }
+    
+    $(document.createElement('input'))
+    .attr({
+        type: 'hidden',
+        name: 'selected[]',
+        id: 'h' + idValue + '-' + count,
+        value: idValue
+    })
+    .data('for', 's' + idValue)
+    .appendTo($('#hiddenIds'));
+    
+    total.html(parseInt(total.html(), 10) + 1);
+}
+
+function removeSelectedCard(e) {
+    var me = $(this), id = me.attr('id'), found = null, inputs = $('#hiddenIds input[name="selected\\[\\]"]'),
+    size = 0, working = null, span, total = $('#card-total');
+    
+    inputs.each(function() {
+        working = $(this);
+        
+        if(working.data('for') == id) {
+            if(size == 0) {
+                found = working;
             }
             
-            var count = $('.s-' + ui.draggable.attr('id')).length;
-            
-            configureSelectedCard($(document.createElement('img'))
-                .addClass('chosen')
-                .addClass('s-' + ui.draggable.attr('id'))
-                .css({
-                    'left': left, 
-                    'top': top
-                })
-                .attr({
-                    src: ui.draggable.attr('src'),
-                    id: 's-' + ui.draggable.attr('id') + count
-                })
-                .appendTo(destination));
-            
-            $(document.createElement('input'))
-            .addClass('hs-' + ui.draggable.attr('id'))
-            .attr({
-                type: 'hidden', 
-                name: 'using[]',
-                value: ui.draggable.attr('id'),
-                id: 'hs-' + ui.draggable.attr('id') + count
-            })
-            .appendTo($('#deck-form'));
+            size ++;
         }
     });
     
-    //The #existingcards area is also a droppable for cards that have been added 
-    //to the deck, it allows cards to be removed from the deck
-    $('#existingcards').droppable({
-        accept: '.chosen',
-        drop: function(event, ui) {           
-            $('#h' + ui.draggable.attr('id')).remove();
-            ui.draggable.remove();
+    if(found) {        
+        span = me.find('.card-count');
+        span.text(parseInt(span.text(), 10) - 1);
+        total.text(parseInt(total.text(), 10) - 1);
+        found.remove();
+        
+        if(size == 1) {
+            me.remove();
         }
-    });
-    
-    $('.chosen').each(function(index) {
-        configureSelectedCard($(this));
-    });
-});*/
+    }
+}
 
-/*function configureSelectedCard(card) {
-    card.draggable({
-        containment: 'body',
-        stack: '.chosen'
+function filter(elems, text) {  
+    text = $.trim(text).replace(/ /gi, '|');
+  
+    elems.each(function() {
+        ($(this).text().search(new RegExp(text, "i")) < 0) ? $(this).hide() : $(this).show();
+    });  
+}
+
+function removeSeveral(e) {
+    removeNCards($(this).parent('li'));
+    
+    //prevent event propagation
+    return false;
+}
+
+function dropRemoveCard(event, ui) {
+    removeNCards(ui.draggable);
+}
+
+function removeNCards(me) {
+    var id = me.attr('id'), count = 1, found = Array(), i, span, 
+    total = $('#card-total'), sCount = 0;
+    
+    $('#hiddenIds input[name="selected\\[\\]"]').each(function() {
+        if($(this).data('for') == id) {
+            found.push($(this));
+        }
     });
     
-}*/
+    if(found.length > 1) {
+        count = parseInt(prompt("How many cards to remove?", found.length), 10);
+    }
+    
+    if(!isNaN(count)) {
+        for(i = 0; i < count; i++) {
+            found[i].remove();
+        }
+        
+        span = me.find('.card-count');
+        sCount = parseInt(span.text(), 10);
+        
+        if(sCount - count == 0) {
+            me.remove();
+        } else {
+            span.text(sCount - count);
+        }
+        total.text(parseInt(total.text(), 10) - count);
+    }
+}
+
+function inDeckDragHelper() {
+    return $(document.createElement('div'))
+    .append($(document.createElement('img'))
+        .attr('src', '_resources/images/icon-x16-small-minus.png'))
+    .append($(this)
+        .find('.card-name')
+        .text());
+}

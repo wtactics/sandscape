@@ -2,22 +2,22 @@
 
 /* DecksController.php
  * 
- * This file is part of SandScape.
+ * This file is part of Sandscape.
  *
- * SandScape is free software: you can redistribute it and/or modify
+ * Sandscape is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
- * SandScape is distributed in the hope that it will be useful,
+ * Sandscape is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Sandscape.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (c) 2011, the SandScape team and WTactics project.
+ * Copyright (c) 2011, the Sandscape team and WTactics project.
  * http://wtactics.org
  */
 
@@ -72,11 +72,10 @@ class DecksController extends AppController {
             $new->created = date('Y-m-d H:i');
 
             if ($new->save()) {
-                if (isset($_POST['using']) && !empty($_POST['using'])) {
-                    foreach ($_POST['using'] as $cardname) {
+                if (isset($_POST['selected']) && !empty($_POST['selected'])) {
+                    foreach ($_POST['selected'] as $cardId) {
                         $dkc = new DeckCard();
-                        $cardId = explode('card-', $cardname);
-                        $dkc->cardId = (int) $cardId[1];
+                        $dkc->cardId = (int) $cardId;
                         $dkc->deckId = $new->deckId;
 
                         $dkc->save();
@@ -114,23 +113,10 @@ class DecksController extends AppController {
                 //removed and added again.
                 DeckCard::model()->deleteAll('deckId = :id', array(':id' => $deck->deckId));
 
-                if (isset($_POST['autoFill']) && (int) $_POST['autoFill']) {
-                    $cards = Card::model()->findAll('active = 1');
-                    //auto-filling with 62 random cards
-                    if (($max = count($cards))) {
-                        for ($i = 0; $i < 62; $i++) {
-                            $dkc = new DeckCard();
-                            $dkc->cardId = $cards[rand(0, $max - 1)];
-                            $dkc->deckId = $deck->deckId;
-
-                            $dkc->save();
-                        }
-                    }
-                } else if (isset($_POST['using']) && !empty($_POST['using'])) {
-                    foreach ($_POST['using'] as $cardname) {
+                if (isset($_POST['selected']) && !empty($_POST['selected'])) {
+                    foreach ($_POST['selected'] as $cardId) {
                         $dkc = new DeckCard();
-                        $cardId = explode('card-', $cardname);
-                        $dkc->cardId = (int) $cardId[1];
+                        $dkc->cardId = (int) $cardId;
                         $dkc->deckId = $deck->deckId;
 
                         $dkc->save();

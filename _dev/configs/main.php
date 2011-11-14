@@ -2,7 +2,7 @@
 
 return array(
     'basePath' => dirname(__FILE__) . '/..',
-    'name' => 'SandScape',
+    'name' => 'Sandscape',
     'preload' => array('log'),
     'charset' => 'utf-8',
     'import' => array(

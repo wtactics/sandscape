@@ -2,22 +2,22 @@
 
 /* SCContainer.php
  * 
- * This file is part of SandScape.
+ * This file is part of Sandscape.
  *
- * SandScape is free software: you can redistribute it and/or modify
+ * Sandscape is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
- * SandScape is distributed in the hope that it will be useful,
+ * Sandscape is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with SandScape.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Sandscape.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (c) 2011, the SandScape team and WTactics project.
+ * Copyright (c) 2011, the Sandscape team and WTactics project.
  * http://wtactics.org
  */
 
@@ -56,6 +56,12 @@ class SCContainer {
         $this->invertView = false;
     }
 
+    /**
+     *
+     * @param type $id 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function setId($id) {
         if ($this->id)
             $this->game->unregister($this);
@@ -63,10 +69,25 @@ class SCContainer {
         $this->game->register($this);
     }
 
+    /**
+     *
+     * @return type 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function getId() {
         return $this->id;
     }
 
+    /**
+     *
+     * @param SCCard $scCard
+     * @param type $xOffset
+     * @param type $yOffset
+     * @return type 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function push(SCCard $scCard, $xOffset = 0, $yOffset = 0) {
         if ($this->max === null || count($this->elements < $this->max)) {
             array_push($this->elements, $scCard);
@@ -79,6 +100,13 @@ class SCContainer {
             return false;
     }
 
+    /**
+     *
+     * @param SCCard $card
+     * @return SCCard 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function remove(SCCard $card) {
         $pos = array_search($card, $this->elements, true);
         if ($pos !== false) {
@@ -87,13 +115,15 @@ class SCContainer {
             $card->setYOffset(0);
             return $card;
         }
-        else
-            return null;
+
+        return null;
     }
 
     /**
      * 
      * @return SCCard
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function pop() {
         $e = array_pop($this->elements);
@@ -105,6 +135,12 @@ class SCContainer {
         return $e;
     }
 
+    /**
+     *
+     * @return type 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function getRoot() {
         $o = $this;
         while ($o->getParent())
@@ -112,64 +148,149 @@ class SCContainer {
         return $this->game->getRoot($o);
     }
 
+    /**
+     *
+     * @return type 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function getParent() {
         return $this->parent;
     }
 
+    /**
+     *
+     * @param type $parent 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function setParent($parent) {
         $this->parent = $parent;
     }
 
+    /**
+     *
+     * @return type 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function getXOffset() {
         return $this->xOffset;
     }
 
+    /**
+     *
+     * @param type $xOffset 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function setXOffset($xOffset) {
         $this->xOffset = $xOffset;
     }
 
+    /**
+     *
+     * @return type 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function getYOffset() {
         return $this->yOffset;
     }
 
+    /**
+     *
+     * @param type $yOffset 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function setYOffset($yOffset) {
         $this->yOffset = $yOffset;
     }
 
+    /**
+     *
+     * @return bool
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function isMovable() {
         return $this->movable;
     }
 
+    /**
+     *
+     * @param bool $movable 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function setMovable($movable) {
         $this->movable = $movable;
     }
 
+    /**
+     *
+     * @param bool $droppable 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function setDropable($droppable) {
         $this->droppable = $droppable;
     }
 
+    /**
+     *
+     * @return bool
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function isDroppable() {
         return $this->droppable;
     }
 
+    /**
+     *
+     * @return int
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function getZIndex() {
         return 50;
     }
 
+    /**
+     *
+     * @param type $invertView 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function setInvertView($invertView) {
         $this->invertView = $invertView;
     }
 
+    /**
+     *
+     * @return bool
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function invertView() {
         $o = $this;
         while ($o) {
-            if ($o->invertView)
+            if ($o->invertView) {
                 return true;
+            }
             $o = $o->getParent();
         }
         return false;
     }
 
+    /**
+     *
+     * @return StdClass 
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function getStatus() {
         $root = $this->getRoot();
 
@@ -184,9 +305,13 @@ class SCContainer {
     }
 
     /**
-     * Checks if the container is inside the other container
+     * Checks if the container is inside the other container.
+     * 
      * @param SCContainer $container 
+     * 
      * @return boolean
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function isInside(SCContainer $container) {
         $o = $this;
@@ -198,6 +323,12 @@ class SCContainer {
         return false;
     }
 
+    /**
+     *
+     * @return string
+     * 
+     * @since 1.0, Sudden Growth
+     */
     public function __toString() {
         return 'ID: ' . $this->id . ', isMovable: ' . ($this->movable ? 'true' : 'false')
                 . ', isDroppable: ' . ($this->droppable ? 'true' : 'false') . ', max of '

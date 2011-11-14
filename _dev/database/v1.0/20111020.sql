@@ -1,41 +1,38 @@
 
 -- Remove old deck references
-alter table Game drop foreign key fkGameDeck1;
-alter table Game drop foreign key fkGameDeck2;
-alter table Game drop key fkGameDeck1;
-alter table Game drop key fkGameDeck2;
-alter table Game drop deck1;
-alter table Game drop deck2;
+ALTER TABLE `Game` DROP FOREIGN KEY `fkGameDeck1`;
+ALTER TABLE `Game` DROP FOREIGN KEY `fkGameDeck2`;
+ALTER TABLE `Game` DROP KEY `fkGameDeck1`;
+ALTER TABLE `Game` DROP KEY `fkGameDeck2`;
+ALTER TABLE `Game` DROP `deck1`;
+ALTER TABLE `Game` DROP `deck2`;
 
 -- add max number of decks per player
-alter table Game add maxDecks tinyint not null default 1;
+ALTER TABLE `Game` ADD `maxDecks` TNINYINT NOT NULL DEFAULT 1;
 
 -- the game has a graveyard?
-alter table Game add graveyard tinyint not null default 1;
+ALTER TABLE `Game` ADD `graveyard` TNINYINT NOT NULL DEFAULT 1;
 
 -- players are ready
-alter table Game
-add player1Ready tinyint not null default 0,
-add player2Ready tinyint not null default 0;
+ALTER TABLE `Game` ADD `player1Ready` TNINYINT NOT NULL DEFAULT 0,
+ADD `player2Ready` TNINYINT NOT NULL DEFAULT 0;
 
--- create Game / Deck link
-create table GameDeck
-(
-   gameId int unsigned not null,
-   deckId int unsigned not null,
-   primary key (gameId, deckId),
-   constraint fkGameDeckGame foreign key (gameId) references Game(gameId),
-   constraint fkGameDeckDeck foreign key (deckId) references Deck(deckId)
+-- CREATE Game / Deck link
+CREATE TABLE GameDeck (
+`gameId` INT UNSIGNED NOT NULL,
+`deckId` INT UNSIGNED NOT NULL,
+PRIMARY KEY (`gameId`, `deckId`),
+CONSTRAINT `fkGameDeckGame` FOREIGN KEY (`gameId`) REFERENCES `Game`(`gameId`),
+CONSTRAINT `fkGameDeckDeck` FOREIGN KEY (`deckId`) REFERENCES `Deck`(`deckId`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
-
-drop table DeckCard;
-create table DeckCard (
-   dcId     int unsigned primary key auto_increment,
-   deckId   int unsigned not null,
-   cardId   int unsigned not null,
-   constraint fkDCDeck foreign key (deckId) references Deck(deckId),
-   constraint fkDCCard foreign key (cardId) references Card(cardId)
-) engine=InnoDB character set utf8 collate utf8_unicode_ci;
+DROP TABLE `DeckCard`;
+CREATE TABLE `DeckCard` (
+`dcId` INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+`deckId` INT UNSIGNED NOT NULL,
+`cardId` INT UNSIGNED NOT NULL,
+`CONSTRAINT `fkDCDeck` FOREIGN KEY (`deckId`) REFERENCES `Deck`(`deckId`),
+`CONSTRAINT `fkDCCard` FOREIGN KEY (`cardId`) REFERENCES `Card`(`cardId`)
+) ENGINE=InnoDB character set utf8 collate utf8_unicode_ci;
 
 ALTER TABLE `ChatMessage` ADD `system` TINYINT NOT NULL DEFAULT 0 ;

@@ -4,7 +4,7 @@ ALTER TABLE `ChatMessage` CHANGE `userId` `userId` INT UNSIGNED NULL ;
 ALTER TABLE `Card` CHANGE `image` `image` VARCHAR ( 150 ) NOT NULL ;
 
 -- Add new setting
-INSERT INTO `Setting` VALUES ('cardscapeurl', 'http://chaosrealm.net/wtactics/cardscape', 'The URL for the CardScape system used.') ;
+INSERT INTO `Setting` VALUES ('cardscapeurl', 'http://www.wtactics.org/cardscape', 'The URL for the CardScape.') ;
 
 CREATE TABLE `Token` (
 `tokenId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
