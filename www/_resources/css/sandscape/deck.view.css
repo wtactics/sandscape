@@ -4,10 +4,10 @@ li {
     cursor: pointer;
 }
 
-#selected-cards {
+#cards {
     min-height: 250px;
 }
 
-#selected-cards li span.card-count {
+#cards li span.card-count {
     float: right;
 }

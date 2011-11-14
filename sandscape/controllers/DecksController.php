@@ -239,7 +239,36 @@ class DecksController extends AppController {
      * @since 1.2, Elvish Shaman
      */
     public function actionView($id) {
-        //TODO: not implemented yet
+        $deck = $this->loadDeckModel($id);
+        $this->render('view', array('deck' => $deck));
+    }
+
+    public function actionExport($id, $type) {
+        switch ($type) {
+            case 'pdf':
+                $this->exportPDF($id);
+                break;
+            case 'txt':
+                $this->exportTXT($id);
+                break;
+            case 'html':
+                $this->exportHTML($id);
+                break;
+            default:
+                throw new CHttpException(404, 'Invalid export option.');
+        }
+    }
+
+    private function exportPDF($id) {
+        //TODO: not implemented yet!        
+    }
+
+    private function exportTXT($id) {
+        //TODO: not implemented yet!
+    }
+
+    private function exportHTML($id) {
+        //TODO: not implemented yet!
     }
 
     /**
@@ -269,7 +298,7 @@ class DecksController extends AppController {
         return array_merge(array(
                     array('allow',
                         'actions' => array('index', 'create', 'update', 'delete',
-                            'fromTemplate', 'view', 'imagePreview'),
+                            'fromTemplate', 'view', 'imagePreview', 'export'),
                         'users' => array('@')
                     ),
                     array('allow',
