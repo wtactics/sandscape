@@ -58,6 +58,7 @@ class DeckTemplate extends CActiveRecord {
     public function relations() {
         return array(
             'templatesCard' => array(self::HAS_MANY, 'DeckTemplateCard', 'deckTemplateId'),
+            'deck' => array(self::BELONGS_TO, 'Deck', 'deckId')
         );
     }
 

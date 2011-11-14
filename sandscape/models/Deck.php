@@ -36,6 +36,7 @@
  * @property User $user
  * @property DeckCard[] $deckCards
  * @property Game[] $games
+ * @property DeckTemplate[] preCons
  * 
  * @since 1.0, Sudden Growth
  */
@@ -66,6 +67,7 @@ class Deck extends CActiveRecord {
             'user' => array(self::BELONGS_TO, 'User', 'userId'),
             'deckCards' => array(self::HAS_MANY, 'DeckCard', 'deckId'),
             'games' => array(self::MANY_MANY, 'Game', 'GameDeck(deckId, gameId)'),
+            'preCons' => array(self::HAS_MANY, 'DeckTemplate', 'deckId')
         );
     }
 
