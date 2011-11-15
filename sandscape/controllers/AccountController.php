@@ -75,8 +75,6 @@ class AccountController extends AppController {
 
     /**
      * Lists all games in which this user has participated.
-     * 
-     * @since 1.2, Elvish Shaman
      */
     public function actionGames() {
         //TODO: not implemented yet
@@ -95,8 +93,6 @@ class AccountController extends AppController {
      * is responsible for showing a user's profile to other users.
      * 
      * @param integer $id The user's ID
-     * 
-     * @since 1.2, Elvish Shaman
      */
     public function actionProfile($id) {
         //TODO: not implemented yet!
@@ -106,12 +102,17 @@ class AccountController extends AppController {
 
     /**
      *
-     * @param type $id 
-     * 
-     * @since 1.2, Elvish Shaman
+     * @param int $id 
      */
     public function actionViewGame($id) {
-        //TODO: not implemented yet!
+        if (($game = Game::model()->findByPk((int) $id)) === null) {
+            throw new CHttpException(404, 'You are trying to load an invalid game.');
+        }
+
+        //don't need the game state, and it's usually a lot of info.
+        //NOTE: //TODO: in future prevent the info from being loaded at all
+        $game->state = '';
+        $this->render('view-game', array('game' => $game));
     }
 
     /**

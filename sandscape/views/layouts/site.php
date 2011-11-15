@@ -35,7 +35,7 @@ Yii::app()->clientScript->registerScript('menuhover', "
             </div>
             <div class="span-24" id="footer">
                 &copy; <?php echo date('Y'); ?> <a href="http://sourceforge.net/projects/sandscape">Sandscape</a> & <a href="http://www.wtactics.org">WTactics.org</a> Team
-                &nbsp;|&nbsp;Running <em>Sandscape Elvish Shaman</em>
+                &nbsp;|&nbsp;Running <em>Sandscape Soulharvester</em>
                 <span id="server-time"><?php echo date('Y-m-d H:i:s'); ?></span>
             </div>
         </div>
