@@ -30,7 +30,7 @@ $this->title = 'Sandscape Lobby';
         <?php } ?>
     </ul>
 </div>
-<div class="span-13 border">
+<div class="span-12 border">
     <h3>Chat</h3>
     <ul id="lobbychat">
         <?php foreach ($messages as $message) { ?>
@@ -45,18 +45,22 @@ $this->title = 'Sandscape Lobby';
         <?php } ?>
     </ul>
 </div>
-<div class="span-6 last">
+<div class="span-7 last">
     <h3>Games</h3>
     <ul id="gamelist">
         <?php
         foreach ($games as $game) {
             if (in_array(Yii::app()->user->id, array($game->player1, $game->player2)) && !$game->ended) {
+                $class = 'success';
+                if (!$game->running) {
+                    $class = 'notice';
+                }
                 ?>
-                <li class="success">
+                <li class="<?php echo $class; ?>">
                     <span>
                         <a href="<?php echo $this->createURL('game/play', array('id' => $game->gameId)); ?>">Return to Game</a>
                         &nbsp;-&nbsp;
-                        <?php echo Yii::app()->dateFormatter->formatDateTime(strtotime($game->created), 'short', false); ?>
+                        <?php echo date('d/m/Y H:m', strtotime($game->created)); ?>
                     </span>
                     <br />
                     <?php if ($game->player2) { ?>
