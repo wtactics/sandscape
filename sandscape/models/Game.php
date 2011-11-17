@@ -23,7 +23,6 @@
 
 /**
  * 
- * 
  * @property int $gameId
  * @property int $player1
  * @property int $player2

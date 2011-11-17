@@ -23,7 +23,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'class' => 'CButtonColumn',
             'buttons' => array(
                 'view' => array('visible' => 'false'),
-            )
+                'reset' => array(
+                    'label' => 'Reset Password',
+                    'imageUrl' => '_resources/images/icon-x16-key.png',
+                    'visible' => 'true'
+                )
+            ),
+            'template' => '{update} {delete} {reset}'
         )
     )
 ));

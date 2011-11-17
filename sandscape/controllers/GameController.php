@@ -147,6 +147,7 @@ class GameController extends AppController {
      * startUp:
      * update:
      * drawCard:
+     * moveCard:
      * 
      * [since Green Shield]
      * cardInfo:
@@ -155,14 +156,25 @@ class GameController extends AppController {
      *      the card in-game.
      * 
      * [since Elvish Shaman]
-     * gamePause:
-     *      Pauses a game allowing users to leave and resume game play at a later time.
+     * drawCardToTable:
+     * toggleCardToken:
+     * toggleCardState:
+     * flipCard:
+     * shuffleDeck:
      * roll:
      *      Generates a dice roll for the specified dice ID. If the dice is set 
      *      available for this game and is a valid dice (active), than a random
      *      will be generated between 1 and $dice->face.
+     * label:
+     * toGraveyard:
+     * fromGraveyardToTable:
+     * fromGraveyard:
+     * shuffleGraveyard:
      * 
-     * @param integer $id The game ID.
+     * [since Soul Harvester]
+     * addCounter:
+     * 
+     * @param int $id The game ID.
      * 
      * @since 1.0, Sudden Growth
      */
@@ -437,6 +449,23 @@ class GameController extends AppController {
                             $result = array(
                                 'success' => $this->scGame->shuffleGraveyard(Yii::app()->user->id)
                             );
+                        }
+                        echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
+                        break;
+                    case 'addCounter':
+                        $result = array('success' => 0);
+                        if ($game->running && $this->scGame && isset($_REQUEST['card'])) {
+                            if (($card = $this->scGame->getCard(Yii::app()->user->id, $_REQUEST['card'])) !== null) {
+                                $counter = $card->addCounter($_REQUEST['name'], $_REQUEST['start'], $_REQUEST['step'], $_REQUEST['color']);
+
+                                if ($counter !== null) {
+                                    $result = array(
+                                        'success' => 1,
+                                        'counter' => $counter->getJSONData(),
+                                        'count' => $card->getCounterCount()
+                                    );
+                                }
+                            }
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         break;

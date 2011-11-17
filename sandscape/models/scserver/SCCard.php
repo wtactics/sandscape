@@ -36,6 +36,11 @@ class SCCard extends SCContainer {
     private $label;
 
     /**
+     * @var SCCounter[]
+     */
+    private $counters;
+
+    /**
      *
      * @param SCGame $game
      * @param type $player
@@ -53,6 +58,7 @@ class SCCard extends SCContainer {
         $this->back = $back;
         $this->states = array();
         $this->tokens = array();
+        $this->counters = array();
     }
 
     /**
@@ -190,12 +196,19 @@ class SCCard extends SCContainer {
         $status->visibility = $this->getVisibility();
 
         $status->tokens = array();
-        foreach ($this->tokens as $token)
+        foreach ($this->tokens as $token) {
             $status->tokens [] = $token->getJSONData();
+        }
 
         $status->states = array();
-        foreach ($this->states as $state)
+        foreach ($this->states as $state) {
             $status->states[] = $state->getJSONData();
+        }
+
+        $status->counters = array();
+        foreach ($this->counters as $counter) {
+            $status->counters[] = $counter->getJSONData();
+        }
 
         $status->label = $this->label;
         return $status;
@@ -237,6 +250,81 @@ class SCCard extends SCContainer {
      */
     public function setLabel($label) {
         $this->label = $label;
+    }
+
+    /**
+     *
+     * @param type $name
+     * @param type $value
+     * @param type $step
+     * @param type $class
+     * @return SCCounter
+     * 
+     * @since 1.3, Soul Harvester 
+     */
+    public function addCounter($name, $value = 0, $step = 1, $class = 'cl-default') {
+        if (!isset($this->counters[$name])) {
+            $id = $this->getId() . '-c' . count($this->counters) + 1;
+            $this->counters[$name] = new SCCounter($id, $name, $value, $step, $class);
+
+            return $this->counters[$name];
+        }
+
+        return null;
+    }
+
+    /**
+     *
+     * @param type $name
+     * 
+     * @since 1.3, Soul Harvester 
+     */
+    public function removeCounter($name) {
+        unset($this->counters[$name]);
+    }
+
+    public function resetCounter($name, $discardStart = false) {
+        if (isset($this->countes[$name])) {
+            if ($discardStart) {
+                $this->counters[$name]->setValue(0);
+            } else {
+                $this->counters[$name]->reset();
+            }
+        }
+    }
+
+    /**
+     *
+     * @param type $name 
+     * 
+     * @since 1.3, Soul Harvester
+     */
+    public function increaseCounterValue($name) {
+        if (isset($this->counters[$name])) {
+            $this->counters[$name]->increase();
+        }
+    }
+
+    /**
+     *
+     * @param type $name 
+     * 
+     * @since 1.3, Soul Harvester
+     */
+    public function decreaseCounterValue($name) {
+        if (isset($this->counters[$name])) {
+            $this->counters[$name]->decrease();
+        }
+    }
+
+    /**
+     *
+     * @return int
+     * 
+     * @since 1.3, Soul Harvester
+     */
+    public function getCounterCount() {
+        return count($this->counters);
     }
 
 }

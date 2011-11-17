@@ -265,6 +265,13 @@ function checkGameStart() {
                                         $('#label-card-id').val($(card).attr('id'));
                                         $('#label-dlg').modal();
                                     }
+                                }, {
+                                    //counters
+                                    option: '<img src="_resources/images/icon-x16-cardinal.png" title="Counters" />',
+                                    event: function (card) {
+                                        $('#counter-card-id').val($(card).attr('id'));
+                                        $('#counter-dlg').modal();
+                                    }
                                 }]
                             
                                 if(useGrave) {
@@ -338,23 +345,34 @@ function checkGameStart() {
 
 function updateCardExtras(card) {
     if (card.data('status')){
-        var i;
+        var i, cstatus = card.data('status');
+        
+        //add tokens to cards
         card.find('.token').remove();
-        for (i = 0; i < card.data('status').tokens.length; ++i) {
+        for (i = 0; i < cstatus.tokens.length; ++i) {
             $(document.createElement('img'))
             .addClass('token')
-            .attr('src', '_game/tokens/thumbs/' + (card.data('status').invertView ? 'reversed/' : '') 
-                + card.data('status').tokens[i].src)
+            .attr('src', '_game/tokens/thumbs/' + (cstatus.invertView ? 'reversed/' : '') 
+                + cstatus.tokens[i].src)
             .appendTo(card);
         }
       
+        //add states to cards
         card.find('.state').remove();
-        for(i = 0; i < card.data('status').states.length; ++i) {
+        for(i = 0; i < cstatus.states.length; ++i) {
             $(document.createElement('img'))
             .addClass('state')
-            .attr('src', '_game/states/thumbs/' + (card.data('status').invertView ? 'reversed/' : '') 
-                + card.data('status').states[i].src)
+            .attr('src', '_game/states/thumbs/' + (cstatus.invertView ? 'reversed/' : '') 
+                + cstatus.states[i].src)
             .appendTo(card);
+        }
+        
+        //TODO: remove this remove!
+        card.find('.counter').remove();
+        for(i = 0; i < cstatus.counters.length; ++i) {
+            //setup counters
+            placeCounter(card, cstatus.counters[i].id, cstatus.counters[i].value, 
+                cstatus.counters[i].name, cstatus.counters[i].color, i * 20);
         }
         
         card.find('.label')
@@ -554,6 +572,17 @@ function requestCardInfo(id) {
                     .css('z-index', -1)
                     .attr('src', '_game/states/' + json.status.states[i].src)
                     .appendTo(owner);
+                }
+                
+                //TODO: add counters to bigger image
+                for(i = 0; i < json.status.counters.length; ++i) {
+                    $(document.createElement('span'))
+                    .attr('id', json.status.counters[i].id)
+                    .addClass('temp')
+                    .addClass(json.status.counters[i].color)
+                    //.css('top', top)
+                    .text(json.status.counters[i].value)
+                //.appendTo(card);
                 }
                 
                 owner.find('.big-label')
@@ -872,4 +901,40 @@ function shuffleGraveyard() {
             $.jGrowl('Graveyard shuffled.');
         }
     });    
+}
+
+function addCounter() {
+    var cardId = $('#counter-card-id').val(), card = $('#' + cardId);
+    
+    $.ajax({
+        url: globals.game.url,
+        data: {
+            event: 'addCounter',
+            clientTime: globals.time.getTime(),
+            card: cardId,
+            name: $('#counter-name').val(),
+            start: $('#counter-value').val(),
+            step:$('#counter-step').val(),
+            color:$('#counter-class').val()
+        },
+        dataType: 'json',
+        type: 'POST',
+        success: function(json) {
+            if(json.success) {
+                var counter = json.counter;
+                placeCounter(card, counter.id, counter.value, counter.name, counter.color, (json.count - 1) * 20);
+            }
+        }
+    });
+}
+
+function placeCounter(card, counterId, value, name, color, top) {
+    $(document.createElement('span'))
+    .attr('id', counterId)
+    .addClass('counter')
+    .addClass('counter-widget')
+    .addClass(color)
+    .css('top', top)
+    .text(value)
+    .appendTo(card);
 }

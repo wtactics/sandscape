@@ -1,39 +1,15 @@
-<?php echo CHtml::form($this->createURL('administration/savesettings')); ?>
-<fieldset>
-    <legend>Game Settings</legend>
-    <p>
-        <?php
-        echo CHtml::checkBox('fixdecknr', $settings['fixdecknr']->value), '&nbsp;',
-        CHtml::label('Fix Deck Number', 'fixdecknr'), '&nbsp;',
-        CHtml::image('_resources/images/icon-x16-question-balloon.png', '', array('id' => 'fixdecknr-help', 'class' => 'helpicon'));
-        ?>
-    </p>
-    <p>
-        <?php
-        echo CHtml::label('Decks per game', 'deckspergame'), '<br />',
-        CHtml::textField('deckspergame', $settings['deckspergame']->value, array('class' => 'text')), '&nbsp;',
-        CHtml::image('_resources/images/icon-x16-question-balloon.png', '', array('id' => 'deckspergame-help', 'class' => 'helpicon'));
-        ?>
-    </p>
-    <hr />
-    <p>
-        <?php
-        echo CHtml::checkBox('useanydice', $settings['useanydice']->value), '&nbsp;',
-        CHtml::label('Disable all dice', 'disabledice'), '&nbsp;',
-        CHtml::image('_resources/images/icon-x16-question-balloon.png', '', array('id' => 'useanydice-help', 'class' => 'helpicon'));
-        ?>
-    </p>
-    <p>
-        <?php
-        echo CHtml::label('Spectators can', 'gamechatspectators'), '&nbsp;',
-        CHtml::image('_resources/images/icon-x16-question-balloon.png', '', array('id' => 'gamechatspectators-help', 'class' => 'helpicon')),
-        '<br />',
-        CHtml::dropDownList('gamechatspectators', $settings['gamechatspectators']->value, array(
-            0 => 'Be quiet', 1 => 'Speak in chat'
-        ));
-        ?>
-    </p>
-</fieldset>
+<?php
+$js = <<<JS
+$('#cardscapeurl-help').SetBubblePopupInnerHtml('{$settings['cardscapeurl']->description}');
+$('#allowavatar-help').SetBubblePopupInnerHtml('{$settings['allowavatar']->description}');
+$('#avatarsize-help').SetBubblePopupInnerHtml('{$settings['avatarsize']->description}');
+JS;
+
+Yii::app()->clientScript->registerScript('bbtxtss', $js);
+
+echo CHtml::form($this->createURL('administration/savesandscapesettings'));
+?>
+
 <fieldset>
     <legend>Sandscape Configuration</legend>
     <p>
@@ -44,9 +20,24 @@
         CHtml::textField('cardscapeurl', $settings['cardscapeurl']->value, array('class' => 'text'));
         ?>
     </p>
+    <p>
+        <?php
+        echo CHtml::checkBox('allowavatar', $settings['allowavatar']->value, array('uncheckValue' => $settings['allowavatar']->value)), '&nbsp;',
+        CHtml::label('Allow avatars', 'allowavatar'), '&nbsp;',
+        CHtml::image('_resources/images/icon-x16-question-balloon.png', '', array('id' => 'allowavatar-help', 'class' => 'helpicon'));
+        ?>
+    </p>
+    <p>
+        <?php
+        echo CHtml::label('Avatar size', 'avatarsize'), '&nbsp;',
+        CHtml::image('_resources/images/icon-x16-question-balloon.png', '', array('id' => 'avatarsize-help', 'class' => 'helpicon')),
+        '<br />',
+        CHtml::textField('avatarsize', $settings['avatarsize']->value, array('class' => 'text'));
+        ?>
+    </p>
 </fieldset>
 <p>
-    <?php echo CHtml::submitButton('Save', array('class' => 'button')); ?>
+    <?php echo CHtml::submitButton('Save', array('class' => 'button', 'name' => 'SandscapeSettings')); ?>
 </p>
 <?php
-echo CHtml::hiddenField('Settings', 'Settings'), "\n", CHtml::endForm();
+CHtml::endForm();

@@ -38,6 +38,9 @@
  */
 class Token extends CActiveRecord {
 
+    /**
+     * @return Token
+     */
     public static function model($className=__CLASS__) {
         return parent::model($className);
     }

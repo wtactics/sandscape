@@ -34,7 +34,11 @@ Yii::app()->clientScript->registerScript('menuhover', "
                 <?php echo $content; ?>
             </div>
             <div class="span-24" id="footer">
-                &copy; <?php echo date('Y'); ?> <a href="http://sourceforge.net/projects/sandscape">Sandscape</a> & <a href="http://www.wtactics.org">WTactics.org</a> Team
+                &copy; <?php echo date('Y'); ?>
+                &nbsp;<a href="http://sourceforge.net/projects/sandscape">Sandscape</a>
+                &nbsp;&amp;&nbsp;
+                <a href="http://www.wtactics.org">WTactics.org</a> Team
+                &nbsp;|&nbsp;<a href="<?php echo $this->createUrl('site/attribution'); ?>">Attribution</a>
                 &nbsp;|&nbsp;Running <em>Sandscape Soulharvester</em>
                 <span id="server-time"><?php echo date('Y-m-d H:i:s'); ?></span>
             </div>

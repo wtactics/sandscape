@@ -34,6 +34,9 @@
  */
 class Setting extends CActiveRecord {
 
+    /**
+     * @return Setting
+     */
     public static function model($className=__CLASS__) {
         return parent::model($className);
     }

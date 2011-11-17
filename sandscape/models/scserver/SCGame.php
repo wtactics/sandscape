@@ -511,7 +511,7 @@ class SCGame {
     /**
      *
      * @param type $userId
-     * @return type 
+     * @return bool 
      * 
      * @since 1.2, Elvish Shaman
      */
@@ -520,6 +520,21 @@ class SCGame {
         $opponent = $this->getOpponentSide($userId);
 
         return $player->shuffleGraveyard();
+    }
+
+    /**
+     *
+     * @param type $userId
+     * @param type $cardId
+     * @return SCCard
+     * 
+     * @since 1.3, Soul Harvester
+     */
+    public function getCard($userId, $cardId) {
+        $player = $this->getPlayerSide($userId);
+        $opponent = $this->getOpponentSide($userId);
+
+        return (isset($this->all[$cardId]) ? $this->all[$cardId] : null);
     }
 
 }

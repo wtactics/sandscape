@@ -37,10 +37,6 @@ class PasswordForm extends CFormModel {
     public $password;
     public $password_repeat;
 
-    public function __construct($scenario = '') {
-        parent::__construct($scenario);
-    }
-
     public function rules() {
         return array(
             array('current, password, password_repeat', 'required'),

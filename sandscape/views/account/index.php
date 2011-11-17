@@ -22,6 +22,11 @@ $this->widget('CTabView', array(
             'title' => 'Password',
             'view' => '_password',
             'data' => array('pwdModel' => $pwdModel)
+        ),
+        'tAvatar' => array(
+            'title' => 'Avatar',
+            'view' => '_avatar',
+            'data' => array('user' => $user)
         )
     ),
     'cssFile' => '_resources/css/sandscape/tabs' . (YII_DEBUG ? '' : '.min') . '.css'

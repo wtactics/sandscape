@@ -17,11 +17,6 @@ $('.helpicon').CreateBubblePopup({
     closingDelay: 100
 });
 
-$('#fixdecknr-help').SetBubblePopupInnerHtml('{$settings['fixdecknr']->description}');
-$('#deckspergame-help').SetBubblePopupInnerHtml('{$settings['deckspergame']->description}');
-$('#useanydice-help').SetBubblePopupInnerHtml('{$settings['useanydice']->description}');
-$('#gamechatspectators-help').SetBubblePopupInnerHtml('{$settings['gamechatspectators']->description}');
-$('#cardscapeurl-help').SetBubblePopupInnerHtml('{$settings['cardscapeurl']->description}');
 JS;
 
 Yii::app()->clientScript->registerScript('bublesinit', $js);
@@ -33,20 +28,25 @@ $this->title = 'Sandscape Administration';
     <?php
     $this->widget('CTabView', array(
         'tabs' => array(
-            'tab1' => array(
+            'tStats' => array(
                 'title' => 'Stats',
                 'view' => '_stats',
             ),
-            'tab2' => array(
+            'tSSettings' => array(
                 'title' => 'Settings',
                 'view' => '_settings',
                 'data' => array('settings' => $settings)
             ),
-            'tab3' => array(
+            'tGSettings' => array(
+                'title' => 'Game Options',
+                'view' => '_game-settings',
+                'data' => array('settings' => $settings)
+            ),
+            'tTools' => array(
                 'title' => 'Tools',
                 'view' => '_tools'
             ),
-            'tab4' => array(
+            'tWords' => array(
                 'title' => 'Word Filter',
                 'view' => '_wordfilter',
                 'data' => array('words' => $settings['wordfilter']->value)

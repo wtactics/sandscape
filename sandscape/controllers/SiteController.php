@@ -48,6 +48,15 @@ class SiteController extends AppController {
     }
 
     /**
+     * Loads the attribution page with all the credits.
+     * 
+     * @since 1.3, Soulharvester
+     */
+    public function actionAttribution() {
+        $this->render('pages/attribution');
+    }
+
+    /**
      * Allows users to login and to register new accounts.
      * Registration and authentication are handle in the same action since they 
      * are made in the same view.
@@ -57,7 +66,7 @@ class SiteController extends AppController {
     public function actionLogin() {
         $login = new LoginForm();
         $register = new RegisterForm();
-        
+
         $this->performAjaxValidation('register-form', $register);
 
         if (isset($_POST['LoginForm'])) {
@@ -129,7 +138,8 @@ class SiteController extends AppController {
     public function accessRules() {
         return array_merge(array(
                     array('allow',
-                        'actions' => array('index', 'about', 'login', 'recoverPassword', 'error'),
+                        'actions' => array('index', 'about', 'login', 'recoverPassword', 
+                            'error', 'attribution'),
                         'users' => array('*')
                     ),
                     array('allow',

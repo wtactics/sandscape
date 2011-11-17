@@ -25,12 +25,21 @@
  * This is the model class for the <em>User</em> table.
  *
  * The followings are the available columns in table 'User':
- * @property string $userId
+ * @property int $userId
  * @property string $email
  * @property string $password
  * @property string $name
- * @property integer $admin
- * @property integer $active
+ * @property int $admin
+ * @property int $active
+ * @property string $avatar
+ * @property int $gender
+ * @property string $birthday
+ * @property string $website
+ * @property string $twitter
+ * @property string $facebook
+ * @property string $googleplus
+ * @property string $skype
+ * @property string $msn
  * 
  * The followings are the available model relations:
  * @property ChatMessage[] $chatMessages
@@ -42,10 +51,9 @@
  */
 class User extends CActiveRecord {
 
-    public function __construct($scenario = 'insert') {
-        parent::__construct($scenario);
-    }
-
+    /**
+     * @return User
+     */
     public static function model($className=__CLASS__) {
         return parent::model($className);
     }
@@ -56,9 +64,9 @@ class User extends CActiveRecord {
 
     public function rules() {
         return array(
-            array('email, password', 'required'),
-            array('admin, active, seeTopDown', 'numerical', 'integerOnly' => true),
-            array('email', 'length', 'max' => 255),
+            array('email, password, name', 'required'),
+            array('admin, gender', 'numerical', 'integerOnly' => true),
+            array('email, avatar, website, twitter, facebook, googleplus, skype, msn', 'length', 'max' => 255),
             array('name', 'length', 'max' => 15),
             array('email', 'email'),
             array('name, email', 'unique', 'className' => 'User'),
@@ -82,7 +90,16 @@ class User extends CActiveRecord {
             'email' => 'E-mail',
             'password' => 'Password',
             'name' => 'Name',
-            'admin' => 'Administrator'
+            'admin' => 'Administrator',
+            'avatar' => 'Avatar',
+            'gender' => 'Gender',
+            'birthday' => 'Birthday',
+            'website' => 'Website',
+            'twitter' => 'Twitter',
+            'facebook' => 'Facebook',
+            'googleplus' => 'Google+',
+            'skype' => 'Skype',
+            'msn' => 'MSN'
         );
     }
 

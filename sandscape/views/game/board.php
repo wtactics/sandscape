@@ -121,9 +121,54 @@ $this->title = 'Playing';
 <!-- LABEL DIALOG -->
 <div style="display:none;">
     <div id="label-dlg">
-        <input type="text" id="label-text" />
-        <button type="button" onclick="setLabel();">Save</button>
+        <p>
+            <?php
+            echo CHtml::label('Label', 'label-text'), '<br />',
+            CHtml::textField('label-text');
+            ?>
+        </p>
+        <p>
+            <?php echo CHtml::button('Save', array('onclick' => 'setLabel();', 'class' => 'simplemodal-close')); ?>
+        </p>
         <input type="hidden" id="label-card-id" />
+    </div>
+</div>
+
+<div style="display:none;">
+    <div id="counter-dlg">
+        <p>
+            <?php
+            echo CHtml::label('Name', 'counter-name'), '<br />',
+            CHtml::textField('counter-name');
+            ?>
+        </p>
+        <p>
+            <?php
+            echo CHtml::label('Start', 'counter-value'), '<br />',
+            CHtml::textField('counter-value', 0);
+            ?>
+        </p>
+        <p>
+            <?php
+            echo CHtml::label('Step', 'counter-step'), '<br />',
+            CHtml::textField('counter-step', 1);
+            ?>
+        </p>
+        <p>
+            <?php
+            echo CHtml::label('Color', 'counter-class'), '<br />',
+            CHtml::dropDownList('counter-class', null, array(
+                'cl-default' => 'cl-default',
+                'cl-redish' => 'cl-redish',
+                'cl-chrome' => 'cl-chrome',
+                'cl-blueish' => 'cl-blueish')
+            );
+            ?>
+        </p>
+        <p>
+            <?php echo CHtml::button('Add', array('onclick' => 'addCounter();', 'class' => 'simplemodal-close')); ?>
+        </p>
+        <input type="hidden" id="counter-card-id" />
     </div>
 </div>
 

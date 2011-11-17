@@ -17,7 +17,7 @@
  * 
  * Copyright (c) 2011, the Sandscape team and WTactics project.
  * http://wtactics.org
- */
+*/
 /*Base: 9A5D0D, other: 735124, 643A04, CD8F40, CDA066*/
 * {
     margin:0;
@@ -277,4 +277,39 @@ div.card > img.state {
     padding: 3px;
     /* Z above tokens */
     z-index: 2;
+}
+
+.counter-widget {
+    position: absolute;
+    left: 70px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 10px;
+    cursor: pointer;
+    padding: 0 .3em 0 .3em;
+}
+
+/*Counters Look classes*/
+.cl-default {
+    border: 1px solid red;
+    background-color: yellow;
+    color: #000;
+}
+
+.cl-redish {
+    border: 1px solid red;
+    background-color: yellow;
+    color: #000;
+}
+
+.cl-chrome {
+    border: 1px solid red;
+    background-color: yellow;
+    color: #000;
+}
+
+.cl-blueish {
+    border: 1px solid red;
+    background-color: yellow;
+    color: #000;
 }

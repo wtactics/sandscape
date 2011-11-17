@@ -107,10 +107,11 @@ class AdministrationController extends AppController {
      * 
      * @since 1.2, Elvish Shaman
      */
-    public function actionSaveSettings() {
+    public function actionSaveGameSettings() {
+        //TODO: validate input properly
         //TODO: //NOTE: better way to find if any of the settings are missing
         //and add descriptions to missing settings.
-        if (isset($_POST['Settings'])) {
+        if (isset($_POST['GameSettings'])) {
             if (($fixDeckNr = Setting::model()->findByPk('fixdecknr')) === null) {
                 $fixDeckNr = new Setting();
                 $fixDeckNr->key = 'fixdecknr';
@@ -162,6 +163,41 @@ class AdministrationController extends AppController {
     }
 
     /**
+     * Saves Sandscape related settings.
+     * 
+     * @since 1.3, Soulharvester
+     */
+    public function actionSaveSandscapeSettings() {
+        //TODO: validate input properly
+        //TODO: //NOTE: better way to find if any of the settings are missing
+        //and add descriptions to missing settings.
+        if (isset($_POST['SandscapeSettings'])) {
+            if (($fixDeckNr = Setting::model()->findByPk('cardscapeurl')) === null) {
+                $fixDeckNr = new Setting();
+                $fixDeckNr->key = 'cardscapeurl';
+            }
+            $fixDeckNr->value = $_POST['cardscapeurl'];
+            $fixDeckNr->save();
+
+            if (($decksPerGame = Setting::model()->findByPk('allowavatar')) === null) {
+                $decksPerGame = new Setting();
+                $decksPerGame->key = 'allowavatar';
+            }
+            $decksPerGame->value = (int) $_POST['allowavatar'];
+            $decksPerGame->save();
+
+            if (($useAnyDice = Setting::model()->findByPk('avatarsize')) === null) {
+                $useAnyDice = new Setting();
+                $useAnyDice->key = 'avatarsize';
+            }
+            $useAnyDice->value = $_POST['avatarsize'];
+            $useAnyDice->save();
+        }
+
+        $this->redirect(array('index'));
+    }
+
+    /**
      *
      * @return array New rules array.
      * 
@@ -171,7 +207,7 @@ class AdministrationController extends AppController {
         return array_merge(array(
                     array('allow',
                         'actions' => array('index', 'pruneChats', 'removeOrphan',
-                            'saveSettings', 'saveWords'
+                            'saveGameSettings', 'saveSandscapeSettings', 'saveWords'
                         ),
                         'expression' => '$user->class'
                     )

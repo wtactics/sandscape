@@ -17,7 +17,7 @@
  * 
  * Copyright (c) 2011, the Sandscape team and WTactics project.
  * http://wtactics.org
- */
+*/
 /*Base: 9A5D0D, other: 735124, 643A04, CD8F40, CDA066*/
 * {
     font-family: Helvetica, Verdana, Arial, sans-serif;
@@ -92,6 +92,7 @@ ul {
     position: absolute;
     top: 100%;
     left: 0; 
+    z-index: 10;
 }
 
 #menu > ul ul li {
@@ -169,4 +170,30 @@ a:hover {
 
 .no {
     color: red;
+}
+
+/*RESET Blueprint css for tables*/
+table {
+    margin-bottom: 1.4em;
+    width:100%;
+}
+
+th {
+    font-weight: normal;
+}
+
+thead th {
+    background: inherit;
+}
+
+th, td, caption {
+    padding: 0;
+}
+
+tbody tr:nth-child(even) td, tbody tr.even td {
+    background: inherit
+}
+
+tfoot {
+    font-style: normal;
 }
