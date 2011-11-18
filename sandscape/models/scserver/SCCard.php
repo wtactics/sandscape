@@ -264,7 +264,7 @@ class SCCard extends SCContainer {
      */
     public function addCounter($name, $value = 0, $step = 1, $class = 'cl-default') {
         if (!isset($this->counters[$name])) {
-            $id = $this->getId() . '-c' . count($this->counters) + 1;
+            $id = ($this->getId() . '-c' . (count($this->counters) + 1));
             $this->counters[$name] = new SCCounter($id, $name, $value, $step, $class);
 
             return $this->counters[$name];
@@ -295,26 +295,38 @@ class SCCard extends SCContainer {
 
     /**
      *
-     * @param type $name 
+     * @param string $name
+     * 
+     * @return int
      * 
      * @since 1.3, Soul Harvester
      */
     public function increaseCounterValue($name) {
         if (isset($this->counters[$name])) {
             $this->counters[$name]->increase();
+
+            return $this->counters[$name]->getValue();
         }
+
+        return 0;
     }
 
     /**
      *
-     * @param type $name 
+     * @param string $name 
+     * 
+     * @return int
      * 
      * @since 1.3, Soul Harvester
      */
     public function decreaseCounterValue($name) {
         if (isset($this->counters[$name])) {
             $this->counters[$name]->decrease();
+
+            return $this->counters[$name]->getValue();
         }
+        
+        return 0;
     }
 
     /**

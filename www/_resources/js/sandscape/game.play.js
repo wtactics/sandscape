@@ -328,7 +328,7 @@ function checkGameStart() {
                             });
 
                             globals.game.running = true;                     
-                            setTimeout(updateGame, 3000);
+                            //setTimeout(updateGame, 3000);
                             cyclicPositionUpdate();
                             
                             $('#game-loader').fadeOut('slow', function () {
@@ -338,11 +338,11 @@ function checkGameStart() {
                     }
                 });
             } else  {
-                setTimeout(checkGameStart, 3000);
-            }
+        //setTimeout(checkGameStart, 3000);
+        }
         },
         error: function () {
-            setTimeout(checkGameStart, 3000);
+        //setTimeout(checkGameStart, 3000);
         }
     });
 }
@@ -702,9 +702,6 @@ function chatToBottom() {
 
 function filterChatMessages() {
     var sum = $('#show-user-messages'), ssm = $('#show-system-messages');
-       
-       console.log(sum.is(':checked'));
-       console.log(ssm.is(':checked'));
     if(sum.is(':checked')) {
         console.log(('li.user-message').length);
         $('li.user-message').show();
@@ -946,12 +943,74 @@ function addCounter() {
 }
 
 function placeCounter(card, counterId, value, name, color, top) {
-    $(document.createElement('span'))
-    .attr('id', counterId)
+    $(document.createElement('div'))
+    .attr({
+        id: counterId, 
+        title: name
+    })
     .addClass('counter')
     .addClass('counter-widget')
-    .addClass(color)
     .css('top', top)
-    .text(value)
+    .append($(document.createElement('div'))
+        .addClass('counter-text')
+        .addClass(color)
+        .text(value))
+    .append($(document.createElement('div'))
+        .addClass('counter-tools')
+        .append($(document.createElement('img'))
+            .attr('src', '_resources/images/icon-x16-plus.png')
+            .data('counter', name)
+            .data('counterId', counterId)
+            .data('card', card.attr('id'))
+            .click(increaseCounter))
+        .append($(document.createElement('img'))
+            .attr('src', '_resources/images/icon-x16-minus.png')
+            .data('counter', name)
+            .data('counterId', counterId)
+            .data('card', card.attr('id'))
+            .click(decreaseCounter))
+        )
     .appendTo(card);
+}
+
+function increaseCounter(e) {
+    var counter = $(this);
+    
+    $.ajax({
+        url: globals.game.url,
+        data: {
+            event: 'increaseCounter',
+            card: counter.data('card'),
+            counter: counter.data('counter')
+        },
+        dataType: 'json',
+        type: 'POST',
+        success: function (json) {
+            if(json.success) {
+                $('#' + counter.data('counterId') + ' .counter-text').text(json.value);
+            }
+        }
+    });   
+    return false;
+}
+
+function decreaseCounter(e) {
+    var counter = $(this);
+    
+    $.ajax({
+        url: globals.game.url,
+        data: {
+            event: 'decreaseCounter',
+            card: counter.data('card'),
+            counter: counter.data('counter')
+        },
+        dataType: 'json',
+        type: 'POST',
+        success: function (json) {
+            if(json.success) {
+                $('#' + counter.data('counterId') + ' .counter-text').text(json.value);
+            }
+        }
+    });  
+    return false;
 }

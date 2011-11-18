@@ -45,6 +45,12 @@ ul {
     margin: 0;
 }
 
+.clearfix {
+    clear: both;
+}
+
+/*GAME ELEMENTS START HERE*/
+
 #game-table {
 }
 
@@ -72,6 +78,20 @@ ul {
     z-index: 0;
 }
 
+.big-label {
+    position: absolute;
+    width: 200px;
+    font-size: 12px;
+    height: 16px;
+    top: 330px;
+    left: 40px;
+    background-color: #222;
+    color: #FFF;
+    padding: 3px;
+    /* Z above tokens */
+    z-index: 2;
+}
+
 /*CHAT SETTINGS */
 #chat {
     /*Position to make slider work*/
@@ -94,6 +114,7 @@ ul {
     border: none;
     list-style: none;
     margin-bottom: 3px;
+    width: 240px;
 }
 
 #content-view {
@@ -158,6 +179,7 @@ ul {
     color: brown;
 }
 
+/*LOADER IMAGES*/
 .loader {
     position: fixed;
     top: 50%;
@@ -171,7 +193,17 @@ ul {
     height: 122px;
 }
 
-/*IN-GAME CARDS */
+/*MODAL WINDOWS*/
+#simplemodal-overlay {
+    background-color: #000;
+}
+
+#simplemodal-container {
+    background-color: #CCC;
+    border: 8px solid #FFF;
+}
+
+/*IN-GAME CARD REPRESENTATION*/
 div.card {
     margin: 0px;
     padding: 0px;
@@ -208,6 +240,7 @@ div.card > img.state {
     height: 143px;
 }
 
+/*MENU USED IN CARDS*/
 .radialmenuOption {
     border: 1px solid #4297D7;
     background: white;
@@ -221,7 +254,7 @@ div.card > img.state {
     cursor: pointer;
 }
 
-/*IN-GAME MENU*/
+/*IN-GAME SLIDING MENU*/
 #menu-wrapper {
     position: absolute;
     overflow: hidden;
@@ -280,44 +313,41 @@ div.card > img.state {
     padding: 0.3em;
 }
 
-.clearfix {
-    clear: both;
-}
-
-#simplemodal-overlay {
-    background-color: #000;
-}
-
-#simplemodal-container {
-    background-color: #CCC;
-    border: 8px solid #FFF;
-}
-
-.big-label {
-    position: absolute;
-    width: 200px;
-    font-size: 12px;
-    height: 16px;
-    top: 330px;
-    left: 40px;
-    background-color: #222;
-    color: #FFF;
-    padding: 3px;
-    /* Z above tokens */
-    z-index: 2;
-}
-
+/*COUNTERS FOR EACH CARD*/
 .counter-widget {
     position: absolute;
     left: 70px;
-    height: 16px;
-    line-height: 16px;
     font-size: 10px;
     cursor: pointer;
-    padding: 0 .3em 0 .3em;
+    height: 16px;
+    line-height: 16px;
+    white-space: nowrap;
 }
 
-/*Counters Look classes*/
+.counter-tools {
+    margin-left: .2em;
+    display:none;
+    height: 16px;
+}
+
+.counter-widget .counter-tools img {
+    /*vertical-align: middle;*/
+    margin-right: 2px;
+}
+
+.counter-widget:hover .counter-tools {
+    display: inline;
+    height: 16px;
+    width: 36px;
+}
+
+.counter-text {
+    display: inline;
+    height: 16px;
+    float: left;
+}
+
+/*Counters colour classes*/
 .cl-default {
     border: 1px solid red;
     background-color: yellow;

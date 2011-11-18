@@ -317,7 +317,7 @@ class GameController extends AppController {
                                 } else {
                                     $msg .= ' places a new card on the table.';
                                 }
-                                $this->putChatMessage($msg, $game->gameId);
+                                $this->putChatMessage($msg, $game->gameId, $currentUserId);
                             }
                             echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         }
@@ -355,7 +355,7 @@ class GameController extends AppController {
                                     $msg .= ' on a card.';
                                 }
 
-                                $this->putChatMessage($msg, $game->gameId);
+                                $this->putChatMessage($msg, $game->gameId, $currentUserId);
 
                                 echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                             }
@@ -383,7 +383,7 @@ class GameController extends AppController {
                                     $msg .= ' on a card.';
                                 }
 
-                                $this->putChatMessage($msn, $game->gameId);
+                                $this->putChatMessage($msn, $game->gameId, $currentUserId);
 
                                 echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                             }
@@ -434,7 +434,7 @@ class GameController extends AppController {
                                         $msg .= ' flips';
                                     }
                                     $msg .= ' <span class="card-name">' . $cardName . '</span>.';
-                                    $this->putChatMessage($msg, $game->gameId);
+                                    $this->putChatMessage($msg, $game->gameId, $currentUserId);
                                 }
                             }
                         }
@@ -455,7 +455,7 @@ class GameController extends AppController {
                                 $msg = Yii::app()->user->name . ' suffled <span class="deck-name">'
                                         . $deckName . '</span>.';
 
-                                $this->putChatMessage($msg, $game->gameId);
+                                $this->putChatMessage($msg, $game->gameId, $currentUserId);
                             }
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
@@ -483,7 +483,7 @@ class GameController extends AppController {
 
                                 $msg = Yii::app()->user->name . ' rolled <span class="die-name">' .
                                         $dice->name . '</span> for (1 - ' . $dice->face . '): ' . $roll . '.';
-                                $this->putChatMessage($msg, $game->gameId);
+                                $this->putChatMessage($msg, $game->gameId, $currentUserId);
                             }
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
@@ -516,7 +516,7 @@ class GameController extends AppController {
                             }
                             $msg .= ' to the graveyard.';
 
-                            $this->putChatMessage($msg, $game->gameId);
+                            $this->putChatMessage($msg, $game->gameId, $currentUserId);
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         break;
@@ -535,7 +535,7 @@ class GameController extends AppController {
                             } else {
                                 $msg .= ' takes a card from the <span class="deck-name">graveyard</span> and places it on the table.';
                             }
-                            $this->putChatMessage($msg, $game->gameId);
+                            $this->putChatMessage($msg, $game->gameId, $currentUserId);
 
                             echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         }
@@ -549,7 +549,7 @@ class GameController extends AppController {
                             );
 
                             $msg = Yii::app()->user->name . ' suffled the <span class="deck-name">graveyard</span>.';
-                            $this->putChatMessage($msg, $game->gameId);
+                            $this->putChatMessage($msg, $game->gameId, $currentUserId);
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         break;
@@ -566,12 +566,66 @@ class GameController extends AppController {
                                         'count' => $card->getCounterCount()
                                     );
 
-                                    $cardName = Card::model()->findByPk($card->getDbId())->name;
                                     $msg = Yii::app()->user->name . ' adds the counter <span class="counter-name">'
-                                            . $_REQUEST['name'] . '</span> to <span class="card-name">'
-                                            . $cardName . '</span>.';
-                                    $this->putChatMessage($msg, $game->gameId);
+                                            . $_REQUEST['name'] . '</span> to';
+                                    if ($card->isFaceUp()) {
+                                        $cardName = Card::model()->findByPk($card->getDbId())->name;
+                                        $msg .= ' <span class="card-name">' . $cardName . '</span>.';
+                                    } else {
+                                        $msg .= ' a card.';
+                                    }
+                                    $this->putChatMessage($msg, $game->gameId, $currentUserId);
                                 }
+                            }
+                        }
+                        echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
+                        break;
+                    case 'increaseCounter':
+                        //TODO: may be used for generic counters if card is made optional
+                        $result = array('success' => 0);
+                        if ($game->running && $this->scGame && isset($_REQUEST['card']) && isset($_REQUEST['counter'])) {
+                            if (($card = $this->scGame->getCard($currentUserId, $_REQUEST['card'])) !== null) {
+                                $value = $card->increaseCounterValue($_REQUEST['counter']);
+
+                                $result = array(
+                                    'success' => 1,
+                                    'value' => $value
+                                );
+
+                                $msg = Yii::app()->user->name . ' increased <span class="counter-name">'
+                                        . $_REQUEST['counter'] . '</span>';
+                                if ($card->isFaceUp()) {
+                                    $cardName = Card::model()->findByPk($card->getDbId())->name;
+                                    $msg .= ' on <span class="card-name">' . $cardName . '</span>';
+                                }
+
+                                $msg .= ' to <strong>' . $value . '</strong>.';
+                                $this->putChatMessage($msg, $game->gameId, $currentUserId);
+                            }
+                        }
+                        echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
+                        break;
+                    case 'decreaseCounter':
+                        //TODO: may be used for generic counters if card is made optional
+                        $result = array('success' => 0);
+                        if ($game->running && $this->scGame && isset($_REQUEST['card']) && isset($_REQUEST['counter'])) {
+                            if (($card = $this->scGame->getCard($currentUserId, $_REQUEST['card'])) !== null) {
+                                $value = $card->decreaseCounterValue($_REQUEST['counter']);
+
+                                $result = array(
+                                    'success' => 1,
+                                    'value' => $value
+                                );
+
+                                $msg = Yii::app()->user->name . ' decreased <span class="counter-name">'
+                                        . $_REQUEST['counter'] . '</span>';
+                                if ($card->isFaceUp()) {
+                                    $cardName = Card::model()->findByPk($card->getDbId())->name;
+                                    $msg .= ' on <span class="card-name">' . $cardName . '</span>';
+                                }
+
+                                $msg .= ' to <strong>' . $value . '</strong>.';
+                                $this->putChatMessage($msg, $game->gameId, $currentUserId);
                             }
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
@@ -791,10 +845,10 @@ class GameController extends AppController {
      * @param string $text
      * @param int $game 
      */
-    private function putChatMessage($text, $game) {
+    private function putChatMessage($text, $gameId, $userId) {
         $msg = new ChatMessage();
-        $msg->gameId = $game;
-        $msg->userId = Yii::app()->user->id;
+        $msg->gameId = $gameId;
+        $msg->userId = $userId;
         $msg->system = 1;
         $msg->message = $text;
 
