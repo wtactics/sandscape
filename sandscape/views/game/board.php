@@ -24,7 +24,8 @@ globals.chat.sendUrl = '{$sendMessageUrl}';
 globals.chat.updateUrl = '{$updateMessageUrl}';
 globals.chat.lastReceived = {$last};
 globals.game.url = '{$playUrl}';
-globals.user = '{$user}';
+globals.user.id = {$user->id};
+globals.user.name = '{$user->name}';
     
 init();
 
@@ -55,11 +56,24 @@ $this->title = 'Playing';
         ?>
         <div id="content-view">
             <ul id="chat-messages">
-                <?php foreach ($messages as $message) { ?>
-                    <li class="user-message">
-                        <strong><?php echo $message->user->name; ?></strong>: <?php echo $message->message; ?>
-                    </li>
-                <?php } ?>
+                <?php
+                foreach ($messages as $message) {
+                    if ($message->system) {
+                        ?>
+                        <li class="system-message <?php echo ($player1 == $message->userId ? 'player1-action' : 'player2-action'); ?>">
+                            <strong>
+                                <?php echo date('H:i', strtotime($message->sent)); ?>:
+                            </strong>
+                            <?php echo $message->message; ?>
+                        </li>
+                    <?php } else { ?>
+                        <li class="user-message <?php echo ($player1 == $message->userId ? 'player1-text' :
+                        ($player2 == $message->userId ? 'player2-text' : 'spectator-text')); ?>">
+                            <strong><?php echo date('H:i', strtotime($message->sent)); ?>:</strong>
+                            <?php echo $message->message; ?>
+                        </li>
+                    <?php }
+                } ?>
             </ul>
         </div>
         <input type="text" id="writemessage" />
@@ -106,9 +120,8 @@ $this->title = 'Playing';
                 <li>
                     <a href="javascript:;" class="list-header">Chat Messages &Gt;</a>
                     <ul class="sub-menu">
-                        <li><a href="javascript:filterChatMessages(0);">All</a></li>
-                        <li><a href="javascript:filterChatMessages(1);">User</a></li>
-                        <li><a href="javascript:filterChatMessages(2);">System</a></li>
+                        <li><?php echo Chtml::checkBox('show-user-messages', true, array('onchange' => 'filterChatMessages()')); ?> User</li>
+                        <li><?php echo Chtml::checkBox('show-system-messages', true, array('onchange' => 'filterChatMessages()')); ?> System</li>
                     </ul>
                 </li>
                 <li><a href="javascript:exit();">Exit</a></li>

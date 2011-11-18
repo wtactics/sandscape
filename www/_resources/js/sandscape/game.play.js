@@ -35,7 +35,11 @@ var globals = {
     time: new Date(),
     stopPositionUpdate: false,
     updatingGame: false,
-    user: ''
+    user: {
+        id: 0,
+        name: '',
+        isOne: false
+    }
 }
 
 function init() {
@@ -626,7 +630,7 @@ function pack() {
 
 function sendMessage(e) {
     if(e.keyCode == 13) {
-        var message = $("#writemessage").val();
+        var message = $("#writemessage").val(), html;
         if(message.length > 0) {
             $.ajax({
                 type: "POST",
@@ -637,10 +641,10 @@ function sendMessage(e) {
                 dataType: 'json',
                 success: function(json) {
                     if(json.success) {
-                        //TODO: add message received from server
-                        //$('#chat-messages').append('<li class="user-message"><strong>' 
-                        //    + json.name + '</strong>:' + message + '</li>');
-                    
+                        $('#chat-messages').append('<li class="user-message ' 
+                            + (json.order == 1 ? 'player1-text' : (json.order == 2 
+                                ? 'player-text' : 'spectator-text')) + '"><strong>' 
+                            + json.date + '</strong>: ' + json.message + '</li>');
                         globals.chat.lastReceived = json.id;
                         chatToBottom();
                     }
@@ -661,9 +665,12 @@ function updateMessages() {
         dataType: 'json',
         success: function(json) {
             if(json.has) {
+                var cm = $('#chat-messages');
                 $.each(json.messages, function() {
-                    $('#chat-messages').append('<li class="user-message"><strong>' 
-                        + this.name + '</strong>:' + this.message + '</li>');
+                    cm.append('<li class="' + (this.system ? 'system-message ' : 'user-message ') 
+                        + (this.order == 1 ? 'player1-text' : (this.order == 2 
+                            ? 'player-text' : 'spectator-text')) + '"><strong>' 
+                        + this.date + '</strong>: ' + this.message + '</li>');
                 });
 
                 globals.chat.lastReceived = json.last;
@@ -678,33 +685,43 @@ function updateMessages() {
 }
 
 function sliderSetValue(event, ui) {
-    $('#chat-slider').slider('option', 'value', -($('#chat-messages').height() - 130));
+    chatToBottom();
 }
 
 function chatToBottom() {
-    var sl = $('#chat-slider'), cm = $('#chat-messages'), h = -(cm.height() - 130);
+    var sl = $('#chat-slider'), cm = $('#chat-messages'), bh = cm.height(), h = -(bh - 130);
+    if(bh > 130) {
+        sl.slider('option', 'min', h)
+        .slider('option', 'value', h);
     
-    sl.slider('option', 'min', h).slider('option', 'value', h);
-    
-    cm.animate({
-        top: sl.slider('option', 'value')
-    }, 'slow');
+        cm.animate({
+            top: h
+        }, 'slow');
+    }
 }
 
-function filterChatMessages(filter) {
-    switch(filter) {
-        case 0:
-            $('li.user-message').show();
-            $('li.user-system').show();
-            break;
-        case 1:
-            $('li.user-message').show();
-            $('li.user-system').hide();
-            break;
-        case 2:
-            $('li.user-message').hide();
-            $('li.user-system').show();
+function filterChatMessages() {
+    var sum = $('#show-user-messages'), ssm = $('#show-system-messages');
+       
+       console.log(sum.is(':checked'));
+       console.log(ssm.is(':checked'));
+    if(sum.is(':checked')) {
+        console.log(('li.user-message').length);
+        $('li.user-message').show();
+    } else {
+        console.log(('li.user-message').length);
+        $('li.user-message').hide();
     }
+    
+    if(ssm.is(':checked')) {
+        console.log(('li.system-message').length);
+        $('li.system-message').show();
+    } else {
+        console.log(('li.system-message').length);
+        $('li.system-message').hide();
+    }
+    
+    chatToBottom();
 }
 
 function roll(diceId) {

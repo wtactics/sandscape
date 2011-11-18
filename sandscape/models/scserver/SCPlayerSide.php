@@ -131,6 +131,8 @@ class SCPlayerSide {
      * @param string $deckId
      * @param bool $toHand 
      * 
+     * @return SCCard
+     * 
      * @since 1.0, Sudden Growth
      */
     public function drawCard($deckId, $toHand = true) {
@@ -146,7 +148,11 @@ class SCPlayerSide {
                     $this->playableArea->push($card);
                 }
             }
+
+            return $card;
         }
+
+        return null;
     }
 
     /**
@@ -197,6 +203,18 @@ class SCPlayerSide {
         }
 
         return false;
+    }
+
+    /**
+     *
+     * @param string $deckId
+     * 
+     * @return SCDeck
+     * 
+     * @since 1.3, Soulharvester
+     */
+    public function getDeck($deckId) {
+        return (isset($this->decks[$deckId]) ? $this->decks[$deckId] : null);
     }
 
 }

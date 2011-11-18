@@ -315,7 +315,7 @@ class SCContainer {
      */
     public function isInside(SCContainer $container) {
         $o = $this;
-        while ($o->getParent()) {
+        while ($o) {
             if ($o === $container)
                 return true;
             $o = $o->getParent();

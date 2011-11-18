@@ -78,8 +78,9 @@ class GameController extends AppController {
                     $result = array(
                         'success' => 1,
                         'id' => $cm->messageId,
-                        'name' => Yii::app()->user->name,
-                        'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
+                        'date' => date('H:i', strtotime($cm->sent)),
+                        'message' => $cm->message,
+                        'order' => ($game->player1 == Yii::app()->user->id ? 1 : 2)
                     );
                 }
                 $this->updateUserActivity();
@@ -101,8 +102,7 @@ class GameController extends AppController {
         $result = array('has' => 0);
         if (Yii::app()->request->isPostRequest) {
             $game = $this->loadGameById($id);
-            if (($game->player1 == Yii::app()->user->id || $game->player2 == Yii::app()->user->id)
-                    && isset($_REQUEST['lastupdate'])) {
+            if (isset($_REQUEST['lastupdate'])) {
 
                 $lastUpdate = (int) $_REQUEST['lastupdate'];
                 $messages = array();
@@ -114,9 +114,11 @@ class GameController extends AppController {
 
                 foreach ($cms as $cm) {
                     $messages[] = array(
-                        'name' => $cm->user->name,
                         'message' => $cm->message,
-                        'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
+                        'date' => date('H:i', strtotime($cm->sent)),
+                        'order' => ($game->player1 == Yii::app()->user->id ? 1 :
+                                ($game->player2 == Yii::app()->user->id ? 2 : 3)),
+                        'system' => $cm->system
                     );
                 }
                 $count = count($messages);
@@ -180,6 +182,7 @@ class GameController extends AppController {
      */
     public function actionPlay($id) {
         $this->layout = '//layouts/game';
+        $currentUserId = Yii::app()->user->id;
         //flag used by moveCard and moveCardToTable, defaults to hand 
         $toHand = true;
 
@@ -191,7 +194,7 @@ class GameController extends AppController {
         }
 
         $game = $this->loadGameById($id);
-        if (in_array(yii::app()->user->id, array($game->player1, $game->player2))) {
+        if (in_array($currentUserId, array($game->player1, $game->player2))) {
             if ($game->state) {
                 $this->scGame = unserialize($game->state);
             }
@@ -211,7 +214,7 @@ class GameController extends AppController {
                             echo json_encode((object) array('result' => 'wait'));
                         } elseif ($game->running) {
                             echo json_encode((object) array('result' => 'ok'));
-                        } elseif ($game->player1Ready && $game->player2Ready && !$game->running && yii::app()->user->id == $game->player1) {
+                        } elseif ($game->player1Ready && $game->player2Ready && !$game->running && $currentUserId == $game->player1) {
                             $game->running = 1;
                             $game->started = date('Y-m-d H:i:s');
 
@@ -236,11 +239,13 @@ class GameController extends AppController {
                                 foreach ($deck->deckCards as $card) {
                                     $cards[] = $c = new SCCard($this->scGame, $deck->userId, $card->card->cardId, $card->card->image);
                                 }
-                                $scdeck = new SCDeck($this->scGame, $deck->name, $cards);
+                                $scdeck = new SCDeck($this->scGame, $deck->name, $cards, $deck->deckId);
 
-                                if ($deck->userId == $game->player1)
-                                    $this->scGame->addPlayer1Deck($scdeck); elseif ($deck->userId == $game->player2)
+                                if ($deck->userId == $game->player1) {
+                                    $this->scGame->addPlayer1Deck($scdeck);
+                                } elseif ($deck->userId == $game->player2) {
                                     $this->scGame->addPlayer2Deck($scdeck);
+                                }
                             }
                             $game->lastChange = time();
                             echo json_encode((object) array('result' => 'ok'));
@@ -257,7 +262,7 @@ class GameController extends AppController {
                      */
                     case 'startUp':
                         if ($game->running && $this->scGame) {
-                            $result = $this->scGame->clientInitialization(yii::app()->user->id);
+                            $result = $this->scGame->clientInitialization($currentUserId);
                             $result->result = 'ok';
                             $result->lastChange = $game->lastChange;
                             echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
@@ -275,7 +280,7 @@ class GameController extends AppController {
                     case 'update':
                         if ($game->running && $this->scGame) {
                             if (!isset($_REQUEST['lastChange']) || $game->lastChange != $_REQUEST['lastChange']) {
-                                $result = $this->scGame->clientUpdate(Yii::app()->user->id);
+                                $result = $this->scGame->clientUpdate($currentUserId);
                                 $result->result = 'ok';
                                 $result->lastChange = $game->lastChange;
                                 $result->clientTime = $_REQUEST['clientTime'];
@@ -300,9 +305,20 @@ class GameController extends AppController {
                     case 'drawCard':
                         if ($game->running && $this->scGame && isset($_REQUEST['deck'])) {
                             $deck = $_REQUEST['deck'];
-                            $result = $this->scGame->drawCard(Yii::app()->user->id, $deck, $toHand);
-                            $result->result = 'ok';
-                            $result->clientTime = $_REQUEST['clientTime'];
+                            if (($card = $this->scGame->drawCard($currentUserId, $deck, $toHand)) !== null) {
+                                $result = array(
+                                    'result' => 'ok',
+                                    'clientTime' => $_REQUEST['clientTime'],
+                                    'update' => $this->scGame->getGameStatus()
+                                );
+                                $msg = Yii::app()->user->name;
+                                if ($toHand) {
+                                    $msg .= ' draws a new card to his/her hand.';
+                                } else {
+                                    $msg .= ' places a new card on the table.';
+                                }
+                                $this->putChatMessage($msg, $game->gameId);
+                            }
                             echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         }
                         break;
@@ -312,7 +328,7 @@ class GameController extends AppController {
                             $location = $_REQUEST['location'];
                             $xOffset = isset($_REQUEST['xOffset']) ? floatval($_REQUEST['xOffset']) : 0;
                             $yOffset = isset($_REQUEST['yOffset']) ? floatval($_REQUEST['yOffset']) : 0;
-                            $result = $this->scGame->moveCard(Yii::app()->user->id, $card, $location, $xOffset, $yOffset);
+                            $result = $this->scGame->moveCard($currentUserId, $card, $location, $xOffset, $yOffset);
                             $result->result = 'ok';
                             $result->clientTime = $_REQUEST['clientTime'];
                             echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
@@ -322,20 +338,55 @@ class GameController extends AppController {
                         if ($game->running && $this->scGame && isset($_REQUEST['card']) && isset($_REQUEST['token'])) {
                             $card = $_REQUEST['card'];
                             $token = $_REQUEST['token'];
-                            $result = $this->scGame->toggleCardToken(Yii::app()->user->id, $card, $token);
-                            $result->result = 'ok';
-                            $result->clientTime = $_REQUEST['clientTime'];
-                            echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
+
+                            if (($result = $this->scGame->toggleCardToken($currentUserId, $card, $token)) !== null) {
+                                $result->result = 'ok';
+                                $result->clientTime = $_REQUEST['clientTime'];
+
+                                $card = $this->scGame->getCard($currentUserId, $card);
+                                $tokenName = $this->scGame->getToken($token)->getName();
+                                $msg = Yii::app()->user->name . ' toggles <span class="token-name">'
+                                        . $tokenName . '</span>';
+
+                                if ($card->isFaceUp()) {
+                                    $cardName = Card::model()->findByPk($card->getDbId())->name;
+                                    $msg .= ' on <span class="card-name">' . $cardName . '</span>.';
+                                } else {
+                                    $msg .= ' on a card.';
+                                }
+
+                                $this->putChatMessage($msg, $game->gameId);
+
+                                echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
+                            }
                         }
                         break;
                     case 'toggleCardState':
                         if ($game->running && $this->scGame && isset($_REQUEST['card']) && isset($_REQUEST['state'])) {
                             $card = $_REQUEST['card'];
                             $state = $_REQUEST['state'];
-                            $result = $this->scGame->toggleCardState(Yii::app()->user->id, $card, $state);
-                            $result->result = 'ok';
-                            $result->clientTime = $_REQUEST['clientTime'];
-                            echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
+
+                            if (($result = $this->scGame->toggleCardState($currentUserId, $card, $state)) !== null) {
+                                $result->result = 'ok';
+                                $result->clientTime = $_REQUEST['clientTime'];
+
+                                $card = $this->scGame->getCard($currentUserId, $card);
+                                $stateName = $this->scGame->getState($state)->getName();
+
+                                $msg = Yii::app()->user->name . ' toggles <span class="state-name">'
+                                        . $stateName . '</span>';
+
+                                if ($card->isFaceUp()) {
+                                    $cardName = Card::model()->findByPk($card->getDbId())->name;
+                                    $msg .= ' on <span class="card-name">' . $cardName . '</span>.';
+                                } else {
+                                    $msg .= ' on a card.';
+                                }
+
+                                $this->putChatMessage($msn, $game->gameId);
+
+                                echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
+                            }
                         }
                         break;
                     /**
@@ -353,7 +404,7 @@ class GameController extends AppController {
                         if ($game->running && $this->scGame && isset($_REQUEST['card'])) {
                             $result = array(
                                 'success' => 1,
-                                'status' => $this->scGame->getCardStatus(Yii::app()->user->id, $_REQUEST['card'])
+                                'status' => $this->scGame->getCardStatus($currentUserId, $_REQUEST['card'])
                             );
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
@@ -367,12 +418,25 @@ class GameController extends AppController {
                         $result = array('success' => 0);
                         if ($game->running && $this->scGame && isset($_REQUEST['card'])) {
 
-                            $card = $this->scGame->flipCard(Yii::app()->user->id, $_REQUEST['card']);
+                            if (($card = $this->scGame->flipCard($currentUserId, $_REQUEST['card'])) !== null) {
+                                $result = array(
+                                    'success' => 1,
+                                    'status' => $card->getStatus()
+                                );
 
-                            $result = array(
-                                'success' => $card !== null ? 1 : 0,
-                                'status' => $card !== null ? $card->getStatus() : null
-                            );
+                                if (!$card->isInside($this->scGame->getPlayerSide($currentUserId)->getHand())) {
+                                    $cardName = Card::model()->findByPk($card->getDbId())->name;
+                                    $msg = Yii::app()->user->name;
+
+                                    if ($card->isFaceUp()) {
+                                        $msg .= ' reveals';
+                                    } else {
+                                        $msg .= ' flips';
+                                    }
+                                    $msg .= ' <span class="card-name">' . $cardName . '</span>.';
+                                    $this->putChatMessage($msg, $game->gameId);
+                                }
+                            }
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         break;
@@ -383,9 +447,16 @@ class GameController extends AppController {
                         $result = array('success' => 0);
                         if ($game->running && $this->scGame && isset($_REQUEST['deck'])) {
 
-                            $result = array(
-                                'success' => $this->scGame->shuffleDeck(Yii::app()->user->id, $_REQUEST['deck'])
-                            );
+                            if ($this->scGame->shuffleDeck($currentUserId, $_REQUEST['deck'])) {
+                                $result = array('success' => 1);
+
+                                $deckName = $this->scGame->getPlayerSide($currentUserId)->getDeck($_REQUEST['deck'])->getName();
+
+                                $msg = Yii::app()->user->name . ' suffled <span class="deck-name">'
+                                        . $deckName . '</span>.';
+
+                                $this->putChatMessage($msg, $game->gameId);
+                            }
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         break;
@@ -401,13 +472,18 @@ class GameController extends AppController {
                                     ))) !== null) {
 
                                 $dice = $gd->dice;
+                                $roll = rand(1, $dice->face);
 
                                 $result = array(
                                     'success' => 1,
-                                    'roll' => rand(1, $dice->face),
+                                    'roll' => $roll,
                                     'dice' => $dice->name,
                                     'face' => $dice->face
                                 );
+
+                                $msg = Yii::app()->user->name . ' rolled <span class="die-name">' .
+                                        $dice->name . '</span> for (1 - ' . $dice->face . '): ' . $roll . '.';
+                                $this->putChatMessage($msg, $game->gameId);
                             }
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
@@ -415,7 +491,7 @@ class GameController extends AppController {
                     case 'label':
                         $result = array('success' => 0);
                         if ($game->running && $this->scGame && isset($_REQUEST['label']) && isset($_REQUEST['card'])) {
-                            $card = $this->scGame->placeLabel(Yii::app()->user->id, $_REQUEST['card'], $_REQUEST['label']);
+                            $card = $this->scGame->placeLabel($currentUserId, $_REQUEST['card'], $_REQUEST['label']);
 
                             $result = array(
                                 'success' => 1,
@@ -427,7 +503,20 @@ class GameController extends AppController {
                     case 'toGraveyard':
                         $result = array('success' => 0);
                         if ($game->running && $this->scGame && isset($_REQUEST['card'])) {
-                            $this->scGame->moveToGraveyard(Yii::app()->user->id, $_REQUEST['card']);
+                            $result = $this->scGame->moveToGraveyard($currentUserId, $_REQUEST['card']);
+
+                            $card = $this->scGame->getCard($currentUserId, $_REQUEST['card']);
+                            $cardName = Card::model()->findByPk($card->getDbId())->name;
+                            $msg = Yii::app()->user->name . ' sends';
+
+                            if ($card->isFaceUp()) {
+                                $msg .= ' <span class="card-name">' . $cardName . '</span>';
+                            } else {
+                                $msg .= ' a card';
+                            }
+                            $msg .= ' to the graveyard.';
+
+                            $this->putChatMessage($msg, $game->gameId);
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         break;
@@ -436,9 +525,18 @@ class GameController extends AppController {
                         $toHand = false;
                     case 'fromGraveyard':
                         if ($game->running && $this->scGame) {
-                            $result = $this->scGame->drawFromGraveyard(Yii::app()->user->id, $toHand);
+                            $result = $this->scGame->drawFromGraveyard($currentUserId, $toHand);
                             $result->result = 'ok';
                             $result->clientTime = $_REQUEST['clientTime'];
+
+                            $msg = Yii::app()->user->name;
+                            if ($toHand) {
+                                $msg .= ' draws a card from the <span class="deck-name">graveyard</span> to his/her hand.';
+                            } else {
+                                $msg .= ' takes a card from the <span class="deck-name">graveyard</span> and places it on the table.';
+                            }
+                            $this->putChatMessage($msg, $game->gameId);
+
                             echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         }
                         break;
@@ -447,15 +545,18 @@ class GameController extends AppController {
                         if ($game->running && $this->scGame) {
 
                             $result = array(
-                                'success' => $this->scGame->shuffleGraveyard(Yii::app()->user->id)
+                                'success' => $this->scGame->shuffleGraveyard($currentUserId)
                             );
+
+                            $msg = Yii::app()->user->name . ' suffled the <span class="deck-name">graveyard</span>.';
+                            $this->putChatMessage($msg, $game->gameId);
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         break;
                     case 'addCounter':
                         $result = array('success' => 0);
                         if ($game->running && $this->scGame && isset($_REQUEST['card'])) {
-                            if (($card = $this->scGame->getCard(Yii::app()->user->id, $_REQUEST['card'])) !== null) {
+                            if (($card = $this->scGame->getCard($currentUserId, $_REQUEST['card'])) !== null) {
                                 $counter = $card->addCounter($_REQUEST['name'], $_REQUEST['start'], $_REQUEST['step'], $_REQUEST['color']);
 
                                 if ($counter !== null) {
@@ -464,6 +565,12 @@ class GameController extends AppController {
                                         'counter' => $counter->getJSONData(),
                                         'count' => $card->getCounterCount()
                                     );
+
+                                    $cardName = Card::model()->findByPk($card->getDbId())->name;
+                                    $msg = Yii::app()->user->name . ' adds the counter <span class="counter-name">'
+                                            . $_REQUEST['name'] . '</span> to <span class="card-name">'
+                                            . $cardName . '</span>.';
+                                    $this->putChatMessage($msg, $game->gameId);
                                 }
                             }
                         }
@@ -500,7 +607,13 @@ class GameController extends AppController {
                 'messages' => $messages,
                 'paused' => $game->paused,
                 'dice' => $dice,
-                'user' => Yii::app()->user->name
+                'user' => (object) array(
+                    'id' => $currentUserId,
+                    'name' => Yii::app()->user->name,
+                    'isOne' => ($currentUserId === $game->player1)
+                ),
+                'player1' => $game->player1,
+                'player2' => $game->player2
             ));
         } else {
             //unlock the game record before redirecting
@@ -510,8 +623,8 @@ class GameController extends AppController {
         Yii::app()->db->createCommand("select release_lock('game.$id')");
     }
 
-    //TODO: not implemented yet
     public function actionSpectate($id) {
+        //TODO: not implemented yet
         $this->layout = '//layouts/game';
 
         //lock record
@@ -672,4 +785,21 @@ class GameController extends AppController {
         return $result;
     }
 
+    /**
+     * Inserts a system message in the <em>ChatMessage</em> table.
+     * 
+     * @param string $text
+     * @param int $game 
+     */
+    private function putChatMessage($text, $game) {
+        $msg = new ChatMessage();
+        $msg->gameId = $game;
+        $msg->userId = Yii::app()->user->id;
+        $msg->system = 1;
+        $msg->message = $text;
+
+        $msg->save();
+    }
+
 }
+

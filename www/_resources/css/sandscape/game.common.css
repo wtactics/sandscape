@@ -52,6 +52,7 @@ ul {
     width: 270px;
 }
 
+/*CARD INFO AREA*/
 #card-info {
     width: 270px;
     height: 382px;
@@ -71,6 +72,7 @@ ul {
     z-index: 0;
 }
 
+/*CHAT SETTINGS */
 #chat {
     /*Position to make slider work*/
     position: relative;
@@ -132,6 +134,30 @@ ul {
     color: #7CA8E0;
 }
 
+.spectator-text {
+    color: #746f5d;
+}
+
+.token-name {
+    color: #008000;
+}
+
+.state-name {
+    color: #0000FF;
+}
+
+.counter-name {
+    color: yellow;
+}
+
+.deck-name {
+    color: pink;
+}
+
+.die-name {
+    color: brown;
+}
+
 .loader {
     position: fixed;
     top: 50%;
@@ -145,6 +171,7 @@ ul {
     height: 122px;
 }
 
+/*IN-GAME CARDS */
 div.card {
     margin: 0px;
     padding: 0px;
@@ -194,6 +221,7 @@ div.card > img.state {
     cursor: pointer;
 }
 
+/*IN-GAME MENU*/
 #menu-wrapper {
     position: absolute;
     overflow: hidden;

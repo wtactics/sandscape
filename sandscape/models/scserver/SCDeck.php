@@ -26,6 +26,7 @@
  */
 class SCDeck extends SCContainer {
 
+    private $dbId;
     private $name;
 
     /**
@@ -36,9 +37,10 @@ class SCDeck extends SCContainer {
      * 
      * @since 1.0, Sudden Growth
      */
-    public function __construct(SCGame $game, $name, $cards) {
+    public function __construct(SCGame $game, $name, $cards, $dbId) {
         parent::__construct($game, false, false);
         $this->name = $name;
+        $this->dbId = $dbId;
 
         foreach ($cards as $c)
             $this->push($c);
@@ -52,6 +54,16 @@ class SCDeck extends SCContainer {
      */
     public function getName() {
         return $this->name;
+    }
+    
+    /**
+     *
+     * @return int
+     * 
+     * @since 1.3, Soulharvester
+     */
+    public function getDbId() {
+        return $thi->dbId;
     }
 
 }

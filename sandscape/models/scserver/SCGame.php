@@ -32,7 +32,15 @@ class SCGame {
      */
     private $all = array();
     private $roots = array();
+
+    /**
+     * @var SCToken[]
+     */
     private $availableTokens = array();
+
+    /**
+     * @var SCState[]
+     */
     private $availableStates = array();
 
     /**
@@ -52,6 +60,8 @@ class SCGame {
      * @var SCContainer
      */
     private $void;
+    private $player;
+    private $opponent;
 
     /**
      * TODO: document this....
@@ -66,10 +76,15 @@ class SCGame {
 
         foreach ($availableStates as $state)
             $this->availableStates[$state->getId()] = $state;
+
+        $this->player = null;
+        $this->opponent = null;
     }
 
     public function __wakeup() {
         $this->roots = array();
+        $this->player = null;
+        $this->opponent = null;
     }
 
     /**
@@ -134,17 +149,23 @@ class SCGame {
      * @since 1.0, Sudden Growth
      */
     public function getPlayerSide($userId) {
-        $side = ($this->player1Side->getPlayerId() == $userId ? $this->player1Side :
-                        ($this->player2Side->getPlayerId() == $userId ? $this->player2Side : null));
+        if ($this->player === null) {
+            $side = ($this->player1Side->getPlayerId() == $userId ? $this->player1Side :
+                            ($this->player2Side->getPlayerId() == $userId ? $this->player2Side : null));
 
-        $this->roots[$side->getHand()->getId()] = $side->getHand();
-        $this->roots[$side->getPlayableArea()->getId()] = $side->getPlayableArea();
-        if ($side->getGraveyard())
-            $this->roots[$side->getGraveyard()->getId()] = $side->getGraveyard();
-        foreach ($side->getDecks() as $deck)
-            $this->roots[$deck->getId()] = $deck;
+            $this->roots[$side->getHand()->getId()] = $side->getHand();
+            $this->roots[$side->getPlayableArea()->getId()] = $side->getPlayableArea();
+            if ($side->getGraveyard())
+                $this->roots[$side->getGraveyard()->getId()] = $side->getGraveyard();
+            foreach ($side->getDecks() as $deck)
+                $this->roots[$deck->getId()] = $deck;
 
-        return $side;
+
+            $this->player = $side;
+        }
+
+
+        return $this->player;
     }
 
     /**
@@ -157,13 +178,16 @@ class SCGame {
      * @since 1.0, Sudden Growth
      */
     public function getOpponentSide($userId) {
-        $side = ($this->player1Side->getPlayerId() == $userId ? $this->player2Side :
-                        ($this->player2Side->getPlayerId() == $userId ? $this->player1Side : null));
+        if ($this->opponent === null) {
+            $side = ($this->player1Side->getPlayerId() == $userId ? $this->player2Side :
+                            ($this->player2Side->getPlayerId() == $userId ? $this->player1Side : null));
 
-        $this->roots [$side->getPlayableArea()->getId()] = $side->getPlayableArea();
-        $side->getPlayableArea()->setInvertView(true);
+            $this->roots [$side->getPlayableArea()->getId()] = $side->getPlayableArea();
+            $side->getPlayableArea()->setInvertView(true);
 
-        return $side;
+            $this->opponent = $side;
+        }
+        return $this->opponent;
     }
 
     public function getVoid() {
@@ -211,10 +235,11 @@ class SCGame {
 
     /**
      *
-     * @param type $userId
-     * @param type $deck
-     * @param type $toHand
-     * @return type 
+     * @param int $userId
+     * @param string $deck
+     * @param bool $toHand
+     * 
+     * @return SCCard
      * 
      * @since 1.0, Sudden Growth
      */
@@ -222,9 +247,7 @@ class SCGame {
         $player = $this->getPlayerSide($userId);
         $opponent = $this->getOpponentSide($userId);
 
-        $player->drawCard($deck, $toHand);
-
-        return (object) array('update' => $this->getGameStatus());
+        return $player->drawCard($deck, $toHand);
     }
 
     /**
@@ -268,10 +291,11 @@ class SCGame {
 
     /**
      *
-     * @param type $userId
-     * @param type $card
-     * @param type $token
-     * @return type 
+     * @param int $userId
+     * @param string $card
+     * @param string $token
+     * 
+     * @return stdClass
      * 
      * @since 1.0, Sudden Growth
      */
@@ -289,14 +313,17 @@ class SCGame {
                         'update' => $this->getGameStatus()
             );
         }
+
+        return null;
     }
 
     /**
      *
-     * @param type $userId
-     * @param type $card
-     * @param type $state
-     * @return type 
+     * @param int $userId
+     * @param string $card
+     * @param string $state
+     * 
+     * @return stdClass 
      * 
      * @since 1.0, Sudden Growth
      */
@@ -314,6 +341,8 @@ class SCGame {
                         'update' => $this->getGameStatus()
             );
         }
+
+        return null;
     }
 
     /**
@@ -464,7 +493,7 @@ class SCGame {
      *
      * @param type $userId
      * @param type $cardId
-     * @return type 
+     * @return stdClass
      * 
      * @since 1.2, Elvish Shaman
      */
@@ -482,13 +511,12 @@ class SCGame {
             }
 
             if ($grave->push($card) && $oldLocation) {
+                $card->setFaceUp(false);
                 $oldLocation->remove($card);
             }
         }
 
-        return (object) array(
-                    'update' => $this->getGameStatus()
-        );
+        return (object) array('update' => $this->getGameStatus());
     }
 
     /**
@@ -535,6 +563,29 @@ class SCGame {
         $opponent = $this->getOpponentSide($userId);
 
         return (isset($this->all[$cardId]) ? $this->all[$cardId] : null);
+    }
+
+    /**
+     *
+     * @param type $token
+     * 
+     * @return SCToken
+     * 
+     * @since 1.3, Soul Harvester
+     */
+    public function getToken($token) {
+        return $this->availableTokens[$token];
+    }
+
+    /**
+     *
+     * @param type $state
+     * @return SCState
+     * 
+     * @since 1.3, Soul Harvester
+     */
+    public function getState($state) {
+        return $this->availableStates[$state];
     }
 
 }

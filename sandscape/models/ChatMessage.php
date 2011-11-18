@@ -25,11 +25,12 @@
  * This is the model class for table "ChatMessage".
  *
  * The followings are the available columns in table 'ChatMessage':
- * @property string $messageId
+ * @property int $messageId
  * @property string $message
  * @property string $sent
- * @property string $userId
- * @property string $gameId
+ * @property int $userId
+ * @property int $gameId
+ * @property int $system
  *
  * The followings are the available model relations:
  * @property User $user
