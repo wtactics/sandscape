@@ -111,7 +111,7 @@ function checkGameStart() {
                             })
                             .appendTo($('body'));
     
-                            //Player area: left hand, decks and play zone
+                            //Player area: left hand, decks, play zone and counters
                             $('.hand').attr('id', create.player.hand.id)
                             $('.play').attr('id', create.player.playableArea.id)
 
@@ -213,6 +213,10 @@ function checkGameStart() {
                                 
                                 dest.append('<div class="clearfix"></div>');
                             }
+                            
+                            // counters...player-counters
+                            //TODO: not implemented yet!
+
                                                         
                             //Opponent area (top window zone)
                             $('.opponent-area').attr('id', create.opponent.playableArea.id)

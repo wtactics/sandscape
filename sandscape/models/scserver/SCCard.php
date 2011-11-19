@@ -260,7 +260,7 @@ class SCCard extends SCContainer {
      * @param type $class
      * @return SCCounter
      * 
-     * @since 1.3, Soul Harvester 
+     * @since 1.3, Soulharvester 
      */
     public function addCounter($name, $value = 0, $step = 1, $class = 'cl-default') {
         if (!isset($this->counters[$name])) {
@@ -277,12 +277,19 @@ class SCCard extends SCContainer {
      *
      * @param type $name
      * 
-     * @since 1.3, Soul Harvester 
+     * @since 1.3, Soulharvester 
      */
     public function removeCounter($name) {
         unset($this->counters[$name]);
     }
 
+    /**
+     *
+     * @param string $name
+     * @param bool $discardStart 
+     * 
+     * @since 1.3, Soulharvester
+     */
     public function resetCounter($name, $discardStart = false) {
         if (isset($this->countes[$name])) {
             if ($discardStart) {
@@ -299,7 +306,7 @@ class SCCard extends SCContainer {
      * 
      * @return int
      * 
-     * @since 1.3, Soul Harvester
+     * @since 1.3, Soulharvester
      */
     public function increaseCounterValue($name) {
         if (isset($this->counters[$name])) {
@@ -317,7 +324,7 @@ class SCCard extends SCContainer {
      * 
      * @return int
      * 
-     * @since 1.3, Soul Harvester
+     * @since 1.3, Soulharvester
      */
     public function decreaseCounterValue($name) {
         if (isset($this->counters[$name])) {
@@ -325,7 +332,7 @@ class SCCard extends SCContainer {
 
             return $this->counters[$name]->getValue();
         }
-        
+
         return 0;
     }
 
@@ -333,7 +340,7 @@ class SCCard extends SCContainer {
      *
      * @return int
      * 
-     * @since 1.3, Soul Harvester
+     * @since 1.3, Soulharvester
      */
     public function getCounterCount() {
         return count($this->counters);

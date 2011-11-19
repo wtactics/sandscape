@@ -37,6 +37,7 @@ class SCPlayerSide {
     private $graveyard;
     private $hand;
     private $playableArea;
+    private $counters;
 
     public function __construct(SCGame $game, $playerId, $hasGraveyard, $handWidth, $handHeight, $gameWidth, $gameHeight) {
         $this->game = $game;
@@ -47,6 +48,7 @@ class SCPlayerSide {
             $this->graveyard = new SCGraveyard($game);
 
         $this->decks = array();
+        $this->counters = array();
     }
 
     /**
@@ -215,6 +217,102 @@ class SCPlayerSide {
      */
     public function getDeck($deckId) {
         return (isset($this->decks[$deckId]) ? $this->decks[$deckId] : null);
+    }
+
+    /**
+     *
+     * @param SCCounter $counter
+     * 
+     * @return bool
+     * 
+     * @since 1.3, Soulharvester
+     */
+    public function addCounter(SCCounter $counter) {
+        if (!isset($this->counters[$counter->getName()])) {
+
+            if ($counter->getId() === null) {
+                $counter->setId(('uc-' .$this->playerId . '-' . (count($this->counters) + 1)));
+            }
+
+            $this->counters[$counter->getName()] = $counter;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     *
+     * @param string $name
+     * 
+     * @since 1.3, Soulharvester
+     */
+    public function removeCounter($name) {
+        unset($this->counters[$name]);
+    }
+
+    /**
+     *
+     * @param string $name
+     * @param bool $discardStart 
+     * 
+     * @since 1.3, Soulharvester
+     */
+    public function resetCounter($name, $discardStart = false) {
+        if (isset($this->countes[$name])) {
+            if ($discardStart) {
+                $this->counters[$name]->setValue(0);
+            } else {
+                $this->counters[$name]->reset();
+            }
+        }
+    }
+
+    /**
+     *
+     * @param string $name
+     * 
+     * @return int
+     * 
+     * @since 1.3, Soulharvester
+     */
+    public function increaseCounterValue($name) {
+        if (isset($this->counters[$name])) {
+            $this->counters[$name]->increase();
+
+            return $this->counters[$name]->getValue();
+        }
+
+        return 0;
+    }
+
+    /**
+     *
+     * @param string $name 
+     * 
+     * @return int
+     * 
+     * @since 1.3, Soulharvester
+     */
+    public function decreaseCounterValue($name) {
+        if (isset($this->counters[$name])) {
+            $this->counters[$name]->decrease();
+
+            return $this->counters[$name]->getValue();
+        }
+
+        return 0;
+    }
+
+    /**
+     *
+     * @return int
+     * 
+     * @since 1.3, Soulharvester
+     */
+    public function getCounterCount() {
+        return count($this->counters);
     }
 
 }

@@ -31,13 +31,22 @@ $form = $this->beginWidget('CActiveForm', array(
     <p>
         <?php
         echo $form->labelEx($user, 'birthday'), '<br />';
+        $form->widget('zii.widgets.jui.CJuiDatePicker', array(
+            'name' => 'User[birthday]',
+            'value' => $user->birthday,
+            'options' => array(
+                'showAnim' => 'fold',
+                'dateFormat' => 'dd/mm/yy',
+            ),
+            'htmlOptions' => array('class' => 'textsmaller')
+        ));
         ?>
     </p>
     <?php echo $form->error($user, 'birthday'); ?>
     <p>
         <?php
         echo $form->labelEx($user, 'gender'), '<br />',
-        $form->dropDownList($user, 'gender', array());
+        $form->dropDownList($user, 'gender', array(0 => 'Female', 1 => 'Male'));
         ?>
     </p>
     <?php echo $form->error($user, 'gender'); ?>

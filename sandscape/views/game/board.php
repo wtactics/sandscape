@@ -127,7 +127,13 @@ $this->title = 'Playing';
                 <li><a href="javascript:exit();">Exit</a></li>
             </ul>
         </div>
-        <div id="decks"><!-- DECKS PLACED HERE --></div>
+        <!--
+        //TODO: not implemented yet!
+        <div id="player-counters">
+            <h3>Counters</h3>
+            <div id="pc-area"><!-- PLAYER COUNTERS ARE PLACED HERE --></div>
+        </div> -->
+        <div id="decks"><!-- DECKS ARE PLACED HERE --></div>
     </div>
 </div>
 

@@ -347,7 +347,7 @@ div.card > img.state {
     float: left;
 }
 
-/*Counters colour classes*/
+/*Counter colour classes*/
 .cl-default {
     border: 1px solid red;
     background-color: yellow;
@@ -367,6 +367,15 @@ div.card > img.state {
 }
 
 .cl-blueish {
+    border: 1px solid red;
+    background-color: yellow;
+    color: #000;
+}
+
+/*PLAYER COUNTERS*/
+
+/*Counter colour classes*/
+.pcl-default {
     border: 1px solid red;
     background-color: yellow;
     color: #000;

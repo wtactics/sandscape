@@ -47,9 +47,11 @@
  * @property ChatMessage[] $chatMessages
  * @property User $player10
  * @property User $player20
- * @property Deck $decks
- * @property Dice $dice
+ * @property Deck[] $decks
+ * @property Dice[] $dice
  * @property User $winner
+ * @property User $accept
+ * @property PlayerCounter[] $counters
  * 
  * @since 1.0, Sudden Growth
  */
@@ -72,7 +74,7 @@ class Game extends CActiveRecord {
             array('started, ended', 'safe'),
             //search
             array(
-                'player1, player2, created, started, ended, running, paused, winnerId',
+                'player1, player2, created, started, ended, running, paused, winnerId, acceptUser',
                 'safe',
                 'on' => 'search'
             ),
@@ -87,7 +89,8 @@ class Game extends CActiveRecord {
             'decks' => array(self::MANY_MANY, 'Deck', 'GameDeck(gameId, deckId)'),
             'dice' => array(self::MANY_MANY, 'Dice', 'GameDice(gameId, diceId)'),
             'winner' => array(self::BELONGS_TO, 'User', 'winnerId'),
-            'accept' => array(self::BELONGS_TO, 'User', '$acceptUser'),
+            'accept' => array(self::BELONGS_TO, 'User', 'acceptUser'),
+            'counters' => array(self::MANY_MANY, 'PlayerCounter', 'GamePlayerCounter(gameId, playerCounterId)'),
         );
     }
 
@@ -129,6 +132,7 @@ class Game extends CActiveRecord {
         $criteria->compare('running', $this->running);
         $criteria->compare('paused', $this->paused);
         $criteria->compare('winnerId', $this->winnerId);
+        $criteria->compare('acceptUser', $this->acceptUser);
 
         return new CActiveDataProvider('Game', array('criteria' => $criteria));
     }

@@ -556,7 +556,7 @@ class SCGame {
      * @param type $cardId
      * @return SCCard
      * 
-     * @since 1.3, Soul Harvester
+     * @since 1.3, Soulharvester
      */
     public function getCard($userId, $cardId) {
         $player = $this->getPlayerSide($userId);
@@ -567,11 +567,11 @@ class SCGame {
 
     /**
      *
-     * @param type $token
+     * @param string $token
      * 
      * @return SCToken
      * 
-     * @since 1.3, Soul Harvester
+     * @since 1.3, Soulharvester
      */
     public function getToken($token) {
         return $this->availableTokens[$token];
@@ -579,13 +579,34 @@ class SCGame {
 
     /**
      *
-     * @param type $state
+     * @param string $state
+     * 
      * @return SCState
      * 
-     * @since 1.3, Soul Harvester
+     * @since 1.3, Soulharvester
      */
     public function getState($state) {
         return $this->availableStates[$state];
+    }
+
+    /**
+     *
+     * @param SCCounter $counter 
+     * 
+     * @since 1.3, Soulharvester
+     */
+    public function addPlayer1Counters(SCCounter $counter) {
+        $this->player1Side->addCounter($counter);
+    }
+
+    /**
+     *
+     * @param SCCounter $counter 
+     * 
+     * @since 1.3, Soulharvester
+     */
+    public function addPlayer2Counters(SCCounter $counter) {
+        $this->player2Side->addCounter($counter);
     }
 
 }

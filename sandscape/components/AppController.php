@@ -69,6 +69,7 @@ class AppController extends CController {
                     array('label' => 'Cards', 'url' => array('cards/index')),
                     array('label' => 'Dice', 'url' => array('dice/index')),
                     //array('label' => 'Events', 'url' => array('events/index')),
+                    array('label' => 'Player Counters', 'url' => array('counters/index')),
                     array('label' => 'Pre-constructed', 'url' => array('precons/index')),
                     array('label' => 'States', 'url' => array('states/index')),
                     array('label' => 'Tokens', 'url' => array('tokens/index')),

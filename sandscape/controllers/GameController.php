@@ -173,7 +173,7 @@ class GameController extends AppController {
      * fromGraveyard:
      * shuffleGraveyard:
      * 
-     * [since Soul Harvester]
+     * [since Soulharvester]
      * addCounter:
      * 
      * @param int $id The game ID.
@@ -247,6 +247,14 @@ class GameController extends AppController {
                                     $this->scGame->addPlayer2Deck($scdeck);
                                 }
                             }
+
+                            // player counters
+                            $counters = array();
+                            foreach ($game->counters as $counter) {
+                                $this->scGame->addPlayer1Counters(new SCCounter(null, $counter->name, $counter->startValue, $counter->step));
+                                $this->scGame->addPlayer2Counters(new SCCounter(null, $counter->name, $counter->startValue, $counter->step));
+                            }
+
                             $game->lastChange = time();
                             echo json_encode((object) array('result' => 'ok'));
                         } else {
