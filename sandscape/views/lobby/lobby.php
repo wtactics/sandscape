@@ -13,7 +13,16 @@ Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/modal.' . (Y
 Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/lobby.' . (YII_DEBUG ? '' : '.min') . 'js');
 Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.simplemodal.1.4.1.min.js');
 
-Yii::app()->clientScript->registerScript('msgsjs', "initLobby({$last}, '{$updUrl}', '{$sendUrl}');");
+$js = <<<JS
+globals.lastReceived = {$last};
+globals.urls.upd = '{$updUrl}';
+globals.urls.send = '{$sendUrl}';
+
+initLobby();
+
+JS;
+
+Yii::app()->clientScript->registerScript('msgsjs', $js);
 
 $this->title = 'Sandscape Lobby';
 ?>
@@ -57,7 +66,7 @@ $this->title = 'Sandscape Lobby';
                 'orientation' => 'vertical',
                 'slide' => 'js:chatSliderScroll',
                 'change' => 'js:chatSliderChange',
-            //'create' => 'js:sliderSetValue'
+                'create' => 'js:chatSliderSetValue'
             )
         ));
         ?>
@@ -94,54 +103,94 @@ $this->title = 'Sandscape Lobby';
         <div id="games-view">
             <ul id="games-list">
                 <?php
+                $currentId = Yii::app()->user->id;
                 foreach ($games as $game) {
-                    if (in_array(Yii::app()->user->id, array($game->player1, $game->player2)) && !$game->ended) {
-                        $class = 'success';
-                        if (!$game->running) {
-                            $class = 'notice';
+                    $created = date('d/m/Y H:i', strtotime($game->created));
+                    if (!$game->running) {
+                        if ($game->acceptUser == $currentId) {
+                            ?>
+                            <!-- //join game for you -->
+                            <li class="info join wait-me">
+                                <strong>[<?php echo $game->gameId; ?>] <?php echo $created; ?></strong>
+                                <br />
+                                <?php echo $game->creator->name; ?> is waiting for you to join.
+                            </li>
+                            <?php
+                        } else if (!in_array($currentId, array($game->player1, $game->player2))) {
+                            ?>
+                            <!-- //join game -->
+                            <li class="info join wait-opponent">
+                                <strong>[<?php echo $game->gameId; ?>] <?php echo $created; ?></strong>
+                                <br />
+                                <?php echo $game->creator->name; ?> is waiting for opponents.
+                                <input type="hidden" class="hGameId" value="<?php echo $game->gameId; ?>" name="gameId-<?php echo $game->gameId; ?>" />
+                                <input type="hidden" class="hGameDM" value="<?php echo $game->maxDecks; ?>" name="gameDM-<?php echo $game->gameId; ?>" />
+                            </li>
+                            <?php
+                        } else {
+                            ?>
+                            <!-- //return to game -->
+                            <li class="notice return my-game<?php echo (!$game->player2 ? ' wait-opponent' : '');?>">
+                                <strong>[<?php echo $game->gameId; ?>] <?php echo $created; ?></strong>
+                                <br />
+                                <?php
+                                if ($game->player1 == $currentId) {
+                                    if ($game->player2) {
+                                        echo 'Return to game with ', $game->opponent->name, '.';
+                                    } else {
+                                        echo 'Return and wait for opponent to join.';
+                                    }
+                                } else {
+                                    echo 'Return to game with ', $game->creator->name, '.';
+                                }
+                                ?>
+                                <input type="hidden" class="hGameUrl" value="<?php echo $this->createUrl('game/play', array('id' => $game->gameId)); ?>" />
+                            </li>
+                            <?php
                         }
-                        ?>
-                        <li class="<?php echo $class; ?>">
-                            <span>
-                                <a href="<?php echo $this->createURL('game/play', array('id' => $game->gameId)); ?>">Return to Game</a>
-                                &nbsp;-&nbsp;
-                                <?php echo date('d/m/Y H:m', strtotime($game->created)); ?>
-                            </span>
-                            <br />
-                            <?php if ($game->player2) { ?>
-                                <span>Opponent: 
-                                    <?php
-                                    echo CHtml::link((Yii::app()->user->id == $game->player1 ?
-                                                    $game->player20->name : $game->player10->name)
-                                            , $this->createUrl('account/profile', array('id' => Yii::app()->user->id == $game->player1 ?
-                                                        $game->player2 : $game->player1)));
-                                    ?>
-                                </span>
-                            <?php } else { ?>
-                                <span>No opponent yet.</span>
-                            <?php } ?>
-                        </li>
-                        <?php
+                    } else if ($game->paused) {
+                        if (!in_array($currentId, array($game->player1, $game->player2))) {
+                            ?>
+                            <!-- //can't do anything -->
+                            <li class="error paused">
+                                <img src="_resources/images/control-pause.png" style="float:right"/>
+                                <strong>[<?php echo $game->gameId; ?>] <?php echo $created; ?></strong>
+                                <br />
+                                Game between <?php echo $game->creator->name, ' and ', $game->opponent->name; ?> is paused.
+                            </li>
+                        <?php } else { ?>
+                            <!--//return to game -->
+                            <li class="notice return paused my-game">
+                                <img src="_resources/images/control-pause.png" style="float:right"/>
+                                <strong>[<?php echo $game->gameId; ?>] <?php echo $created; ?></strong>
+                                <br />
+                                Return to game with <?php echo ($currentId == $game->player1 ? $game->opponent->name : $game->creator->name); ?>                                
+                                <input type="hidden" class="hGameUrl" value="<?php echo $this->createUrl('game/play', array('id' => $game->gameId)); ?>" />
+                            </li>
+                            <?php
+                        }
                     } else {
-                        $class = 'error';
-                        if ($game->running) {
-                            $class = 'success spectate';
-                        } else if (!$game->player2) {
-                            $class = 'info join';
+                        if (in_array($currentId, array($game->player1, $game->player2))) {
+                            ?>
+                            <!-- //return to game -->
+                            <li class="notice return running my-game">
+                                <strong>[<?php echo $game->gameId; ?>] <?php echo $created; ?></strong>
+                                <br />
+                                Return to game with <?php echo ($currentId == $game->player1 ? $game->opponent->name : $game->creator->name); ?>                                
+                                <input type="hidden" class="hGameUrl" value="<?php echo $this->createUrl('game/play', array('id' => $game->gameId)); ?>" />
+                            </li>
+                            <?php
+                        } else {
+                            ?>
+                            <!-- //watch game -->
+                            <li class="success spectate running">
+                                <strong>[<?php echo $game->gameId; ?>] <?php echo $created; ?></strong>
+                                <br />
+                                <?php echo $game->creator->name; ?> is battling <?php echo $game->opponent->name; ?>
+                                <input type="hidden" class="hGameId" value="<?php echo $game->gameId; ?>" name="gameId-<?php echo $game->gameId; ?>" />
+                            </li>
+                            <?php
                         }
-                        ?>
-                        <li class="<?php echo $class; ?>">
-                            <input type="hidden" class="hGameId" value="<?php echo $game->gameId; ?>" name="gameId-<?php echo $game->gameId; ?>" />
-                            <input type="hidden" class="hGameDM" value="<?php echo $game->maxDecks; ?>" name="gameDM-<?php echo $game->gameId; ?>" />
-                            <span><?php echo date(DATE_W3C, strtotime($game->created)); ?></span>
-                            <br />
-                            <?php if ($game->running) { ?>
-                                <span><?php echo $game->player10->name, '&nbsp;-&nbsp;', $game->player20->name; ?></span>
-                            <?php } else { ?>
-                                <span>Create by <?php echo $game->player10->name; ?></span>
-                            <?php } ?>
-                        </li>
-                        <?php
                     }
                 }
                 ?>
@@ -158,7 +207,17 @@ $this->title = 'Sandscape Lobby';
     <button type="button" class="button" onclick="sendMessage();" id="sendbtn">Send</button>
 </div>
 <div class="span-7 last">
-    <?php echo CHtml::dropDownList('filterGames', null, array()); ?>
+    <?php
+    echo CHtml::dropDownList('filterGames', null, array(
+        0 => 'All',
+        1 => 'Paused',
+        2 => 'Running',
+        3 => 'That I play',
+        4 => 'Waiting for me',
+        5 => 'Waiting for opponent'
+            ), array('onchange' => 'filterGameList();')
+    );
+    ?>
 </div>
 
 <div style="display: none">

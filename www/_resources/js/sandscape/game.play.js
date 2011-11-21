@@ -332,7 +332,7 @@ function checkGameStart() {
                             });
 
                             globals.game.running = true;                     
-                            //setTimeout(updateGame, 3000);
+                            setTimeout(updateGame, 3000);
                             cyclicPositionUpdate();
                             
                             $('#game-loader').fadeOut('slow', function () {
@@ -342,11 +342,11 @@ function checkGameStart() {
                     }
                 });
             } else  {
-        //setTimeout(checkGameStart, 3000);
-        }
+                setTimeout(checkGameStart, 3000);
+            }
         },
         error: function () {
-        //setTimeout(checkGameStart, 3000);
+            setTimeout(checkGameStart, 3000);
         }
     });
 }
@@ -684,7 +684,6 @@ function updateMessages() {
         complete: function() {
             setTimeout(updateMessages, 5000);
         }
-        
     });
 }
 
@@ -1018,3 +1017,7 @@ function decreaseCounter(e) {
     });  
     return false;
 }
+
+function increasePlayerCounter(e) {}
+
+function decreasePlayerCounter(e) {}

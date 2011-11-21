@@ -44,7 +44,7 @@ class LobbyController extends AppController {
     public function actionIndex() {
         $this->updateUserActivity();
 
-        $games = Game::model()->findAll('ended IS NULL');
+        $games = Game::model()->findAll('ended IS NULL ORDER BY created');
         $users = User::model()->findAllAuthenticated()->getData();
 
         $start = ChatMessage::model()->count('gameId IS NULL ORDER BY sent');
@@ -217,6 +217,30 @@ class LobbyController extends AppController {
                         if (!$gameDeck->save()) {
                             $error = true;
                             break;
+                        }
+                    }
+
+                    if (!$error) {
+                        foreach (Dice::model()->findAll('enabled = 1') as $dice) {
+                            $gd = new GameDice();
+                            $gd->diceId = $dice->diceId;
+                            $gd->gameId = $game->gameId;
+                            if (!$gd->save()) {
+                                $error = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!$error) {
+                        foreach (PlayerCounter::model()->findAll('available = 1') as $pc) {
+                            $gpc = new GamePlayerCounter();
+                            $gpc->playerCounterId = $pc->playerCounterId;
+                            $gpc->gameId = $game->gameId;
+                            if (!$gpc->save()) {
+                                $error = true;
+                                break;
+                            }
                         }
                     }
 

@@ -114,6 +114,19 @@ class UsersController extends AppController {
         }
     }
 
+    public function actionResetPassword($id) {
+        if (Yii::app()->request->isPostRequest && Yii::app()->user->class) {
+            $user = $this->loadUserModel($id);
+            if ($user) {
+                //TODO: random pass
+                $user->password = User::hash('');
+                $user->save();
+            }
+        } else {
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
+    }
+
     /**
      * Loads a <em>User</em> model from the database
      * @param integer $id The user ID.

@@ -45,8 +45,8 @@
  *
  * Relations:
  * @property ChatMessage[] $chatMessages
- * @property User $player10
- * @property User $player20
+ * @property User $creator
+ * @property User $opponent
  * @property Deck[] $decks
  * @property Dice[] $dice
  * @property User $winner
@@ -84,8 +84,8 @@ class Game extends CActiveRecord {
     public function relations() {
         return array(
             'chatMessages' => array(self::HAS_MANY, 'ChatMessage', 'gameId'),
-            'player10' => array(self::BELONGS_TO, 'User', 'player1'),
-            'player20' => array(self::BELONGS_TO, 'User', 'player2'),
+            'creator' => array(self::BELONGS_TO, 'User', 'player1'),
+            'opponent' => array(self::BELONGS_TO, 'User', 'player2'),
             'decks' => array(self::MANY_MANY, 'Deck', 'GameDeck(gameId, deckId)'),
             'dice' => array(self::MANY_MANY, 'Dice', 'GameDice(gameId, diceId)'),
             'winner' => array(self::BELONGS_TO, 'User', 'winnerId'),

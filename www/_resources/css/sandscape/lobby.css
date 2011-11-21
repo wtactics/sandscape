@@ -75,12 +75,16 @@
 }
 
 #games-view {
+    position:relative;
     height: 420px;
     width: 100%;
     overflow: hidden;
+    min-height: 250px;
 }
 #games-list {
-    min-height: 250px;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .deck-list {

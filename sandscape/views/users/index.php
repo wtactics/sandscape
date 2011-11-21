@@ -25,6 +25,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 'view' => array('visible' => 'false'),
                 'reset' => array(
                     'label' => 'Reset Password',
+                    'url' => 'Yii::app()->createUrl("users/resetpassword", array("id" => $data->userId))',
                     'imageUrl' => '_resources/images/icon-x16-key.png',
                     'visible' => 'true'
                 )

@@ -29,11 +29,7 @@ var globals = {
 /**
  * Creates the initial lobby objects and events.
  */
-function initLobby(last, updUrl, sendUrl) {
-    globals.lastReceived = last;
-    globals.urls.upd = updUrl;
-    globals.urls.send = sendUrl;
-    
+function initLobby() {
     $('#writemessage').keypress(function(e) {
         if(e.which == 13) {
             $('#sendbtn').click();
@@ -41,9 +37,7 @@ function initLobby(last, updUrl, sendUrl) {
     });
 
     //5 sec delay before asking for more messages
-    //setInterval(function() {
-    //    updateMessages(url)
-    //}, 5000);
+    //setTimeout(updateMessages, 5000);
     
     $('.join').click(function(e) {
         $('#game').val($(this).children('.hGameId').val());
@@ -57,11 +51,14 @@ function initLobby(last, updUrl, sendUrl) {
         $('#spectatedlg').modal();
         
     });
+    
+    $('.return').click(function(e) {
+        window.location = $(this).children('.hGameUrl').val();
+    });
 }
 
 /**
- * Sends a message to the server. Note that the new message is appended to the 
- * chat area without being filtered by the server.
+ * Sends a message to the server.
  */
 function sendMessage() {
     var message = $("#writemessage").val();
@@ -75,8 +72,7 @@ function sendMessage() {
             dataType: 'json',
             success: function(json) {
                 if(json.success) {
-                    $('#lobbychat').append('<li><span><strong>' + json.name + '</strong>&nbsp;[' 
-                        + json.date + ']:</span><br />' + message + '</li>');
+                    $('#lobbychat').append('<li><strong>' + json.name + ':</strong>&nbsp;' + message + '</li>');
                     
                     globals.lastReceived = json.id;
                 }
@@ -89,34 +85,29 @@ function sendMessage() {
 /**
  * Requests new messages from other users.
  */
-function updateMessages(destination) {
-//    $.ajax({
-//        type: "POST",
-//        url: destination,
-//        data: {
-//            'lastupdate': lastReceived
-//        },
-//        dataType: 'json',
-//        success: function(json) {
-//            if(json.has) {
-//                $.each(json.messages, function() {
-//                    $('#lobbychat').append('<li><span><strong>' + this.name + '</strong>&nbsp;[' 
-//                        + this.date + ']:</span><br />' + this.message + '</li>');                    
-//                });
-//
-//                lastReceived = json.last;
-//                updateMessageScroll();
-//            }
-//        }
-//    });
-}
+function updateMessages() {
+    $.ajax({
+        type: "POST",
+        url: globals.urls.upd,
+        data: {
+            'lastupdate': globals.lastReceived
+        },
+        dataType: 'json',
+        success: function(json) {
+            if(json.has) {
+                $.each(json.messages, function() {
+                    $('#lobbychat').append('<li><span><strong>' + this.name + '</strong>&nbsp;[' 
+                        + this.date + ']:</span><br />' + this.message + '</li>');                    
+                });
 
-/**
- * Moves the message area down in order to show new messages.
- */
-//function updateMessageScroll() {
-//    $("#lobbychat").scrollTop($("#lobbychat")[0].scrollHeight);
-//}
+                globals.lastReceived = json.last;
+            }
+        },
+        complete: function(){
+            setTimeout(updateMessages, 5000);
+        }
+    });
+}
 
 /**
  * Validates the number of selected decks and prevents games from being created 
@@ -138,25 +129,128 @@ function limitDeckSelection(jqSearch) {
 }
 
 function usersSliderScroll(e, ui) {
-    
+    var view = $('#users-view'), list = $('#users-list'), scroll = list.height() - view.height();
+    if(scroll > 0) {
+        $('#users-list').css({
+            top: -(scroll * (100 - ui.value) / 100)
+        });
+    }
 }
 
 function usersSliderChange(e, ui) {
-    
+    var view = $('#users-view'), list = $('#users-list'), scroll = list.height() - view.height();
+    if(scroll > 0) {
+        $('#users-list').css({
+            top: -(scroll * (100 - ui.value) / 100)
+        });
+    }
 }
 
 function chatSliderScroll(e, ui) {
-    
+//$('#messages-list').css({
+//    top: ui.value
+//});
 }
 
 function chatSliderChange(e, ui) {
+//$('#messages-list').css({
+//    top: ui.value
+//});
+}
+
+function chatSliderSetValue(e, ui) {
+    chatChatToBottom();
+}
+
+function chatChatToBottom() {
+//var sl = $('#chat-slider'), cm = $('#chat-messages'), bh = cm.height(), h = -(bh - 130);
+//if(bh > 130) {
+//    sl.slider('option', 'min', h)
+//    .slider('option', 'value', h);
     
+//    cm.animate({
+//        top: h
+//    }, 'slow');
+//}
 }
 
 function gamesSliderScroll(e, ui) {
-    
+    var view = $('#games-view'), list = $('#games-list'), scroll = list.height() - view.height();
+    if(scroll > 0) {
+        $('#games-list').css({
+            top: -(scroll * (100 - ui.value) / 100)
+        });
+    }
 }
 
 function gamesSliderChange(e, ui) {
+    var view = $('#games-view'), list = $('#games-list'), scroll = list.height() - view.height();
+    if(scroll > 0) {
+        $('#games-list').css({
+            top: -(scroll * (100 - ui.value) / 100)
+        });
+    }
+}
+
+function filterGameList() {
+    switch(parseInt($('#filterGames').val(), 10)) {
+        //all
+        case 0:
+            $('.paused').show();
+            $('.running').show();
+            $('.my-game').show();
+            $('.wait-me').show();
+            $('.wait-opponent').show();
+            break;
+        //paused
+        case 1:
+            $('.running').hide();
+            $('.my-game').hide();
+            $('.wait-me').hide();
+            $('.wait-opponent').hide();
+            //
+            $('.paused').show();
+            break;
+        //running
+        case 2:
+            $('.paused').hide();
+            $('.my-game').hide();
+            $('.wait-me').hide();
+            $('.wait-opponent').hide();
+            //
+            $('.running').show();
+            break;
+        //that I play
+        case 3:
+            $('.paused').hide();
+            $('.running').hide();
+            $('.wait-me').hide();
+            $('.wait-opponent').hide();
+            //
+            $('.my-game').show();
+            break;
+        //waiting for me
+        case 4:
+            $('.paused').hide();
+            $('.running').hide();
+            $('.my-game').hide();
+            $('.wait-opponent').hide();
+            //
+            $('.wait-me').show();
+            break;
+        //waiting for opponent
+        case 5:
+            $('.paused').hide();
+            $('.running').hide();
+            $('.my-game').hide();
+            $('.wait-me').hide();
+            //
+            $('.wait-opponent').show();
+            break;
+    }
+    $('#games-list').css({
+        top: 0
+    });
     
+    $('#games-slider').slider('option', 'value', 100);
 }
