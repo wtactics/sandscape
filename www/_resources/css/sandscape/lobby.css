@@ -90,3 +90,7 @@
 .deck-list {
     width: 300px;
 }
+
+#games-list * strong {
+    clear: both;
+}

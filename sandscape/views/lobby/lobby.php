@@ -153,7 +153,7 @@ $this->title = 'Sandscape Lobby';
                             ?>
                             <!-- //can't do anything -->
                             <li class="error paused">
-                                <img src="_resources/images/control-pause.png" style="float:right"/>
+                                <img src="_resources/images/icon-x16-control-pause.png" style="float:right"/>
                                 <strong>[<?php echo $game->gameId; ?>] <?php echo $created; ?></strong>
                                 <br />
                                 Game between <?php echo $game->creator->name, ' and ', $game->opponent->name; ?> is paused.
@@ -161,7 +161,7 @@ $this->title = 'Sandscape Lobby';
                         <?php } else { ?>
                             <!--//return to game -->
                             <li class="notice return paused my-game">
-                                <img src="_resources/images/control-pause.png" style="float:right"/>
+                                <img src="_resources/images/icon-x16-control-pause.png" style="float:right"/>
                                 <strong>[<?php echo $game->gameId; ?>] <?php echo $created; ?></strong>
                                 <br />
                                 Return to game with <?php echo ($currentId == $game->player1 ? $game->opponent->name : $game->creator->name); ?>                                
