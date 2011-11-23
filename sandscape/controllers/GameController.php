@@ -396,7 +396,7 @@ class GameController extends AppController {
                                     $msg .= ' on a card.';
                                 }
 
-                                $this->putChatMessage($msn, $game->gameId, $currentUserId);
+                                $this->putChatMessage($msg, $game->gameId, $currentUserId);
 
                                 echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                             }
