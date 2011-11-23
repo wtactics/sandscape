@@ -1,4 +1,4 @@
-/* game.common.css
+/* stage.swipe.css
  * 
  * This file is part of Sandscape, a virtual, browser based, table allowing 
  * people to play a customizable card games (CCG) online.
@@ -226,25 +226,6 @@ div.card > img.face {
     height: 115px;
 }
 
-div.card > img.token {
-    position: absolute;
-    top: -14px;
-    left: -10px;
-    z-index: 1;
-    width: 101px;
-    height: 143px;
-}
-
-
-div.card > img.state {
-    position: absolute;
-    top: -14px;
-    left: -10px;
-    z-index: -1;
-    width: 101px;
-    height: 143px;
-}
-
 /*MENU USED IN CARDS*/
 .radialmenuOption {
     border: 1px solid #4297D7;
@@ -318,70 +299,18 @@ div.card > img.state {
     padding: 0.3em;
 }
 
-/*COUNTERS FOR EACH CARD*/
-.counter-widget {
+/* UNIQUE CLASS: This class is handled as if it was an ID */
+.opponent-area {
+    height: 100%;
+}
+
+/* UNIQUE CLASS: This class is handled as if it was an ID */
+.play {
+}
+
+#chat-slider {
     position: absolute;
-    left: 70px;
-    font-size: 10px;
-    cursor: pointer;
-    height: 16px;
-    line-height: 16px;
-    white-space: nowrap;
-}
-
-.counter-tools {
-    margin-left: .2em;
-    display:none;
-    height: 16px;
-}
-
-.counter-widget .counter-tools img {
-    /*vertical-align: middle;*/
-    margin-right: 2px;
-}
-
-.counter-widget:hover .counter-tools {
-    display: inline;
-    height: 16px;
-    width: 36px;
-}
-
-.counter-text {
-    display: inline;
-    height: 16px;
-    float: left;
-}
-
-/*Counter colour classes*/
-.cl-default {
-    border: 1px solid red;
-    background-color: yellow;
-    color: #000;
-}
-
-.cl-redish {
-    border: 1px solid red;
-    background-color: yellow;
-    color: #000;
-}
-
-.cl-chrome {
-    border: 1px solid red;
-    background-color: yellow;
-    color: #000;
-}
-
-.cl-blueish {
-    border: 1px solid red;
-    background-color: yellow;
-    color: #000;
-}
-
-/*PLAYER COUNTERS*/
-
-/*Counter colour classes*/
-.pcl-default {
-    border: 1px solid red;
-    background-color: yellow;
-    color: #000;
+    height: 120px;
+    top: 5px;
+    right: 5px;
 }

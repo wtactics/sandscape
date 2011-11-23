@@ -1,4 +1,6 @@
-/* game.play.css
+<?php
+
+/* StageController.php
  * 
  * This file is part of Sandscape, a virtual, browser based, table allowing 
  * people to play a customizable card games (CCG) online.
@@ -23,72 +25,32 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#chat {
-    /*Merging CSS, see game.common.css*/
-    height: 150px;
-}
 
-#content-view {
-    height: 130px;
-}
+class StageController extends AppController {
 
-/* UNIQUE CLASS: This class is handled as if it was an ID */
-.opponent-area {
-    height: 100%;
-    background: transparent url(../../images/game-background-hline.png) repeat-x bottom left;
-}
+    public function __construct($id, $module = null) {
+        parent::__construct($id, $module);
+    }
 
-/* UNIQUE CLASS: This class is handled as if it was an ID */
-.hand {
-    width: 100%;
-    background-color: #BAB39E;
-    border-radius: 4px;
-    -moz-border-radius: 4px;
-}
+    public function actionIndex() {
+        echo 'Not implemented yet!';
+    }
 
-/* UNIQUE CLASS: This class is handled as if it was an ID */
-.play {
-}
+    public function actionSwipe() {
+        echo 'Not implemented yet!';
+        //$this->layout = '//layouts/game';
+        //$cards = Card::model()->findAll('active = 1');
+        //$this->render('swipe', array('cards' => $cards));
+    }
 
-#chat-slider {
-    position: absolute;
-    height: 120px;
-    top: 5px;
-    right: 5px;
-}
+    //TODO: update rules, temporary rules to block any user but administrators.
+    public function accessRules() {
+        return array_merge(array(
+                    array('allow',
+                        'actions' => array('index', 'swipe'),
+                        'expression' => '$user->class'
+                    )
+                        ), parent::accessRules());
+    }
 
-#decks {
-    width: 100%;
-    height: 100%;
-}
-
-.deck-info {
-}
-
-.deck-info-left {
-    width: 169px;
-    float: left;
-}
-
-.deck-info-right {
-    width: 81px;
-    float: left;
-}
-
-#decks h3 {
-    text-align: center;
-    font-style: italic;
-}
-
-.label {
-    position: absolute;
-    width: 80px;
-    font-size: 10px;
-    height: 14px;
-    bottom: 3px;
-    left: 10px;
-    background-color: #222;
-    color: #FFF;
-    padding: 3px;
-    z-index: 2;
 }
