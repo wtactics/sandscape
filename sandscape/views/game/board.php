@@ -7,6 +7,7 @@ if (count($messages)) {
 
 Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/game.common' . (YII_DEBUG ? '' : '.min') . '.css');
 Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/game.play' . (YII_DEBUG ? '' : '.min') . '.css');
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/modal.' . (YII_DEBUG ? '' : '.min') . 'css');
 //
 Yii::app()->clientScript->registerCoreScript('jquery.ui');
 //
@@ -106,6 +107,7 @@ $this->title = 'Playing';
     </div>
     <div id="menu-content">
         <div id="game-menu">
+            <h2>Game Menu</h2>
             <ul id="menu-elements">
                 <?php if (count($dice)) { ?>
                     <li>
@@ -127,73 +129,26 @@ $this->title = 'Playing';
                 <li><a href="javascript:exit();">Exit</a></li>
             </ul>
         </div>
+        <br />
+        <h2>Player Counters</h2>
         <!--
         //TODO: not implemented yet!
         <div id="player-counters">
             <h3>Counters</h3>
             <div id="pc-area"><!-- PLAYER COUNTERS ARE PLACED HERE --><!--</div>
         </div> -->
+        <h2>Decks</h2>
         <div id="decks"><!-- DECKS ARE PLACED HERE --></div>
     </div>
 </div>
 
-<!-- LABEL DIALOG -->
+<!-- DIALOG DIVS -->
 <div style="display:none;">
-    <div id="label-dlg">
-        <p>
-            <?php
-            echo CHtml::label('Label', 'label-text'), '<br />',
-            CHtml::textField('label-text');
-            ?>
-        </p>
-        <p>
-            <?php echo CHtml::button('Save', array('onclick' => 'setLabel();', 'class' => 'simplemodal-close')); ?>
-        </p>
-        <input type="hidden" id="label-card-id" />
-    </div>
-</div>
+    <?php
+    $this->renderPartial('_labeldlg');
 
-<div style="display:none;">
-    <div id="counter-dlg">
-        <p>
-            <?php
-            echo CHtml::label('Name', 'counter-name'), '<br />',
-            CHtml::textField('counter-name');
-            ?>
-        </p>
-        <p>
-            <?php
-            echo CHtml::label('Start', 'counter-value'), '<br />',
-            CHtml::textField('counter-value', 0);
-            ?>
-        </p>
-        <p>
-            <?php
-            echo CHtml::label('Step', 'counter-step'), '<br />',
-            CHtml::textField('counter-step', 1);
-            ?>
-        </p>
-        <p>
-            <?php
-            echo CHtml::label('Color', 'counter-class'), '<br />',
-            CHtml::dropDownList('counter-class', null, array(
-                'cl-default' => 'cl-default',
-                'cl-redish' => 'cl-redish',
-                'cl-chrome' => 'cl-chrome',
-                'cl-blueish' => 'cl-blueish')
-            );
-            ?>
-        </p>
-        <p>
-            <?php echo CHtml::button('Add', array('onclick' => 'addCounter();', 'class' => 'simplemodal-close')); ?>
-        </p>
-        <input type="hidden" id="counter-card-id" />
-    </div>
-</div>
+    $this->renderPartial('_cardcounterdlg');
 
-<!-- EXIT GAME DIALOG -->
-<div style="display:none;">
-    <div id="exit-dialog">
-
-    </div>
+    $this->renderPartial('_exitdlg', array('gameId' => $gameId));
+    ?>
 </div>

@@ -1,13 +1,15 @@
 <?php
-$updUrl = $this->createUrl('game/chatupdate');
-$sendUrl = $this->createUrl('game/sendmessage');
+$updUrl = $this->createUrl('lobby/lobbyupdate');
+$sendUrl = $this->createUrl('lobby/sendmessage');
 
 $last = 0;
 if (count($messages)) {
     $last = end($messages);
     $last = $last->messageId;
 }
-
+//
+Yii::app()->clientScript->registerCoreScript('jquery.ui');
+//
 Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/lobby.' . (YII_DEBUG ? '' : '.min') . 'css');
 Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/modal.' . (YII_DEBUG ? '' : '.min') . 'css');
 Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/lobby.' . (YII_DEBUG ? '' : '.min') . 'js');
@@ -74,11 +76,7 @@ $this->title = 'Sandscape Lobby';
             <ul id="messages-list">
                 <?php foreach ($messages as $message) { ?>
                     <li>
-                        <span>
-                            <strong><?php echo $message->user->name; ?></strong>
-                            [<?php echo Yii::app()->dateFormatter->formatDateTime(strtotime($message->sent), 'short'); ?>]:
-                        </span>
-                        <br />
+                        <strong><?php echo $message->user->name; ?>:</strong>&nbsp;
                         <?php echo CHtml::encode($message->message); ?>
                     </li>
                 <?php } ?>
@@ -130,7 +128,7 @@ $this->title = 'Sandscape Lobby';
                         } else {
                             ?>
                             <!-- //return to game -->
-                            <li class="notice return my-game<?php echo (!$game->player2 ? ' wait-opponent' : '');?>">
+                            <li class="notice return my-game<?php echo (!$game->player2 ? ' wait-opponent' : ''); ?>">
                                 <strong>[<?php echo $game->gameId; ?>] <?php echo $created; ?></strong>
                                 <br />
                                 <?php
@@ -206,9 +204,10 @@ $this->title = 'Sandscape Lobby';
     <input type="text" class="text" id="writemessage" />
     <button type="button" class="button" onclick="sendMessage();" id="sendbtn">Send</button>
 </div>
-<div class="span-7 last">
+<div class="span-7 last centered">
     <?php
-    echo CHtml::dropDownList('filterGames', null, array(
+    echo CHtml::label('Filter Games:', 'filterGames'), '&nbsp;&nbsp;&nbsp;',
+    CHtml::dropDownList('filterGames', null, array(
         0 => 'All',
         1 => 'Paused',
         2 => 'Running',

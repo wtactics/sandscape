@@ -22,7 +22,7 @@
  * 
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
 /*Base: 9A5D0D, other: 735124, 643A04, CD8F40, CDA066*/
 * {
     margin:0;
@@ -35,6 +35,7 @@
 body {
     color: #333;
     background-color: #746f5d;
+    font-size: 12px;
 }
 
 a {
@@ -103,7 +104,6 @@ ul {
     position: relative;
     border: 5px solid lightgrey;
     border-radius: 16px;
-    -moz-border-radius: 16px;
     background: #FFF;
     font-size: 10px;
     text-align: center;
@@ -136,7 +136,6 @@ ul {
     left: 10px;
     border: 1px solid #CCC;
     border-radius: 4px;
-    -moz-border-radius: 4px;
     width: 230px;
 }
 
@@ -250,7 +249,6 @@ div.card > img.state {
     border: 1px solid #4297D7;
     background: white;
     border-radius: 6px;
-    -moz-border-radius: 6px;
     text-align: center;
     vertical-align: middle;
     color: black;
@@ -267,6 +265,12 @@ div.card > img.state {
     top: 0;
     right: 0;
     height: 100%;
+    z-index: 60;
+    color: #CCC;
+}
+
+#menu-wrapper * a {
+    color: #CCC;
 }
 
 #menu-header {
@@ -276,20 +280,20 @@ div.card > img.state {
     background: url(../../images/game-slider-background.png) repeat-x;
     width: 100%;
     height: 52px;
+    z-index: 60;
 }
 
 #menu-content {
     position: absolute;
     left: 0;
     top: 55px;
-    width: 250px;
+    width: 248px;
     z-index: 60;
     background: #2A1508;
     border: 0;
     border-left: 1px solid #FFF;
     border-bottom: 1px solid #FFF;
     border-bottom-left-radius: 4px;
-    -moz-border-radius-bottomleft: 4px;
     padding-left: 0.5em;
 }
 
@@ -300,10 +304,6 @@ div.card > img.state {
 }
 
 #game-menu {
-}
-
-#game-menu a {
-    color: #CCC;
 }
 
 #menu-elements {

@@ -51,14 +51,7 @@ class LobbyController extends AppController {
 
         $games = Game::model()->findAll('ended IS NULL ORDER BY created');
         $users = User::model()->findAllAuthenticated()->getData();
-
-        $start = ChatMessage::model()->count('gameId IS NULL ORDER BY sent');
-        if ($start >= 15) {
-            $start -= 15;
-        } else {
-            $start = 0;
-        }
-        $messages = ChatMessage::model()->findAll('gameId IS NULL ORDER BY sent LIMIT :start, 15', array(':start' => (int) $start));
+        $messages = ChatMessage::model()->findAll('gameId IS NULL AND DATE_SUB(sent, INTERVAL 1 HOUR); ORDER BY sent');
 
         $decks = Deck::model()->findAll('userId = :id', array(':id' => (int) (Yii::app()->user->id)));
 
@@ -117,7 +110,7 @@ class LobbyController extends AppController {
                         'success' => 1,
                         'id' => $cm->messageId,
                         'name' => Yii::app()->user->name,
-                        'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
+                        'date' => $cm->sent
                     );
                 }
                 $this->updateUserActivity();
@@ -157,7 +150,7 @@ class LobbyController extends AppController {
                     $messages[] = array(
                         'name' => $cm->user->name,
                         'message' => $cm->message,
-                        'date' => Yii::app()->dateFormatter->formatDateTime(strtotime($cm->sent), 'short')
+                        'date' => $cm->sent
                     );
                 }
                 $count = count($messages);
@@ -250,7 +243,7 @@ class LobbyController extends AppController {
                     }
 
                     if (!$error) {
-                        $this->redirect(array('play', 'id' => $game->gameId));
+                        $this->redirect(array('game/play', 'id' => $game->gameId));
                     }
                 }
             }
@@ -308,7 +301,7 @@ class LobbyController extends AppController {
                         }
 
                         if (!$error) {
-                            $this->redirect(array('play', 'id' => $game->gameId));
+                            $this->redirect(array('game/play', 'id' => $game->gameId));
                         }
                     }
                 }
@@ -329,7 +322,7 @@ class LobbyController extends AppController {
     public function accessRules() {
         return array_merge(array(
                     array('allow',
-                        'actions' => array('index', 'create', 'join', 'chatUpdate',
+                        'actions' => array('index', 'create', 'join', 'lobbyUpdate',
                             'sendMessage'),
                         'users' => array('@')
                     )

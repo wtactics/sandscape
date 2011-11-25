@@ -22,7 +22,7 @@
  * 
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
 /*Base: 9A5D0D, other: 735124, 643A04, CD8F40, CDA066*/
 #users-area {
     position: relative;
@@ -35,13 +35,16 @@
 }
 
 #users-view {
+    position: relative;
     height: 420px;
     width: 100%;
     overflow: hidden;
 }
 
 #users-list {
-    text-align: left;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 #chat-area {
@@ -56,13 +59,17 @@
 }
 
 #chat-view {
+    position: relative;
     height: 420px;
     width: 100%;
     overflow: hidden;
+    min-height: 250px;
 }
 
 #messages-list {
-    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 #messages-list li {
@@ -98,4 +105,25 @@
 
 #games-list * strong {
     clear: both;
+}
+
+.lobby-dlg-left {
+    float: left;
+    width: 250px;
+    margin-right: 5px;
+    height: 250px;
+}
+
+.lobby-dlg-right {
+    float: left;
+    width: 250px;
+    height: 250px;
+}
+
+.marker {
+    margin-left: 10px;
+}
+
+.lobby-dlg-only {
+    width: 250px;
 }

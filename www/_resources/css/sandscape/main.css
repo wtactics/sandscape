@@ -22,7 +22,7 @@
  * 
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
 /*Base: 9A5D0D, other: 735124, 643A04, CD8F40, CDA066*/
 * {
     font-family: Helvetica, Verdana, Arial, sans-serif;
@@ -51,6 +51,10 @@ body {
 .container {
     font-size: 12px;
     background-color: #FFF;
+    border-bottom-right-radius: 12px;
+    -moz-border-radius-bottomright: 12px;
+    border-bottom-left-radius: 12px;
+    -moz-border-radius-bottomleft: 12px;
 }
 
 ul {
@@ -116,6 +120,33 @@ ul {
     background-color: #9A5D0D
 }
 
+#menu ul ul ul {
+    position: absolute;
+    top: 0;
+    left: 100%; /* to position them to the right of their containing block */
+    width: 100%; /* width is based on the containing block */
+}
+
+#menu * .row-first {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+#menu * .row-last {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+#menu * .column-last {
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+#menu * .column-first {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
 #footer {
     color: #CDA066;
     background-color: #643A04;
@@ -156,6 +187,16 @@ a:hover {
 .button:hover {
     color: #FFF;
     background-color: #9A5D0D
+}
+
+.button:disabled {
+    background-color: #CCC;
+    color: #FFF;
+}
+
+.button:hover:disabled {
+    background-color: #CCC;
+    color: #FFF;
 }
 
 #server-time {
@@ -201,4 +242,8 @@ tbody tr:nth-child(even) td, tbody tr.even td {
 
 tfoot {
     font-style: normal;
+}
+
+.clearfix {
+    clear: both;
 }

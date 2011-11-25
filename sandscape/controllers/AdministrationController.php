@@ -201,6 +201,24 @@ class AdministrationController extends AppController {
 
         $this->redirect(array('index'));
     }
+    
+    //
+    
+    public function actionChatFilter() {
+        $this->render('chat-filter');
+    }
+    
+    public function actionGameOptions() {
+        $this->render('game-settings');
+    }
+    
+    public function actionMaintenanceTools() {
+        $this->render('tools');
+    }
+    
+    public function actionSandscapeSettings() {
+        $this->render('settings');
+    }
 
     /**
      *
@@ -212,7 +230,8 @@ class AdministrationController extends AppController {
         return array_merge(array(
                     array('allow',
                         'actions' => array('index', 'pruneChats', 'removeOrphan',
-                            'saveGameSettings', 'saveSandscapeSettings', 'saveWords'
+                            'saveGameSettings', 'saveSandscapeSettings', 'saveWords',
+                            'chatFilter', 'gameOptions', 'maintenanceTools', 'sandscapeSettings'
                         ),
                         'expression' => '$user->class'
                     )

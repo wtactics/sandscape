@@ -1,4 +1,6 @@
-/* modal.css
+<?php
+
+/* ChatLogController.php
  * 
  * This file is part of Sandscape, a virtual, browser based, table allowing 
  * people to play a customizable card games (CCG) online.
@@ -23,12 +25,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#simplemodal-overlay {
-    background-color: #000;
-}
 
-#simplemodal-container {   
-    border: 8px solid #CCC;
-    background-color: #FFF;
-    padding: 12px;
+/**
+ * @since 1.3, Shoulhavester
+ */
+class ChatLogControllerController extends AppController {
+
+    public function __construct($id, $module = null) {
+        parent::__construct($id, $module);
+    }
+    
 }

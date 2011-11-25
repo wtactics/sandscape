@@ -1,17 +1,21 @@
 <div id="spectatedlg">
-    <h2>Spectate Game</h2>
     <?php echo CHtml::beginForm($this->createURL('game/spectate'), 'post', array('id' => 'spectateform')); ?>
-    <!-- //TODO: show chat settings and other game info. -->
+    <h2>Spectate Game</h2>
+    <div class="lobby-dlg-only info">
+        <p>
+            You can spectate this game but you may not be able to use the game chat to send messages since the 
+            game creator may have disabled it.
+        </p>
+        <?php echo CHtml::hiddenField('specgame'); ?>
+    </div>
     <p>
         <?php
         echo CHtml::submitButton('Spectate', array(
             'name' => 'SpectateGame',
-            'id' => 'btnSpectate'
+            'id' => 'btnSpectate',
+            'class' => 'button'
         ));
         ?>
     </p>
-    <?php
-    echo CHtml::hiddenField('specgame'),
-    CHtml::endForm();
-    ?>
+    <?php CHtml::endForm(); ?>
 </div>

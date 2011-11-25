@@ -23,11 +23,25 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * Global object with properties used mostly in AJAX calls.
+ */
 var globals = {
     lastReceived: 0,
+    //update and send message URLs
     urls: {
         upd: '',
         send: ''
+    },
+    //Filter constants
+    filter: {
+        ALL: 0,    
+        PAUSED: 1,
+        RUNNING: 2,
+        IPLAY: 3,
+        WAITINGME: 4,
+        WAITINGOPPONENT: 5
     }
 }
 
@@ -41,13 +55,12 @@ function initLobby() {
         }
     });
 
-    //5 sec delay before asking for more messages
-    //setTimeout(updateMessages, 5000);
+    //5 sec delay before asking for messages
+    setTimeout(updateMessages, 5000);
     
     $('.join').click(function(e) {
         $('#game').val($(this).children('.hGameId').val());
         $('#maxDecksJoin').val($(this).children('.hGameDM').val());
-        
         $('#joindlg').modal(); 
     });
         
@@ -77,9 +90,10 @@ function sendMessage() {
             dataType: 'json',
             success: function(json) {
                 if(json.success) {
-                    $('#lobbychat').append('<li><strong>' + json.name + ':</strong>&nbsp;' + message + '</li>');
+                    $('#messages-list').append('<li><strong>' + json.name + ':</strong>&nbsp;' + message + '</li>');
                     
                     globals.lastReceived = json.id;
+                    chatToBottom();
                 }
             }
         });
@@ -106,6 +120,7 @@ function updateMessages() {
                 });
 
                 globals.lastReceived = json.last;
+                chatToBottom();
             }
         },
         complete: function(){
@@ -118,21 +133,26 @@ function updateMessages() {
  * Validates the number of selected decks and prevents games from being created 
  * or users joining games if the number of selected decks is not the same as the 
  * number of configured decks, either globally or per-game.
+ * 
+ * This function is used by several dialog windows and thus the button selector 
+ * string needs to be passed as a parameter.
  */
 function limitDeckSelection(jqSearch) {
-    var max = parseInt($('#maxDecks').val(), 10), sel = $('.marker').filter(':checked').length;
+    var max = parseInt($('#maxDecks').val(), 10), sel = $('.marker').filter(':checked').length,
+    button = $(jqSearch);
     
-    if($(jqSearch).attr('disabled') != '') {
+    if(button.is(':disabled')) {
         if(sel == max) {
-            $(jqSearch).attr('disabled', '');
+            button.removeAttr('disabled');
         }
-    } else {
-        if(sel != max) {
-            $(jqSearch).attr('disabled', 'disabled');
-        }
+    } else if(sel != max) {
+        button.attr('disabled', 'disabled');
     }
 }
 
+/**
+ * Slider JS for user listing. Used by jQuery UI Slider.
+ */
 function usersSliderScroll(e, ui) {
     var view = $('#users-view'), list = $('#users-list'), scroll = list.height() - view.height();
     if(scroll > 0) {
@@ -142,6 +162,9 @@ function usersSliderScroll(e, ui) {
     }
 }
 
+/**
+ * Slider JS for user listing. Used by jQuery UI Slider.
+ */
 function usersSliderChange(e, ui) {
     var view = $('#users-view'), list = $('#users-list'), scroll = list.height() - view.height();
     if(scroll > 0) {
@@ -151,34 +174,53 @@ function usersSliderChange(e, ui) {
     }
 }
 
+/**
+ * Slider JS for chat messages. Used by jQuery UI Slider.
+ */
 function chatSliderScroll(e, ui) {
-//$('#messages-list').css({
-//    top: ui.value
-//});
+    $('#messages-list').css({
+        top: ui.value
+    });
 }
 
+/**
+ * Slider JS for chat messages. Used by jQuery UI Slider.
+ */
 function chatSliderChange(e, ui) {
-//$('#messages-list').css({
-//    top: ui.value
-//});
+    $('#messages-list').css({
+        top: ui.value
+    });
 }
 
+/**
+ * Slider JS for chat messages. Used by jQuery UI Slider.
+ */
 function chatSliderSetValue(e, ui) {
     chatChatToBottom();
 }
 
+/**
+ * Moves the messages list down to show the last added list. It is used every 
+ * time the message list is updated, a new message is added and when the slider 
+ * is created so that the slider value is properly set.
+ */
 function chatChatToBottom() {
-//var sl = $('#chat-slider'), cm = $('#chat-messages'), bh = cm.height(), h = -(bh - 130);
-//if(bh > 130) {
-//    sl.slider('option', 'min', h)
-//    .slider('option', 'value', h);
+    var csl = $('#chat-slider'), ml = $('#messages-list'), bh = ml.height(), 
+    vh = $('#chat-view').height(), h = -(bh - vh);
+    console.log('bh: ' + bh + ', vh: ' + vh + ', h: ' + h);
+    if(bh > vh) {
+        csl.slider('option', 'min', h)
+        .slider('option', 'value', h);
     
-//    cm.animate({
-//        top: h
-//    }, 'slow');
-//}
+        ml.animate({
+            top: h
+        }, 'slow');
+    }
 }
 
+/**
+ * Slider JS for game listing. Used by jQuery UI Slider.
+ */
 function gamesSliderScroll(e, ui) {
     var view = $('#games-view'), list = $('#games-list'), scroll = list.height() - view.height();
     if(scroll > 0) {
@@ -188,6 +230,9 @@ function gamesSliderScroll(e, ui) {
     }
 }
 
+/**
+ * Slider JS for game listing. Used by jQuery UI Slider.
+ */
 function gamesSliderChange(e, ui) {
     var view = $('#games-view'), list = $('#games-list'), scroll = list.height() - view.height();
     if(scroll > 0) {
@@ -197,10 +242,16 @@ function gamesSliderChange(e, ui) {
     }
 }
 
+/**
+ * Filters games in the game list according to the filter criteria.
+ * Currently all filters are hardcoded with the view file for the lobby having 
+ * the combobox and the text and the JS function comparing to fixed integer 
+ * values defined in the <em>globals.filter</em> object.
+ */
 function filterGameList() {
     switch(parseInt($('#filterGames').val(), 10)) {
         //all
-        case 0:
+        case globals.filter.ALL:
             $('.paused').show();
             $('.running').show();
             $('.my-game').show();
@@ -208,7 +259,7 @@ function filterGameList() {
             $('.wait-opponent').show();
             break;
         //paused
-        case 1:
+        case globals.filter.PAUSED:
             $('.running').hide();
             $('.my-game').hide();
             $('.wait-me').hide();
@@ -217,7 +268,7 @@ function filterGameList() {
             $('.paused').show();
             break;
         //running
-        case 2:
+        case globals.filter.RUNNING:
             $('.paused').hide();
             $('.my-game').hide();
             $('.wait-me').hide();
@@ -226,7 +277,7 @@ function filterGameList() {
             $('.running').show();
             break;
         //that I play
-        case 3:
+        case globals.filter.IPLAY:
             $('.paused').hide();
             $('.running').hide();
             $('.wait-me').hide();
@@ -235,7 +286,7 @@ function filterGameList() {
             $('.my-game').show();
             break;
         //waiting for me
-        case 4:
+        case globals.filter.WAITINGME:
             $('.paused').hide();
             $('.running').hide();
             $('.my-game').hide();
@@ -244,7 +295,7 @@ function filterGameList() {
             $('.wait-me').show();
             break;
         //waiting for opponent
-        case 5:
+        case globals.filter.WAITINGOPPONENT:
             $('.paused').hide();
             $('.running').hide();
             $('.my-game').hide();
