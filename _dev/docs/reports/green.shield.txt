@@ -1,5 +1,5 @@
-Green Shield
-============
+Green Shield, v1.1
+==================
 
 Focus
 -----

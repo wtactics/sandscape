@@ -1,5 +1,5 @@
-Elvish Scout
-============
+Elvish Scout, v0
+================
 
 Focus
 -----
@@ -70,7 +70,7 @@ could really make a difference.
 Next
 ----
 
-Has this iteration focus was not in providing a usable application, the next 
+Since this iteration focus was not in providing a usable application, the next 
 iteration should try to revert that and offer a complete and playable game. Even 
 if the used cards are not correctly shown or are not the correct one.
 

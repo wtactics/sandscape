@@ -1,6 +1,6 @@
 <?php
 
-/* ChatLogController.php
+/* ChatLogsController.php
  * 
  * This file is part of Sandscape, a virtual, browser based, table allowing 
  * people to play a customizable card games (CCG) online.
@@ -29,10 +29,37 @@
 /**
  * @since 1.3, Shoulhavester
  */
-class ChatLogControllerController extends AppController {
+class ChatLogsController extends AppController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
     }
+
+    public function actionIndex() {
+        $messages = array();
+        $this->render('index', array('messages' => $messages));
+    }
+
+    public function actionPruneChat() {
+        
+    }
     
+    public function actionDownloadChatLog() {
+        
+    }
+
+    /**
+     * @return array New rules array.
+     * 
+     * @since 1.3, Soulharvester
+     */
+    public function accessRules() {
+        return array_merge(array(
+                    array('allow',
+                        'actions' => array('index', 'pruneChat', 'downloadChatLog'),
+                        'expression' => '$user->class'
+                    )
+                        ), parent::accessRules());
+    }
+
 }

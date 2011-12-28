@@ -1,0 +1,19 @@
+Soulharvester, v1.4
+===================
+
+Focus
+-----
+mprove features added in previous milestone and focus on correcting bugs. Create an official release after this milestone.
+
+Difficulties
+------------
+
+
+
+Achievements
+------------
+
+
+
+Next
+----

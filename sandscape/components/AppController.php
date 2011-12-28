@@ -39,14 +39,12 @@
 class AppController extends CController {
 
     /**
-     *
      * @var string The current layout used by this controller. Should always be 
      * a valid layout file form the default layout folder, <em>//layouts</em> 
      */
     public $layout = '//layouts/site';
 
     /**
-     *
      * @var array Main menu used by every controller. Though it shows and hides 
      * options based on the user type, it does not provide security for those 
      * options. 
@@ -54,7 +52,6 @@ class AppController extends CController {
     protected $menu;
 
     /**
-     *
      * @var string The page title.
      */
     protected $title;
@@ -128,6 +125,10 @@ class AppController extends CController {
                                 'label' => 'Chat Filter',
                                 'url' => array('administration/chatfilter'),
                                 'linkOptions' => array('class' => 'column-first'),
+                            ),
+                            array(
+                                'label' => 'Chat Logs',
+                                'url' => array('chatlogs/index'),
                             ),
                             array(
                                 'label' => 'Game Options',

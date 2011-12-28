@@ -1,0 +1,20 @@
+Elvish Shaman, v1.3
+===================
+
+Focus
+-----
+Better game mechanics and new base features. Try to improve game server stability and game interface to allow better customizations and updates.
+
+Difficulties
+------------
+
+
+
+Achievements
+------------
+
+
+
+Next
+----
+mprove features added in previous milestone and focus on correcting bugs. Create an official release after this milestone.
