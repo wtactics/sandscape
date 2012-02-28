@@ -162,6 +162,10 @@ h2, h3, h4 {
     color: #CDA066;
 }
 
+h2 {
+    margin-top: .5em;
+}
+
 a {
     text-decoration: none;
 }
