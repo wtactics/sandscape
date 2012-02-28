@@ -1,35 +1,41 @@
 <?php $form = $this->beginWidget('CActiveForm', array('id' => 'counter-form')); ?>
 <fieldset>
     <legend>Player Counter information</legend>
-    <p>
+    <div class="formrow">
         <?php
-        echo $form->labelEx($counter, 'name'), '<br />',
+        echo $form->labelEx($counter, 'name'),
         $form->textField($counter, 'name', array('maxlength' => 150, 'class' => 'text'));
         ?>
-    </p>
+    </div>
     <?php echo $form->error($counter, 'name'); ?>
-    <p>
+
+    <div class="formrow">
         <?php
-        echo $form->labelEx($counter, 'startValue'), '<br />',
+        echo $form->labelEx($counter, 'startValue'),
         $form->textField($counter, 'startValue', array('class' => 'text'));
         ?>
-    </p>
+    </div>
     <?php echo $form->error($counter, 'startValue'); ?>
-    <p>
+
+    <div class="formrow">
         <?php
-        echo $form->labelEx($counter, 'step'), '<br />',
+        echo $form->labelEx($counter, 'step'),
         $form->textField($counter, 'step', array('class' => 'text'));
         ?>
-    </p>
+    </div>
     <?php echo $form->error($counter, 'step'); ?>
-    <p>
+
+    <div class="formrow">
         <?php echo $form->checkBox($counter, 'available'), '&nbsp;', $form->labelEx($counter, 'available'); ?>
-    </p>
-    <?php echo $form->error($counter, 'available');
-    ?>
+    </div>
+    <?php echo $form->error($counter, 'available'); ?>
 </fieldset>
-<p>
-    <?php echo CHtml::submitButton($counter->isNewRecord ? 'Create' : 'Save', array('class' => 'button')); ?>
-</p>
+
+<div class="buttonrow">
+    <?php
+    echo CHtml::submitButton($counter->isNewRecord ? 'Create' : 'Save', array('class' => 'button')),
+    CHtml::link('Cancel', $this->createUrl('/counters'));
+    ?>
+</div>
 <?php
 $this->endWidget();

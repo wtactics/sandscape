@@ -14,7 +14,8 @@
             'name' => 'SpectateGame',
             'id' => 'btnSpectate',
             'class' => 'button'
-        ));
+        )),
+        CHtml::link('Cancel', 'javascript:;', array('class' => 'simplemodal-close'));
         ?>
     </p>
     <?php CHtml::endForm(); ?>

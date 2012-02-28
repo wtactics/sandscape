@@ -39,22 +39,6 @@ class AdministrationController extends AppController {
     }
 
     /**
-     * Default action that shows the administration section with all the tabs.
-     * 
-     * @since 1.0, Sudden Growth
-     */
-    public function actionIndex() {
-        $settings = array();
-        foreach (Setting::model()->findAll() as $setting) {
-            $settings[$setting->key] = (object) array(
-                        'value' => $setting->value,
-                        'description' => $setting->description
-            );
-        }
-        $this->render('index', array('settings' => $settings));
-    }
-
-    /**
      * Removes <em>ChatMessage</em> records from the database. All messages that 
      * have a <em>sent</em> date lower than the given date will be considered, 
      * also, messages can include game messages but only those created by users.
@@ -108,18 +92,52 @@ class AdministrationController extends AppController {
     }
 
     /**
-     * Saves general settings from <em>Settings</em> tab in administration.
+     * Allows an administrator to change the words filtered in the chat area.
      * 
-     * @since 1.2, Elvish Shaman
+     * @since 1.3, Soulharvester 
      */
-    public function actionSaveGameSettings() {
-        //TODO: validate input properly
-        //TODO: //NOTE: better way to find if any of the settings are missing
-        //and add descriptions to missing settings.
+    public function actionChatFilter() {
+        $words = '';
+        if (($setting = Setting::model()->findByPk('wordfilter')) != null) {
+            $words = $setting->value;
+        } else {
+            $setting = new Setting();
+            $setting->key = 'wordfilter';
+            $setting->group = 'wordfilter';
+        }
+
+        if (isset($_POST['wfilter'])) {
+            $setting->value = trim($_POST['wfilter']);
+            if ($setting->save()) {
+                $this->redirect(array('chatfilter'));
+            }
+        }
+
+        $this->render('chat-filter', array('words' => $words));
+    }
+
+    /**
+     * Game related settings.
+     * 
+     * @since 1.3, Soulharvester 
+     */
+    public function actionGameOptions() {
+        $settings = array(
+            'fixdecknr' => 0,
+            'deckspergame' => 1,
+            'useanydice' => 0,
+            'gamechatspectators' => 0
+        );
+
+        foreach (Setting::model()->findAll('`group` = :g', array(':g' => 'game')) as $setting) {
+            $settings[$setting->key] = $setting;
+        }
+
         if (isset($_POST['GameSettings'])) {
             if (($fixDeckNr = Setting::model()->findByPk('fixdecknr')) === null) {
                 $fixDeckNr = new Setting();
                 $fixDeckNr->key = 'fixdecknr';
+                $fixDeckNr->group = 'game';
             }
             $fixDeckNr->value = (int) $_POST['fixdecknr'];
             $fixDeckNr->save();
@@ -127,6 +145,7 @@ class AdministrationController extends AppController {
             if (($decksPerGame = Setting::model()->findByPk('deckspergame')) === null) {
                 $decksPerGame = new Setting();
                 $decksPerGame->key = 'deckspergame';
+                $decksPerGame->group = 'game';
             }
             $decksPerGame->value = (int) $_POST['deckspergame'];
             $decksPerGame->save();
@@ -134,6 +153,7 @@ class AdministrationController extends AppController {
             if (($useAnyDice = Setting::model()->findByPk('useanydice')) === null) {
                 $useAnyDice = new Setting();
                 $useAnyDice->key = 'useanydice';
+                $useAnyDice->group = 'game';
             }
             $useAnyDice->value = (int) $_POST['useanydice'];
             $useAnyDice->save();
@@ -141,83 +161,79 @@ class AdministrationController extends AppController {
             if (($gameChatSpectators = Setting::model()->findByPk('gamechatspectators')) === null) {
                 $gameChatSpectators = new Setting();
                 $gameChatSpectators->key = 'gamechatspectators';
+                $gameChatSpectators->group = 'game';
             }
             $gameChatSpectators->value = (int) $_POST['gamechatspectators'];
             $gameChatSpectators->save();
+
+            $this->redirect(array('gameoptions'));
         }
 
-        $this->redirect(array('index'));
+        $this->render('game-settings', array('settings' => $settings));
     }
 
     /**
-     * Saves words to filter in chat messages.
+     * General Sandscape settings.
      * 
-     * @since 1.2, Elvish Shaman
+     * @since 1.3, Soulharvester  
      */
-    public function actionSaveWords() {
-        if (isset($_POST['wfilter'])) {
-            if (($setting = Setting::model()->findByPk('wordfilter')) === null) {
-                $setting = new Setting();
-                $setting->key = 'wordfilter';
-            }
-            $setting->value = trim($_POST['wfilter']);
-            $setting->save();
+    public function actionSandscapeSettings() {
+        $settings = array(
+            'cardscapeurl' => '',
+            'allowavatar' => 1,
+            'avatarsize' => '100x75',
+            'sysemail' => ''
+        );
+
+        foreach (Setting::model()->findAll('`group` = :g', array(':g' => 'general')) as $setting) {
+            $settings[$setting->key] = $setting;
         }
 
-        $this->redirect(array('index'));
-    }
-
-    /**
-     * Saves Sandscape related settings.
-     * 
-     * @since 1.3, Soulharvester
-     */
-    public function actionSaveSandscapeSettings() {
-        //TODO: validate input properly
-        //TODO: //NOTE: better way to find if any of the settings are missing
-        //and add descriptions to missing settings.
         if (isset($_POST['SandscapeSettings'])) {
-            if (($fixDeckNr = Setting::model()->findByPk('cardscapeurl')) === null) {
-                $fixDeckNr = new Setting();
-                $fixDeckNr->key = 'cardscapeurl';
+            if (($cardscapeUrl = Setting::model()->findByPk('cardscapeurl')) === null) {
+                $cardscapeUrl = new Setting();
+                $cardscapeUrl->key = 'cardscapeurl';
+                $cardscapeUrl->group = 'general';
             }
-            $fixDeckNr->value = $_POST['cardscapeurl'];
-            $fixDeckNr->save();
+            $cardscapeUrl->value = $_POST['cardscapeurl'];
+            $cardscapeUrl->save();
 
-            if (($decksPerGame = Setting::model()->findByPk('allowavatar')) === null) {
-                $decksPerGame = new Setting();
-                $decksPerGame->key = 'allowavatar';
+            if (($allowAvatar = Setting::model()->findByPk('allowavatar')) === null) {
+                $allowAvatar = new Setting();
+                $allowAvatar->key = 'allowavatar';
+                $allowAvatar->group = 'general';
             }
-            $decksPerGame->value = (int) $_POST['allowavatar'];
-            $decksPerGame->save();
+            $allowAvatar->value = (int) $_POST['allowavatar'];
+            $allowAvatar->save();
 
-            if (($useAnyDice = Setting::model()->findByPk('avatarsize')) === null) {
-                $useAnyDice = new Setting();
-                $useAnyDice->key = 'avatarsize';
+            if (($avatarSize = Setting::model()->findByPk('avatarsize')) === null) {
+                $avatarSize = new Setting();
+                $avatarSize->key = 'avatarsize';
+                $avatarSize->group = 'general';
             }
-            $useAnyDice->value = $_POST['avatarsize'];
-            $useAnyDice->save();
+            $avatarSize->value = $_POST['avatarsize'];
+            $avatarSize->save();
+
+            if (($sysEmail = Setting::model()->findByPk('sysemail')) === null) {
+                $sysEmail = new Setting();
+                $sysEmail->key = 'sysemail';
+                $sysEmail->group = 'general';
+            }
+            $sysEmail->value = $_POST['sysemail'];
+            $sysEmail->save();
+
+            $this->redirect(array('sandscapesettings'));
         }
+        $this->render('general-settings', array('settings' => $settings));
+    }
 
-        $this->redirect(array('index'));
-    }
-    
-    //
-    
-    public function actionChatFilter() {
-        $this->render('chat-filter');
-    }
-    
-    public function actionGameOptions() {
-        $this->render('game-settings');
-    }
-    
+    /**
+     * Access to basic maintenance tools.
+     * 
+     * @since 1.3, Soulharvester 
+     */
     public function actionMaintenanceTools() {
         $this->render('tools');
-    }
-    
-    public function actionSandscapeSettings() {
-        $this->render('settings');
     }
 
     /**

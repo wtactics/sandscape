@@ -49,9 +49,4 @@ class RecoverForm extends CFormModel {
         );
     }
 
-    public function recover() {
-        //User::hash();
-        //TODO: not implemented yet, need code to reset password.
-    }
-
 }

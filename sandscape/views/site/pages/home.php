@@ -4,7 +4,7 @@
 
 <p>
     This is the default starting page for <strong>Sandscape</strong>. You can edit this text in the 
-    <em>/sandscap/views/site/pages/home.php</em> file.
+    <em>/sandscape/views/site/pages/home.php</em> file.
 </p>
 
 <p>

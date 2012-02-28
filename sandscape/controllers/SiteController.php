@@ -98,6 +98,8 @@ class SiteController extends AppController {
 
     /**
      * Action to remove a logged in user.
+     * 
+     * @since 1.0, Sudden Growth
      */
     public function actionLogout() {
         if (($sd = SessionData::model()->findByPk(Yii::app()->user->id)) !== null) {
@@ -108,21 +110,92 @@ class SiteController extends AppController {
         $this->redirect(Yii::app()->homeUrl);
     }
 
+    /**
+     * Allows a user to recover a lost password.
+     * 
+     * @throws CException If anything prevents the system from sending the new 
+     * password to the user's e-mail address.
+     * 
+     * @throws CHttpException If the e-mail doesn't exist or no user could be 
+     * found.
+     * 
+     * @since 1.3, Soulharvester
+     */
     public function actionRecoverPassword() {
-        //TODO: not implemented yet, incomplete
         $recover = new RecoverForm();
         if (isset($_POST['RecoverForm'])) {
             $recover->attributes = $_POST['RecoverForma'];
-            if ($recover->validate() && $recover->recover()) {
-                $this->redirect('site/login');
+            if ($recover->validate()) {
+                if (($setting = Setting::model()->findByPk('sysemail')) !== null && $setting->value != '') {
+                    $from = $setting->value;
+
+                    $user = User::model()->find('email = :e', array(':e' => $recover->email));
+
+                    if ($user) {
+                        $a = 'aeiou';
+                        $b = 'bcdfghjklmnpqrstvwxyz';
+                        $c = '1234567890';
+                        $d = '+#&@';
+
+                        $password = '';
+                        for ($i = 0; $i < 8; $i++) {
+                            switch (rand(0, 5)) {
+                                case 0:
+                                    $password .= $a[rand(0, strlen($a))];
+                                    break;
+                                case 1:
+                                    $password .= $b[rand(0, strlen($a))];
+                                    break;
+                                case 2:
+                                    $password .= $c[rand(0, strlen($c))];
+                                    break;
+                                case 3:
+                                    $password .= strtoupper($a[rand(0, strlen($a))]);
+                                    break;
+                                case 4:
+                                    $password .= $d[rand(0, strlen($d))];
+                                    break;
+                                case 5:
+                                    $password .= strtoupper($b[rand(0, strlen($b))]);
+                                    break;
+                            }
+                        }
+
+                        $user->password = User::hash($password);
+                        if ($user->save()) {
+                            Yii::import('ext.email.*');
+
+                            $mailer = new PHPMailer();
+                            $mailer->AddAddress($user->email, $user->name);
+                            $mailer->From = $from;
+                            $mailer->Subject = 'Password reset by administrator';
+                            $mailer->Body = "An administrator reset your password. Your new password is: {$password} \n\nSent by SandScape, please don't replay to this e-mail.";
+
+                            try {
+                                $mailer->Send();
+                                $this->redirect('site/login');
+                            } catch (phpmailerException $pe) {
+                                throw new CException('Unable to send new password to user\'s e-mail address.');
+                            }
+                        }
+                    } else {
+                        throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+                    }
+                } else {
+                    throw new CException('Unable to reset the user\'s password.');
+                }
             }
         }
 
         $this->render('lostpwd', array('recover' => $recover));
     }
 
+    /**
+     * Shows system errors and exception.
+     * 
+     * @since 1.3, Soulharvester 
+     */
     public function actionError() {
-        //TODO: not implemented yet, proper error handling
         if (($error = Yii::app()->errorHandler->error)) {
             if (Yii::app()->request->isAjaxRequest) {
                 echo $error['message'];

@@ -16,5 +16,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'header' => 'Actions',
             'class' => 'CButtonColumn',
         )
-    )
+    ),
+    'template' => '{items} {pager} {summary}'
 ));

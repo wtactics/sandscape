@@ -34,7 +34,7 @@
         echo CHtml::button('Add', array(
             'onclick' => 'addCounter();',
             'class' => 'simplemodal-close button'
-        )), '&nbsp;&nbsp;&nbsp;',
+        )),
         CHtml::link('Cancel', 'javascript:;', array('class' => 'simplemodal-close'));
         ?>
     </p>

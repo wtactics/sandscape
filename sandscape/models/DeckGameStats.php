@@ -1,6 +1,6 @@
 <?php
 
-/* GameDice.php
+/* DeckGameStats.php
  * 
  * This file is part of Sandscape, a virtual, browser based, table allowing 
  * people to play a customizable card games (CCG) online.
@@ -27,38 +27,42 @@
  */
 
 /**
- * @property int $diceId
+ * @property int $deckId
  * @property int $gameId
+ * @property float $rating
+ * @property string $notes
  *
  * @property Deck $deck
- * @property Card $card
+ * @property Game $game
  * 
- * @since 1.2, Elvish Shaman
+ * @since 1.3, Soulharvester
  */
-class GameDice extends CActiveRecord {
+class DeckGameStats extends CActiveRecord {
 
     /**
-     * @return GameDice
+     * @return DeckGameStats
      */
-    public static function model($className=__CLASS__) {
+    public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
     public function tableName() {
-        return 'GameDice';
+        return 'DeckGameStats';
     }
 
     public function relations() {
         return array(
             'game' => array(self::BELONGS_TO, 'Game', 'gameId'),
-            'dice' => array(self::BELONGS_TO, 'Dice', 'diceId'),
+            'deck' => array(self::BELONGS_TO, 'Deck', 'deckId'),
         );
     }
 
     public function attributeLabels() {
         return array(
             'gameId' => 'Game ID',
-            'diceId' => 'Dice ID',
+            'deckId' => 'Dice ID',
+            'rating' => 'Rating',
+            'notes' => 'Notes'
         );
     }
 

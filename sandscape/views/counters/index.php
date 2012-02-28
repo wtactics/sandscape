@@ -26,4 +26,5 @@ $this->widget('zii.widgets.grid.CGridView', array(
             )
         ),
     ),
+    'template' => '{items} {pager} {summary}'
 ));

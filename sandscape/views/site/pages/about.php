@@ -11,7 +11,7 @@
 
 <p>
     <strong>Sandscape</strong> is not just about the cards created in <strong>WTactics</strong>, it's 
-    about creating a complete, independent system that allows players to gather and arranje 
+    about creating a complete, independent system that allows players to gather and arrange 
     matches, local communities to create an on-line location for their members to continue 
     playing, and is not limited to the <strong>WTactics</strong> main rule set, we 
     want <strong>Sandscape</strong> to be able to offer any game or rule set that users choose.

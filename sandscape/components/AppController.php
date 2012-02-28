@@ -155,7 +155,7 @@ class AppController extends CController {
                 'items' => array(
                     array('label' => 'Decks', 'url' => array('decks/index')),
                     array('label' => 'Games', 'url' => array('account/games')),
-                    array('label' => 'Profile', 'url' => array('profile/index')),
+                    array('label' => 'Profile', 'url' => array('/account')),
                     array(
                         'label' => 'Logout',
                         'url' => array('site/logout'),

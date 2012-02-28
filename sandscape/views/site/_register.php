@@ -3,44 +3,45 @@ $form = $this->beginWidget('CActiveForm', array(
     'id' => 'register-form',
     'enableAjaxValidation' => true,
     'clientOptions' => array(
-        'inputContainer' => 'p' 
+        'inputContainer' => 'p'
     )
         ));
 ?>
 <fieldset>
     <legend>Register new account</legend>
     <p>Don't have an account yet, register a new account and start playing.</p>
-    <p>
+    <div class="formrow">
         <?php
-        echo $form->labelEx($register, 'name'), '<br />',
+        echo $form->labelEx($register, 'name'),
         $form->textField($register, 'name', array('class' => 'text'));
         ?>
-    </p>
+    </div>
     <?php echo $form->error($register, 'name'); ?>
-    <p>
+    <div class="formrow">
         <?php
-        echo $form->labelEx($register, 'email'), '<br />',
+        echo $form->labelEx($register, 'email'),
         $form->textField($register, 'email', array('class' => 'text'));
         ?>
-    </p>
+    </div>
     <?php echo $form->error($register, 'email'); ?>
-    <p>
+    <div class="formrow">
         <?php
-        echo $form->labelEx($register, 'password'), '<br />',
+        echo $form->labelEx($register, 'password'),
         $form->passwordField($register, 'password', array('class' => 'text'));
         ?>
-    </p>
+    </div>
     <?php echo $form->error($register, 'password'); ?>
-    <p>
+    <div class="formrow">
         <?php
-        echo $form->labelEx($register, 'password_repeat'), '<br />',
+        echo $form->labelEx($register, 'password_repeat'),
         $form->passwordField($register, 'password_repeat', array('class' => 'text'));
         ?>
-    </p>
+    </div>
     <?php echo $form->error($register, 'password_repeat'); ?>
 </fieldset>
-<p>
+
+<div class="buttonrow">
     <?php echo CHtml::submitButton('Register', array('class' => 'button')); ?>
-</p>
+</div>
 <?php
 $this->endWidget();

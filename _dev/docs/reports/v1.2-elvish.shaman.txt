@@ -1,4 +1,4 @@
-Elvish Shaman, v1.3
+Elvish Shaman, v1.2
 ===================
 
 Focus

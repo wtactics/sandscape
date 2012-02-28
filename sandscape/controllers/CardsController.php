@@ -71,13 +71,18 @@ class CardsController extends AppController {
 
         if (isset($_POST['Card'])) {
             $new->attributes = $_POST['Card'];
-            //TODO: check that the image file is not already in the server or that 
-            //no other file with the same name exists
+
+            Yii::import('ext.PhpThumbFactory');
+
             $path = Yii::getPathOfAlias('webroot') . '/_game/cards';
             $upfile = CUploadedFile::getInstance($new, 'image');
 
             if ($upfile !== null) {
                 $name = $upfile->name;
+
+                if (is_file($path . '/' . $name)) {
+                    $name = $new->name . '.' . $name;
+                }
 
                 $sizes = getimagesize($upfile->tempName);
                 $imgFactory = PhpThumbFactory::create($upfile->tempName);
@@ -131,6 +136,9 @@ class CardsController extends AppController {
                     }
 
                     $name = $upfile->name;
+                    if (is_file($path . '/' . $name)) {
+                        $name = $new->name . '.' . $name;
+                    }
 
                     $sizes = getimagesize($upfile->tempName);
                     $imgFactory = PhpThumbFactory::create($upfile->tempName);
@@ -203,7 +211,6 @@ class CardsController extends AppController {
                     if ($zip->open($upfile->tempName) === true) {
                         $zip->extractTo($destination);
                         $zip->close();
-
                         unlink($upfile->tempName);
 
                         if (($fh = fopen($destination . 'cards/cards.csv', 'r')) !== false) {
@@ -243,7 +250,17 @@ class CardsController extends AppController {
                                 }
                             }
                             fclose($fh);
-                            //TODO: remove the import folder, recursive file removal.
+
+                            //Remove all entries from import folder, recursively
+                            foreach (new RecursiveIteratorIterator(
+                                    new RecursiveDirectoryIterator($destination), RecursiveIteratorIterator::CHILD_FIRST)
+                            as $entry) {
+                                if ($entry->isDir()) {
+                                    rmdir($entry->__toString());
+                                } else {
+                                    unlink($entry->__toString());
+                                }
+                            }
                         }
                     }
                 }

@@ -12,13 +12,14 @@ $form = $this->beginWidget('CActiveForm', array(
 <div class="span-12 last">
     <fieldset>
         <legend>Request new password</legend>
-        <p>
+        <div class="formrow">
             <?php echo $form->labelEx($recover, 'email'), '<br />', $form->textField($recover, 'email', array('class' => 'text')); ?>
-        </p>
+        </div>
     </fieldset>
-    <p>
+
+    <div class="buttonrow">
         <?php echo CHtml::submitButton('Send', array('class' => 'button')); ?>
-    </p>
+    </div>
 </div>
 <?php
 $this->endWidget();

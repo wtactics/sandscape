@@ -59,13 +59,18 @@ class StatesController extends AppController {
 
         if (isset($_POST['State'])) {
             $new->attributes = $_POST['State'];
-            //TODO: check that the image file is not already in the server or that 
-            //no other file with the same name exists
+            
+            Yii::import('ext.PhpThumbFactory');
+            
             $path = Yii::getPathOfAlias('webroot') . '/_game/states';
             $upfile = CUploadedFile::getInstance($new, 'image');
 
             if ($upfile !== null) {
                 $name = $upfile->name;
+                
+                if (is_file($path . '/' . $name)) {
+                    $name = $new->name . '.' . $name;
+                }
 
                 $sizes = getimagesize($upfile->tempName);
                 $imgFactory = PhpThumbFactory::create($upfile->tempName);
@@ -96,13 +101,18 @@ class StatesController extends AppController {
 
         if (isset($_POST['State'])) {
             $state->attributes = $_POST['State'];
-            //TODO: check that the image file is not already in the server or that 
-            //no other file with the same name exists
+            
+            Yii::import('ext.PhpThumbFactory');
+            
             $path = Yii::getPathOfAlias('webroot') . '/_game/states';
             $upfile = CUploadedFile::getInstance($state, 'image');
 
             if ($upfile !== null) {
                 $name = $upfile->name;
+                
+                if (is_file($path . '/' . $name)) {
+                    $name = $new->name . '.' . $name;
+                }
 
                 $sizes = getimagesize($upfile->tempName);
                 $imgFactory = PhpThumbFactory::create($upfile->tempName);

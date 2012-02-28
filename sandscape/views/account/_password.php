@@ -1,38 +1,37 @@
 <?php
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'password-form',
-    'enableAjaxValidation' => true,
-    'clientOptions' => array(
-        'inputContainer' => 'p'
-    )
+    'enableAjaxValidation' => true
         ));
 ?>
 <fieldset>
     <legend>Password</legend>
-    <p>
+    <div class="formrow">
         <?php
-        echo $form->labelEx($pwdModel, 'current'), '<br />',
-        $form->passwordField($pwdModel, 'current', array('class' => 'text'));
+        echo $form->labelEx($pmodel, 'current'),
+        $form->passwordField($pmodel, 'current', array('class' => 'text'));
         ?>
-    </p>
-    <?php echo $form->error($pwdModel, 'current'); ?>
-    <p>
+    </div>
+    <?php echo $form->error($pmodel, 'current'); ?>
+
+    <div class="formwor">
         <?php
-        echo $form->labelEx($pwdModel, 'password'), '<br />',
-        $form->passwordField($pwdModel, 'password', array('class' => 'text'));
+        echo $form->labelEx($pmodel, 'password'),
+        $form->passwordField($pmodel, 'password', array('class' => 'text'));
         ?>
-    </p>
-    <?php echo $form->error($pwdModel, 'password'); ?>
-    <p>
+    </div>
+    <?php echo $form->error($pmodel, 'password'); ?>
+
+    <div class="formrow">
         <?php
-        echo $form->labelEx($pwdModel, 'password_repeat'), '<br />',
-        $form->passwordField($pwdModel, 'password_repeat', array('class' => 'text'));
+        echo $form->labelEx($pmodel, 'password_repeat'),
+        $form->passwordField($pmodel, 'password_repeat', array('class' => 'text'));
         ?>
-    </p>
-    <?php echo $form->error($pwdModel, 'password_repeat'); ?>
+    </div>
+    <?php echo $form->error($pmodel, 'password_repeat'); ?>
 </fieldset>
-<p>
-    <?php echo CHtml::submitButton('Change', array('class' => 'button')); ?>
-</p>
+<div class="buttonrow">
+    <?php echo CHtml::submitButton('Save', array('class' => 'button')); ?>
+</div>
 <?php
 $this->endWidget();

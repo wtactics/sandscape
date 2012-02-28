@@ -59,13 +59,18 @@ class TokensController extends AppController {
 
         if (isset($_POST['Token'])) {
             $new->attributes = $_POST['Token'];
-            //TODO: check that the image file is not already in the server or that 
-            //no other file with the same name exists
+            
+            Yii::import('ext.PhpThumbFactory');
+            
             $path = Yii::getPathOfAlias('webroot') . '/_game/tokens';
             $upfile = CUploadedFile::getInstance($new, 'image');
 
             if ($upfile !== null) {
                 $name = $upfile->name;
+                
+                if (is_file($path . '/' . $name)) {
+                    $name = $new->name . '.' . $name;
+                }
 
                 $sizes = getimagesize($upfile->tempName);
                 $imgFactory = PhpThumbFactory::create($upfile->tempName);
@@ -96,13 +101,18 @@ class TokensController extends AppController {
 
         if (isset($_POST['Token'])) {
             $token->attributes = $_POST['Token'];
-            //TODO: check that the image file is not already in the server or that 
-            //no other file with the same name exists
+            
+            Yii::import('ext.PhpThumbFactory');
+            
             $path = Yii::getPathOfAlias('webroot') . '/_game/tokens';
             $upfile = CUploadedFile::getInstance($token, 'image');
 
             if ($upfile !== null) {
                 $name = $upfile->name;
+                
+                if (is_file($path . '/' . $name)) {
+                    $name = $new->name . '.' . $name;
+                }
 
                 $sizes = getimagesize($upfile->tempName);
                 $imgFactory = PhpThumbFactory::create($upfile->tempName);

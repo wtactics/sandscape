@@ -42,6 +42,7 @@
  * @property DeckCard[] $deckCards
  * @property Game[] $games
  * @property DeckTemplate[] preCons
+ * @property DeckGameStats $stats
  * 
  * @since 1.0, Sudden Growth
  */
@@ -50,7 +51,7 @@ class Deck extends CActiveRecord {
     /**
      * @return Deck
      */
-    public static function model($className=__CLASS__) {
+    public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
@@ -72,7 +73,8 @@ class Deck extends CActiveRecord {
             'user' => array(self::BELONGS_TO, 'User', 'userId'),
             'deckCards' => array(self::HAS_MANY, 'DeckCard', 'deckId'),
             'games' => array(self::MANY_MANY, 'Game', 'GameDeck(deckId, gameId)'),
-            'preCons' => array(self::HAS_MANY, 'DeckTemplate', 'deckId')
+            'preCons' => array(self::HAS_MANY, 'DeckTemplate', 'deckId'),
+            'stats' => array(self::HAS_MANY, 'DeckGameStats', 'deckId')
         );
     }
 

@@ -57,6 +57,7 @@
  * @property User $winner
  * @property User $accept
  * @property PlayerCounter[] $counters
+ * @property DeckGameStats $stats
  * 
  * @since 1.0, Sudden Growth
  */
@@ -96,6 +97,7 @@ class Game extends CActiveRecord {
             'winner' => array(self::BELONGS_TO, 'User', 'winnerId'),
             'accept' => array(self::BELONGS_TO, 'User', 'acceptUser'),
             'counters' => array(self::MANY_MANY, 'PlayerCounter', 'GamePlayerCounter(gameId, playerCounterId)'),
+            'stats' => array(self::HAS_MANY, 'DeckGameStats', 'gameId')
         );
     }
 

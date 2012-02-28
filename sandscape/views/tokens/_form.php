@@ -12,12 +12,12 @@ $form = $this->beginWidget('CActiveForm', array(
 <div class="span-13">
     <fieldset>
         <legend>Token Information</legend>
-        <p>
+        <div class="formrow">
             <?php
             echo $form->labelEx($token, 'name'), '<br />',
             $form->textField($token, 'name', array('maxlength' => 150, 'class' => 'text'));
             ?>
-        </p>
+        </div>
         <?php echo $form->error($token, 'name'); ?>
 
     </fieldset>
@@ -25,20 +25,24 @@ $form = $this->beginWidget('CActiveForm', array(
 <div class="span-9 last">
     <fieldset>
         <legend>Token Image</legend>
-        <?php
-        if (!$token->isNewRecord) {
-            echo CHtml::image('_game/tokens/' . $token->image);
-        }
-        ?>
-        <p>
+        <div class="formrow">
+            <?php
+            if (!$token->isNewRecord) {
+                echo CHtml::image('_game/tokens/' . $token->image);
+            }
+            ?>
             <?php echo $form->fileField($token, 'image'); ?>
-        </p>
+        </div>
         <?php echo $form->error($token, 'image'); ?>
     </fieldset>
 </div>
+
 <div class="span-20 last">
     <p>
-        <?php echo CHtml::submitButton($token->isNewRecord ? 'Create' : 'Save', array('class' => 'button')); ?>
+        <?php
+        echo CHtml::submitButton($token->isNewRecord ? 'Create' : 'Save', array('class' => 'button')),
+        CHtml::link('Cancel', $this->createUrl('/tokens'));
+        ?>
     </p>
 </div>
 

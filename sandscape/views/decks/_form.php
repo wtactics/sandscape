@@ -15,23 +15,26 @@ foreach ($deck->deckCards as $dc) {
 ?>
 <fieldset>
     <legend>Deck information</legend>
-    <p>
+    <div class="formrow">
         <?php
-        echo $form->labelEx($deck, 'name'), '<br />',
+        echo $form->labelEx($deck, 'name'),
         $form->textField($deck, 'name', array('maxlength' => 100, 'class' => 'text'));
         ?>
-    </p>
+    </div>
     <?php echo $form->error($deck, 'name'); ?>
 </fieldset>
 
-<p>
-    <?php echo CHtml::submitButton($deck->isNewRecord ? 'Create' : 'Save', array('class' => 'button')); ?>
+<div class="buttonrow">
+    <?php
+    echo CHtml::submitButton($deck->isNewRecord ? 'Create' : 'Save', array('class' => 'button'));
 
-    <?php if (!$deck->isNewRecord && Yii::app()->user->class) { ?>
-        &nbsp;&nbsp;&nbsp;
-        <?php echo CHtml::link('Make Template', $this->createURL('deck/maketemplate', array('id' => $deck->deckId))); ?>
-    <?php } ?>
-</p>
+    if (!$deck->isNewRecord && Yii::app()->user->class) {
+        CHtml::link('Make Template', $this->createURL('deck/maketemplate', array('id' => $deck->deckId)));
+    }
+
+    echo CHtml::link('Cancel', $this->createURL('/decks'));
+    ?>
+</div>
 
 <div id="hiddenIds">
     <?php
@@ -40,8 +43,10 @@ foreach ($deck->deckCards as $dc) {
         for ($i = 0; $i < $item['count']; $i++) {
             ?>
             <input type="hidden" name="selected[]" value="<?php echo $key; ?>" id="<?php echo 'h', $key, '-', $i; ?>"/>
-        <?php }
-    } ?>
+            <?php
+        }
+    }
+    ?>
 </div>
 
 <?php $this->endWidget(); ?>

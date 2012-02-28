@@ -62,6 +62,8 @@ class DiceController extends AppController {
     public function actionCreate() {
         $new = new Dice();
 
+        $this->performAjaxValidation('dice-form', $new);
+
         if (isset($_POST['Dice'])) {
             $new->attributes = $_POST['Dice'];
             if ($new->save()) {
@@ -79,6 +81,8 @@ class DiceController extends AppController {
      */
     public function actionUpdate($id) {
         $dice = $this->loadDiceModel($id);
+
+        $this->performAjaxValidation('dice-form', $dice);
 
         if (isset($_POST['Dice'])) {
             $dice->attributes = $_POST['Dice'];

@@ -12,33 +12,39 @@ $form = $this->beginWidget('CActiveForm', array(
 <div class="span-13">
     <fieldset>
         <legend>State Information</legend>
-        <p>
+        <div class="formrow">
             <?php
-            echo $form->labelEx($state, 'name'), '<br />',
+            echo $form->labelEx($state, 'name'),
             $form->textField($state, 'name', array('maxlength' => 150, 'class' => 'text'));
             ?>
-        </p>
+        </div>
         <?php echo $form->error($state, 'name'); ?>
 
     </fieldset>
 </div>
+
 <div class="span-9 last">
     <fieldset>
         <legend>State Image</legend>
-        <?php
-        if (!$state->isNewRecord) {
-            echo CHtml::image('_game/states/' . $state->image);
-        }
-        ?>
-        <p>
-            <?php echo $form->fileField($state, 'image'); ?>
-        </p>
+        <div class="formrow">
+            <?php
+            if (!$state->isNewRecord) {
+                echo CHtml::image('_game/states/' . $state->image);
+            }
+
+            echo $form->fileField($state, 'image');
+            ?>
+        </div>
         <?php echo $form->error($state, 'image'); ?>
     </fieldset>
 </div>
+
 <div class="span-20 last">
     <p>
-        <?php echo CHtml::submitButton($state->isNewRecord ? 'Create' : 'Save', array('class' => 'button')); ?>
+        <?php
+        echo CHtml::submitButton($state->isNewRecord ? 'Create' : 'Save', array('class' => 'button')),
+        CHtml::link('Cancel', $this->createUrl('/states'));
+        ?>
     </p>
 </div>
 

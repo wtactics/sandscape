@@ -1,4 +1,29 @@
 <?php
+$this->title = 'Sandscape Settings';
+
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms' . (YII_DEBUG ? '' : '.min') . '.css');
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/administration' . (YII_DEBUG ? '' : '.min') . '.css');
+
+Yii::app()->clientScript->registerCssFile('_resources/css/thirdparty/jquery.bubblepopup.v2.3.1.css');
+Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.bubblepopup.v2.3.1.min.js', CClientScript::POS_HEAD);
+
+$js = <<<JS
+$('.helpicon').CreateBubblePopup({
+    position: 'right',
+    align: 'center',
+    tail: {
+        align: 'center'
+    },
+    themeName: 'all-black',
+    themePath: '_resources/images/jqBubblePopup',
+    alwaysVisible: false,
+    closingDelay: 100
+});
+
+JS;
+
+Yii::app()->clientScript->registerScript('bublesinit', $js);
+
 $js = <<<JS
 $('#cardscapeurl-help').SetBubblePopupInnerHtml('{$settings['cardscapeurl']->description}');
 $('#allowavatar-help').SetBubblePopupInnerHtml('{$settings['allowavatar']->description}');
@@ -6,38 +31,48 @@ $('#avatarsize-help').SetBubblePopupInnerHtml('{$settings['avatarsize']->descrip
 JS;
 
 Yii::app()->clientScript->registerScript('bbtxtss', $js);
-
-echo CHtml::form($this->createURL('administration/savesandscapesettings'));
 ?>
 
+<h2>Sandscape Settings</h2>
+
+<?php echo CHtml::form($this->createURL('administration/savesandscapesettings')); ?>
+
 <fieldset>
-    <legend>Sandscape Configuration</legend>
-    <p>
+    <legend>Settings</legend>
+    <div class="formrow">
         <?php
-        echo CHtml::label('Cardscape URL', 'cardscapeurl'), '&nbsp;',
+        echo CHtml::label('Cardscape URL', 'cardscapeurl'),
         CHtml::image('_resources/images/icon-x16-question-balloon.png', '', array('id' => 'cardscapeurl-help', 'class' => 'helpicon')),
-        '<br />',
         CHtml::textField('cardscapeurl', $settings['cardscapeurl']->value, array('class' => 'text'));
         ?>
-    </p>
-    <p>
+    </div>
+
+    <div class="formrow">
         <?php
         echo CHtml::checkBox('allowavatar', $settings['allowavatar']->value, array('uncheckValue' => $settings['allowavatar']->value)), '&nbsp;',
-        CHtml::label('Allow avatars', 'allowavatar'), '&nbsp;',
+        CHtml::label('Allow avatars', 'allowavatar'),
         CHtml::image('_resources/images/icon-x16-question-balloon.png', '', array('id' => 'allowavatar-help', 'class' => 'helpicon'));
         ?>
-    </p>
-    <p>
+    </div>
+
+    <div class="formrow">
         <?php
-        echo CHtml::label('Avatar size', 'avatarsize'), '&nbsp;',
+        echo CHtml::label('Avatar size', 'avatarsize'),
         CHtml::image('_resources/images/icon-x16-question-balloon.png', '', array('id' => 'avatarsize-help', 'class' => 'helpicon')),
-        '<br />',
         CHtml::textField('avatarsize', $settings['avatarsize']->value, array('class' => 'text'));
         ?>
-    </p>
+    </div>
+
+    <div class="formrow">
+        <?php
+        echo CHtml::label('System E-mail', 'sysemail'),
+        CHtml::textField('sysemail', $settings['sysemail']->value, array('class' => 'text'));
+        ?>
+    </div>
 </fieldset>
-<p>
+
+<div class="buttonrow">
     <?php echo CHtml::submitButton('Save', array('class' => 'button', 'name' => 'SandscapeSettings')); ?>
-</p>
+</div>
 <?php
 CHtml::endForm();

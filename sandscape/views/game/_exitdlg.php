@@ -7,7 +7,7 @@
     <p>
         <?php
         echo CHtml::submitButton('Exit', array(
-            'class' => 'simplemodal-close button')), '&nbsp;&nbsp;&nbsp;&nbsp;',
+            'class' => 'simplemodal-close button')),
         CHtml::link('Cancel', 'javascript:;', array('class' => 'simplemodal-close'));
         ?>
     </p>

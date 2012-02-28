@@ -31,7 +31,7 @@
  * @property int $gameId
  *
  * @property Deck $deck
- * @property Card $card
+ * @property Game $game
  * 
  * @since 1.2, Elvish Shaman
  */

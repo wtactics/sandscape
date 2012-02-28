@@ -61,6 +61,8 @@ class CountersController extends AppController {
      */
     public function actionCreate() {
         $new = new PlayerCounter();
+        
+        $this->performAjaxValidation('playercounter-form', $new);
 
         if (isset($_POST['PlayerCounter'])) {
             $new->attributes = $_POST['PlayerCounter'];
@@ -79,6 +81,8 @@ class CountersController extends AppController {
      */
     public function actionUpdate($id) {
         $counter = $this->loadPlayerCounterModel($id);
+        
+        $this->performAjaxValidation('playercounter-form', $counter);
 
         if (isset($_POST['PlayerCounter'])) {
             $counter->attributes = $_POST['PlayerCounter'];

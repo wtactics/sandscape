@@ -34,6 +34,7 @@
  * @property string $key The setting name, identifies this setting
  * @property string $value The setting value
  * @property string $description A text description that explains what this setting does
+ * @property string $group
  * 
  * @since 1.1, Green Shield
  */
@@ -42,14 +43,15 @@ class Setting extends CActiveRecord {
     /**
      * @return Setting
      */
-    public static function model($className=__CLASS__) {
+    public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
     public function rules() {
         return array(
             array('value', 'required'),
-            array('value, description', 'length', 'max' => 255)
+            array('value, description', 'length', 'max' => 255),
+            array('group', 'length', 'max' => 25)
         );
     }
 

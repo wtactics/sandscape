@@ -56,9 +56,7 @@ class AccountController extends AppController {
         $user = $this->loadUserModel(Yii::app()->user->id);
         $passwordModel = new PasswordForm();
 
-        $this->performAjaxValidation(
-                array('profile-form', 'password-form'), array($user, $passwordModel)
-        );
+        $this->performAjaxValidation(array('profile-form', 'password-form'), array($user, $passwordModel));
 
         if (isset($_POST['User'])) {
             $user->attributes = $_POST['User'];
@@ -73,9 +71,43 @@ class AccountController extends AppController {
                     $this->redirect(array('profile'));
                 }
             }
+        } else if (isset($_POST['Avatar'])) {
+            if (isset($_POST['Avatar']['url'])) {
+                $url = $_POST['Avatar']['url'];
+                if (strpos($url, 'http://') === 0) {
+                    $user->avatar = $url;
+                }
+
+                //TODO: ...
+                //} else if() {  
+            }
+
+            if ($user->save()) {
+                $this->redirect(array('profile'));
+            }
         }
 
-        $this->render('index', array('user' => $user, 'pwdModel' => $passwordModel));
+        //NOTE: //TODO: move to a configuration file that we can i18n
+        $countries = array(
+            'pt' => 'Portugal',
+            'en' => 'England',
+            'us' => 'USA',
+            'fr' => 'France',
+            'sp' => 'Spain'
+                //...
+        );
+
+        $size = '100x75';
+        if (($setting = Setting::model()->findByPk('avatarsize')) !== null) {
+            $size = $setting->value;
+        }
+
+        $this->render('index', array(
+            'user' => $user,
+            'pmodel' => $passwordModel,
+            'countries' => $countries,
+            'avatarSize' => $size
+        ));
     }
 
     /**
@@ -94,6 +126,83 @@ class AccountController extends AppController {
     }
 
     /**
+     *
+     * @param int $id 
+     */
+    public function actionGame($id) {
+        if (($game = Game::model()->findByPk((int) $id)) === null) {
+            throw new CHttpException(404, 'You are trying to load an invalid game.');
+        }
+
+
+        $decks = array();
+        foreach ($game->decks as $deck) {
+            if ($deck->userId == Yii::app()->user->id) {
+                if (($stats = DeckGameStats::model()->find('gameId = :game AND deckId = :deck', array(
+                    ':game' => $game->gameId, ':deck' => $deck->deckId))) === null) {
+
+                    $stats = new DeckGameStats();
+
+                    $stats->gameId = $id;
+                    $stats->deckId = $deck->deckId;
+                    $stats->rating = 0;
+
+                    $stats->save();
+                }
+                $decks[] = array('deck' => $deck, 'stats' => $stats);
+            }
+        }
+
+        //don't need the game state, and it's usually a lot of info.
+        //NOTE: //TODO: in future prevent the info from being loaded at all
+        $game->state = '';
+
+        $this->render('game', array(
+            'game' => $game,
+            'decks' => $decks
+        ));
+    }
+
+    public function actionStarRatingAjax() {
+        if (isset($_POST['rate']) && isset($_POST['game']) && isset($_POST['deck'])) {
+            $gameId = intval($_POST['game']);
+            $deckId = intval($_POST['deck']);
+
+            if (($stats = DeckGameStats::model()->find('gameId = :game AND deckId = :deck', array(
+                ':game' => $gameId, ':deck' => $deckId))) === null) {
+
+                $stats = new DeckGameStats();
+
+                $stats->gameId = $gameId;
+                $stats->deckId = $deckId;
+            }
+
+            $stats->rating = $_POST['rate'];
+            $stats->save();
+        }
+    }
+
+    public function actionNotesAjax() {
+        if (isset($_POST['notes']) && isset($_POST['game']) && isset($_POST['deck'])) {
+            $gameId = intval($_POST['game']);
+            $deckId = intval($_POST['deck']);
+
+            if (($stats = DeckGameStats::model()->find('gameId = :game AND deckId = :deck', array(
+                ':game' => $gameId, ':deck' => $deckId))) === null) {
+
+                $stats = new DeckGameStats();
+
+                $stats->gameId = $gameId;
+                $stats->deckId = $deckId;
+                $stats->rating = 0;
+            }
+
+            $stats->notes = $_POST['notes'];
+            $stats->save();
+        }
+    }
+
+    /**
      * Provides access to all public information about a given user. This action 
      * is responsible for showing a user's profile to other users.
      * 
@@ -101,23 +210,6 @@ class AccountController extends AppController {
      */
     public function actionProfile($id) {
         //TODO: not implemented yet!
-        $user = $this->loadUserModel($id);
-        $this->render('view', array('user' => $user));
-    }
-
-    /**
-     *
-     * @param int $id 
-     */
-    public function actionViewGame($id) {
-        if (($game = Game::model()->findByPk((int) $id)) === null) {
-            throw new CHttpException(404, 'You are trying to load an invalid game.');
-        }
-
-        //don't need the game state, and it's usually a lot of info.
-        //NOTE: //TODO: in future prevent the info from being loaded at all
-        $game->state = '';
-        $this->render('view-game', array('game' => $game));
     }
 
     /**
@@ -144,7 +236,9 @@ class AccountController extends AppController {
     public function accessRules() {
         return array_merge(array(
                     array('allow',
-                        'actions' => array('index', 'games', 'profile', 'viewGame'),
+                        'actions' => array('index', 'games', 'profile', 'game',
+                            'starratingajax', 'notesajax'
+                        ),
                         'users' => array('@')
                     )
                         ), parent::accessRules());

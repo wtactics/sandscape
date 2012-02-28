@@ -70,6 +70,8 @@ class DecksController extends AppController {
 
         $new = new Deck();
 
+        $this->performAjaxValidation('deck-form', $new);
+
         if (isset($_POST['Deck'])) {
             $new->attributes = $_POST['Deck'];
 
@@ -108,6 +110,8 @@ class DecksController extends AppController {
         $this->updateUserActivity();
 
         $deck = $this->loadDeckModel($id);
+
+        $this->performAjaxValidation('deck-form', $deck);
 
         if (isset($_POST['Deck'])) {
             $deck->attributes = $_POST['Deck'];

@@ -64,7 +64,7 @@ class UsersController extends AppController {
      */
     public function actionCreate() {
         $new = new User();
-
+        
         $this->performAjaxValidation('user-form', $new);
 
         if (isset($_POST['User'])) {
@@ -119,16 +119,78 @@ class UsersController extends AppController {
         }
     }
 
+    /**
+     * Resets a user's password by creating a new random password and sending an 
+     * e-mail to the user. The new password is sent in the e-mail and the standard 
+     * hash e placed in the user's database record.
+     * 
+     * To be able to use this action a system e-mail must be configured.
+     * 
+     * @param integer $id User ID
+     * 
+     * @since 1.3, Soulharvester
+     */
     public function actionResetPassword($id) {
         if (Yii::app()->request->isPostRequest && Yii::app()->user->class) {
             $user = $this->loadUserModel($id);
-            if ($user) {
-                //TODO: random pass
-                $user->password = User::hash('');
-                $user->save();
+
+            if (($setting = Setting::model()->findByPk('sysemail')) !== null && $setting->value != '') {
+                $from = $setting->value;
+
+                if ($user) {
+                    $a = 'aeiou';
+                    $b = 'bcdfghjklmnpqrstvwxyz';
+                    $c = '1234567890';
+                    $d = '+#&@';
+
+                    $password = '';
+                    for ($i = 0; $i < 8; $i++) {
+                        switch (rand(0, 5)) {
+                            case 0:
+                                $password .= $a[rand(0, strlen($a))];
+                                break;
+                            case 1:
+                                $password .= $b[rand(0, strlen($a))];
+                                break;
+                            case 2:
+                                $password .= $c[rand(0, strlen($c))];
+                                break;
+                            case 3:
+                                $password .= strtoupper($a[rand(0, strlen($a))]);
+                                break;
+                            case 4:
+                                $password .= $d[rand(0, strlen($d))];
+                                break;
+                            case 5:
+                                $password .= strtoupper($b[rand(0, strlen($b))]);
+                                break;
+                        }
+                    }
+
+                    $user->password = User::hash($password);
+                    if ($user->save()) {
+
+                        Yii::import('ext.email.*');
+
+                        $mailer = new PHPMailer();
+                        $mailer->AddAddress($user->email, $user->name);
+                        $mailer->From = $from;
+                        $mailer->Subject = 'Password reset by administrator';
+                        $mailer->Body = "An administrator reset your password. Your new password is: {$password} \n\nSent by SandScape, please don't replay to this e-mail.";
+
+                        try {
+                            $mailer->Send();
+                            echo json_encode(array('error' => 0));
+                        } catch (phpmailerException $pe) {
+                            echo json_encode(array('error' => 'Unable to send e-mail.'));
+                        }
+                    }
+                }
+            } else {
+                echo json_encode(array('error' => 'Unable to process the request. Please configure the system e-mail.'));
             }
         } else {
-            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+            echo json_encode(array('error' => 'Invalid request. Please do not repeat this request again.'));
         }
     }
 
@@ -160,7 +222,9 @@ class UsersController extends AppController {
     public function accessRules() {
         return array_merge(array(
                     array('allow',
-                        'actions' => array('index', 'create', 'update', 'delete'),
+                        'actions' => array('index', 'create', 'update', 'delete',
+                            'resetpassword'
+                        ),
                         'expression' => '$user->class'
                     )
                         ), parent::accessRules());

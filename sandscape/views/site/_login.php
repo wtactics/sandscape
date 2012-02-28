@@ -6,31 +6,31 @@ $form = $this->beginWidget('CActiveForm', array(
 ?>
 <fieldset>
     <legend>Login</legend>
-    <p>
+    <div class="formrow">
         <?php
-        echo $form->labelEx($login, 'email'), '<br />',
-        $form->textField($login, 'email', array('class' => 'text'))
+        echo $form->labelEx($login, 'email'),
+        $form->textField($login, 'email', array('class' => 'text'));
         ?>
-    </p>
+    </div>
     <?php echo $form->error($login, 'email'); ?>
-    <p>
+    <div class="formrow">
         <?php
-        echo $form->labelEx($login, 'password'), '<br />',
+        echo $form->labelEx($login, 'password'),
         $form->passwordField($login, 'password', array('class' => 'text'));
         ?>
-        <?php echo $form->error($login, 'password'); ?>
-    </p>
-
-    <p>
+    </div>
+    <?php echo $form->error($login, 'password'); ?>
+    <div class="formrow">
         <?php
         echo $form->checkBox($login, 'rememberMe'), '&nbsp;',
         $form->label($login, 'rememberMe');
         ?>
-    </p>
+    </div>
     <?php echo $form->error($login, 'rememberMe'); ?>
 </fieldset>
-<p>
+
+<div class="buttonrow">
     <?php echo CHtml::submitButton('Login', array('class' => 'button')); ?>
-</p>
+</div>
 <?php
 $this->endWidget();

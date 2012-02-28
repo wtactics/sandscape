@@ -20,7 +20,8 @@
             'id' => 'btnJoin',
             'disabled' => 'disabled',
             'class' => 'button'
-        ));
+        )),
+        CHtml::link('Cancel', 'javascript:;', array('class' => 'simplemodal-close'));
         ?>
     </p>
     <?php

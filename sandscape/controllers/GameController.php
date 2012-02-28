@@ -254,7 +254,6 @@ class GameController extends AppController {
                             }
 
                             // player counters
-                            $counters = array();
                             foreach ($game->counters as $counter) {
                                 $this->scGame->addPlayer1Counters(new SCCounter(null, $counter->name, $counter->startValue, $counter->step));
                                 $this->scGame->addPlayer2Counters(new SCCounter(null, $counter->name, $counter->startValue, $counter->step));

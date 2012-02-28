@@ -10,28 +10,36 @@ $form = $this->beginWidget('CActiveForm', array(
 
 <fieldset>
     <legend>General information</legend>
-    <p>
+    <div class="formrow">
         <?php
-        echo $form->labelEx($user, 'name'), '<br />',
+        echo $form->labelEx($user, 'name'),
         $form->textField($user, 'name', array('size' => 25, 'maxlength' => 15, 'class' => 'text'));
         ?>
-    </p>
+    </div>
     <?php echo $form->error($user, 'name'); ?>
-    <p>
+
+    <div class="formrow">
         <?php
-        echo $form->labelEx($user, 'email'), '<br />',
+        echo $form->labelEx($user, 'email'),
         $form->textField($user, 'email', array('size' => 60, 'maxlength' => 255, 'class' => 'text'));
         ?>
-    </p>
+    </div>
     <?php echo $form->error($user, 'email'); ?>
-    <p>
+
+    <div class="formrow">
         <?php
         echo $form->checkBox($user, 'admin'), '&nbsp;', $form->labelEx($user, 'admin');
         ?>
-    </p>
+    </div>
 </fieldset>
-<p>
-    <?php echo CHtml::submitButton($user->isNewRecord ? 'Create' : 'Save', array('class' => 'button')); ?>
-</p>
+
+<div class="formrow">
+    <?php
+    echo CHtml::submitButton($user->isNewRecord ? 'Create' : 'Save', array('class' => 'button')),
+    CHtml::link('Cancel', $this->createUrl('/users'));
+
+    ;
+    ?>
+</div>
 <?php
 $this->endWidget();

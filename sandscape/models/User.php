@@ -38,13 +38,14 @@
  * @property int $active
  * @property string $avatar
  * @property int $gender
- * @property string $birthday
+ * @property string $birthyear
  * @property string $website
  * @property string $twitter
  * @property string $facebook
  * @property string $googleplus
  * @property string $skype
  * @property string $msn
+ * @property string country
  * 
  * The followings are the available model relations:
  * @property ChatMessage[] $chatMessages
@@ -59,7 +60,7 @@ class User extends CActiveRecord {
     /**
      * @return User
      */
-    public static function model($className=__CLASS__) {
+    public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
@@ -72,6 +73,7 @@ class User extends CActiveRecord {
             array('email, password, name', 'required'),
             array('admin, gender', 'numerical', 'integerOnly' => true),
             array('email, avatar, website, twitter, facebook, googleplus, skype, msn', 'length', 'max' => 255),
+            array('country', 'length', 'max' => 2),
             array('name', 'length', 'max' => 15),
             array('email', 'email'),
             array('name, email', 'unique', 'className' => 'User'),
@@ -98,13 +100,14 @@ class User extends CActiveRecord {
             'admin' => 'Administrator',
             'avatar' => 'Avatar',
             'gender' => 'Gender',
-            'birthday' => 'Birthday',
+            'birthyear' => 'Birth Year',
             'website' => 'Website',
             'twitter' => 'Twitter',
             'facebook' => 'Facebook',
             'googleplus' => 'Google+',
             'skype' => 'Skype',
-            'msn' => 'MSN'
+            'msn' => 'MSN',
+            'country' => 'Country'
         );
     }
 

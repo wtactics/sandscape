@@ -39,7 +39,7 @@ $this->title = 'Sandscape Administration';
             ),
             'tGSettings' => array(
                 'title' => 'Game Options',
-                'view' => '_game-settings',
+                'view' => '_gamesettings',
                 'data' => array('settings' => $settings)
             ),
             'tTools' => array(
