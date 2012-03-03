@@ -27,7 +27,7 @@
  */
 
 /**
- * Handles all game related actions, from lobby to in-game actions.
+ * Handles all game related actions.
  * 
  * @since 1.0, Sudden Growth
  */
@@ -639,6 +639,26 @@ class GameController extends AppController {
                                 $msg .= ' to <strong>' . $value . '</strong>.';
                                 $this->putChatMessage($msg, $game->gameId, $currentUserId);
                             }
+                        }
+                        echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
+                        break;
+                    case 'increasePlayerCounter':
+                        $result = array('success' => 0);
+                        if ($game->running && $this->scGame && isset($_REQUEST['counter']) && isset($_REQUEST['player'])) {
+                            $result = array(
+                                'success' => 1,
+                                'value' => $this->scGame->getPlayerSide($_REQUEST['player'])->increaseCounterValue($_REQUEST['counter'])
+                            );
+                        }
+                        echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
+                        break;
+                    case 'decreasePlayerCounter':
+                        $result = array('success' => 0);
+                        if ($game->running && $this->scGame && isset($_REQUEST['counter']) && isset($_REQUEST['player'])) {
+                            $result = array(
+                                'success' => 1,
+                                'value' => $this->scGame->getPlayerSide($_REQUEST['player'])->increaseCounterValue($_REQUEST['counter'])
+                            );
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         break;

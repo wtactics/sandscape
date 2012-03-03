@@ -10,7 +10,7 @@
             ?>
             <p>
                 <?php
-                echo CHtml::label('Number of Decks:', 'maxDecks'), '&nbsp;&nbsp;&nbsp;',
+                echo CHtml::label('Number of Decks:', 'maxDecks'),
                 CHtml::textField('maxDecks', $decksPerGame, array(
                     'size' => 4,
                     'onchange' => 'limitDeckSelection("#btnCreate")'
@@ -20,7 +20,7 @@
         <?php } ?>
         <p class="deck-list">
             <?php
-            echo CHtml::label('Available Decks:', 'deckList'), '<br />',
+            echo CHtml::label('Available Decks:', 'deckList'),
             CHtml::checkBoxList('deckList', array(), CHtml::listData($decks, 'deckId', 'name'), array(
                 'class' => 'marker',
                 'onchange' => 'limitDeckSelection("#btnCreate")'
@@ -29,7 +29,7 @@
         </p>
         <p>
             <?php
-            echo CHtml::checkBox('useGraveyard', true, array('value' => 1)), '&nbsp;',
+            echo CHtml::checkBox('useGraveyard', true, array('value' => 1)),
             CHtml::label('Use Graveyard?', 'useGraveyard');
             ?>
         </p>
@@ -38,10 +38,21 @@
         <h3>General Options</h3>
         <p>
             <?php
-            echo CHtml::label('Spectators can:', 'gamechatspectators'), '<br />',
-            CHtml::dropDownList('gamechatspectators', 0, array(0 => 'Be quiet', 1 => 'Speak in chat'));
+            echo CHtml::label('Spectators can:', 'gameChatSpectators'),
+            CHtml::dropDownList('gameChatSpectators', 0, array(0 => 'Be quiet', 1 => 'Speak in chat'));
             ?>
         </p>
+        <p>
+            <?php
+            echo CHtml::label('Limit opponent to:', 'limitOpponent');
+            $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+                'name' => 'limitOpponent',
+                'sourceUrl' => "{$this->createUrl('lobby/ajaxusercomplete')}",
+                'options' => array(
+                    'minLength' => '2',
+                )
+            ));
+            ?>
     </div>
 
     <div class="clearfix"></div>

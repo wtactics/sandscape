@@ -204,6 +204,11 @@ class LobbyController extends AppController {
                 $game->maxDecks = isset($_POST['maxDecks']) ? (int) $_POST['maxDecks'] : $decksPerGame;
                 $game->graveyard = isset($_POST['useGraveyard']) ? (int) $_POST['useGraveyard'] : 1;
                 $game->player1Ready = 1;
+                $game->spectatorsSpeak = intval($_POST['gameChatSpectators']);
+
+                if (isset($_POST['limitOpponent'])) {
+                    $game->acceptUser = intval($_POST['limitOpponent']);
+                }
 
                 if ($game->save()) {
                     $error = false;
@@ -312,6 +317,18 @@ class LobbyController extends AppController {
         $this->redirect(array('lobby'));
     }
 
+    public function actionAjaxUserComplete() {
+        $users = array();
+        if (isset($_REQUEST['term'])) {
+            foreach (User::model()->findAll('name = :n', array(':n' => $_REQUEST['term'])) as $user) {
+                $users[] = $user->name;
+            }
+        }
+
+        echo json_encode($users);
+        Yii::app()->end();
+    }
+
     /**
      * Prepends new access rules to the default rules.
      * Only registered users can execute <em>GameController</em> actions.
@@ -323,7 +340,8 @@ class LobbyController extends AppController {
         return array_merge(array(
                     array('allow',
                         'actions' => array('index', 'create', 'join', 'lobbyUpdate',
-                            'sendMessage'),
+                            'sendMessage', 'ajaxusercomplete'
+                        ),
                         'users' => array('@')
                     )
                         ), parent::accessRules());

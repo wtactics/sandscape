@@ -378,6 +378,22 @@ div.card > img.state {
 }
 
 /*PLAYER COUNTERS*/
+#player-counters, #opponent-counters {
+    margin-bottom: .8em;
+    line-height: 16px;
+}
+
+#player-counters input, #opponent-counters input {
+    width: 3em;
+    padding: .2em;
+}
+
+#player-counters img {
+    vertical-align: middle;
+    margin-left: .3em;
+    cursor: pointer;
+}
+
 
 /*Counter colour classes*/
 .pcl-default {

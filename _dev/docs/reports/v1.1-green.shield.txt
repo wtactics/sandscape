@@ -19,7 +19,9 @@ Difficulties
 ------------
 
 All tasks were implemented without incidents.
-[edit]Achievements
+
+Achievements
+------------
 
 We managed to make the system more stable, though several tasks are yet to complete 
 and many views are just place holders that will be updated in the next iterations.

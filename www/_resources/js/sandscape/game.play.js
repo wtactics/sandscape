@@ -82,7 +82,8 @@ function checkGameStart() {
                     success: function (json) {                       
                         if(json.result == 'ok') {
                             var create = json.createThis, tokenMenu = new Array(), statesMenu = new Array(),
-                            card, i, id, left, right, decks, dest = $('#decks'), opts, useGrave;
+                            card, i, id, left, right, decks, dest = $('#decks'), opts, useGrave,
+                            counters, mixed = null;
                             
                             // tokens
                             $(json.gameInfo.tokens).each(function (i,o) {
@@ -93,7 +94,7 @@ function checkGameStart() {
                                     }
                                 })
                             })
-                     
+                            
                             // card states
                             $(json.gameInfo.cardStates).each(function (i,o) {
                                 statesMenu.push({
@@ -115,21 +116,21 @@ function checkGameStart() {
                                 left: -200
                             })
                             .appendTo($('body'));
-    
+                            
                             //Player area: left hand, decks, play zone and counters
                             $('.hand').attr('id', create.player.hand.id)
                             $('.play').attr('id', create.player.playableArea.id)
-
+                            
                             decks = create.player.decks;
                             for(i = 0; i < decks.length; i++) {
                                 id = decks[i].id;
-                                                             
+                                
                                 left = $(document.createElement('div'))
                                 .addClass('deck-info-left');
-                               
+                                
                                 right = $(document.createElement('div'))
                                 .addClass('deck-info-right');
-                               
+                                
                                 $(document.createElement('a'))
                                 .attr('href', 'javascript:;')
                                 .click(function(e) {
@@ -138,7 +139,7 @@ function checkGameStart() {
                                 .html('Draw to Hand')
                                 .appendTo(left);
                                 left.append('<br />');
-                               
+                                
                                 $(document.createElement('a'))
                                 .attr('href', 'javascript:;')
                                 .click(function(e) {
@@ -147,7 +148,7 @@ function checkGameStart() {
                                 .html('Draw to Table')
                                 .appendTo(left);
                                 left.append('<br />');
-                               
+                                
                                 $(document.createElement('a'))
                                 .attr('href', 'javascript:;')
                                 .click(function(e) {
@@ -156,7 +157,7 @@ function checkGameStart() {
                                 .html('Shuffle')
                                 .appendTo(left);
                                 left.append('<br />');
-                               
+                                
                                 $(document.createElement('img'))
                                 .attr({
                                     id: decks[i].id, 
@@ -177,31 +178,31 @@ function checkGameStart() {
                             if(create.player.graveyard) {                                                             
                                 left = $(document.createElement('div'))
                                 .addClass('deck-info-left');
-                               
+                                
                                 right = $(document.createElement('div'))
                                 .addClass('deck-info-right');
-                               
+                                
                                 $(document.createElement('a'))
                                 .attr('href', 'javascript:;')
                                 .click(drawFromGraveyard)
                                 .html('Draw to Hand')
                                 .appendTo(left);
                                 left.append('<br />');
-                               
+                                
                                 $(document.createElement('a'))
                                 .attr('href', 'javascript:;')
                                 .click(drawFromGraveyardToTable)
                                 .html('Draw to Table')
                                 .appendTo(left);
                                 left.append('<br />');
-                               
+                                
                                 $(document.createElement('a'))
                                 .attr('href', 'javascript:;')
                                 .click(shuffleGraveyard)
                                 .html('Shuffle')
                                 .appendTo(left);
                                 left.append('<br />');
-                               
+                                
                                 $(document.createElement('img'))
                                 .attr({
                                     id: create.player.graveyard.id,
@@ -219,13 +220,79 @@ function checkGameStart() {
                                 dest.append('<div class="clearfix"></div>');
                             }
                             
-                            // counters...player-counters
-                            //TODO: not implemented yet!
-
-                                                        
+                            //Counters
+                            //player own counters
+                            counters = create.player.counters;
+                            for(i = 0; i < counters.length; i++) {
+                                mixed = $(document.createElement('div'))
+                                .addClass(counters[i].color);
+                                
+                                $(document.createElement('div'))
+                                .attr({
+                                    id: 'pctext-' + counters[i].id
+                                })
+                                .text(counters[i].name)
+                                .appendTo(mixed);
+                                
+                                $(document.createElement('input'))
+                                .attr({
+                                    id: 'pc-' + counters[i].id,
+                                    value: counters[i].value
+                                })
+                                .data('counter', counters[i].id)
+                                .appendTo(mixed);
+                                
+                                $(document.createElement('img'))
+                                .attr({
+                                    id: 'incpc-' + counters[i].id,
+                                    src: '_resources/images/icon-x16-plus.png'
+                                })
+                                .data('counter', counters[i].id)
+                                .click(increasePlayerCounter)
+                                .appendTo(mixed);
+                                
+                                $(document.createElement('img'))
+                                .attr({
+                                    id: 'decpc-' + counters[i].id,
+                                    src: '_resources/images/icon-x16-minus.png'
+                                })
+                                .data('counter', counters[i].id)
+                                .click(decreasePlayerCounter)
+                                .appendTo(mixed);
+                                
+                                $('#pc-area').append(mixed);
+                            }
+                            mixed = null;
+                            
+                            //opponent counters
+                            counters = create.player.counters;
+                            for(i = 0; i < counters.length; i++) {
+                                mixed = $(document.createElement('div'))
+                                .addClass(counters[i].color);
+                                
+                                $(document.createElement('div'))
+                                .attr({
+                                    id: 'opctext-' + counters[i].id
+                                })
+                                .text(counters[i].name)
+                                .appendTo(mixed);
+                                
+                                $(document.createElement('input'))
+                                .attr({
+                                    id: 'opc-' + counters[i].id,
+                                    value: counters[i].value,
+                                    disabled: 'disabled'
+                                })
+                                .appendTo(mixed);
+                                
+                                $('#opc-area').append(mixed);
+                            }
+                            mixed = null;
+                            
+                            
                             //Opponent area (top window zone)
                             $('.opponent-area').attr('id', create.opponent.playableArea.id)
-                     
+                            
                             for(i = 0; i < create.cards.length; i++) {
                                 card = create.cards[i];
                                 
@@ -243,7 +310,7 @@ function checkGameStart() {
                                     .addClass('label'))
                                 .appendTo($('body'));
                             }
-                     
+                            
                             // Cards must be positioned after all cards are in the 
                             // DOM because there are cards 'inside' other cards
                             useGrave = (create.player.graveyard != null);
@@ -286,7 +353,7 @@ function checkGameStart() {
                                         $('#counter-dlg').modal();
                                     }
                                 }]
-                            
+                                
                                 if(useGrave) {
                                     opts.push({
                                         //send card to graveyard
@@ -296,7 +363,7 @@ function checkGameStart() {
                                         }
                                     });
                                 }
-                        
+                                
                                 $('#'+card.id).css({
                                     position: 'absolute',
                                     visibility: card.visibility
@@ -313,10 +380,10 @@ function checkGameStart() {
                                 })
                                 .children('img.face').attr('src', '_game/cards/thumbs/' 
                                     + (card.invertView ? 'reversed/' : '') + card.src);
-                        
+                                
                                 updateCardExtras($('#'+card.id));
                             }
-                     
+                            
                             $('.card').droppable({
                                 drop: function (event, ui) {
                                     moveCard(ui.draggable.attr('id'), $(this).attr('id'), 0, .2);
@@ -327,15 +394,15 @@ function checkGameStart() {
                             $('.play, .hand').droppable({
                                 drop: function(event, ui) {
                                     var card = ui.draggable, xOffset, yOffset, me = $(this);
-                           
+                                    
                                     xOffset= (card.offset().left - me.offset().left) / me.width();
                                     yOffset = (card.offset().top - me.offset().top) / me.height();
-                           
+                                    
                                     moveCard(card.attr('id'), me.attr('id'), xOffset, yOffset);
                                     return false;
                                 }
                             });
-
+                            
                             globals.game.running = true;                     
                             setTimeout(updateGame, 3000);
                             cyclicPositionUpdate();
@@ -369,7 +436,7 @@ function updateCardExtras(card) {
                 + cstatus.tokens[i].src)
             .appendTo(card);
         }
-      
+        
         //add states to cards
         card.find('.state').remove();
         for(i = 0; i < cstatus.states.length; ++i) {
@@ -398,7 +465,7 @@ function cyclicPositionUpdate() {
     if (!globals.stopPositionUpdate){
         $('.update').each(function (i, o) {
             o = $(o);
-      
+            
             if (o.data('status')  &&  !o.hasClass('ui-draggable-dragging')  
                 &&  !o.is(':animated')  &&  o.data('status').visibility == 'visible') {
                 var data = o.data('status'), location = $('#'+data.location), top, left;
@@ -411,12 +478,12 @@ function cyclicPositionUpdate() {
                     top = location.offset().top + Math.round((1 - o.data('status').yOffset) * location.height()) - o.height();
                     left = location.offset().left + Math.round((1 - o.data('status').xOffset) * location.width()) - o.width();
                 }
-                    
+                
                 o.animate({
                     top: top+'px',
                     left: left+'px'
                 }, 500)
-               
+                
                 if ($('.ui-draggable-dragging').length == 0) {
                     o.css({
                         zIndex: o.data('status').zIndex
@@ -431,12 +498,12 @@ function cyclicPositionUpdate() {
 function doGameUpdate(json) {
     if(json.result == 'ok'  &&  parseInt(json.clientTime) == globals.time.getTime()) {
         if (json.lastChange) globals.game.lastChange = json.lastChange;
- 
+        
         for(var i = 0; i < json.update.length; i++) {
             $('#' + json.update[i].id).data('status', json.update[i]);
             if(!$('#' + json.update[i].id).hasClass('update')) $('#' + json.update[i].id).addClass('movable');
-         
-         
+            
+            
             $('#' + json.update[i].id)
             .css({
                 zIndex: json.update[i].zIndex,
@@ -444,7 +511,7 @@ function doGameUpdate(json) {
             })
             .children('img.face').attr('src',  '_game/cards/thumbs/' + (json.update[i].invertView ? 'reversed/' : '') 
                 + json.update[i].src);
-         
+            
             updateCardExtras($('#' + json.update[i].id));
         }
     }
@@ -681,7 +748,7 @@ function updateMessages() {
                             ? 'player-text' : 'spectator-text')) + '"><strong>' 
                         + this.date + '</strong>: ' + this.message + '</li>');
                 });
-
+                
                 globals.chat.lastReceived = json.last;
                 chatToBottom();
             }
@@ -701,7 +768,7 @@ function chatToBottom() {
     if(bh > 130) {
         sl.slider('option', 'min', h)
         .slider('option', 'value', h);
-    
+        
         cm.animate({
             top: h
         }, 'slow');
@@ -1023,6 +1090,43 @@ function decreaseCounter(e) {
     return false;
 }
 
-function increasePlayerCounter(e) {}
+function increasePlayerCounter(event) {
+    var counter = $(event.target);    
+    $.ajax({
+        url: globals.game.url,
+        data: {
+            event: 'increasePlayerCounter',
+            counter: counter.data('counter'),
+            player: globals.user.id
+        },
+        dataType: 'json',
+        type: 'POST',
+        success: function (json) {
+            if(json.success) {
+                $('input#pc-' + counter.data('counter')).val(json.value);
+            }
+        }
+    });   
+    return false;
+}
 
-function decreasePlayerCounter(e) {}
+function decreasePlayerCounter(event) {
+    var counter = $(event.target);
+    
+    $.ajax({
+        url: globals.game.url,
+        data: {
+            event: 'decreasePlayerCounter',
+            counter: counter.data('counter'),
+            player: globals.user.id
+        },
+        dataType: 'json',
+        type: 'POST',
+        success: function (json) {
+            if(json.success) {
+                $('input#pc-' + counter.data('counter')).val(json.value);
+            }
+        }
+    });   
+    return false;
+}

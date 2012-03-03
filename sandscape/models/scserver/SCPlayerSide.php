@@ -233,13 +233,13 @@ class SCPlayerSide {
      * @since 1.3, Soulharvester
      */
     public function addCounter(SCCounter $counter) {
-        if (!isset($this->counters[$counter->getName()])) {
+        if (!isset($this->counters[$counter->getId()])) {
 
             if ($counter->getId() === null) {
-                $counter->setId(('uc-' .$this->playerId . '-' . (count($this->counters) + 1)));
+                $counter->setId(('uc-' . $this->playerId . '-' . (count($this->counters) + 1)));
             }
 
-            $this->counters[$counter->getName()] = $counter;
+            $this->counters[$counter->getId()] = $counter;
 
             return true;
         }
@@ -253,8 +253,8 @@ class SCPlayerSide {
      * 
      * @since 1.3, Soulharvester
      */
-    public function removeCounter($name) {
-        unset($this->counters[$name]);
+    public function removeCounter($id) {
+        unset($this->counters[$id]);
     }
 
     /**
@@ -264,12 +264,12 @@ class SCPlayerSide {
      * 
      * @since 1.3, Soulharvester
      */
-    public function resetCounter($name, $discardStart = false) {
-        if (isset($this->countes[$name])) {
+    public function resetCounter($id, $discardStart = false) {
+        if (isset($this->countes[$id])) {
             if ($discardStart) {
-                $this->counters[$name]->setValue(0);
+                $this->counters[$id]->setValue(0);
             } else {
-                $this->counters[$name]->reset();
+                $this->counters[$id]->reset();
             }
         }
     }
@@ -282,11 +282,11 @@ class SCPlayerSide {
      * 
      * @since 1.3, Soulharvester
      */
-    public function increaseCounterValue($name) {
-        if (isset($this->counters[$name])) {
-            $this->counters[$name]->increase();
+    public function increaseCounterValue($id) {
+        if (isset($this->counters[$id])) {
+            $this->counters[$id]->increase();
 
-            return $this->counters[$name]->getValue();
+            return $this->counters[$id]->getValue();
         }
 
         return 0;
@@ -300,11 +300,11 @@ class SCPlayerSide {
      * 
      * @since 1.3, Soulharvester
      */
-    public function decreaseCounterValue($name) {
-        if (isset($this->counters[$name])) {
-            $this->counters[$name]->decrease();
+    public function decreaseCounterValue($id) {
+        if (isset($this->counters[$id])) {
+            $this->counters[$id]->decrease();
 
-            return $this->counters[$name]->getValue();
+            return $this->counters[$id]->getValue();
         }
 
         return 0;
@@ -318,6 +318,23 @@ class SCPlayerSide {
      */
     public function getCounterCount() {
         return count($this->counters);
+    }
+
+    /**
+     * Converts the counters owned by this player so that they can be easily 
+     * enconded as JSON.
+     * 
+     * @return array All existing counters as ready to encode objects.
+     * 
+     * @since 1.3, Soulharvester
+     */
+    public function getEncodedCounters() {
+        $jsonData = array();
+        foreach ($this->counters as $counter) {
+            $jsonData[] = $counter->getJSONData();
+        }
+
+        return $jsonData;
     }
 
 }

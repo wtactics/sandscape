@@ -68,13 +68,17 @@ $this->title = 'Playing';
                             <?php echo $message->message; ?>
                         </li>
                     <?php } else { ?>
-                        <li class="user-message <?php echo ($player1 == $message->userId ? 'player1-text' :
-                        ($player2 == $message->userId ? 'player2-text' : 'spectator-text')); ?>">
+                        <li class="user-message <?php
+                echo ($player1 == $message->userId ? 'player1-text' :
+                        ($player2 == $message->userId ? 'player2-text' : 'spectator-text'));
+                        ?>">
                             <strong><?php echo date('H:i', strtotime($message->sent)); ?>:</strong>
                             <?php echo $message->message; ?>
                         </li>
-                    <?php }
-                } ?>
+                        <?php
+                    }
+                }
+                ?>
             </ul>
         </div>
         <input type="text" id="writemessage" />
@@ -131,12 +135,13 @@ $this->title = 'Playing';
         </div>
         <br />
         <h2>Player Counters</h2>
-        <!--
-        //TODO: not implemented yet!
         <div id="player-counters">
-            <h3>Counters</h3>
-            <div id="pc-area"><!-- PLAYER COUNTERS ARE PLACED HERE --><!--</div>
-        </div> -->
+            <div id="pc-area"><!-- PLAYER COUNTERS ARE PLACED HERE --></div>
+        </div>
+        <h2>Opponent Counters</h2>
+        <div id="opponent-counters">
+            <div id="opc-area"><!-- OPPONENT COUNTERS ARE PLACED HERE --></div>
+        </div>
         <h2>Decks</h2>
         <div id="decks"><!-- DECKS ARE PLACED HERE --></div>
     </div>

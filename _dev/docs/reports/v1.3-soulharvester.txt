@@ -3,17 +3,43 @@ Soulharvester, v1.3
 
 Focus
 -----
-mprove features added in previous milestone and focus on correcting bugs. Create an official release after this milestone.
+
+Improve features added in previous milestone and focus on correcting bugs. 
+Create an official release after this milestone.
 
 Difficulties
 ------------
 
+We lost speed again. Being the only developer makes the all project too dependent 
+on my own availability and this is causing slow downs and other problems in the 
+project.
 
+I'm starting to be hit by some of the sloppy programming and fast coding that 
+was done in the first version. Though the code is somewhat stable and usable, 
+and it did help the project get some traction, the fact that many bugs were 
+introduced and that I now have to change many already implemented features makes 
+the project go even slower and the repository contains some bugs that prevent 
+new developers and testers to join.
+
+Some issues were found that date to the first version, this has made clear that 
+the development process needs to include better testing procedures and a we 
+could use a public, always available, testing server.
 
 Achievements
 ------------
 
-
+Many new features were added, mainly to the supporting areas of Sandscape like 
+user management, profile management, global chat, etc. Still I made a real mess 
+of the code and broke many previously correct features. The next milestone needs 
+to really focus on stability.
 
 Next
 ----
+
+Stability, stability and more stability! We need to make sure the next milestone 
+ends with a usable, stable and feature complete project that can be used by 
+players. Even if not all the features that users want are there we need to make 
+sure the current listed features are properly implemented and tested. 
+
+Promotion should also be a priority. We need more developers, at least one or two 
+more, that can keep the project going when I'm busy.

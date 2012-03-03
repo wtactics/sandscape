@@ -401,11 +401,13 @@ class SCGame {
                             'graveyard' => $player->getGraveyard() ? (object) array(
                                         'id' => $player->getGraveyard()->getId(),
                                     ) : null,
+                            'counters' => $player->getEncodedCounters()
                         ),
                         'opponent' => (object) array(
                             'playableArea' => (object) array(
                                 'id' => $opponent->getPlayableArea()->getId(),
-                            )
+                            ),
+                            'counters' => $opponent->getEncodedCounters()
                         ),
                         'cards' => $this->getCardInitialization(),
                     ),
