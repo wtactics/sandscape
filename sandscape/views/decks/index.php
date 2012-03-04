@@ -16,7 +16,11 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'dataProvider' => $filter->search(Yii::app()->user->id),
     'filter' => $filter,
     'columns' => array(
-        'name',
+        array(
+            'name' => 'name',
+            'type' => 'html',
+            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("decks/update", array("id" => $data->deckId)))'
+        ),
         array(
             'name' => 'created',
             'type' => 'date',

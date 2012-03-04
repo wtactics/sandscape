@@ -24,7 +24,7 @@ $form = $this->beginWidget('CActiveForm', array(
     <?php echo $form->error($user, 'email'); ?>
     <div class="formrow">
         <?php
-        echo $form->checkBox($user, 'admin'), $form->labelEx($user, 'admin');
+        echo $form->checkBox($user, 'admin'), $form->labelEx($user, 'admin', array('class' => 'standard'));
         ?>
     </div>
     <?php echo $form->error($user, 'admin'); ?>

@@ -10,7 +10,11 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'dataProvider' => $filter->search(),
     'filter' => $filter,
     'columns' => array(
-        'name',
+        array(
+            'name' => 'name',
+            'type' => 'html',
+            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("dice/update", array("id" => $data->diceId)))'
+        ),
         'face',
         array(
             'name' => 'enabled',

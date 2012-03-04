@@ -11,7 +11,11 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'dataProvider' => $filter->search(),
     'filter' => $filter,
     'columns' => array(
-        'name',
+        array(
+            'name' => 'name',
+            'type' => 'html',
+            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("cards/update", array("id" => $data->cardId)))'
+        ),
         array(
             'header' => 'Actions',
             'class' => 'CButtonColumn',

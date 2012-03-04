@@ -26,14 +26,14 @@ $form = $this->beginWidget('CActiveForm', array(
 
     <div class="formrow">
         <?php
-        echo $form->checkBox($user, 'reverseCards'), $form->labelEx($user, 'reverseCards');
+        echo $form->checkBox($user, 'reverseCards'), $form->labelEx($user, 'reverseCards', array('class' => 'standard'));
         ?>
     </div>
     <?php echo $form->error($user, 'reverseCards'); ?>
 
     <div class="formrow">
         <?php
-        echo $form->checkBox($user, 'onHoverDetails'), $form->labelEx($user, 'onHoverDetails');
+        echo $form->checkBox($user, 'onHoverDetails'), $form->labelEx($user, 'onHoverDetails', array('class' => 'standard'));
         ?>
     </div>
     <?php echo $form->error($user, 'onHoverDetails'); ?>

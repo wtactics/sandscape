@@ -48,7 +48,7 @@ $this->title = 'Sandscape Lobby';
             <ul id="users-list">
                 <?php foreach ($users as $user) { ?>
                     <li>
-                        <a href="<?php echo $this->createURL((Yii::app()->user->id != $user->userId ? 'user/view' : 'user/profile'), array('id' => $user->userId)); ?>">
+                        <a href="<?php echo $this->createURL((Yii::app()->user->id != $user->userId ? 'account/profile' : '/account'), array('id' => $user->userId)); ?>">
                             <?php echo $user->name; ?>
                         </a>
                     </li>
