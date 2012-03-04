@@ -2,9 +2,6 @@
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'state-form',
     'enableAjaxValidation' => true,
-    'clientOptions' => array(
-        'inputContainer' => 'p'
-    ),
     'htmlOptions' => array('enctype' => 'multipart/form-data')
         ));
 ?>

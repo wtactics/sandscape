@@ -5,7 +5,7 @@
         <h3>Deck Options</h3>
         <p class="deck-list">
             <?php
-            echo CHtml::label('Available Decks:', 'deckList'), '<br />',
+            echo CHtml::label('Available Decks:', 'deckList'),
             CHtml::checkBoxList('deckList', array(), CHtml::listData($decks, 'deckId', 'name'), array(
                 'class' => 'marker',
                 'onchange' => 'limitDeckSelection("#btnJoin")',

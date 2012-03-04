@@ -709,42 +709,44 @@ class GameController extends AppController {
         Yii::app()->db->createCommand("select release_lock('game.$id')");
     }
 
-    public function actionSpectate($id) {
-        //TODO: not implemented yet
-        $this->layout = '//layouts/game';
-
-        //lock record
-        $id = intval($id);
+    public function actionWatch($id) {
+//        $this->layout = '//layouts/game';
+//
+//        //lock record
+//        $id = intval($id);
 //        $lock = Yii::app()->db->createCommand("SELECT GET_LOCK('game.$id', 10)")->queryScalar();
 //        if ($lock != 1) {
 //            throw new CHttpException(500, 'Failed to get game lock');
 //        }
-        $game = $this->loadGameById($id);
+//        $game = $this->loadGameById($id);
 //        if (in_array(yii::app()->user->id, array($game->player1, $game->player2))) {
+//            players can't spectate own games!
+//        }
+//        
 //        if ($game->state) {
 //            $this->scGame = unserialize($game->state);
 //        }
-        //getting chat messages
-        $start = ChatMessage::model()->count('gameId = :id ORDER BY sent', array(':id' => (int) $game->gameId));
-        if ($start >= 15) {
-            $start -= 15;
-        } else {
-            $start = 0;
-        }
-
-        $messages = ChatMessage::model()->findAll('gameId = :id ORDER BY sent LIMIT :start, 15', array(
-            ':id' => (int) $game->gameId,
-            ':start' => (int) $start
-                ));
-
-        $this->updateUserActivity();
-        $this->render('watch', array(
-            'gameId' => $id,
-            'messages' => $messages,
-            'paused' => $game->paused,
-        ));
+//        //getting chat messages
+//        $start = ChatMessage::model()->count('gameId = :id ORDER BY sent', array(':id' => (int) $game->gameId));
+//        if ($start >= 15) {
+//            $start -= 15;
 //        } else {
+//            $start = 0;
 //        }
+//
+//        $messages = ChatMessage::model()->findAll('gameId = :id ORDER BY sent LIMIT :start, 15', array(
+//            ':id' => (int) $game->gameId,
+//            ':start' => (int) $start
+//                ));
+//
+//        $this->updateUserActivity();
+//        $this->render('watch', array(
+//            'gameId' => $id,
+//            'messages' => $messages,
+//            'paused' => $game->paused,
+//            'user' => Yii::app()->user
+//        ));
+//
 //        Yii::app()->db->createCommand("select release_lock('game.$id')");
     }
 
@@ -781,7 +783,8 @@ class GameController extends AppController {
         return array_merge(array(
                     array('allow',
                         'actions' => array('index', 'play', 'sendMessage',
-                            'chatUpdate', 'leave', 'spectate'),
+                            'chatUpdate', 'leave', 'watch'
+                        ),
                         'users' => array('@')
                     )
                         ), parent::accessRules());

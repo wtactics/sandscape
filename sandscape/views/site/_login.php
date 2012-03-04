@@ -22,8 +22,8 @@ $form = $this->beginWidget('CActiveForm', array(
     <?php echo $form->error($login, 'password'); ?>
     <div class="formrow">
         <?php
-        echo $form->checkBox($login, 'rememberMe'), '&nbsp;',
-        $form->label($login, 'rememberMe');
+        echo $form->checkBox($login, 'rememberMe'),
+        $form->label($login, 'rememberMe', array('class' => 'standard'));
         ?>
     </div>
     <?php echo $form->error($login, 'rememberMe'); ?>

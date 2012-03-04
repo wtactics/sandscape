@@ -2,9 +2,6 @@
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'card-form',
     'enableAjaxValidation' => true,
-    'clientOptions' => array(
-        'inputContainer' => 'p'
-    ),
     'htmlOptions' => array('enctype' => 'multipart/form-data')
         ));
 ?>

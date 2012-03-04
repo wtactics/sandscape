@@ -4,6 +4,8 @@ Serenity, v1.5
 Focus
 -----
 
+Make Sandscape feature complete. Promote code stability and make sure a release 
+file is created.
 
 Difficulties
 ------------

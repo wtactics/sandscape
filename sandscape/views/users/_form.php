@@ -1,10 +1,7 @@
 <?php
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'user-form',
-    'enableAjaxValidation' => true,
-    'clientOptions' => array(
-        'inputContainer' => 'p'
-    )
+    'enableAjaxValidation' => true
         ));
 ?>
 
@@ -25,12 +22,12 @@ $form = $this->beginWidget('CActiveForm', array(
         ?>
     </div>
     <?php echo $form->error($user, 'email'); ?>
-
     <div class="formrow">
         <?php
-        echo $form->checkBox($user, 'admin'), '&nbsp;', $form->labelEx($user, 'admin');
+        echo $form->checkBox($user, 'admin'), $form->labelEx($user, 'admin');
         ?>
     </div>
+    <?php echo $form->error($user, 'admin'); ?>
 </fieldset>
 
 <div class="formrow">

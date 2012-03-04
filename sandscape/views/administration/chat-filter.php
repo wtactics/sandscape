@@ -12,6 +12,7 @@
         <?php echo CHtml::textArea('wfilter', $words); ?>
     </div>
 </fieldset>
+
 <div class="buttonrow">
     <?php echo CHtml::submitButton('Save', array('class' => 'button')); ?>
 </p>

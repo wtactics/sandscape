@@ -13,7 +13,10 @@ $form = $this->beginWidget('CActiveForm', array(
     <fieldset>
         <legend>Request new password</legend>
         <div class="formrow">
-            <?php echo $form->labelEx($recover, 'email'), '<br />', $form->textField($recover, 'email', array('class' => 'text')); ?>
+            <?php
+            echo $form->labelEx($recover, 'email'),
+            $form->textField($recover, 'email', array('class' => 'text'));
+            ?>
         </div>
     </fieldset>
 

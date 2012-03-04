@@ -7,9 +7,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'filter' => $filter,
     'ajaxUrl' => $this->createURL('account/games'),
     'columns' => array(
-        //array(
-        //    'header' => 'Opponent',  
-        //)
         array(
             'name' => 'created',
             'type' => 'date',

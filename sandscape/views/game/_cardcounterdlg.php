@@ -2,25 +2,25 @@
     <h2>Add Card Counter</h2>
     <p>
         <?php
-        echo CHtml::label('Name', 'counter-name'), '&nbsp;&nbsp;&nbsp;',
+        echo CHtml::label('Name', 'counter-name', array('class' => 'standard')),
         CHtml::textField('counter-name', '', array('size' => 16, 'class' => 'text'));
         ?>
     </p>
     <p>
         <?php
-        echo CHtml::label('Start', 'counter-value'), '&nbsp;&nbsp;&nbsp;',
+        echo CHtml::label('Start', 'counter-value', array('class' => 'standard')),
         CHtml::textField('counter-value', 0, array('size' => 4, 'class' => 'text'));
         ?>
     </p>
     <p>
         <?php
-        echo CHtml::label('Step', 'counter-step'), '&nbsp;&nbsp;&nbsp;',
+        echo CHtml::label('Step', 'counter-step', array('class' => 'standard')),
         CHtml::textField('counter-step', 1, array('size' => 4, 'class' => 'text'));
         ?>
     </p>
     <p>
         <?php
-        echo CHtml::label('Color', 'counter-class'), '&nbsp;&nbsp;&nbsp;',
+        echo CHtml::label('Color', 'counter-class', array('class' => 'standard')),
         CHtml::dropDownList('counter-class', null, array(
             'cl-default' => 'cl-default',
             'cl-redish' => 'cl-redish',

@@ -2,9 +2,6 @@
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'token-form',
     'enableAjaxValidation' => true,
-    'clientOptions' => array(
-        'inputContainer' => 'p'
-    ),
     'htmlOptions' => array('enctype' => 'multipart/form-data')
         ));
 ?>
@@ -14,7 +11,7 @@ $form = $this->beginWidget('CActiveForm', array(
         <legend>Token Information</legend>
         <div class="formrow">
             <?php
-            echo $form->labelEx($token, 'name'), '<br />',
+            echo $form->labelEx($token, 'name'),
             $form->textField($token, 'name', array('maxlength' => 150, 'class' => 'text'));
             ?>
         </div>

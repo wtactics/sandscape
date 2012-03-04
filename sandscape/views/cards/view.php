@@ -18,7 +18,7 @@
     <div class="span-13 last">
         <?php if ($card->cardscapeId) { ?>
             <p style="padding-top: 1em;">
-                <?php echo CHtml::link('See card details at Cardscape', 'http://chaosrealm.net/wtactics/cardscape/index.php?act=show_card&id=' . $card->cardscapeId, array('target' => '_blanck'));
+                <?php echo CHtml::link('See card details at Cardscape', $cardscapeUrl . '?act=show_card&id=' . $card->cardscapeId, array('target' => '_blanck'));
                 ?>
             </p>
         <?php } ?>
@@ -27,5 +27,8 @@
 <div class="span-8 prepend-1 last">
     <strong><?php echo CHtml::encode($card->getAttributeLabel('image')); ?>:</strong>
     <br />
-    <?php echo CHtml::image('_cards/up/' . $card->image); ?>
+    <?php echo CHtml::image('_game/cards/' . $card->image); ?>
+</div>
+<div>
+    <?php echo CHtml::link('Return', $this->createUrl('/cards')); ?>
 </div>

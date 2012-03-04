@@ -1,4 +1,7 @@
 <h2>Import Cards</h2>
+<?php if ($success) { ?>
+    <div>Cards were successfully imported.</div>
+<?php } ?>
 <p>
     You can submit a <strong>zip</strong> file containing <strong>one CSV file</strong> 
     named <em>cards.csv</em> with the card's information and <strong>one folder</strong>, 
@@ -23,13 +26,26 @@
 <?php echo CHtml::form($this->createUrl('cards/import'), 'post', array('enctype' => 'multipart/form-data')); ?>
 <fieldset>
     <legend>Zip File</legend>
-    <p>
+    <div class="formrow">
         <?php echo CHtml::label('File', 'archive'), '<br />', Chtml::fileField('archive'); ?>
-    </p>
+    </div>
+    <?php
+    if (count($saveErrors)) {
+        foreach ($saveErrors as $serror) {
+            ?>
+            <div><?php echo $serror; ?></div>
+            <?php
+        }
+    }
+
+    if ($uError) {
+        ?>
+        <div><?php echo $uError; ?></div>
+    <?php } ?>
 </fieldset>
-<p>
+<div class="buttonrow">
     <?php echo CHtml::submitButton('Upload', array('class' => 'button', 'name' => 'Upload')); ?>
-</p>
+</div>
 
 <?php
 echo CHtml::endForm();

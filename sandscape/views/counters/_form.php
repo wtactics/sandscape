@@ -26,7 +26,10 @@
     <?php echo $form->error($counter, 'step'); ?>
 
     <div class="formrow">
-        <?php echo $form->checkBox($counter, 'available'), '&nbsp;', $form->labelEx($counter, 'available'); ?>
+        <?php
+        echo $form->checkBox($counter, 'available'),
+        $form->labelEx($counter, 'available', array('class' => 'standard'));
+        ?>
     </div>
     <?php echo $form->error($counter, 'available'); ?>
 </fieldset>

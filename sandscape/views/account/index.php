@@ -8,12 +8,6 @@ Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms' . (YI
 <?php
 $this->widget('CTabView', array(
     'tabs' => array(
-        //TODO: implement profile stats
-        //'tStats' => array(
-        //    'title' => 'Stats',
-        //    'view' => '_stats',
-        //    'data' => array()
-        //),
         'tGeneral' => array(
             'title' => 'General',
             'view' => '_personal',

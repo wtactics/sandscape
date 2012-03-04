@@ -23,6 +23,20 @@ $form = $this->beginWidget('CActiveForm', array(
         ?>
     </div>
     <?php echo $form->error($user, 'email'); ?>
+
+    <div class="formrow">
+        <?php
+        echo $form->checkBox($user, 'reverseCards'), $form->labelEx($user, 'reverseCards');
+        ?>
+    </div>
+    <?php echo $form->error($user, 'reverseCards'); ?>
+
+    <div class="formrow">
+        <?php
+        echo $form->checkBox($user, 'onHoverDetails'), $form->labelEx($user, 'onHoverDetails');
+        ?>
+    </div>
+    <?php echo $form->error($user, 'onHoverDetails'); ?>
 </fieldset>
 
 <fieldset>

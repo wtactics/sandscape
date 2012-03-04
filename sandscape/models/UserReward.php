@@ -1,4 +1,6 @@
-/* forms.css
+<?php
+
+/* UserReward.php
  * 
  * This file is part of Sandscape, a virtual, browser based, table allowing 
  * people to play a customizable card games (CCG) online.
@@ -22,72 +24,25 @@
  * 
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-.error, .success, .validating {
-    border: none;
-    background-color: transparent;
-    padding: 0;
-}
+ */
 
-.error input {
-    border: 1px solid #FBC2C4;
-}
+/**
+ * @property int $userId
+ * @property int $rewardId
+ * 
+ * @since 1.4, Serenity
+ */
+class UserReward extends CActiveRecord {
 
-.success input {
-    border: 1px solid #C6D880;
-}
+    /**
+     * @return UserReward
+     */
+    public static function model($className=__CLASS__) {
+        return parent::model($className);
+    }
 
-span.required {
-    color: #FF0000;
-}
+    public function tableName() {
+        return 'UserReward';
+    }
 
-.errorMessage {
-    color: #8A1F11;
-}
-
-input.textsmaller {
-    background-color: #FFF;
-    border:1px solid #BBB;
-    color: #000;
-    margin:0.5em 0;
-    width:200px;
-    padding:5px;
-}
-
-input.textsmaller:focuss {
-    border-color: #666;
-}
-
-.formrow {
-    margin-bottom: .5em;
-} 
-
-.buttonrow {
-    margin-bottom: 1.5em;
-}
-
-.buttonrow .button {
-    margin-right: .8em;
-}
-
-fieldset {
-
-}
-
-legend {
-    margin-left: 1em;
-    padding: 0 .5em 0 .5em;
-}
-
-label {
-    display: block;
-}
-
-label.standard {
-    display: inline;
-    margin-left: .8em;
-}
-
-.helpicon {
-    margin-left: .5em;
 }

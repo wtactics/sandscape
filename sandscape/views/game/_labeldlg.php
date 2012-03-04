@@ -2,7 +2,7 @@
     <h2>Edit Card Label</h2>
     <p>
         <?php
-        echo CHtml::label('Text', 'label-text'), '&nbsp;&nbsp;&nbsp;',
+        echo CHtml::label('Text', 'label-text', array('class' => 'standard')),
         CHtml::textField('label-text', '', array('class' => 'text', 'size' => 20));
         ?>
     </p>

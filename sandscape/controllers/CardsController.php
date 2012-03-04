@@ -201,6 +201,10 @@ class CardsController extends AppController {
      * @since 1.2, Elvish Shaman
      */
     public function actionImport() {
+        $saveErrors = array();
+        $uError = false;
+        $success = false;
+
         if (isset($_POST['Upload'])) {
             $upfile = CUploadedFile::getInstanceByName('archive');
             if ($upfile !== null) {
@@ -219,20 +223,20 @@ class CardsController extends AppController {
                                     continue;
                                 }
 
-                                if (($card = Card::model()->find('name LIKE :name', array(':name' => $csvLine[0]))) === null) {
+                                if (($card = Card::model()->find('name LIKE :name', array(':name' => trim($csvLine[0])))) === null) {
                                     $card = new Card();
-                                    $card->name = $csvLine[0];
+                                    $card->name = trim($csvLine[0]);
                                 }
                                 $card->active = 1;
-                                $card->rules = $csvLine[1];
-                                if (isset($csvLine[3]) && (int) $csvLine[3] != 0) {
-                                    $card->cardscapeId = (int) $csvLine[3];
+                                $card->rules = trim($csvLine[1]);
+                                if (isset($csvLine[3]) && intval(trim($csvLine[3])) != 0) {
+                                    $card->cardscapeId = intval(trim($csvLine[3]));
                                 }
 
-                                $name = $csvLine[2];
+                                $name = trim($csvLine[2]);
                                 if (!is_file($path . '/' . $name)) {
-                                    $sizes = getimagesize($destination . 'cards/images/' . $csvLine[2]);
-                                    $imgFactory = PhpThumbFactory::create($destination . 'cards/images/' . $csvLine[2]);
+                                    $sizes = getimagesize($destination . 'cards/images/' . $name);
+                                    $imgFactory = PhpThumbFactory::create($destination . 'cards/images/' . $name);
 
                                     //250 width, 354 height
                                     if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
@@ -246,10 +250,13 @@ class CardsController extends AppController {
                                     $card->image = $name;
                                 }
                                 if (!$card->save()) {
-                                    //TODO: add errors to the list
+                                    $saveErrors[] = "Unable to save card named '{$card->name}'";
                                 }
                             }
                             fclose($fh);
+                            if (count($saveErrors) == 0) {
+                                $success = true;
+                            }
 
                             //Remove all entries from import folder, recursively
                             foreach (new RecursiveIteratorIterator(
@@ -265,11 +272,28 @@ class CardsController extends AppController {
                     }
                 }
             } else {
-                //TODO: show error message
+                $uError = 'An error was found while uploading the file.';
             }
         }
 
-        $this->render('import');
+        $this->render('import', array(
+            'saveErrors' => $saveErrors,
+            'uError' => $uError,
+            'success' => $success
+        ));
+    }
+
+    public function actionView($id) {
+        $card = $this->loadCardModel($id);
+        $cardscapeUrl = '';
+        if (($setting = Setting::model()->findByPk('cardscapeurl')) !== null) {
+            $cardscapeUrl = $setting->value;
+        }
+
+        $this->render('view', array(
+            'card' => $card,
+            'cardscapeUrl' => $cardscapeUrl
+        ));
     }
 
     /**
@@ -297,7 +321,9 @@ class CardsController extends AppController {
     public function accessRules() {
         return array_merge(array(
                     array('allow',
-                        'actions' => array('index', 'create', 'update', 'delete', 'view', 'import'),
+                        'actions' => array('index', 'create', 'update', 'delete',
+                            'view', 'import'
+                        ),
                         'expression' => '$user->class'
                     )
                         ), parent::accessRules());

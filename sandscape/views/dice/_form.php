@@ -19,7 +19,10 @@
     <?php echo $form->error($dice, 'face'); ?>
 
     <div class="formrow">
-        <?php echo $form->checkBox($dice, 'enabled'), '&nbsp;', $form->labelEx($dice, 'enabled'); ?>
+        <?php
+        echo $form->checkBox($dice, 'enabled'),
+        $form->labelEx($dice, 'enabled', array('class' => 'standard'));
+        ?>
     </div>
     <?php echo $form->error($dice, 'enabled'); ?>
 </fieldset>

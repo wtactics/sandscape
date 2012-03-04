@@ -23,7 +23,9 @@ $this->title = 'Maintenace Tools';
             ),
         ));
         ?>
-        <?php echo CHtml::checkBox('gamemessages'), '&nbsp;', CHtml::label('Including game messages?', 'gamemessages'); ?>
+    </div>
+    <div class="formrow">
+        <?php echo CHtml::checkBox('gamemessages'), CHtml::label('Including game messages?', 'gamemessages'); ?>
     </div>
     <span>
         <?php echo CHtml::submitButton('Execute', array('class' => 'button')); ?>

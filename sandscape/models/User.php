@@ -46,12 +46,16 @@
  * @property string $skype
  * @property string $msn
  * @property string country
+ * @property int $reverseCards
+ * @property int $
  * 
  * The followings are the available model relations:
  * @property ChatMessage[] $chatMessages
  * @property Deck[] $decks
  * @property Game[] $gamesAsPlayer1
  * @property Game[] $gamesAsPlayer2
+ * @property Reward[] $rewards
+ * @property Title[] $titles
  * 
  * @since 1.0, Sudden Growth
  */
@@ -88,6 +92,8 @@ class User extends CActiveRecord {
             'decks' => array(self::HAS_MANY, 'Deck', 'userId'),
             'gamesAsPlayer1' => array(self::HAS_MANY, 'Game', 'player1'),
             'gamesAsPlayer2' => array(self::HAS_MANY, 'Game', 'player2'),
+            'rewards' => array(self::MANY_MANY, 'Reward', 'UserReward(userId, rewardId)'),
+            'titles' => array(self::MANY_MANY, 'Title', 'UserTitle(userId, titleId)')
         );
     }
 
@@ -107,7 +113,9 @@ class User extends CActiveRecord {
             'googleplus' => 'Google+',
             'skype' => 'Skype',
             'msn' => 'MSN',
-            'country' => 'Country'
+            'country' => 'Country',
+            'reverseCards' => 'Reverse Cards',
+            'onHoverDetails' => 'Details On Hover'
         );
     }
 
