@@ -9,20 +9,19 @@ return array(
         'application.models.*',
         'application.models.scserver.*',
         'application.components.*',
-        'application.extensions.*',
     ),
-    // application components
     'components' => array(
         'user' => array(
             'allowAutoLogin' => true,
         ),
-        'db' => array(
-            'connectionString' => 'mysql:host=127.0.0.1;dbname=sandscape',
+        //CONFIGURE THE FOLLOWING SETTINGS:
+        /*'db' => array(
+            'connectionString' => 'mysql:host=<HOST ADDRESS>;dbname=<DATABASE NAME>',
             'emulatePrepare' => true,
-            'username' => 'root',
-            'password' => 'toor',
+            'username' => '<DATABASE USER>',
+            'password' => '<DATABASE PASSWORD>',
             'charset' => 'utf8'
-        ),
+        ),*/
         'errorHandler' => array(
             'errorAction' => 'site/error',
         ),
@@ -33,12 +32,8 @@ return array(
                     'class' => 'CFileLogRoute',
                     'levels' => 'error',
                 ),
-            //array(
-            //    'class' => 'CWebLogRoute',
-            //    'categories' => 'system.db.*'
-            //)
             )
         )
     ),
-    'params' => include('params.dev.php')
+    'params' => include('params.php')
 );
