@@ -2,7 +2,7 @@
 
 // change the following paths if necessary
 $yii = dirname(__FILE__) . '/../yii/yii.php';
-$config = dirname(__FILE__) . '/../sandscape/config/dev.php';
+$config = dirname(__FILE__) . '/../sandscape/config/main.dev.php';
 //$config=dirname(__FILE__).'/../sandscape/config/main.php';
 //
 // remove the following lines when in production mode

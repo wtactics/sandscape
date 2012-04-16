@@ -3,7 +3,6 @@
 return array(
     'basePath' => dirname(__FILE__) . '/..',
     'name' => 'Sandscape',
-    'preload' => array('log'),
     'charset' => 'utf-8',
     'import' => array(
         'application.models.*',
@@ -25,15 +24,6 @@ return array(
         'errorHandler' => array(
             'errorAction' => 'site/error',
         ),
-        'log' => array(
-            'class' => 'CLogRouter',
-            'routes' => array(
-                array(
-                    'class' => 'CFileLogRoute',
-                    'levels' => 'error',
-                ),
-            )
-        )
     ),
     'params' => include('params.php')
 );
