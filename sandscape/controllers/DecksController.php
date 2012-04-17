@@ -202,6 +202,7 @@ class DecksController extends AppController {
                 ':id' => (int) $_POST['preconslst']))
                     ) !== null) {
 
+                $deck = new Deck();
                 $deck->name = $template->name;
                 $deck->created = date('Y-m-d H:i:s');
                 if ($deck->save()) {
