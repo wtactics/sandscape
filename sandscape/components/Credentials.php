@@ -73,7 +73,7 @@ class Credentials extends CBaseUserIdentity {
                 $expires = $time + (3600 * 24 * 7);
 
                 $this->setState('token', $token);
-                $this->setState('class', $user->admin);
+                $this->setState('class', $user->class);
 
                 $sd->token = $token;
                 $sd->tokenExpires = date('Y-m-d H:i', $expires);

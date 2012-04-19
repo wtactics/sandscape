@@ -51,32 +51,30 @@ foreach ($deck->deckCards as $dc) {
 
 <?php $this->endWidget(); ?>
 
-<div class="span-7">
-    <h3>Cards in Deck</h3>
-    <input type="text" class="textsmaller" id="filterSelected" placeholder="filter cards in deck..." />
-    <ul id="selected-cards">
-        <?php foreach ($items as $key => $item) { ?>
-            <li id="s<?php echo $key; ?>" class="in-deck">
-                <img src="_resources/images/icon-x16-small-cross.png" />
-                <span class="card-name"><?php echo $item['name']; ?></span>
-                <span class="card-count"><?php echo $item['count']; ?></span>
-            </li>
-        <?php } ?>
-    </ul>
-    <p>Total cards in deck: <span id="card-total"><?php echo $total; ?></span></p>
-</div>
-<div class="span-1">&nbsp;</div>
-<div class="span-7">
-    <h3>Available Cards</h3>
-    <input type="text" class="textsmaller" id="filterAvailable" placeholder="filter available cards..." />
-    <ul id="available-cards">
-        <?php foreach ($cards as $card) { ?>
-            <li class="available" id="a<?php echo $card->cardId; ?>"><?php echo $card->name; ?></li>
-        <?php } ?>
-    </ul>
-</div>
-<div class="span-7 last centered">
-    <h3>Preview</h3>
-    <!-- //TODO: remove the fixed width -->
-    <img src="_game/cards/cardback.jpg" width="250px" id="previewImage" />
-</div>
+
+<h3>Cards in Deck</h3>
+<input type="text" class="textsmaller" id="filterSelected" placeholder="filter cards in deck..." />
+<ul id="selected-cards">
+    <?php foreach ($items as $key => $item) { ?>
+        <li id="s<?php echo $key; ?>" class="in-deck">
+            <img src="_resources/images/icon-x16-small-cross.png" />
+            <span class="card-name"><?php echo $item['name']; ?></span>
+            <span class="card-count"><?php echo $item['count']; ?></span>
+        </li>
+    <?php } ?>
+</ul>
+<p>Total cards in deck: <span id="card-total"><?php echo $total; ?></span></p>
+
+
+
+<h3>Available Cards</h3>
+<input type="text" class="textsmaller" id="filterAvailable" placeholder="filter available cards..." />
+<ul id="available-cards">
+    <?php foreach ($cards as $card) { ?>
+        <li class="available" id="a<?php echo $card->cardId; ?>"><?php echo $card->name; ?></li>
+    <?php } ?>
+</ul>
+
+<h3>Preview</h3>
+<!-- //TODO: remove the fixed width -->
+<img src="_game/cards/cardback.jpg" width="250px" id="previewImage" />

@@ -3,14 +3,10 @@
 Rever o código e perceber até que ponto o projecto está estável.
 We need a new design and a better way to manage the platform.
 
-
-back #EBEBEB /#707070, "Helvetica Neue",Helvetica,Arial,sans-serif;13px
-
-
+#EBEBEB /#707070, "Helvetica Neue",Helvetica,Arial,sans-serif;13px
 #333333
 
-
-
+/-------------------------------------------------------------------------------
 input {
     border-color: #FFFFFF;
     float: left;
@@ -19,7 +15,7 @@ input {
     width: 150px;
 }
 
-input[type="search"], input[type="text"] {
+input[type="text"] {
     -moz-box-sizing: border-box;
     background: none repeat scroll 0 0 #FFFFFF;
     border: 1px solid #BBBBBB;
@@ -31,9 +27,10 @@ input[type="search"], input[type="text"] {
     padding: 5px 0 6px 8px;
     position: relative;
 }
-themef...4628883 (line 1)
+
 label, input, select, textarea {
     font-family: Tahoma,sans-serif;
     font-size: 13px;
     line-height: 18px;
 }
+/-------------------------------------------------------------------------------

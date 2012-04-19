@@ -34,7 +34,7 @@
  * @property string $email
  * @property string $password
  * @property string $name
- * @property int $admin
+ * @property int $class
  * @property int $active
  * @property string $avatar
  * @property int $gender
@@ -47,7 +47,7 @@
  * @property string $msn
  * @property string country
  * @property int $reverseCards
- * @property int $
+ * @property int $onHoverDetails
  * 
  * The followings are the available model relations:
  * @property ChatMessage[] $chatMessages
@@ -75,7 +75,7 @@ class User extends CActiveRecord {
     public function rules() {
         return array(
             array('email, password, name', 'required'),
-            array('admin, gender', 'numerical', 'integerOnly' => true),
+            array('class, gender, reverseCards, onHoverDetails', 'numerical', 'integerOnly' => true),
             array('email, avatar, website, twitter, facebook, googleplus, skype, msn', 'length', 'max' => 255),
             array('country', 'length', 'max' => 2),
             array('name', 'length', 'max' => 15),
@@ -103,7 +103,7 @@ class User extends CActiveRecord {
             'email' => 'E-mail',
             'password' => 'Password',
             'name' => 'Name',
-            'admin' => 'Administrator',
+            'class' => 'Class',
             'avatar' => 'Avatar',
             'gender' => 'Gender',
             'birthyear' => 'Birth Year',
@@ -132,7 +132,7 @@ class User extends CActiveRecord {
 
         $criteria->compare('email', $this->email, true);
         $criteria->compare('name', $this->name, true);
-        $criteria->compare('admin', $this->admin);
+        $criteria->compare('class', $this->class);
         $criteria->compare('active', 1);
 
         return new CActiveDataProvider('User', array('criteria' => $criteria));

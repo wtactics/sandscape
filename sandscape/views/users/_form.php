@@ -24,18 +24,17 @@ $form = $this->beginWidget('CActiveForm', array(
     <?php echo $form->error($user, 'email'); ?>
     <div class="formrow">
         <?php
-        echo $form->checkBox($user, 'admin'), $form->labelEx($user, 'admin', array('class' => 'standard'));
+        echo $form->labelEx($user, 'class', array('class' => 'standard')),
+        $form->dropDownList($user, 'class', array(0 => 'Regular', 1 => 'Power User', 2 => 'Administrator'));
         ?>
     </div>
-    <?php echo $form->error($user, 'admin'); ?>
+    <?php echo $form->error($user, 'class'); ?>
 </fieldset>
 
-<div class="formrow">
+<div class="buttonrow">
     <?php
     echo CHtml::submitButton($user->isNewRecord ? 'Create' : 'Save', array('class' => 'button')),
     CHtml::link('Cancel', $this->createUrl('/users'));
-
-    ;
     ?>
 </div>
 <?php

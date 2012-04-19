@@ -5,11 +5,8 @@ Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/modal' . (YI
 Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.simplemodal.1.4.1.min.js');
 ?>
 <h2>Manage Decks</h2>
-<div class="span-22 last">
-    <a href="<?php echo $this->createURL('create'); ?>">Create Deck</a>
-    &nbsp;:&nbsp;
-    <a href="javascript:;" onclick="$('#precons').modal();">Pre-constructed Decks</a>
-</div>
+<a href="<?php echo $this->createURL('create'); ?>">Create Deck</a>
+<a href="javascript:;" onclick="$('#precons').modal();">Pre-constructed Decks</a>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'deck-grid',

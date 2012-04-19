@@ -23,160 +23,118 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*Base: 9A5D0D, other: 735124, 643A04, CD8F40, CDA066*/
-* {
-    font-family: Helvetica, Verdana, Arial, sans-serif;
-    text-align: justify;
-    margin: 0;
-    padding: 0;
+
+/*Reset some CSS options*/
+body, table, div, ul, li, input, textarea, select {
     border: none;
-}
-
-body {
-    color: #333;
-    background: #E0E0E0 url(../../images/site-background-top.png) repeat-x;
-}
-
-#header {
+    border: 0;
+    padding: 0;
     margin: 0;
-    height: 100px;
-    line-height: 90px;
-    padding-left: 1em;
-    color: #745124;
-    background-color: #CDA066;
-    font-family: "Brush Script Std", "Brush Script ";
-    font-size: 42px;
 }
 
-.container {
-    font-size: 12px;
-    background-color: #FFF;
-    border-bottom-right-radius: 12px;
-    -moz-border-radius-bottomright: 12px;
-    border-bottom-left-radius: 12px;
-    -moz-border-radius-bottomleft: 12px;
-}
-
-ul {
+ul, li {
     list-style: none;
 }
 
-#menu {
+/* Page structure */
+html, body {
+    height: 100%;
+}
+
+body {
     background-color: #FFF;
+    /*color: #707070; */
+    font-family: "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif;
+    font-size: 13px;
+    text-align: justify;
 }
 
-#menu > ul {
-    position: relative;
-    /*left: 6%;*/
-    display: block;
-}
-
-#menu > ul li {
-    float: left;
-    display: list-item;
-}
-
-#menu > ul li.active > a {
+#header {
+    background-color: #222222;
     color: #FFF;
-    background-color: #9A5D0D
 }
 
-#menu > ul li a {
-    display: block;
-    width: 154px;
-    height: 24px;
-    line-height: 24px;
-    background-color: #643A04;
-    margin: 1px;
-    text-align: center;
-    color: #CDA066;
+#header h1 {
+    margin: 0;
+    padding: 0;
+    /*color: #EEE;*/
+    /*background-color: #222;*/
 }
 
-#menu > ul li.hover, #menu > ul li:hover { 
-    position: relative;
-}
-
-#menu > ul ul {
-    visibility: hidden; 
-    position: absolute;
-    top: 100%;
-    left: 0; 
-    z-index: 10;
-}
-
-#menu > ul ul li {
-    float: none;
-}
-
-/* IE 6 & 7 Needs Inline Block */
-#menu > ul ul li a {
-    display: inline-block;
-    width: 120px;
-
-}
-
-#menu a:hover {
-    color: #FFF;
-    background-color: #9A5D0D
-}
-
-#menu ul ul ul {
-    position: absolute;
-    top: 0;
-    left: 100%; /* to position them to the right of their containing block */
-    width: 100%; /* width is based on the containing block */
-}
-
-#menu * .row-first {
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
-}
-
-#menu * .row-last {
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
-}
-
-#menu * .column-last {
-    border-bottom-right-radius: 6px;
-    border-bottom-left-radius: 6px;
-}
-
-#menu * .column-first {
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
+#content {
+    width: 98%;
+    margin: 0 auto;
 }
 
 #footer {
-    color: #CDA066;
-    background-color: #643A04;
-    margin: 2em 0 1em 0;
+    /*background-color: #999999;*/
+}
+
+#footer div {
+    float: left;
+    width: 49%;
+}
+
+/* Main menu */
+#menu {
     text-align: center;
 }
 
-#footer a:hover {
+#menu > ul {
+    float: right;
+    margin-right: 1em;
+}
+
+#menu li {
+    float: left;
+}
+
+#menu li a {
+    display: block;
+    width: 10em;
     color: #FFF;
 }
 
-h2, h3, h4 {
-    color: #CDA066;
+#menu li a:hover, #menu ul li:hover a {
+    color: #81ACCC;
 }
 
-h2 {
-    margin-top: .5em;
+#menu li ul {
+    display: none;
+    height: auto;
+    position: absolute;
+    width: 10em;
+    text-align: left;
 }
 
+#menu li:hover ul {
+    display:block;
+
+}
+#menu li li {
+    display: block;
+    float: none;
+    width: 10em;
+}
+
+#menu li:hover li a {
+
+}
+#menu li ul a {
+    display: block;
+    padding: 0px 10px 0px 15px;
+}
+
+#menu li ul a:hover, #menu li ul li:hover a {
+}
+
+/* General CSS */
 a {
     text-decoration: none;
+    color: #81ACCC;
 }
 
-a, a:visited {
-    color: #9A5D0D;
-}
-
-a:hover {
-}
-
+/*
 .centered {
     text-align: center;
 }
@@ -202,51 +160,7 @@ a:hover {
     background-color: #CCC;
     color: #FFF;
 }
-
-#server-time {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    text-align: right;
-    float:right;
-    font-size: 11px;
-    font-weight: bold;
-    font-family: "Courier New", Courier, monospace;
-}
-
-.yes {
-    color: green;
-}
-
-.no {
-    color: red;
-}
-
-/*RESET Blueprint css for tables*/
-table {
-    margin-bottom: 1.4em;
-    width:100%;
-}
-
-th {
-    font-weight: normal;
-}
-
-thead th {
-    background: inherit;
-}
-
-th, td, caption {
-    padding: 0;
-}
-
-tbody tr:nth-child(even) td, tbody tr.even td {
-    background: inherit
-}
-
-tfoot {
-    font-style: normal;
-}
+*/
 
 .clearfix {
     clear: both;

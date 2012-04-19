@@ -27,7 +27,8 @@ Yii::app()->clientScript->registerScript('resetjs', $js);
 
 <h2>User List</h2>
 
-<div class="span-22 last"><a href="<?php echo $this->createURL('create'); ?>">Create User</a></div>
+<a href="<?php echo $this->createURL('create'); ?>">Create User</a>
+
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'user-grid',
@@ -44,10 +45,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'type' => 'email'
         ),
         array(
-            'name' => 'admin',
-            'filter' => array(0 => 'Regular', 1 => 'Administrator'),
+            'name' => 'class',
+            'filter' => array(0 => 'Regular', 1 => 'Power User', 2 => 'Administrator'),
             'type' => 'raw',
-            'value' => '($data->admin ? "Administrator" : "Regular")'
+            'value' => '($data->class == 2 ? "Administrator" : ($data->class == 1 ? "Power User" : "Regular"))'
         ),
         array(
             'header' => 'Actions',

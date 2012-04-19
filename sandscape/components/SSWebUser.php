@@ -33,10 +33,11 @@ class SSWebUser extends CWebUser {
 
     /**
      *
-     * @param type $id
-     * @param type $states
-     * @param type $fromCookie
-     * @return type 
+     * @param int $id
+     * @param array $states
+     * @param boolean $fromCookie
+     * 
+     * @return boolean 
      * 
      * @since 1.0, Sudden Growth
      */

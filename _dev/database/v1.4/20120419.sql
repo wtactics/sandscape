@@ -1,0 +1,1 @@
+ALTER TABLE `User` CHANGE `admin` `class` TINYINT NOT NULL DEFAULT 0 ;

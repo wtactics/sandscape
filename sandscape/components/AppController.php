@@ -64,114 +64,84 @@ class AppController extends CController {
             array(
                 'label' => 'Home',
                 'url' => array('site/index'),
-                'linkOptions' => array('class' => 'row-first'),
-            ),
-            array(
-                'label' => 'About',
-                'url' => array('site/about')
             ),
             array(
                 'label' => 'Play',
                 'url' => array('lobby/index'),
-                //visible only to authenticated users
-                'visible' => !Yii::app()->user->isGuest),
-            array(
-                'label' => 'Administration',
-                'url' => 'javascript:;',
-                'items' => array(
-                    array(
-                        'label' => 'Cards',
-                        'url' => array('cards/index')
-                    ),
-                    array(
-                        //game elements sub-menu
-                        'label' => 'Game Elements &Gt;',
-                        'url' => 'javascript:;',
-                        'items' => array(
-                            array(
-                                'label' => 'Dice',
-                                'url' => array('dice/index'),
-                                'linkOptions' => array('class' => 'column-first'),
-                            ),
-                            array(
-                                'label' => 'Player Counters',
-                                'url' => array('counters/index')
-                            ),
-                            array(
-                                'label' => 'States',
-                                'url' => array('states/index')
-                            ),
-                            array(
-                                'label' => 'Tokens',
-                                'url' => array('tokens/index'),
-                                'linkOptions' => array('class' => 'column-last'),
-                            ),
-                        ),
-                    ),
-                    array(
-                        'label' => 'Pre-constructed',
-                        'url' => array('precons/index')
-                    ),
-                    array(
-                        'label' => 'Users',
-                        'url' => array('users/index')
-                    ),
-                    array(
-                        // sandscape settings sub-menu
-                        'label' => 'Settings &Gt;',
-                        'url' => 'javascript:;',
-                        'items' => array(
-                            array(
-                                'label' => 'Chat Filter',
-                                'url' => array('administration/chatfilter'),
-                                'linkOptions' => array('class' => 'column-first'),
-                            ),
-                            array(
-                                'label' => 'Chat Logs',
-                                'url' => array('chatlogs/index'),
-                            ),
-                            array(
-                                'label' => 'Game Options',
-                                'url' => array('administration/gameoptions')),
-                            array(
-                                'label' => 'Maintenance Tools',
-                                'url' => array('administration/maintenancetools')),
-                            array(
-                                'label' => 'Sandscape Settings',
-                                'url' => array('administration/sandscapesettings'),
-                                'linkOptions' => array('class' => 'column-last'),
-                            ),
-                        ),
-                        'linkOptions' => array('class' => 'column-last'),
-                    ),
-                ),
-                //visible only to administrators
-                'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class,
-            ),
-            array(
-                // account sub-menu
-                'label' => 'Account',
-                'url' => 'javascript:;',
-                'items' => array(
-                    array('label' => 'Decks', 'url' => array('decks/index')),
-                    array('label' => 'Games', 'url' => array('account/games')),
-                    array('label' => 'Profile', 'url' => array('/account')),
-                    array(
-                        'label' => 'Logout',
-                        'url' => array('site/logout'),
-                        'linkOptions' => array('class' => 'column-last'),
-                    ),
-                ),
-                'linkOptions' => array('class' => 'row-last'),
-                //visible only to authenticated users
                 'visible' => !Yii::app()->user->isGuest
             ),
             array(
-                'label' => 'Login',
-                'url' => array('site/login'),
-                'linkOptions' => array('class' => 'row-last'),
-                //visible only to guests
-                'visible' => Yii::app()->user->isGuest),
+                'label' => 'Decks',
+                'url' => array('decks/index'),
+                'visible' => !Yii::app()->user->isGuest
+            ),
+            array(
+                'label' => 'Games',
+                'url' => array('account/games'),
+                'visible' => !Yii::app()->user->isGuest
+            ),
+            array(
+                'label' => 'Game Settings',
+                'url' => '#',
+                'items' => array(
+                    array(
+                        'label' => 'Cards',
+                        'url' => array('cards/index'),
+                    ),
+                    array(
+                        'label' => 'Dice',
+                        'url' => array('dice/index'),
+                    ),
+                    array(
+                        'label' => 'Player Counters',
+                        'url' => array('counters/index'),
+                    ),
+                    array(
+                        'label' => 'States',
+                        'url' => array('states/index'),
+                    ),
+                    array(
+                        'label' => 'Tokens',
+                        'url' => array('tokens/index'),
+                    ),
+                    array(
+                        'label' => 'Pre-constructed',
+                        'url' => array('precons/index'),
+                    ),
+                    array(
+                        'label' => 'General Options',
+                        'url' => array('administration/gameoptions'),
+                    ),
+                ),
+                'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class,
+            ),
+            array(
+                'label' => 'System',
+                'url' => '#',
+                'items' => array(
+                    array(
+                        'label' => 'Users',
+                        'url' => array('users/index'),
+                    ),
+                    array(
+                        'label' => 'Chat Filter',
+                        'url' => array('administration/chatfilter'),
+                    ),
+                    array(
+                        'label' => 'Chat Logs',
+                        'url' => array('chatlogs/index'),
+                    ),
+                    array(
+                        'label' => 'Maintenance Tools',
+                        'url' => array('administration/maintenancetools'),
+                    ),
+                    array(
+                        'label' => 'System Settings',
+                        'url' => array('administration/sandscapesettings'),
+                    )
+                ),
+                'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class == 2,
+            )
         );
     }
 
