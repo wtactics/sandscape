@@ -48,6 +48,8 @@ class DecksController extends AppController {
     public function actionIndex() {
         $this->updateUserActivity();
 
+        $cardCount = intval(Card::model()->count('active = 1'));
+
         $filter = new Deck('search');
         $filter->unsetAttributes();
 
@@ -56,7 +58,11 @@ class DecksController extends AppController {
         }
 
         $templates = DeckTemplate::model()->findAll('active = 1');
-        $this->render('index', array('filter' => $filter, 'templates' => $templates));
+        $this->render('index', array(
+            'filter' => $filter,
+            'templates' => $templates,
+            'cardCount' => $cardCount
+        ));
     }
 
     /**

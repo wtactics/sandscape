@@ -25,7 +25,7 @@
 */
 
 /*Reset some CSS options*/
-body, table, div, ul, li, input, textarea, select {
+body, table, div, ul, li, input, textarea, select, h1, h2, h3 {
     border: none;
     border: 0;
     padding: 0;
@@ -42,47 +42,85 @@ html, body {
 }
 
 body {
-    background-color: #FFF;
-    /*color: #707070; */
+    background-color: #E3E3E2;;
     font-family: "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif;
-    font-size: 13px;
+    font-size: 10pt;
     text-align: justify;
 }
 
 #header {
     background-color: #222222;
     color: #FFF;
+    margin-bottom: 15px;
 }
 
 #header h1 {
-    margin: 0;
-    padding: 0;
-    /*color: #EEE;*/
-    /*background-color: #222;*/
+    padding-left: 3em;
+    font-size: 24pt;
+    height: 64px;
+}
+
+#header h1 a, #header h1 a:visited {
+    color: #FFF;
+    text-decoration: none;
 }
 
 #content {
-    width: 98%;
+    width: 95%;
     margin: 0 auto;
+    min-height: 480px;
+    background-color: #F4F4F4;
+    border: 10px solid #FFF;
+    padding: .5em;
 }
 
 #footer {
-    /*background-color: #999999;*/
+    background-color: #333333;
+    min-height: 180px;
+    border-top: 1px solid #383838;
+    margin-top: 15px;
+    font-size: 12pt;
+    color: #FFF;
+    padding-top: 1.5em;
 }
 
-#footer div {
+#footer a {
+    color: #FFF;
+}
+
+#footerleft {
     float: left;
     width: 49%;
 }
 
+#footerright {
+    width: 49%;
+    float: right;
+}
+
+#footer ul {
+    margin-left: 5em;
+}
+
+#footer ul li {
+
+}
+
+
 /* Main menu */
 #menu {
     text-align: center;
+    background-color: #333333;
+    border-top: 1px solid #383838;
+    border-bottom: 1px solid #444444;
+    height: 32px;
+    line-height: 32px;
+    font-size: 12pt;
 }
 
 #menu > ul {
     float: right;
-    margin-right: 1em;
+    margin-right: 4em;
 }
 
 #menu li {
@@ -91,7 +129,8 @@ body {
 
 #menu li a {
     display: block;
-    width: 10em;
+    /*width: 7.5em;*/
+    padding: 0 2em 0 2em;
     color: #FFF;
 }
 
@@ -133,34 +172,6 @@ a {
     text-decoration: none;
     color: #81ACCC;
 }
-
-/*
-.centered {
-    text-align: center;
-}
-
-.button {
-    background-color: #643A04;
-    text-align: center;
-    color: #CDA066;
-    padding: 0.5em 0.8em 0.5em 0.8em;
-}
-
-.button:hover {
-    color: #FFF;
-    background-color: #9A5D0D
-}
-
-.button:disabled {
-    background-color: #CCC;
-    color: #FFF;
-}
-
-.button:hover:disabled {
-    background-color: #CCC;
-    color: #FFF;
-}
-*/
 
 .clearfix {
     clear: both;

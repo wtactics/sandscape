@@ -49,6 +49,7 @@ class LobbyController extends AppController {
     public function actionIndex() {
         $this->updateUserActivity();
 
+        $cardCount = intval(Card::model()->count('active = 1'));
         $games = Game::model()->findAll('ended IS NULL ORDER BY created');
         $users = User::model()->findAllAuthenticated()->getData();
         $messages = ChatMessage::model()->findAll('gameId IS NULL AND DATE_SUB(sent, INTERVAL 1 HOUR); ORDER BY sent');
@@ -70,7 +71,8 @@ class LobbyController extends AppController {
             'messages' => $messages,
             'decks' => $decks,
             'decksPerGame' => $decksPerGame,
-            'fixDeckNr' => $fixDeckNr
+            'fixDeckNr' => $fixDeckNr,
+            'cardCount' => $cardCount
         ));
     }
 

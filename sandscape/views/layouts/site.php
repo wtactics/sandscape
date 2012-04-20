@@ -23,16 +23,17 @@
         </div>
 
         <div id="footer">
-            <div>
+            <div id="footerleft">
                 <ul>
                     <li><a href="<?php echo $this->createUrl('site/attribution'); ?>">Attribution</a></li>
                     <li><a href="http://www.wtactics.org">WTactics.org</a></li>
                     <li><a href="http://sourceforge.net/projects/sandscape">Sandscape</a></li>
                 </ul>
             </div>
-            <div>
+            <div id="footerright">
                 <ul>
                     <li>Running Serenity</li>
+                </ul>
             </div>
             <div class="clearfix"></div>
         </div>
