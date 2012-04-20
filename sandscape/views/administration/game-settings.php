@@ -42,8 +42,8 @@ Yii::app()->clientScript->registerScript('bbtxtgs', $js);
     <legend>Options</legend>
     <div class="formrow">
         <?php
-        echo CHtml::checkBox('fixdecknr', $settings['fixdecknr']->value, array('uncheckValue' => $settings['fixdecknr']->value)),
-        CHtml::label('Fix Deck Number', 'fixdecknr', array('class' => 'standard')),
+        echo CHtml::label('Fix Deck Number', 'fixdecknr'),
+        CHtml::checkBox('fixdecknr', $settings['fixdecknr']->value, array('uncheckValue' => $settings['fixdecknr']->value)),
         CHtml::image('_resources/images/icon-x16-question-balloon.png', '', array('id' => 'fixdecknr-help', 'class' => 'helpicon'));
         ?>
     </div>
@@ -51,15 +51,15 @@ Yii::app()->clientScript->registerScript('bbtxtgs', $js);
     <div class="formrow">
         <?php
         echo CHtml::label('Decks per game', 'deckspergame'),
-        CHtml::textField('deckspergame', $settings['deckspergame']->value, array('class' => 'textsmaller')), '&nbsp;',
+        CHtml::textField('deckspergame', $settings['deckspergame']->value, array('class' => 'numeric')), '&nbsp;',
         CHtml::image('_resources/images/icon-x16-question-balloon.png', '', array('id' => 'deckspergame-help', 'class' => 'helpicon'));
         ?>
     </div>
 
     <div class="formrow">
         <?php
-        echo CHtml::checkBox('useanydice', $settings['useanydice']->value, array('uncheckValue' => $settings['useanydice']->value)),
-        CHtml::label('Allow any dice', 'useanydice', array('class' => 'standard')),
+        echo CHtml::label('Allow any dice', 'useanydice'),
+        CHtml::checkBox('useanydice', $settings['useanydice']->value, array('uncheckValue' => $settings['useanydice']->value)),
         CHtml::image('_resources/images/icon-x16-question-balloon.png', '', array('id' => 'useanydice-help', 'class' => 'helpicon'));
         ?>
     </div>

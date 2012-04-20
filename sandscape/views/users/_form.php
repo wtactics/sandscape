@@ -34,7 +34,7 @@ $form = $this->beginWidget('CActiveForm', array(
 <div class="buttonrow">
     <?php
     echo CHtml::submitButton($user->isNewRecord ? 'Create' : 'Save', array('class' => 'button')),
-    CHtml::link('Cancel', $this->createUrl('/users'));
+    CHtml::link('Cancel', $this->createUrl('users/index'));
     ?>
 </div>
 <?php

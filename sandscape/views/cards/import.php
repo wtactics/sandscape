@@ -1,3 +1,9 @@
+<?php
+$this->title = 'Import Cards';
+
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms' . (YII_DEBUG ? '' : '.min') . '.css');
+?>
+
 <h2>Import Cards</h2>
 <?php if ($success) { ?>
     <div>Cards were successfully imported.</div>
@@ -27,7 +33,7 @@
 <fieldset>
     <legend>Zip File</legend>
     <div class="formrow">
-        <?php echo CHtml::label('File', 'archive'), '<br />', Chtml::fileField('archive'); ?>
+        <?php echo CHtml::label('File', 'archive'), Chtml::fileField('archive'); ?>
     </div>
     <?php
     if (count($saveErrors)) {
@@ -43,8 +49,12 @@
         <div><?php echo $uError; ?></div>
     <?php } ?>
 </fieldset>
+
 <div class="buttonrow">
-    <?php echo CHtml::submitButton('Upload', array('class' => 'button', 'name' => 'Upload')); ?>
+    <?php
+    echo CHtml::submitButton('Upload', array('class' => 'button', 'name' => 'Upload')),
+    CHtml::link('Cancel', $this->createUrl('cards/index'));
+    ?>
 </div>
 
 <?php

@@ -6,31 +6,13 @@ We need a new design and a better way to manage the platform.
 #EBEBEB /#707070, "Helvetica Neue",Helvetica,Arial,sans-serif;13px
 #333333
 
-/-------------------------------------------------------------------------------
-input {
-    border-color: #FFFFFF;
-    float: left;
-    margin-right: 10px;
-    padding-top: 6px;
-    width: 150px;
-}
+CSS para:
+    - filtros de listas (campos de input demasiado grandes)
+    - TR/TH das listas/grelhas
+    - padding/margin dos H(1,2,3)
 
-input[type="text"] {
-    -moz-box-sizing: border-box;
-    background: none repeat scroll 0 0 #FFFFFF;
-    border: 1px solid #BBBBBB;
-    border-radius: 5px 5px 5px 5px;
-    color: #7E7E7E;
-    height: 30px;
-    margin: 0;
-    outline: 0 none;
-    padding: 5px 0 6px 8px;
-    position: relative;
-}
+Opções para voltar de todas as edições.
 
-label, input, select, textarea {
-    font-family: Tahoma,sans-serif;
-    font-size: 13px;
-    line-height: 18px;
-}
-/-------------------------------------------------------------------------------
+Fix pre-constructed decks
+
+Remove hardcoded css in forms for cards, states and tokens.

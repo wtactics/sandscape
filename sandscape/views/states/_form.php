@@ -6,39 +6,42 @@ $form = $this->beginWidget('CActiveForm', array(
         ));
 ?>
 
-<fieldset>
-    <legend>State Information</legend>
-    <div class="formrow">
-        <?php
-        echo $form->labelEx($state, 'name'),
-        $form->textField($state, 'name', array('maxlength' => 150, 'class' => 'text'));
-        ?>
-    </div>
-    <?php echo $form->error($state, 'name'); ?>
+<div style="float: left; width: 60%;">
+    <fieldset>
+        <legend>State Information</legend>
+        <div class="formrow">
+            <?php
+            echo $form->labelEx($state, 'name'),
+            $form->textField($state, 'name', array('maxlength' => 150, 'class' => 'large'));
+            ?>
+        </div>
+        <?php echo $form->error($state, 'name'); ?>
+    </fieldset>
+</div>
 
-</fieldset>
+<div style="float:right; width: 38%;text-align: center;">
+    <fieldset>
+        <legend>State Image</legend>
+        <div class="formrow">
+            <?php
+            if (!$state->isNewRecord) {
+                echo CHtml::image('_game/states/' . $state->image);
+            }
 
-<fieldset>
-    <legend>State Image</legend>
-    <div class="formrow">
-        <?php
-        if (!$state->isNewRecord) {
-            echo CHtml::image('_game/states/' . $state->image);
-        }
+            echo $form->fileField($state, 'image');
+            ?>
+        </div>
+        <?php echo $form->error($state, 'image'); ?>
+    </fieldset>
+</div>
+<div class="clearfix"></div>
 
-        echo $form->fileField($state, 'image');
-        ?>
-    </div>
-    <?php echo $form->error($state, 'image'); ?>
-</fieldset>
-
-<p>
+<div class="buttonrow">
     <?php
     echo CHtml::submitButton($state->isNewRecord ? 'Create' : 'Save', array('class' => 'button')),
-    CHtml::link('Cancel', $this->createUrl('/states'));
+    CHtml::link('Cancel', $this->createUrl('states/index'));
     ?>
-</p>
-
+</div>
 
 <?php
 $this->endWidget();

@@ -2,7 +2,6 @@
 $this->title = 'Sandscape Settings';
 
 Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms' . (YII_DEBUG ? '' : '.min') . '.css');
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/administration' . (YII_DEBUG ? '' : '.min') . '.css');
 ?>
 
 <h2>Sandscape Settings</h2>
@@ -14,28 +13,28 @@ Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/administrati
     <div class="formrow">
         <?php
         echo CHtml::label('System E-mail', 'sysemail'),
-        CHtml::textField('sysemail', $settings['sysemail']->value, array('class' => 'text'));
+        CHtml::textField('sysemail', $settings['sysemail']->value, array('class' => 'large'));
         ?>
     </div>
 
     <div class="formrow">
         <?php
         echo CHtml::label('Cardscape URL', 'cardscapeurl'),
-        CHtml::textField('cardscapeurl', $settings['cardscapeurl']->value, array('class' => 'text'));
+        CHtml::textField('cardscapeurl', $settings['cardscapeurl']->value, array('class' => 'large'));
         ?>
     </div>  
 
     <div class="formrow">
         <?php
-        echo CHtml::label('Avatar size (WIDTHxHEIGHT)', 'avatarsize'),
-        CHtml::textField('avatarsize', $settings['avatarsize']->value, array('class' => 'text'));
+        echo CHtml::label('Avatar size (WxH)', 'avatarsize'),
+        CHtml::textField('avatarsize', $settings['avatarsize']->value, array('class' => 'standard'));
         ?>
     </div>
 
     <div class="formrow">
         <?php
-        echo CHtml::checkBox('allowavatar', $settings['allowavatar']->value, array('uncheckValue' => $settings['allowavatar']->value)), '&nbsp;',
-        CHtml::label('Allow avatar upload', 'allowavatar', array('class' => 'standard'));
+        echo CHtml::label('Allow avatar upload', 'allowavatar'),
+        CHtml::checkBox('allowavatar', $settings['allowavatar']->value, array('uncheckValue' => $settings['allowavatar']->value));
         ?>
     </div>
 </fieldset>

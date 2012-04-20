@@ -1,5 +1,5 @@
 <?php
-$this->title = 'Account : Profile';
+$this->title = 'Account';
 
 Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms' . (YII_DEBUG ? '' : '.min') . '.css');
 ?>

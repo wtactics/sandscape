@@ -27,8 +27,7 @@
 
     <div class="formrow">
         <?php
-        echo $form->checkBox($counter, 'available'),
-        $form->labelEx($counter, 'available', array('class' => 'standard'));
+        echo $form->labelEx($counter, 'available'), $form->checkBox($counter, 'available');
         ?>
     </div>
     <?php echo $form->error($counter, 'available'); ?>
@@ -37,7 +36,7 @@
 <div class="buttonrow">
     <?php
     echo CHtml::submitButton($counter->isNewRecord ? 'Create' : 'Save', array('class' => 'button')),
-    CHtml::link('Cancel', $this->createUrl('/counters'));
+    CHtml::link('Cancel', $this->createUrl('counters/index'));
     ?>
 </div>
 <?php

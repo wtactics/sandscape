@@ -9,15 +9,15 @@ $form = $this->beginWidget('CActiveForm', array(
     <div class="formrow">
         <?php
         echo $form->labelEx($pmodel, 'current'),
-        $form->passwordField($pmodel, 'current', array('class' => 'text'));
+        $form->passwordField($pmodel, 'current', array('class' => 'standard'));
         ?>
     </div>
     <?php echo $form->error($pmodel, 'current'); ?>
 
-    <div class="formwor">
+    <div class="formrow">
         <?php
         echo $form->labelEx($pmodel, 'password'),
-        $form->passwordField($pmodel, 'password', array('class' => 'text'));
+        $form->passwordField($pmodel, 'password', array('class' => 'standard'));
         ?>
     </div>
     <?php echo $form->error($pmodel, 'password'); ?>
@@ -25,7 +25,7 @@ $form = $this->beginWidget('CActiveForm', array(
     <div class="formrow">
         <?php
         echo $form->labelEx($pmodel, 'password_repeat'),
-        $form->passwordField($pmodel, 'password_repeat', array('class' => 'text'));
+        $form->passwordField($pmodel, 'password_repeat', array('class' => 'standard'));
         ?>
     </div>
     <?php echo $form->error($pmodel, 'password_repeat'); ?>

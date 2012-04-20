@@ -68,7 +68,7 @@ legend {
 }
 
 label {
-    min-width: 10em;
+    min-width: 12em;
     float: left;
 }
 
@@ -76,14 +76,18 @@ label {
     margin-left: .5em;
 }
 
-input[type="text"] {
+input.large {
     width: 45em;
+}
+
+input.standard {
+    width: 20em;
 }
 
 input.numeric {
     width: 5em;
 }
 
-textarea {
+textarea.large {
     width: 50em;
 }

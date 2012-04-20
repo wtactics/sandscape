@@ -11,7 +11,7 @@ $form = $this->beginWidget('CActiveForm', array(
     <div class="formrow">
         <?php
         echo $form->labelEx($user, 'name'),
-        $form->textField($user, 'name', array('maxlength' => 15, 'class' => 'text'));
+        $form->textField($user, 'name', array('maxlength' => 15, 'class' => 'large'));
         ?>
     </div>
     <?php echo $form->error($user, 'name'); ?>
@@ -19,21 +19,21 @@ $form = $this->beginWidget('CActiveForm', array(
     <div class="formrow">
         <?php
         echo $form->labelEx($user, 'email'),
-        $form->textField($user, 'email', array('maxlength' => 255, 'class' => 'text'));
+        $form->textField($user, 'email', array('maxlength' => 255, 'class' => 'large'));
         ?>
     </div>
     <?php echo $form->error($user, 'email'); ?>
 
     <div class="formrow">
         <?php
-        echo $form->checkBox($user, 'reverseCards'), $form->labelEx($user, 'reverseCards', array('class' => 'standard'));
+        echo $form->labelEx($user, 'reverseCards'), $form->checkBox($user, 'reverseCards');
         ?>
     </div>
     <?php echo $form->error($user, 'reverseCards'); ?>
 
     <div class="formrow">
         <?php
-        echo $form->checkBox($user, 'onHoverDetails'), $form->labelEx($user, 'onHoverDetails', array('class' => 'standard'));
+        echo $form->labelEx($user, 'onHoverDetails'), $form->checkBox($user, 'onHoverDetails');
         ?>
     </div>
     <?php echo $form->error($user, 'onHoverDetails'); ?>
@@ -52,7 +52,7 @@ $form = $this->beginWidget('CActiveForm', array(
     <div class="formrow">
         <?php
         echo $form->labelEx($user, 'birthyear'),
-        $form->textField($user, 'birthyear', array('maxlength' => 4, 'class' => 'text'));
+        $form->textField($user, 'birthyear', array('maxlength' => 4, 'class' => 'numeric'));
         ?>
     </div>
     <?php echo $form->error($user, 'birthyear'); ?>
@@ -68,7 +68,7 @@ $form = $this->beginWidget('CActiveForm', array(
     <div class="formrow">
         <?php
         echo $form->labelEx($user, 'website'),
-        $form->textField($user, 'website', array('maxlength' => 255, 'class' => 'text'));
+        $form->textField($user, 'website', array('maxlength' => 255, 'class' => 'large'));
         ?>
     </div>
     <?php echo $form->error($user, 'website'); ?>
@@ -76,7 +76,7 @@ $form = $this->beginWidget('CActiveForm', array(
     <div class="formrow">
         <?php
         echo $form->labelEx($user, 'twitter'),
-        $form->textField($user, 'twitter', array('maxlength' => 255, 'class' => 'text'));
+        $form->textField($user, 'twitter', array('maxlength' => 255, 'class' => 'large'));
         ?>
     </div>
     <?php echo $form->error($user, 'twitter'); ?>
@@ -84,7 +84,7 @@ $form = $this->beginWidget('CActiveForm', array(
     <div class="formrow">
         <?php
         echo $form->labelEx($user, 'facebook'),
-        $form->textField($user, 'facebook', array('maxlength' => 255, 'class' => 'text'));
+        $form->textField($user, 'facebook', array('maxlength' => 255, 'class' => 'large'));
         ?>
     </div>
     <?php echo $form->error($user, 'facebook'); ?>
@@ -92,7 +92,7 @@ $form = $this->beginWidget('CActiveForm', array(
     <div class="formrow">
         <?php
         echo $form->labelEx($user, 'googleplus'),
-        $form->textField($user, 'googleplus', array('maxlength' => 255, 'class' => 'text'));
+        $form->textField($user, 'googleplus', array('maxlength' => 255, 'class' => 'large'));
         ?>
     </div>
     <?php echo $form->error($user, 'googleplus'); ?>
@@ -100,7 +100,7 @@ $form = $this->beginWidget('CActiveForm', array(
     <div class="formrow">
         <?php
         echo $form->labelEx($user, 'skype'),
-        $form->textField($user, 'skype', array('maxlength' => 255, 'class' => 'text'));
+        $form->textField($user, 'skype', array('maxlength' => 255, 'class' => 'large'));
         ?>
     </div>
     <?php echo $form->error($user, 'skype'); ?>
@@ -108,7 +108,7 @@ $form = $this->beginWidget('CActiveForm', array(
     <div class="formrow">
         <?php
         echo $form->labelEx($user, 'msn'),
-        $form->textField($user, 'msn', array('maxlength' => 255, 'class' => 'text'));
+        $form->textField($user, 'msn', array('maxlength' => 255, 'class' => 'large'));
         ?>
     </div>
     <?php echo $form->error($user, 'msn'); ?>

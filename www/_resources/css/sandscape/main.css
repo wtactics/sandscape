@@ -153,6 +153,8 @@ body {
     position: absolute;
     width: 10em;
     text-align: left;
+    background-color: #333333;
+    z-index: 100;
 }
 
 #menu li:hover ul {

@@ -1,3 +1,5 @@
+<?php Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms' . (YII_DEBUG ? '' : '.min') . '.css'); ?>
+
 <h2>Chat Filter</h2>
 
 <?php echo CHtml::form($this->createURL('administration/chatfilter')); ?>
@@ -9,12 +11,12 @@
     </p>
 
     <div class="formrow">
-        <?php echo CHtml::textArea('wfilter', $words); ?>
+        <?php echo CHtml::textArea('wfilter', $words, array('class' => 'large')); ?>
     </div>
 </fieldset>
 
 <div class="buttonrow">
     <?php echo CHtml::submitButton('Save', array('class' => 'button')); ?>
-</p>
+</div>
 <?php
-Chtml::endForm();
+echo Chtml::endForm();
