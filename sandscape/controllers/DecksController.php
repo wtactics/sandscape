@@ -277,14 +277,35 @@ class DecksController extends AppController {
 
     private function exportPDF($id) {
         //TODO: not implemented yet!        
+        $pdf = new tFPDF();
+
+        //header()
+        //...
     }
 
     private function exportTXT($id) {
         //TODO: not implemented yet!
+        //security checks
+        //count existing cards
+        //export data
+        $deck = Deck::model()->findByPk($id);
+        $data = null;
+        $data = sprintf($file, "Card List for %s (%d cards)\n\n", $deck->name, count($deck->cards));
+        foreach ($deck->cards as $card) {
+            $data .= sprintf($file, "%s - %d\n", $card->name, 0);
+        }
+
+        //header()
+        echo $data;
     }
 
     private function exportHTML($id) {
         //TODO: not implemented yet!
+        //load HTML template
+        //fill template with data
+        //copy images to temp
+        //zip html file and images
+        //output zip file
     }
 
     /**

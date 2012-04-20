@@ -74,7 +74,8 @@ class Deck extends CActiveRecord {
             'deckCards' => array(self::HAS_MANY, 'DeckCard', 'deckId'),
             'games' => array(self::MANY_MANY, 'Game', 'GameDeck(deckId, gameId)'),
             'preCons' => array(self::HAS_MANY, 'DeckTemplate', 'deckId'),
-            'stats' => array(self::HAS_MANY, 'DeckGameStats', 'deckId')
+            'stats' => array(self::HAS_MANY, 'DeckGameStats', 'deckId'),
+            'cards' => array(self::HAS_MANY, 'Card', 'DeckCard(deckId, cardId)')
         );
     }
 
