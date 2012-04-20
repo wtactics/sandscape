@@ -45,19 +45,6 @@ span.required {
     color: #8A1F11;
 }
 
-input.textsmaller {
-    background-color: #FFF;
-    border:1px solid #BBB;
-    color: #000;
-    margin:0.5em 0;
-    width:200px;
-    padding:5px;
-}
-
-input.textsmaller:focuss {
-    border-color: #666;
-}
-
 .formrow {
     margin-bottom: .5em;
 } 
@@ -71,7 +58,8 @@ input.textsmaller:focuss {
 }
 
 fieldset {
-
+    border: none;
+    border-top: 1px solid #000;
 }
 
 legend {
@@ -80,14 +68,22 @@ legend {
 }
 
 label {
-    display: block;
-}
-
-label.standard {
-    display: inline;
-    margin-left: .8em;
+    min-width: 10em;
+    float: left;
 }
 
 .helpicon {
     margin-left: .5em;
+}
+
+input[type="text"] {
+    width: 45em;
+}
+
+input.numeric {
+    width: 5em;
+}
+
+textarea {
+    width: 50em;
 }

@@ -19,7 +19,7 @@ $form = $this->beginWidget('CActiveForm', array(
     <div class="formrow">
         <?php
         echo $form->labelEx($card, 'cardscapeId'),
-        $form->textField($card, 'cardscapeId', array('class' => 'text'));
+        $form->textField($card, 'cardscapeId', array('class' => 'numeric'));
         ?>
     </div>
     <?php echo $form->error($card, 'cardscapeId'); ?>

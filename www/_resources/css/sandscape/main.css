@@ -58,11 +58,20 @@ body {
     padding-left: 3em;
     font-size: 24pt;
     height: 64px;
+    float: left;
+    width: 60%;
 }
 
-#header h1 a, #header h1 a:visited {
+#header a, #header a:visited {
     color: #FFF;
     text-decoration: none;
+}
+
+#accounttools {
+    float: right;
+    width: 30%;
+    margin-right: 3em;
+    text-align: right;
 }
 
 #content {
@@ -172,6 +181,19 @@ a {
     text-decoration: none;
     color: #81ACCC;
 }
+
+
+input, select, textarea {
+    background-color: #FFF;
+    border: 1px solid #000;
+    color: #000;
+    padding: .3em;
+}
+
+input:focus {
+    border-color: #999;
+}
+
 
 .clearfix {
     clear: both;

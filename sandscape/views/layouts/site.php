@@ -9,12 +9,18 @@
     <body>
         <div id="header">
             <h1><a href="<?php echo Yii::app()->baseUrl; ?>">Sandscape</a></h1>
-            <div id="">
-                <div id=""></div>
-                <div id="menu">
-                    <?php $this->widget('zii.widgets.CMenu', array('items' => $this->menu, 'encodeLabel' => false)); ?>
-                    <div class="clearfix"></div>
-                </div>
+            <div id="accounttools">
+                <?php if (Yii::app()->user->isGuest) { ?>
+                    <a href="<?php echo $this->createUrl('site/login'); ?>">Login / Register</a>
+                <?php } else { ?>
+                    <a href="<?php echo $this->createUrl('account/index'); ?>">Account</a>
+                    <a href="<?php echo $this->createUrl('site/logout'); ?>">Logout</a>
+                <?php } ?>
+            </div>
+            <div class="clearfix"></div>
+            <div id="menu">
+                <?php $this->widget('zii.widgets.CMenu', array('items' => $this->menu, 'encodeLabel' => false)); ?>
+                <div class="clearfix"></div>
             </div>
         </div>
 
