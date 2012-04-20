@@ -89,71 +89,13 @@ $this->title = 'Playing';
 <div class="play"><!-- PLAYER 1 GAME AREA --></div>
 
 <!-- EXTRA DOM ELEMENTS -->
+<?php 
 
-<!-- LOADER DIVS -->
-<div id="opponent-loader" class="loader" style="display:none;">
-    <img id="img-loader" src="_resources/images/game-loader.gif" />
-    <br />
-    <span>Waiting for opponent.</span>
-</div>
+//LOADER DIVS
+$this->renderPartial('_loaders');
 
-<div id="game-loader" class="loader" style="display:none;">
-    <img id="img-loader" src="_resources/images/game-loader.gif" />
-    <br />
-    <span>Building game.</span>
-</div>
+//IN-GAME MENU
+$this->renderPartial('_gamemenu');
 
-<!-- IN-GAME MENU -->
-<img id="menu-slider" src="_resources/images/game-slider-nob.png" />
-<div id="menu-wrapper">
-    <div id="menu-header">
-        <img src="_resources/images/game-slider-title.png" />
-    </div>
-    <div id="menu-content">
-        <div id="game-menu">
-            <h2>Game Menu</h2>
-            <ul id="menu-elements">
-                <?php if (count($dice)) { ?>
-                    <li>
-                        <a href="javascript:;" class="list-header">Dice &Gt;</a>
-                        <ul class="sub-menu">
-                            <?php foreach ($dice as $die) { ?>
-                                <li><a href="javascript:roll(<?php echo $die->diceId; ?>)"><?php echo $die->name; ?></a></li>
-                            <?php } ?>
-                        </ul>
-                    </li>
-                <?php } ?>
-                <li>
-                    <a href="javascript:;" class="list-header">Chat Messages &Gt;</a>
-                    <ul class="sub-menu">
-                        <li><?php echo Chtml::checkBox('show-user-messages', true, array('onchange' => 'filterChatMessages()')); ?> User</li>
-                        <li><?php echo Chtml::checkBox('show-system-messages', true, array('onchange' => 'filterChatMessages()')); ?> System</li>
-                    </ul>
-                </li>
-                <li><a href="javascript:exit();">Exit</a></li>
-            </ul>
-        </div>
-        <br />
-        <h2>Player Counters</h2>
-        <div id="player-counters">
-            <div id="pc-area"><!-- PLAYER COUNTERS ARE PLACED HERE --></div>
-        </div>
-        <h2>Opponent Counters</h2>
-        <div id="opponent-counters">
-            <div id="opc-area"><!-- OPPONENT COUNTERS ARE PLACED HERE --></div>
-        </div>
-        <h2>Decks</h2>
-        <div id="decks"><!-- DECKS ARE PLACED HERE --></div>
-    </div>
-</div>
-
-<!-- DIALOG DIVS -->
-<div style="display:none;">
-    <?php
-    $this->renderPartial('_labeldlg');
-
-    $this->renderPartial('_cardcounterdlg');
-
-    $this->renderPartial('_exitdlg', array('gameId' => $gameId));
-    ?>
-</div>
+//DIALOG DIVS
+$this->renderPartial('_dialogs');

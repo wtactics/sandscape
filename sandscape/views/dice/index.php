@@ -1,7 +1,9 @@
 <?php $this->title = 'Dice'; ?>
 <h2>Manage Dice</h2>
 
-<a href="<?php echo $this->createURL('create'); ?>">Create Dice</a>
+<div class="list-tools">
+    <a href="<?php echo $this->createURL('create'); ?>">Create Dice</a>
+</div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'dice-grid',

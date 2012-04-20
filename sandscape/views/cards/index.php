@@ -1,7 +1,9 @@
 <?php $this->title = 'Cards'; ?>
 <h2>Card List</h2>
-<a href="<?php echo $this->createURL('create'); ?>">Create Card</a>
-<a href="<?php echo $this->createURL('import'); ?>">CSV Import</a>
+<div class="list-tools">
+    <a href="<?php echo $this->createURL('create'); ?>">Create Card</a>
+    <a href="<?php echo $this->createURL('import'); ?>">CSV Import</a>
+</div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'card-grid',

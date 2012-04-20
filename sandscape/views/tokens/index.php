@@ -1,7 +1,9 @@
 <?php $this->title = 'Tokens'; ?>
 <h2>Manage Tokens</h2>
 
-<a href="<?php echo $this->createURL('create'); ?>">Create Token</a>
+<div class="list-tools">
+    <a href="<?php echo $this->createURL('create'); ?>">Create Token</a>
+</div>
 
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(

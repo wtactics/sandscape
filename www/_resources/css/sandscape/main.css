@@ -179,11 +179,14 @@ body {
 }
 
 /* General CSS */
+h1, h2, h3 {
+    margin-bottom: .4em;
+}
+
 a {
     text-decoration: none;
     color: #81ACCC;
 }
-
 
 input, select, textarea {
     background-color: #FFF;
@@ -196,7 +199,14 @@ input:focus {
     border-color: #999;
 }
 
-
 .clearfix {
     clear: both;
+}
+
+.list-tools {
+    text-align: right;
+}
+
+.filters input, .filters select {
+    /*TODO: remove padding, make elems fit the header*/
 }

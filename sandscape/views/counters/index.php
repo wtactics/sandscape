@@ -1,8 +1,9 @@
 <?php $this->title = 'Player Counters'; ?>
 <h2>Manage Player Counters</h2>
 
-<a href="<?php echo $this->createURL('create'); ?>">Create Counter</a>
-
+<div class="list-tools">
+    <a href="<?php echo $this->createURL('create'); ?>">Create Counter</a>
+</div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'counter-grid',

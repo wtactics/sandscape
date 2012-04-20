@@ -27,7 +27,9 @@ Yii::app()->clientScript->registerScript('resetjs', $js);
 
 <h2>User List</h2>
 
-<a href="<?php echo $this->createURL('create'); ?>">Create User</a>
+<div class="list-tools">
+    <a href="<?php echo $this->createURL('create'); ?>">Create User</a>
+</div>
 
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(

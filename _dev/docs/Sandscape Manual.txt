@@ -3,6 +3,9 @@ Sandscape
 
 
 [preface]
+About this document
+-------------------
+
 TODO: ...
 
 Install

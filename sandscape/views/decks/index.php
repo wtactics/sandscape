@@ -6,15 +6,16 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.si
 ?>
 
 <h2>Manage Decks</h2>
-
 <?php if ($cardCount == 0) { ?>
     <div style="text-align: center">There are no cards in the system, you can't create any decks.</div>
 <?php } else { ?>
-    <a href="<?php echo $this->createURL('create'); ?>">Create Deck</a>
-    <?php if (count($templates) > 0) { ?>
-        <a href="javascript:;" onclick="$('#precons').modal();">Pre-constructed Decks</a>
-        <?php
-    }
+    <div class="list-tools">
+        <a href="<?php echo $this->createURL('create'); ?>">Create Deck</a>
+        <?php if (count($templates) > 0) { ?>
+            <a href="javascript:;" onclick="$('#precons').modal();">Pre-constructed Decks</a>
+        <?php } ?>
+    </div>
+    <?php
     $this->widget('zii.widgets.grid.CGridView', array(
         'id' => 'deck-grid',
         'dataProvider' => $filter->search(Yii::app()->user->id),

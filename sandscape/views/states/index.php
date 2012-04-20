@@ -1,6 +1,9 @@
 <?php $this->title = 'States'; ?>
 <h2>Manage States</h2>
-<a href="<?php echo $this->createURL('create'); ?>">Create State</a>
+
+<div class="list-tools">
+    <a href="<?php echo $this->createURL('create'); ?>">Create State</a>
+</div>
 
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(

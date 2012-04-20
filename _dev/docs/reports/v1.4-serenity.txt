@@ -10,11 +10,21 @@ file is created.
 Difficulties
 ------------
 
+Another long stop cause by other projects needing attention has made this one 
+very slow iteration. Moving to another theme has helped detecting bugs and 
+testing features but has also contributed to an increase in the work load.
+
+Again I'm feeling the lack of, at least, one other developer in the project 
+that keeps working when I'm not available and helps to maintain a record of 
+what has been done and what is still pending. Even with _Trac_ its hard to 
+remember what I was working on each time I have to stop for a longer period of 
+time.
 
 Achievements
 ------------
 
-
-
 Next
 ----
+
+Test, test and test. I need this thing tested as much as possible before 
+starting a new development milestone.

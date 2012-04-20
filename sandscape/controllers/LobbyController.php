@@ -208,7 +208,7 @@ class LobbyController extends AppController {
                 $game->player1Ready = 1;
                 $game->spectatorsSpeak = intval($_POST['gameChatSpectators']);
 
-                if (isset($_POST['limitOpponent'])) {
+                if (isset($_POST['limitOpponent']) && !empty($_POST['limitOpponent']) && intval($_POST['limitOpponent']) != 0) {
                     $game->acceptUser = intval($_POST['limitOpponent']);
                 }
 

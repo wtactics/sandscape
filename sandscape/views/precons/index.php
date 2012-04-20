@@ -1,7 +1,10 @@
 <?php $this->title = 'Pre-constructed Decks'; ?>
 <h2>Manage Pre-constructed Decks</h2>
 
-<a href="<?php echo $this->createURL('decks/create'); ?>">Create Pre-constructed Deck</a>
+<div class="list-tools">
+    <a href="<?php echo $this->createURL('decks/create'); ?>">Create Pre-constructed Deck</a>
+</div>
+
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'decktemplate-grid',
