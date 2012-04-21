@@ -13,28 +13,28 @@ $form = $this->beginWidget('CActiveForm', array(
     <div class="formrow">
         <?php
         echo $form->labelEx($register, 'name'),
-        $form->textField($register, 'name', array('class' => 'text'));
+        $form->textField($register, 'name', array('class' => 'standard'));
         ?>
     </div>
     <?php echo $form->error($register, 'name'); ?>
     <div class="formrow">
         <?php
         echo $form->labelEx($register, 'email'),
-        $form->textField($register, 'email', array('class' => 'text'));
+        $form->textField($register, 'email', array('class' => 'standard'));
         ?>
     </div>
     <?php echo $form->error($register, 'email'); ?>
     <div class="formrow">
         <?php
         echo $form->labelEx($register, 'password'),
-        $form->passwordField($register, 'password', array('class' => 'text'));
+        $form->passwordField($register, 'password', array('class' => 'standard'));
         ?>
     </div>
     <?php echo $form->error($register, 'password'); ?>
     <div class="formrow">
         <?php
         echo $form->labelEx($register, 'password_repeat'),
-        $form->passwordField($register, 'password_repeat', array('class' => 'text'));
+        $form->passwordField($register, 'password_repeat', array('class' => 'standard'));
         ?>
     </div>
     <?php echo $form->error($register, 'password_repeat'); ?>

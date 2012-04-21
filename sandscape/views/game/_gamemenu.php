@@ -14,38 +14,13 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/game.commo
 <div id="dicewidget" class="menububble">
     <div class="menucontents">
         <?php if (count($dice)) { ?>
-            <ul id="">
+            <h2>Dice</h2>
+            <ul>
                 <?php foreach ($dice as $die) { ?>
                     <li><a href="javascript:roll(<?php echo $die->diceId; ?>)"><?php echo $die->name; ?></a></li>
                 <?php } ?>
             </ul>
         <?php } ?>
-    </div>
-    <div class="menububble-arrowborder"></div>
-    <div class="menububble-arrow"></div>
-</div>
-
-<div id="systemwidget" class="menububble">
-    <div class="menucontents">
-        <ul>
-            <li>Filter Messages
-                <ul>
-                    <li>
-                        <?php
-                        echo Chtml::checkBox('show-user-messages', true, array('onchange' => 'filterChatMessages()'));
-                        ?> 
-                        User
-                    </li>
-                    <li>
-                        <?php
-                        echo Chtml::checkBox('show-system-messages', true, array('onchange' => 'filterChatMessages()'));
-                        ?> 
-                        System
-                    </li>
-                </ul>
-            </li>
-            <li><a href="javascript:exit();">Exit</a></li>
-        </ul>
     </div>
     <div class="menububble-arrowborder"></div>
     <div class="menububble-arrow"></div>
@@ -74,3 +49,33 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/game.commo
     <div class="menububble-arrowborder"></div>
     <div class="menububble-arrow"></div>
 </div>
+
+<div id="systemwidget" class="menububble">
+    <div class="menucontents">
+        <h2>System Menu</h2>
+        <ul>
+            <li>Filter Messages
+                <ul>
+                    <li>
+                        <?php
+                        echo Chtml::checkBox('show-user-messages', true, array('onchange' => 'filterChatMessages()'));
+                        ?> 
+                        User
+                    </li>
+                    <li>
+                        <?php
+                        echo Chtml::checkBox('show-system-messages', true, array('onchange' => 'filterChatMessages()'));
+                        ?> 
+                        System
+                    </li>
+                </ul>
+            </li>
+            <li><a href="javascript:exit();">Exit</a></li>
+        </ul>
+    </div>
+    <div class="menububble-arrowborder"></div>
+    <div class="menububble-arrow"></div>
+</div>
+
+<!-- helper shader div -->
+<div id="shader" onclick="closeAllWidgets()"></div>

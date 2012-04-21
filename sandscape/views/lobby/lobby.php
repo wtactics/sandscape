@@ -9,7 +9,7 @@ if (count($messages)) {
 }
 //
 Yii::app()->clientScript->registerCoreScript('jquery.ui');
-//
+
 Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/lobby.' . (YII_DEBUG ? '' : '.min') . 'css');
 Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/modal.' . (YII_DEBUG ? '' : '.min') . 'css');
 Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/lobby.' . (YII_DEBUG ? '' : '.min') . 'js');
@@ -201,32 +201,7 @@ $this->title = 'Sandscape Lobby';
 
 <div class="clearfix"></div>
 
-<div id="lobbytools">
-    <div id="messagetools">
-        <input type="text" class="text" id="writemessage" />
-
-        <button type="button" class="button" onclick="sendMessage();" id="sendbtn">Send</button>
-    </div>
-    <div id="gametools">
-        <?php if ($cardCount != 0) { ?>
-            <a href="javascript:;" onclick="$('#createdlg').modal();" class="button">Create Game</a>
-
-            <?php
-            echo CHtml::label('Filter Games:', 'filterGames'), '&nbsp;&nbsp;&nbsp;',
-            CHtml::dropDownList('filterGames', null, array(
-                0 => 'All',
-                1 => 'Paused',
-                2 => 'Running',
-                3 => 'That I play',
-                4 => 'Waiting for me',
-                5 => 'Waiting for opponent'
-                    ), array('onchange' => 'filterGameList();')
-            );
-        }
-        ?>
-    </div>
-    <div class="clearfix"></div>
-</div>
+<?php $this->renderPartial('_lobbytools', array('cardCount' => $cardCount)); ?>
 
 <div style="display: none">
     <?php

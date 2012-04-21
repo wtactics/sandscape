@@ -39,6 +39,8 @@
             <div id="footerright">
                 <ul>
                     <li>Running Serenity</li>
+                    <li><span>X</span> active games with <span>Y</span> decks</li>
+                    <li>Server time is <span><?php echo date('Y-m-d H:i:s'); ?></span></li>
                 </ul>
             </div>
             <div class="clearfix"></div>

@@ -9,14 +9,14 @@ $form = $this->beginWidget('CActiveForm', array(
     <div class="formrow">
         <?php
         echo $form->labelEx($login, 'email'),
-        $form->textField($login, 'email', array('class' => 'text'));
+        $form->textField($login, 'email', array('class' => 'standard'));
         ?>
     </div>
     <?php echo $form->error($login, 'email'); ?>
     <div class="formrow">
         <?php
         echo $form->labelEx($login, 'password'),
-        $form->passwordField($login, 'password', array('class' => 'text'));
+        $form->passwordField($login, 'password', array('class' => 'standard'));
         ?>
     </div>
     <?php echo $form->error($login, 'password'); ?>

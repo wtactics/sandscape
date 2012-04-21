@@ -210,3 +210,23 @@ input:focus {
 .filters input, .filters select {
     /*TODO: remove padding, make elems fit the header*/
 }
+
+.halfleft {
+    width: 49%;
+    float:left;
+}
+
+.halfright {
+    width: 49%;
+    float: right;
+}
+
+fieldset {
+    border: none;
+    border-top: 1px solid #000;
+}
+
+legend {
+    margin-left: 1em;
+    padding: 0 .5em 0 .5em;
+}

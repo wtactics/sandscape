@@ -57,16 +57,6 @@ span.required {
     margin-right: .8em;
 }
 
-fieldset {
-    border: none;
-    border-top: 1px solid #000;
-}
-
-legend {
-    margin-left: 1em;
-    padding: 0 .5em 0 .5em;
-}
-
 label {
     min-width: 12em;
     float: left;

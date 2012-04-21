@@ -95,7 +95,7 @@ $this->title = 'Playing';
 $this->renderPartial('_loaders');
 
 //IN-GAME MENU
-$this->renderPartial('_gamemenu');
+$this->renderPartial('_gamemenu', array('dice' => $dice));
 
 //DIALOG DIVS
 $this->renderPartial('_dialogs');

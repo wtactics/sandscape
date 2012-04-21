@@ -23,6 +23,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+.ui-slider-handle {
+    width: 5px;
+}
+
 #users-area {
     position: relative;
     float: left;
@@ -106,16 +110,12 @@
     left: 0;
 }
 
-.deck-list {
-    width: 300px;
-}
-
 #games-list * strong {
     clear: both;
 }
 
 #lobbytools {
-    margin-top: 15px;
+    margin-top: 35px;
 }
 
 #messagetools {
@@ -134,23 +134,32 @@
     text-align: right;
 }
 
-.lobby-dlg-left {
-    float: left;
-    width: 250px;
-    margin-right: 5px;
-    height: 250px;
+/* DIALOG WINDOWS */
+.lobbydlg {
+    width: 640px;
 }
 
-.lobby-dlg-right {
+.dlgbuttons {
+
+}
+
+.dlgrow {
+
+}
+
+.lobbydlg-left {
     float: left;
-    width: 250px;
-    height: 250px;
+    width: 49%;
+}
+
+.lobbydlg-right {
+    float: right;
+    width: 49%;
+}
+
+.deck-list {
+    width: 300px;
 }
 
 .marker {
-    margin-left: 10px;
-}
-
-.lobby-dlg-only {
-    width: 250px;
 }

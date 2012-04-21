@@ -267,6 +267,7 @@ div.card > img.state {
     width: 32px;
     height: 100px;
     text-align: center;
+    z-index: 65;
 }
 
 #menunob ul {
@@ -295,7 +296,7 @@ div.card > img.state {
     -moz-box-shadow: 0 0 5px #888888;
     -webkit-box-shadow: 0 0 5px #888888;
     padding: 1em;
-    z-index: 60;
+    z-index: 65;
     display: none;
 }
 
@@ -322,20 +323,14 @@ div.card > img.state {
 }
 
 #dicewidget.menububble {
-    width: 250px;
-    top: 50px;
-    right: 45px;
-}
-
-#systemwidget.menububble {
-    width: 250px;
-    top: 120px;
+    width: 150px;
+    top: 45px;
     right: 45px;
 }
 
 #counterswidget.menububble {
     width: 250px;
-    top: 50px;
+    top: 70px;
     right: 45px;
 }
 
@@ -344,6 +339,27 @@ div.card > img.state {
     top: 95px;
     right: 45px;
 }
+
+#systemwidget.menububble {
+    width: 150px;
+    top: 120px;
+    right: 45px;
+}
+
+#shader {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    top: 0;
+    left: 0;
+    /*background-color: #999;
+    opacity: .7;
+    filter: alpha(opacity=70);*/
+    display: none;
+    z-index: 60;
+}
+
 
 /*COUNTERS FOR EACH CARD*/
 .counter-widget {

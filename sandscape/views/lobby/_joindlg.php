@@ -1,9 +1,11 @@
-<div id="joindlg">
-    <?php echo CHtml::beginForm($this->createURL('lobby/join'), 'post', array('id' => 'joinform')); ?>
+<div id="joindlg" class="lobbydlg">
     <h2>Join Game</h2>
-    <div class="lobby-dlg-only success">
-        <h3>Deck Options</h3>
-        <p class="deck-list">
+
+    <?php echo CHtml::beginForm($this->createURL('lobby/join'), 'post', array('id' => 'joinform')); ?>
+
+    <fieldset>
+        <legend>Deck Options</legend>
+        <div class="dlgrow">
             <?php
             echo CHtml::label('Available Decks:', 'deckList'),
             CHtml::checkBoxList('deckList', array(), CHtml::listData($decks, 'deckId', 'name'), array(
@@ -11,19 +13,19 @@
                 'onchange' => 'limitDeckSelection("#btnJoin")',
             ));
             ?>
-        </p>
-    </div>
-    <p>
-        <?php
-        echo CHtml::submitButton('I\'m Ready!', array(
-            'name' => 'JoinGame',
-            'id' => 'btnJoin',
-            'disabled' => 'disabled',
-            'class' => 'button'
-        )),
-        CHtml::link('Cancel', 'javascript:;', array('class' => 'simplemodal-close'));
-        ?>
-    </p>
+        </div>
+        <div class="dlgbuttons">
+            <?php
+            echo CHtml::submitButton('I\'m Ready!', array(
+                'name' => 'JoinGame',
+                'id' => 'btnJoin',
+                'disabled' => 'disabled',
+                'class' => 'button'
+            )),
+            CHtml::link('Cancel', 'javascript:;', array('class' => 'simplemodal-close'));
+            ?>
+        </div>
+    </fieldset>
     <?php
     echo CHtml::hiddenField('game'), CHtml::hiddenField('maxDecks', null, array('id' => 'maxDecksJoin')),
     CHtml::endForm();
