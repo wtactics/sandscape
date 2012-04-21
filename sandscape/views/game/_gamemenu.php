@@ -1,12 +1,17 @@
+<?php
+Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/game.common' . (YII_DEBUG ? '' : '.min') . '.js', CClientScript::POS_HEAD);
+?>
+
 <div id="menunob">
     <ul>
-        <li></li>
-        <li></li>
-        <li></li>
+        <li><a href="javascript:;" onclick="showWidget('dicewidget');">D</a></li>
+        <li><a href="javascript:;" onclick="showWidget('counterswidget');">C</a></li>
+        <li><a href="javascript:;" onclick="showWidget('deckswidget');">G</a></li>
+        <li><a href="javascript:;" onclick="showWidget('systemwidget');">S</a></li>
     </ul>
 </div>
 
-<div id="dicewidget" class="menububble" style="display:none;">
+<div id="dicewidget" class="menububble">
     <div class="menucontents">
         <?php if (count($dice)) { ?>
             <ul id="">
@@ -20,7 +25,7 @@
     <div class="menububble-arrow"></div>
 </div>
 
-<div id="systemwidget" class="menububble" style="display:none;">
+<div id="systemwidget" class="menububble">
     <div class="menucontents">
         <ul>
             <li>Filter Messages
@@ -46,7 +51,7 @@
     <div class="menububble-arrow"></div>
 </div>
 
-<div id="counterswidget" class="menububble" style="display:none;">
+<div id="counterswidget" class="menububble">
     <div class="menucontents">
         <h2>Player Counters</h2>
         <div id="player-counters">

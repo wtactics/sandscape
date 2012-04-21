@@ -262,10 +262,26 @@ div.card > img.state {
     right: 0;
     top: 50px;
     background-color: #FEFEFE;
-    border: 1px solid #FFF;
+    border: 1px solid #000;
     border-right: none;
     width: 32px;
-    height: 96px;
+    height: 100px;
+    text-align: center;
+}
+
+#menunob ul {
+}
+
+#menunob li {
+    width: 100%;
+    text-align: center;
+    line-height: 24px;
+    height: 24px;
+    border-bottom: 1px solid #CCC;
+}
+
+#menunob ul:first-child {
+    border: none;
 }
 
 .menububble {
@@ -280,6 +296,7 @@ div.card > img.state {
     -webkit-box-shadow: 0 0 5px #888888;
     padding: 1em;
     z-index: 60;
+    display: none;
 }
 
 .menububble-arrowborder {
@@ -312,7 +329,7 @@ div.card > img.state {
 
 #systemwidget.menububble {
     width: 250px;
-    top: 50px;
+    top: 120px;
     right: 45px;
 }
 
@@ -324,7 +341,7 @@ div.card > img.state {
 
 #deckswidget.menububble {
     width: 250px;
-    top: 50px;
+    top: 95px;
     right: 45px;
 }
 
