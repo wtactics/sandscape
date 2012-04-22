@@ -221,6 +221,10 @@ input:focus {
     float: right;
 }
 
+.centered {
+    text-align: center;
+}
+
 fieldset {
     border: none;
     border-top: 1px solid #000;

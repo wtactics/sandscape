@@ -12,7 +12,7 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.si
     <div class="list-tools">
         <a href="<?php echo $this->createURL('create'); ?>">Create Deck</a>
         <?php if (count($templates) > 0) { ?>
-            <a href="javascript:;" onclick="$('#precons').modal();">Pre-constructed Decks</a>
+            <!-- //TODO: reactivate <a href="javascript:;" onclick="$('#precons').modal();">Pre-constructed Decks</a> -->
         <?php } ?>
     </div>
     <?php

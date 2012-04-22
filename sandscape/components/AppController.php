@@ -104,10 +104,11 @@ class AppController extends CController {
                         'label' => 'Tokens',
                         'url' => array('tokens/index'),
                     ),
-                    array(
-                        'label' => 'Pre-constructed',
-                        'url' => array('precons/index'),
-                    ),
+                    //TODO: reactivate
+                    //array(
+                    //    'label' => 'Pre-constructed',
+                    //    'url' => array('precons/index'),
+                    //),
                     array(
                         'label' => 'General Options',
                         'url' => array('administration/gameoptions'),
