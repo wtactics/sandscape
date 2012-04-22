@@ -209,7 +209,7 @@ class AccountController extends AppController {
      * @param integer $id The user's ID
      */
     public function actionProfile($id) {
-        //TODO: not implemented yet!
+        $this->render('profile');
     }
 
     /**

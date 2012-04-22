@@ -1,28 +1,18 @@
 # Simple notes to remind me (and anyone that wants to use them), not always understandable :)
 
-Rever o código e perceber até que ponto o projecto está estável.
-We need a new design and a better way to manage the platform.
-
-#EBEBEB /#707070, "Helvetica Neue",Helvetica,Arial,sans-serif;13px
-#333333
-
 CSS para:
     - filtros de listas (campos de input demasiado grandes)
     - TR/TH das listas/grelhas
-    - padding/margin dos H(1,2,3)
     - game listings
 
-Opções para voltar de todas as edições.
-
-Fix pre-constructed decks
-
 Remove hardcoded css in forms for cards, states and tokens.
+
 Setting to allow users to see deck after game ended.
 Game reports for each user and for system.
 Replace right-click menu in game.
 
 ================================================================================
-NeWiTa
+Chat about adding more control and options to the game table, with NeWiTa.
 17:23:20 isto por exemplo, para jogar marvel tcg, o jogador metia uma grelha de 3 linhas e colunas infinitas
 17:24:14 tornava-se logo mais fácil usar isto para jogar um match, visto que tinhas logo os sítios certos para meter as cartas em vez de ser a olhómetro, percebes?
 17:25:03 este género de jogos tem (quase?) sempre sítios específicos onde meter as coisas, pelo que se estiver um bocadinho ao lado já pode ser interpretado como uma carta a fazer um papel diferente
@@ -48,7 +38,5 @@ NeWiTa
 
 Better navigation! Returning to lists, and any other navigation needs to have better 
 CSS to make the links different from standard links, maybe a few icons.
-
 Implement a card gallery available for everyone (use colorbox)
-
 Maybe replace simple.modal with color box everywhere?
