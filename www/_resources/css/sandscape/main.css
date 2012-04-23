@@ -234,3 +234,7 @@ legend {
     margin-left: 1em;
     padding: 0 .5em 0 .5em;
 }
+
+.filters input, .filters select {
+    padding: 0;
+}
