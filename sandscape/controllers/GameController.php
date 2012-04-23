@@ -657,7 +657,7 @@ class GameController extends AppController {
                         if ($game->running && $this->scGame && isset($_REQUEST['counter']) && isset($_REQUEST['player'])) {
                             $result = array(
                                 'success' => 1,
-                                'value' => $this->scGame->getPlayerSide($_REQUEST['player'])->increaseCounterValue($_REQUEST['counter'])
+                                'value' => $this->scGame->getPlayerSide($_REQUEST['player'])->decreaseCounterValue($_REQUEST['counter'])
                             );
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
