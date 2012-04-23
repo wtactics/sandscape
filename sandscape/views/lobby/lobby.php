@@ -84,21 +84,21 @@ $this->title = 'Sandscape Lobby';
 </div>
 
 <div id="games-area">
-    <?php
-    if ($cardCount != 0) {
+    <div id="games-view">
+        <?php
+        if ($cardCount != 0) {
 
-        $this->widget('zii.widgets.jui.CJuiSlider', array(
-            'id' => 'games-slider',
-            'options' => array(
-                'value' => 100,
-                'animate' => true,
-                'orientation' => 'vertical',
-                'slide' => 'js:gamesSliderScroll',
-                'change' => 'js:gamesSliderChange'
-            )
-        ));
-        ?>
-        <div id="games-view">
+            $this->widget('zii.widgets.jui.CJuiSlider', array(
+                'id' => 'games-slider',
+                'options' => array(
+                    'value' => 100,
+                    'animate' => true,
+                    'orientation' => 'vertical',
+                    'slide' => 'js:gamesSliderScroll',
+                    'change' => 'js:gamesSliderChange'
+                )
+            ));
+            ?>
             <ul id="games-list">
                 <?php
                 $currentId = Yii::app()->user->id;
@@ -193,10 +193,10 @@ $this->title = 'Sandscape Lobby';
                 }
                 ?>
             </ul>
-        </div>
-    <?php } else { ?>
-        <div style="text-align: center; vertical-align: middle;">There are no cards to play with!</div>
-    <?php } ?>
+        <?php } else { ?>
+            <div style="text-align: center; vertical-align: middle;">There are no cards to play with!</div>
+        <?php } ?>
+    </div>
 </div>
 
 <div class="clearfix"></div>
