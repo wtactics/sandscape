@@ -1,5 +1,5 @@
-<?php $this->title = 'Dice'; ?>
-<h2>Manage Dice</h2>
+<?php $this->title = 'Dice List'; ?>
+<h2>Dice List</h2>
 
 <div class="list-tools">
     <a href="<?php echo $this->createURL('create'); ?>">Create Dice</a>

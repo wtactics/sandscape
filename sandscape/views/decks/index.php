@@ -1,11 +1,11 @@
 <?php
-$this->title = 'Decks';
+$this->title = 'Deck List';
 
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/modal' . (YII_DEBUG ? '' : '.min') . '.css');
-Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.simplemodal.1.4.1.min.js');
+//Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/modal' . (YII_DEBUG ? '' : '.min') . '.css');
+//Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.simplemodal.1.4.1.min.js');
 ?>
 
-<h2>Manage Decks</h2>
+<h2>Deck List</h2>
 <?php if ($cardCount == 0) { ?>
     <div style="text-align: center">There are no cards in the system, you can't create any decks.</div>
 <?php } else { ?>
