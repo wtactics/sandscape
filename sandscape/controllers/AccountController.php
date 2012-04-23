@@ -56,19 +56,20 @@ class AccountController extends AppController {
         $user = $this->loadUserModel(Yii::app()->user->id);
         $passwordModel = new PasswordForm();
 
-        $this->performAjaxValidation(array('profile-form', 'password-form'), array($user, $passwordModel));
+        $this->performAjaxValidation('profile-form', $user);
+        $this->performAjaxValidation('password-form', $passwordModel);
 
         if (isset($_POST['User'])) {
             $user->attributes = $_POST['User'];
             if ($user->save()) {
-                $this->redirect(array('profile'));
+                $this->redirect(array('index'));
             }
         } else if (isset($_POST['PasswordForm'])) {
             $passwordModel->attributes = $_POST['PasswordForm'];
             if ($passwordModel->validate()) {
                 $user->password = User::hash($passwordModel->password);
                 if ($user->save()) {
-                    $this->redirect(array('profile'));
+                    $this->redirect(array('index'));
                 }
             }
         } else if (isset($_POST['Avatar'])) {
@@ -83,7 +84,7 @@ class AccountController extends AppController {
             }
 
             if ($user->save()) {
-                $this->redirect(array('profile'));
+                $this->redirect(array('index'));
             }
         }
 

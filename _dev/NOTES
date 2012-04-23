@@ -40,3 +40,6 @@ Better navigation! Returning to lists, and any other navigation needs to have be
 CSS to make the links different from standard links, maybe a few icons.
 Implement a card gallery available for everyone (use colorbox)
 Maybe replace simple.modal with color box everywhere?
+
+If there are no counters setup for the game, disable the counters menu.
+Disable states and tokens if none exist.

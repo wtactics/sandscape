@@ -55,6 +55,9 @@ class AppController extends CController {
      * @var string The page title.
      */
     protected $title;
+    protected $gameCount;
+    protected $deckCount;
+    protected $userCount;
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
@@ -144,6 +147,10 @@ class AppController extends CController {
                 'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class == 2,
             )
         );
+
+        $this->gameCount = intval(Game::model()->count('ended IS NOT NULL'));
+        $this->deckCount = intval(Deck::model()->count('active = 1'));
+        $this->userCount = intval(User::model()->count('active = 1'));
     }
 
     /**

@@ -2,73 +2,51 @@
 
 <h2><?php echo $this->title ?></h2>
 
-<table>
-    <tr>
-        <td>Player 1:</td>
-        <td>
-            <?php
-            echo CHtml::image('_resources/images/' .
-                    ($game->player1Ready ? 'icon-x16-tick-circle.png' : 'icon-x16-cross.png'), ''
-                    , array('title' => ($game->player1Ready ? 'Ready' : 'Not ready'))),
-            CHtml::link($game->creator->name, $this->createUrl('account/profile'
-                            , array('id' => $game->player1))
-            );
-            ?>
-        </td>
-    </tr>
-    <tr>
-        <td>Player 2:</td>
-        <td>
-            <?php
-            if ($game->player2) {
-                echo CHtml::image('_resources/images/' .
-                        ($game->player2Ready ? 'icon-x16-tick-circle.png' : 'icon-x16-cross.png')
-                        , '', array('title' => ($game->player2Ready ? 'Ready' : 'Not ready'))),
-                CHtml::link($game->opponent->name, $this->createUrl('account/profile'
-                                , array('id' => $game->player2))
-                );
-            } else {
-                ?>
-                No opponent yet.
-            <?php } ?>
-        </td>
-    </tr>
-    <?php if ($game->winnerId) { ?>
-        <tr>
-            <td>Winner was:</td>
-            <td><?php echo $game->winner->name; ?></td>
-        </tr>
-    <?php } ?>
-    <tr>
-        <td>Created at:</td>
-        <td><?php echo $game->created; ?></td>
-    </tr>
-    <?php if ($game->started) { ?>
-        <tr>
-            <td>Started at:</td>
-            <td><?php echo $game->started; ?></td>
-        </tr>
-    <?php } ?>
-    <tr>
-        <td>Game status:</td>
-        <td><?php echo ($game->running ? 'Running' : ($game->paused ? 'Paused' : ($game->ended ? 'Finished' : 'Unknown'))); ?></td>
-    </tr>
-    <tr>
-        <td>Extra:</td>
-        <td>
-            Using <?php echo $game->maxDecks; ?> deck(s)<?php echo ($game->graveyard ? ' and graveyard' : ''); ?>.<br />
-            <?php if ($game->ended || !$game->started || ($game->running || $game->paused)) { ?>
-                Spectators are able to speak in game chat.
-            <?php } else if ($game->ended) { ?>
-                Spectators were able to speak in game chat.
-            <?php } ?>
-        </td>
-    </tr>
-</table>
+<?php
+$data = array(
+    'player1' => $game->creator,
+    'player2' => $game->opponent,
+    'winner' => $game->winner,
+    'created' => $game->created,
+    'started' => $game->started,
+    'status' => ($game->running ? 'Running' : ($game->paused ? 'Paused' : ($game->ended ? 'Finished' : 'Unknown'))),
+    'extra' => 'Using ' . $game->maxDecks . 'deck(s)' . ($game->graveyard ? ' and graveyard' : '') . '.'
+);
 
+$this->widget('zii.widgets.CDetailView', array(
+    'data' => $data,
+    'attributes' => array(
+        array(
+            'name' => 'player1',
+            'label' => 'Player 1',
+            'type' => 'raw',
+            'value' => CHtml::link($game->creator->name, $this->createUrl('account/profile', array('id' => $game->player1)))
+        ),
+        array(
+            'name' => 'player2',
+            'label' => 'Player 2',
+            'type' => 'raw',
+            'value' => CHtml::link($game->opponent->name, $this->createUrl('account/profile', array('id' => $game->player2)))
+        ),
+        'created',
+        'started',
+        'status',
+        array(
+            'name' => 'winner',
+            'label' => 'Winner',
+            'type' => 'raw',
+            'value' => CHtml::link($game->winner->name, $this->createUrl('account/profile', array('id' => $game->winnerId)))
+        ),
+        array(
+            'name' => 'extra',
+            'label' => 'Extra'
+        )
+    )
+));
+?>
 
 <?php if ($game->ended) { ?>
-    <h3>Own Decks</h3>
+    <h3>Decks</h3>
     <table>
         <?php
         $url = $this->createUrl('account/starratingajax');
@@ -141,7 +119,7 @@
         )
     ));
 
-    echo CHtml::textArea('notes'),
+    echo CHtml::textArea('notes', null, array('style' => 'width: 95%;height:90%;')),
     CHtml::hiddenField('dlgGameId'),
     CHtml::hiddenField('dlgDeckId');
 

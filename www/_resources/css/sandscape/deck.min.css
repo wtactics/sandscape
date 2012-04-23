@@ -1,1 +1,1 @@
-li{list-style:none;cursor:pointer}.available{padding:.2em 0 .1em 0}#selected-cards{min-height:250px}#selected-cards li span.card-count{font-weight:bold;margin-left:.3em}#card-total{font-weight:bold}
+li{list-style:none;cursor:pointer}.available{padding:.2em 0 .1em 0}#selected-cards{min-height:250px}.card-count{font-weight:bold;margin-left:.3em}#card-total{font-weight:bold}

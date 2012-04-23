@@ -6,7 +6,7 @@ Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms' . (YI
 
 <h2>Sandscape Settings</h2>
 
-<?php echo CHtml::form($this->createURL('administration/savesandscapesettings')); ?>
+<?php echo CHtml::form($this->createURL('administration/sandscapesettings')); ?>
 
 <fieldset>
     <legend>Settings</legend>
@@ -34,7 +34,7 @@ Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms' . (YI
     <div class="formrow">
         <?php
         echo CHtml::label('Allow avatar upload', 'allowavatar'),
-        CHtml::checkBox('allowavatar', $settings['allowavatar']->value, array('uncheckValue' => $settings['allowavatar']->value));
+        CHtml::checkBox('allowavatar', $settings['allowavatar']->value, array('uncheckValue' => 0));
         ?>
     </div>
 </fieldset>

@@ -8,14 +8,14 @@ Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/administrati
 
 <h2>Game Options</h2>
 
-<?php echo CHtml::form($this->createURL('administration/savegamesettings')); ?>
+<?php echo CHtml::form($this->createURL('administration/gameoptions')); ?>
 
 <fieldset>
     <legend>Options</legend>
     <div class="formrow">
         <?php
         echo CHtml::label('Fix Deck Number', 'fixdecknr'),
-        CHtml::checkBox('fixdecknr', $settings['fixdecknr']->value, array('uncheckValue' => $settings['fixdecknr']->value));
+        CHtml::checkBox('fixdecknr', $settings['fixdecknr']->value, array('uncheckValue' => 0));
         ?>
     </div>
 
@@ -29,7 +29,7 @@ Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/administrati
     <div class="formrow">
         <?php
         echo CHtml::label('Allow any dice', 'useanydice'),
-        CHtml::checkBox('useanydice', $settings['useanydice']->value, array('uncheckValue' => $settings['useanydice']->value));
+        CHtml::checkBox('useanydice', $settings['useanydice']->value, array('uncheckValue' => 0));
         ?>
     </div>
 

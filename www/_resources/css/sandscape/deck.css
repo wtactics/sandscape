@@ -37,7 +37,7 @@ li {
     min-height: 250px;
 }
 
-#selected-cards li span.card-count {
+.card-count {
     font-weight: bold;
     margin-left: .3em;
 }

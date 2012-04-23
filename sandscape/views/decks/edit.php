@@ -12,5 +12,16 @@ $this->title = ($deck->isNewRecord ? 'Create Deck' : 'Edit Deck');
 ?>
 <h2><?php echo ($deck->isNewRecord ? 'Create Deck' : 'Edit Deck'); ?></h2>   
 
-<?php
-echo $this->renderPartial('_form', array('deck' => $deck, 'cards' => $cards));
+<?php echo $this->renderPartial('_form', array('deck' => $deck, 'cards' => $cards)); ?>
+
+<p>
+    <a href="<?php echo $this->createUrl('decks/export', array('id' => $deck->deckId, 'type' => 'txt')); ?>">
+        <img src="_resources/images/icon-x16-document-text.png" title="Export as Text" />
+    </a>
+    <a href="<?php echo $this->createUrl('decks/export', array('id' => $deck->deckId, 'type' => 'html')); ?>">
+        <img src="_resources/images/icon-x16-html.png" title="Export as HTML" />
+    </a>
+    <a href="<?php echo $this->createUrl('decks/export', array('id' => $deck->deckId, 'type' => 'pdf')); ?>">
+        <img src="_resources/images/icon-x16-document-pdf.png" title="Export as PDF" />
+    </a>
+</p>

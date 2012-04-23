@@ -283,19 +283,6 @@ class CardsController extends AppController {
         ));
     }
 
-    public function actionView($id) {
-        $card = $this->loadCardModel($id);
-        $cardscapeUrl = '';
-        if (($setting = Setting::model()->findByPk('cardscapeurl')) !== null) {
-            $cardscapeUrl = $setting->value;
-        }
-
-        $this->render('view', array(
-            'card' => $card,
-            'cardscapeUrl' => $cardscapeUrl
-        ));
-    }
-
     /**
      * Loads a card model from the database.
      * 

@@ -31,15 +31,15 @@
         <div id="footer">
             <div id="footerleft">
                 <ul>
-                    <li><a href="<?php echo $this->createUrl('site/attribution'); ?>">Attribution</a></li>
-                    <li><a href="http://www.wtactics.org">WTactics.org</a></li>
-                    <li><a href="http://sourceforge.net/projects/sandscape">Sandscape</a></li>
+                    <li><a href="<?php echo $this->createUrl('site/attribution'); ?>">Due Attribution</a></li>
+                    <li><a href="http://www.wtactics.org">WTactics.org Project</a></li>
+                    <li><a href="http://sourceforge.net/projects/sandscape">Sandscape@sourceforge.net</a></li>
                 </ul>
             </div>
             <div id="footerright">
                 <ul>
-                    <li>Running Serenity</li>
-                    <li><span>X</span> active games with <span>Y</span> decks</li>
+                    <li>Running "Serenity" Milestone</li>
+                    <li><span><?php echo $this->gameCount; ?></span> active game(s) and <span><?php echo $this->deckCount; ?></span> deck(s) from <?php echo $this->userCount; ?> user(s)</li>
                     <li>Server time is <span><?php echo date('Y-m-d H:i:s'); ?></span></li>
                 </ul>
             </div>
