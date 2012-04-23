@@ -7,7 +7,7 @@ if (count($messages)) {
 
 Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/game.common' . (YII_DEBUG ? '' : '.min') . '.css');
 Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/game.play' . (YII_DEBUG ? '' : '.min') . '.css');
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/modal.' . (YII_DEBUG ? '' : '.min') . 'css');
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/modal' . (YII_DEBUG ? '' : '.min') . '.css');
 //
 Yii::app()->clientScript->registerCoreScript('jquery.ui');
 //

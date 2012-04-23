@@ -1,10 +1,7 @@
 <?php
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'register-form',
-    'enableAjaxValidation' => true,
-    'clientOptions' => array(
-        'inputContainer' => 'p'
-    )
+    'enableAjaxValidation' => true
         ));
 ?>
 <fieldset>

@@ -1,4 +1,5 @@
-<?php $this->title = 'Games'; ?>
+<?php $this->title = 'Game List'; ?>
+
 <h2>Game List</h2>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(

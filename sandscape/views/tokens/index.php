@@ -1,5 +1,5 @@
-<?php $this->title = 'Tokens'; ?>
-<h2>Manage Tokens</h2>
+<?php $this->title = 'Game Tokens'; ?>
+<h2>Game Tokens</h2>
 
 <div class="list-tools">
     <a href="<?php echo $this->createURL('create'); ?>">Create Token</a>

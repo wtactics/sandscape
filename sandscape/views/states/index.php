@@ -1,5 +1,5 @@
-<?php $this->title = 'States'; ?>
-<h2>Manage States</h2>
+<?php $this->title = 'Card In-game States'; ?>
+<h2>Card In-game States</h2>
 
 <div class="list-tools">
     <a href="<?php echo $this->createURL('create'); ?>">Create State</a>

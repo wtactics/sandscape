@@ -1,7 +1,5 @@
 <?php
 Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms' . (YII_DEBUG ? '' : '.min') . '.css');
-//Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/administration' . (YII_DEBUG ? '' : '.min') . '.css');
-
 
 $this->title = 'Maintenace Tools';
 ?>

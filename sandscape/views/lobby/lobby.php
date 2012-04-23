@@ -10,9 +10,9 @@ if (count($messages)) {
 //
 Yii::app()->clientScript->registerCoreScript('jquery.ui');
 
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/lobby.' . (YII_DEBUG ? '' : '.min') . 'css');
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/modal.' . (YII_DEBUG ? '' : '.min') . 'css');
-Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/lobby.' . (YII_DEBUG ? '' : '.min') . 'js');
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/lobby' . (YII_DEBUG ? '' : '.min') . '.css');
+Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/modal' . (YII_DEBUG ? '' : '.min') . '.css');
+Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/lobby' . (YII_DEBUG ? '' : '.min') . '.js');
 Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.simplemodal.1.4.1.min.js');
 
 $js = <<<JS

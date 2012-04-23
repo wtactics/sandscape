@@ -1,10 +1,8 @@
 <?php
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'profile-form',
-    'enableAjaxValidation' => true,
-    'clientOptions' => array(
-        'inputContainer' => 'p'
-        )));
+    'enableAjaxValidation' => true
+        ));
 ?>
 <fieldset>
     <legend>General information</legend>

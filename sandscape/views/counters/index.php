@@ -1,5 +1,5 @@
 <?php $this->title = 'Player Counters'; ?>
-<h2>Manage Player Counters</h2>
+<h2>Player Counters</h2>
 
 <div class="list-tools">
     <a href="<?php echo $this->createURL('create'); ?>">Create Counter</a>

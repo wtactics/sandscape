@@ -1,26 +1,6 @@
 <?php
 Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/administration' . (YII_DEBUG ? '' : '.min') . '.css');
 
-Yii::app()->clientScript->registerCssFile('_resources/css/thirdparty/jquery.bubblepopup.v2.3.1.css');
-Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.bubblepopup.v2.3.1.min.js', CClientScript::POS_HEAD);
-
-$js = <<<JS
-$('.helpicon').CreateBubblePopup({
-    position: 'right',
-    align: 'center',
-    tail: {
-        align: 'center'
-    },
-    themeName: 'all-black',
-    themePath: '_resources/images/jqBubblePopup',
-    alwaysVisible: false,
-    closingDelay: 100
-});
-
-JS;
-
-Yii::app()->clientScript->registerScript('bublesinit', $js);
-
 $this->title = 'Sandscape Administration';
 ?>
 <h2>SandScape Administration</h2>

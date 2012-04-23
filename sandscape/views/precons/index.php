@@ -1,5 +1,5 @@
 <?php $this->title = 'Pre-constructed Decks'; ?>
-<h2>Manage Pre-constructed Decks</h2>
+<h2>Pre-constructed Decks</h2>
 
 <div class="list-tools">
     <a href="<?php echo $this->createURL('decks/create'); ?>">Create Pre-constructed Deck</a>

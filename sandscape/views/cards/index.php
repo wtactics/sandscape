@@ -1,4 +1,4 @@
-<?php $this->title = 'Cards'; ?>
+<?php $this->title = 'Card List'; ?>
 <h2>Card List</h2>
 <div class="list-tools">
     <a href="<?php echo $this->createURL('create'); ?>">Create Card</a>
