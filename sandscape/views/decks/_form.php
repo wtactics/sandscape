@@ -78,7 +78,7 @@ foreach ($deck->deckCards as $dc) {
 
 <div id="" style="float: left; width: 33%; margin-left: .5%;">
     <h3>Preview</h3>
-    <img src="_game/cards/cardback.jpg" id="previewImage" />
+    <img src="_game/cards/cardback.png" id="previewImage" />
 </div>
 
 <div class="clearfix"></div>

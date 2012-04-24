@@ -1,17 +1,28 @@
-<?php
-Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/game.common' . (YII_DEBUG ? '' : '.min') . '.js', CClientScript::POS_HEAD);
-?>
-
-<div id="menunob">
+<div id="rightmenunob" class="nob">
     <ul>
-        <li><a href="javascript:;" onclick="showWidget('dicewidget');">D</a></li>
-        <li><a href="javascript:;" onclick="showWidget('counterswidget');">C</a></li>
-        <li><a href="javascript:;" onclick="showWidget('deckswidget');">G</a></li>
-        <li><a href="javascript:;" onclick="showWidget('systemwidget');">S</a></li>
+        <li>
+            <a href="javascript:;" onclick="showWidget('dicewidget', true);">
+                <img src="_resources/images/icon-x16-dice.png" />
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" onclick="showWidget('counterswidget', true);">
+                <img src="_resources/images/icon-x16-cardinal.png" />
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" onclick="showWidget('deckswidget', true);">D</a>
+        </li>
+        <li>
+            <a href="javascript:;" onclick="showWidget('systemwidget', true);">
+                <img src="_resources/images/icon-x16-system.png" />
+            </a>
+        </li>
     </ul>
 </div>
 
-<div id="dicewidget" class="menububble">
+
+<div id="dicewidget" class="menububble autoclosebubble">
     <div class="menucontents">
         <?php if (count($dice)) { ?>
             <h2>Dice</h2>
@@ -22,11 +33,11 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/game.commo
             </ul>
         <?php } ?>
     </div>
-    <div class="menububble-arrowborder"></div>
-    <div class="menububble-arrow"></div>
+    <div class="menububble-ab-right"></div>
+    <div class="menububble-a-right"></div>
 </div>
 
-<div id="counterswidget" class="menububble">
+<div id="counterswidget" class="menububble autoclosebubble">
     <div class="menucontents">
         <h2>Player Counters</h2>
         <div id="player-counters">
@@ -37,45 +48,41 @@ Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/game.commo
             <div id="opc-area"><!-- OPPONENT COUNTERS ARE PLACED HERE --></div>
         </div>
     </div>
-    <div class="menububble-arrowborder"></div>
-    <div class="menububble-arrow"></div>
+    <div class="menububble-ab-right"></div>
+    <div class="menububble-a-right"></div>
 </div>
 
-<div id="deckswidget" class="menububble">
+<div id="deckswidget" class="menububble autoclosebubble">
     <div class="menucontents">
         <h2>Decks</h2>
         <div id="decks"><!-- DECKS ARE PLACED HERE --></div>
     </div>
-    <div class="menububble-arrowborder"></div>
-    <div class="menububble-arrow"></div>
+    <div class="menububble-ab-right"></div>
+    <div class="menububble-a-right"></div>
 </div>
 
-<div id="systemwidget" class="menububble">
+<div id="systemwidget" class="menububble autoclosebubble">
     <div class="menucontents">
         <h2>System Menu</h2>
         <ul>
-            <li>Filter Messages
-                <ul>
+            <li>Show Messages:
+                <ul style="padding-left: .2em;">
                     <li>
-                        <?php
-                        echo Chtml::checkBox('show-user-messages', true, array('onchange' => 'filterChatMessages()'));
-                        ?> 
+                        <?php echo Chtml::checkBox('show-user-messages', true, array('onchange' => 'filterChatMessages()')); ?> 
                         User
                     </li>
                     <li>
-                        <?php
-                        echo Chtml::checkBox('show-system-messages', true, array('onchange' => 'filterChatMessages()'));
-                        ?> 
+                        <?php echo Chtml::checkBox('show-system-messages', true, array('onchange' => 'filterChatMessages()')); ?> 
                         System
                     </li>
                 </ul>
             </li>
-            <li><a href="javascript:exit();">Exit</a></li>
+            <li><a href="javascript:;" onclick="$('#exit-dlg').modal();">Exit</a></li>
         </ul>
     </div>
-    <div class="menububble-arrowborder"></div>
-    <div class="menububble-arrow"></div>
+    <div class="menububble-ab-right"></div>
+    <div class="menububble-a-right"></div>
 </div>
 
 <!-- helper shader div -->
-<div id="shader" onclick="closeAllWidgets()"></div>
+<div id="shader"onclick="closeAllWidgets()"></div>

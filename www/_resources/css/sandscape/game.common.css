@@ -27,7 +27,8 @@
     margin:0;
     border: none;
     padding:0;
-    font-family: Helvetica, Verdana, Arial, sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif;
+    font-size: 10pt;
     text-align: justify;
 }
 
@@ -56,27 +57,14 @@ ul {
 
 /*GAME ELEMENTS START HERE*/
 
-#game-table {
-}
-
-#left-column {
-    width: 270px;
-}
-
-/*CARD INFO AREA*/
-#card-info {
-    width: 270px;
-    height: 382px;
-}
-
+/*CARD INFO AREA
 #card-info .temp {
     position: absolute;
     top: 0;
     left: 0;
 }
+
 #card-image {
-    /* //TODO: remove */
-    width: 250px;
     position: absolute;
     top: 14px;
     left: 10px;
@@ -93,20 +81,19 @@ ul {
     background-color: #222;
     color: #FFF;
     padding: 3px;
-    /* Z above tokens */
+    /* Z above tokens
     z-index: 2;
 }
 
-/*CHAT SETTINGS */
+/*CHAT SETTINGS*/
+
+/* chatwidget: width: 450px/height: 380px; */
 #chat {
     /*Position to make slider work*/
     position: relative;
-    border: 5px solid lightgrey;
-    /*border-radius: 16px;*/
     background: #FFF;
-    font-size: 10px;
-    text-align: center;
     padding: 0;
+    height: 380px;
 
 }
 
@@ -118,7 +105,7 @@ ul {
     border: none;
     list-style: none;
     margin-bottom: 3px;
-    width: 240px;
+    width: 100%
 }
 
 #content-view {
@@ -126,16 +113,31 @@ ul {
     top: 0;
     left: 0;
     overflow: hidden;
-    width: 100%;
+    width: 430px;
+    height: 100%;
 }
 
-#writemessage {
+#chat-slider {
     position: absolute;
-    bottom: 2px;
-    left: 10px;
-    border: 1px solid #CCC;
+    height: 360px;
+    top: 5px;
+    right: 4px;
+}
+
+#message-div {
+    position: fixed;
+    height: 32px;
+    line-height: 32px;
+    width: 350px;
     border-radius: 4px;
-    width: 230px;
+    border: 2px solid #333;
+    text-align: center;
+
+}
+
+#message-div input {
+    padding: .3em;
+    width: 90%;
 }
 
 /* COLOURS FOR CHAT MESSAGES */
@@ -150,6 +152,7 @@ ul {
 .player1-action {
     color: #5E0000;
 }
+
 .player1-text {
     color: #BFBFBF;    
 }
@@ -256,24 +259,21 @@ div.card > img.state {
     cursor: pointer;
 }
 
-/*IN-GAME SLIDING MENU*/
-#menunob {
+/*IN-GAME MENUS*/
+.nob {
     position: fixed;
-    right: 0;
-    top: 50px;
     background-color: #FEFEFE;
     border: 1px solid #000;
     border-right: none;
     width: 32px;
-    height: 100px;
     text-align: center;
     z-index: 65;
 }
 
-#menunob ul {
+.nob ul {
 }
 
-#menunob li {
+.nob li {
     width: 100%;
     text-align: center;
     line-height: 24px;
@@ -281,7 +281,27 @@ div.card > img.state {
     border-bottom: 1px solid #CCC;
 }
 
-#menunob ul:first-child {
+.nob li:last-child {
+    border: none;
+}
+
+#rightmenunob {
+    right: 0;
+    top: 50px;
+    height: 100px;
+}
+
+#leftmenunob {
+    left: 0;
+    top: 10px;
+    height: 50px;
+}
+
+#handnob {
+    height: 24px;
+}
+
+#handnob li {
     border: none;
 }
 
@@ -300,7 +320,7 @@ div.card > img.state {
     display: none;
 }
 
-.menububble-arrowborder {
+.menububble-ab-right {
     border-color: transparent transparent transparent #666666;
     border-style: solid;
     border-width: 8px;
@@ -311,7 +331,7 @@ div.card > img.state {
     top: 8px;
 }
 
-.menububble-arrow {
+.menububble-a-right {
     border-color: transparent transparent transparent #EDEDED;
     border-style: solid;
     border-width: 8px;
@@ -320,6 +340,50 @@ div.card > img.state {
     position: absolute;
     right: -16px;
     top: 8px;
+}
+
+.menububble-ab-left {
+    border-color:  transparent #666666 transparent transparent;
+    border-style: solid;
+    border-width: 8px;
+    height: 0;
+    width: 0;
+    position: absolute;
+    left: -18px;
+    top: 8px;
+}
+
+.menububble-a-left {
+    border-color: transparent #EDEDED transparent transparent;
+    border-style: solid;
+    border-width: 8px;
+    height: 0;
+    width: 0;
+    position: absolute;
+    left: -16px;
+    top: 8px;
+}
+
+.menububble-ab-bottom {
+    border-color: #666666 transparent transparent transparent;
+    border-style: solid;
+    border-width: 8px;
+    height: 0;
+    width: 0;
+    position: absolute;
+    left: 18px;
+    bottom: -18px;
+}
+
+.menububble-a-bottom {
+    border-color: #EDEDED transparent transparent transparent;
+    border-style: solid;
+    border-width: 8px;
+    height: 0;
+    width: 0;
+    position: absolute;
+    left: 16px;
+    bottom: -16px;
 }
 
 #dicewidget.menububble {
@@ -334,6 +398,7 @@ div.card > img.state {
     right: 45px;
 }
 
+
 #deckswidget.menububble {
     width: 250px;
     top: 95px;
@@ -346,6 +411,30 @@ div.card > img.state {
     right: 45px;
 }
 
+#infowidget.menububble {
+    top: 10px;
+    left: 45px;
+}
+
+#chatwidget.menububble {
+    top: 30px;
+    left: 45px;
+    width: 450px;
+    height: 380px;
+}
+
+#handwidget.menububble {
+    bottom: 40px;
+    left: 10px;
+    width: 400px;
+}
+
+.closewidget {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+}
+
 #shader {
     position: absolute;
     width: 100%;
@@ -353,13 +442,9 @@ div.card > img.state {
     min-height: 100%;
     top: 0;
     left: 0;
-    /*background-color: #999;
-    opacity: .7;
-    filter: alpha(opacity=70);*/
     display: none;
     z-index: 60;
 }
-
 
 /*COUNTERS FOR EACH CARD*/
 .counter-widget {

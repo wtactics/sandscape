@@ -1,15 +1,21 @@
-<div id="exit-dialog">
+<div id="exit-dlg">
     <?php echo CHtml::form($this->createUrl('game/leave', array('id' => $gameId))); ?>
     <h2>Exit Game</h2>
-    <p>
+    <div>
         //TODO: not implemented yet
-    </p>
-    <p>
+        
+        Pause game?
+        End Game?
+        Victory to:
+        
+        Both players need to agree on the outcome, if not, the game is considered to be running.
+    </div>
+    <div>
         <?php
         echo CHtml::submitButton('Exit', array(
             'class' => 'simplemodal-close button')),
         CHtml::link('Cancel', 'javascript:;', array('class' => 'simplemodal-close'));
         ?>
-    </p>
+    </div>
     <?php echo CHtml::endForm(); ?>
 </div>

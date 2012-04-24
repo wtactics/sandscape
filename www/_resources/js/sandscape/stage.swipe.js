@@ -331,7 +331,7 @@ function requestCardInfo(id) {
                 .html(json.status.label);
             } else {
                 
-                $('#card-image').attr('src', '_game/cards/cardback.jpg');
+                $('#card-image').attr('src', '_game/cards/cardback.png');
             }
         }
     })

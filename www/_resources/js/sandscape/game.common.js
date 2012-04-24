@@ -1,11 +1,21 @@
-function showWidget(elemId) {
+function showWidget(elemId, withShader) {
     closeAllWidgets();
     
-    $('#shader').show();
+    if(withShader) {
+        $('#shader').show();
+    }
     $('#' + elemId).show();
 }
 
 function closeAllWidgets() {
-    $('.menububble').hide();
+    $('.autoclosebubble').hide();
+    $('#shader').hide();
+}
+
+function closeWidget(elemId) {
+    $('#' + elemId).hide();
+}
+
+function closeShader() {
     $('#shader').hide();
 }

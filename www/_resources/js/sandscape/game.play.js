@@ -48,16 +48,13 @@ var globals = {
 }
 
 function init() {
-    $('#writemessage').keypress(sendMessage);
-    $('#menu-slider').click(menuSlide);
-    $('#menu-header').click(menuSlide);
-    
+    $('#message').keypress(sendMessage);    
     $('#opponent-loader').show();
     
     //start game creation
     pack();
     checkGameStart();
-    setTimeout(updateMessages, 1000);
+//setTimeout(updateMessages, 1000);
 }
 
 function checkGameStart() {
@@ -161,7 +158,7 @@ function checkGameStart() {
                                 $(document.createElement('img'))
                                 .attr({
                                     id: decks[i].id, 
-                                    src: '_game/cards/thumbs/cardback.jpg'
+                                    src: '_game/cards/thumbs/cardback.png'
                                 })
                                 .appendTo(right);
                                 
@@ -206,7 +203,7 @@ function checkGameStart() {
                                 $(document.createElement('img'))
                                 .attr({
                                     id: create.player.graveyard.id,
-                                    src: '_game/cards/thumbs/noimage.jpg'
+                                    src: '_game/cards/thumbs/noimage.png'
                                 })
                                 .appendTo(right);
                                 
@@ -518,7 +515,6 @@ function doGameUpdate(json) {
     globals.updatingGame = false;
 }
 
-
 function updateGame() {
     globals.time = new Date();
     if (!globals.updatingGame  &&  parseInt($.active) == 0  &&  $('.ui-draggable-dragging').length == 0){
@@ -541,7 +537,6 @@ function updateGame() {
     }
     else setTimeout(updateGame, 3000);
 }
-
 
 function toggleCardToken(cardId, tokenId){
     globals.updatingGame = true;
@@ -670,109 +665,10 @@ function requestCardInfo(id) {
                 .html(json.status.label);
             } else {
                 
-                $('#card-image').attr('src', '_game/cards/cardback.jpg');
+                $('#card-image').attr('src', '_game/cards/cardback.png');
             }
         }
     })
-}
-
-function pack() {
-    $('#left-column').css({
-        height: $(window).height(),
-        top: 0,
-        left: 0,
-        position: 'absolute'
-    });
-    $('.hand').css({
-        height: $(window).height() - 543
-    });  
-    
-    $('.opponent-area').css({
-        width: $(window).width() - 270,
-        height: $(window).height() / 2,
-        top: 0,
-        left: 270,
-        position: 'absolute'
-    });
-    
-    $('.play').css({
-        width: $(window).width() - 270,
-        height: $(window).height() / 2,
-        top: $(window).height() / 2,
-        left: 270,
-        position: 'absolute'
-    });
-}
-
-function sendMessage(e) {
-    if(e.keyCode == 13) {
-        var message = $("#writemessage").val(), html;
-        if(message.length > 0) {
-            $.ajax({
-                type: "POST",
-                url: globals.chat.sendUrl,
-                data: {
-                    'gamemessage': message
-                },
-                dataType: 'json',
-                success: function(json) {
-                    if(json.success) {
-                        $('#chat-messages').append('<li class="user-message ' 
-                            + (json.order == 1 ? 'player1-text' : (json.order == 2 
-                                ? 'player-text' : 'spectator-text')) + '"><strong>' 
-                            + json.date + '</strong>: ' + json.message + '</li>');
-                        globals.chat.lastReceived = json.id;
-                        chatToBottom();
-                    }
-                }
-            });
-            $("#writemessage").val('');
-        }
-    }
-}
-
-function updateMessages() {
-    $.ajax({
-        type: "POST",
-        url: globals.chat.updateUrl,
-        data: {
-            'lastupdate': globals.chat.lastReceived
-        },
-        dataType: 'json',
-        success: function(json) {
-            if(json.has) {
-                var cm = $('#chat-messages');
-                $.each(json.messages, function() {
-                    cm.append('<li class="' + (this.system ? 'system-message ' : 'user-message ') 
-                        + (this.order == 1 ? 'player1-text' : (this.order == 2 
-                            ? 'player-text' : 'spectator-text')) + '"><strong>' 
-                        + this.date + '</strong>: ' + this.message + '</li>');
-                });
-                
-                globals.chat.lastReceived = json.last;
-                chatToBottom();
-            }
-        },
-        complete: function() {
-            setTimeout(updateMessages, 5000);
-        }
-    });
-}
-
-function sliderSetValue(event, ui) {
-    chatToBottom();
-}
-
-function chatToBottom() {
-    var sl = $('#chat-slider'), cm = $('#chat-messages'), bh = cm.height(), h = -(bh - 130);
-    if(bh > 130) {
-        sl.slider('option', 'min', h)
-        .slider('option', 'value', h);
-        
-        cm.animate({
-            top: h
-        }, 'slow');
-    }
 }
 
 function filterChatMessages() {
@@ -810,18 +706,6 @@ function roll(diceId) {
                 $.jGrowl(json.dice + ' rolled for (1 - ' + json.face + '): '+ json.roll);
             }
         }
-    });
-}
-
-function sliderChange(e, ui) {
-    $('#chat-messages').css({
-        top: ui.value
-    });
-}
-
-function sliderScroll(e, ui) {   
-    $('#chat-messages').css({
-        top: ui.value
     });
 }
 
@@ -876,27 +760,6 @@ function drawCardToTable(deckId) {
             globals.stopPositionUpdate = false;
         }
     });
-}
-
-function menuSlide() {
-    if(globals.game.running) {
-        var wrapper = $('#menu-wrapper');
-        if(wrapper.width() > 0) {       
-            wrapper.animate({
-                width: 0
-            });
-            $('#menu-slider').animate({
-                right: 0
-            });
-        } else {
-            wrapper.animate({
-                width: 250
-            });
-            $('#menu-slider').animate({
-                right: 250
-            });
-        }
-    }
 }
 
 function setLabel() {
@@ -1129,4 +992,130 @@ function decreasePlayerCounter(event) {
         }
     });   
     return false;
+}
+
+
+/* <==== Game functions ====> */
+
+
+/* <==== UI functions ====> */
+
+/**
+ * Generates the poper sizes for the various game areas and elements with sizes 
+ * that are dependent on window width/height or some user preference.
+ */
+function pack() {   
+    $('.opponent-area').css({
+        height: $(window).height() / 2
+    });
+    
+    $('.play').css({
+        height: $(window).height() / 2,
+        top:$(window).height()/2
+    });    
+
+    $('#handnob').css({
+        left: 20,
+        bottom: 0
+    });
+    
+    $('#handwidget').css({
+        height: $(window).height() / 2
+    });
+    
+    $('#message-div').css({
+        bottom: 5,
+        right: 15
+    });
+} 
+
+/* <==== CHAT functions ====> */
+
+/**
+ * Sends a chat message from the message input field.
+ */
+function sendMessage(e) {
+    if(e.keyCode == 13) {
+        var message = $("#message").val(), html;
+        if(message.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: globals.chat.sendUrl,
+                data: {
+                    'gamemessage': message
+                },
+                dataType: 'json',
+                success: function(json) {
+                    if(json.success) {
+                        $('#chat-messages').append('<li class="user-message ' 
+                            + (json.order == 1 ? 'player1-text' : (json.order == 2 
+                                ? 'player-text' : 'spectator-text')) + '"><strong>' 
+                            + json.date + '</strong>: ' + json.message + '</li>');
+                        globals.chat.lastReceived = json.id;
+                        chatToBottom();
+                    }
+                }
+            });
+            $("#message").val('');
+        }
+    }
+}
+
+/**
+ * Queries the server for new chat messages.
+ */
+function updateMessages() {
+    $.ajax({
+        type: "POST",
+        url: globals.chat.updateUrl,
+        data: {
+            'lastupdate': globals.chat.lastReceived
+        },
+        dataType: 'json',
+        success: function(json) {
+            if(json.has) {
+                var cm = $('#chat-messages');
+                $.each(json.messages, function() {
+                    cm.append('<li class="' + (this.system ? 'system-message ' : 'user-message ') 
+                        + (this.order == 1 ? 'player1-text' : (this.order == 2 
+                            ? 'player-text' : 'spectator-text')) + '"><strong>' 
+                        + this.date + '</strong>: ' + this.message + '</li>');
+                });
+                
+                globals.chat.lastReceived = json.last;
+                chatToBottom();
+            }
+        },
+        complete: function() {
+            setTimeout(updateMessages, 5000);
+        }
+    });
+}
+
+function sliderSetValue(event, ui) {
+    chatToBottom();
+}
+
+function chatToBottom() {
+    var sl = $('#chat-slider'), cm = $('#chat-messages'), bh = cm.height(), h = -(bh - 380);
+    if(bh > 380) {
+        sl.slider('option', 'min', h)
+        .slider('option', 'value', h);
+        
+        cm.animate({
+            top: h
+        }, 'slow');
+    }
+}
+
+function sliderChange(e, ui) {
+    $('#chat-messages').css({
+        top: ui.value
+    });
+}
+
+function sliderScroll(e, ui) {   
+    $('#chat-messages').css({
+        top: ui.value
+    });
 }

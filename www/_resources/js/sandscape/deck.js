@@ -105,7 +105,7 @@ function loadPreviewImage(id) {
             if(json.success) {
                 $('#previewImage').attr('src', '_game/cards/' + json.image);
             } else {
-                $('#previewImage').attr('src', '_game/cards/cardback.jpg');
+                $('#previewImage').attr('src', '_game/cards/cardback.png');
             }
         }
     });

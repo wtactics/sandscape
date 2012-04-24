@@ -23,18 +23,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#chat {
-    /*Merging CSS, see game.common.css*/
-    height: 150px;
-}
-
-#content-view {
-    height: 130px;
-}
-
 /* UNIQUE CLASS: This class is handled as if it was an ID */
 .opponent-area {
-    height: 100%;
+    /*height: 100%;*/
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
     background: transparent url(../../images/game-background-hline.png) repeat-x bottom left;
 }
 
@@ -46,13 +41,10 @@
 
 /* UNIQUE CLASS: This class is handled as if it was an ID */
 .play {
-}
-
-#chat-slider {
+    width: 100%;
     position: absolute;
-    height: 120px;
-    top: 5px;
-    right: 5px;
+    top: 0;
+    left: 0;
 }
 
 #decks {
