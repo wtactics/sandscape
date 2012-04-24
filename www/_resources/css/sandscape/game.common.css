@@ -132,7 +132,7 @@ ul {
     border-radius: 4px;
     border: 2px solid #333;
     text-align: center;
-
+    z-index: 65;
 }
 
 #message-div input {
@@ -425,8 +425,11 @@ div.card > img.state {
 
 #handwidget.menububble {
     bottom: 40px;
-    left: 10px;
+    left: -500px;
     width: 400px;
+    height: 400px;
+    z-index: 60;
+    display: block;
 }
 
 .closewidget {

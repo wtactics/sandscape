@@ -19,3 +19,15 @@ function closeWidget(elemId) {
 function closeShader() {
     $('#shader').hide();
 }
+
+function showHandWidget() {
+    $('#handwidget').css({
+        left: 10
+    });
+}
+
+function hideHandWidget() {
+    $('#handwidget').css({
+        left: -500
+    });
+}

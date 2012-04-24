@@ -1,7 +1,7 @@
 <div id="handnob" class="nob">
     <u>
         <li>
-            <a href="javascript:;" onclick="showWidget('handwidget')">
+            <a href="javascript:;" onclick="showHandWidget()">
                 <img src="_resources/images/icon-x16-hand.png" />
             </a>
         </li>
@@ -13,7 +13,7 @@
     <div class="menububble-ab-bottom"></div>
     <div class="menububble-a-bottom"></div>
     <div class="closewidget">
-        <a href="javascript:;" onclick="closeWidget('handwidget')">
+        <a href="javascript:;" onclick="hideHandWidget()">
             <img src="_resources/images/icon-x16-cross.png" />
         </a>
     </div>

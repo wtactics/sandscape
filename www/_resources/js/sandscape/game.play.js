@@ -82,7 +82,7 @@ function checkGameStart() {
                             card, i, id, left, right, decks, dest = $('#decks'), opts, useGrave,
                             counters, mixed = null;
                             
-                            // tokens
+                            // storing tokens to use in radial menu
                             $(json.gameInfo.tokens).each(function (i,o) {
                                 tokenMenu.push({
                                     option : o.name,
@@ -92,7 +92,7 @@ function checkGameStart() {
                                 })
                             })
                             
-                            // card states
+                            // storing card states to us in radial menu
                             $(json.gameInfo.cardStates).each(function (i,o) {
                                 statesMenu.push({
                                     option: o.name,
@@ -102,7 +102,7 @@ function checkGameStart() {
                                 })
                             })
                             
-                            //set void object
+                            //set void object to where cards are sent
                             $(document.createElement('div')).attr({
                                 id: create.nowhere.id
                             })
@@ -114,7 +114,7 @@ function checkGameStart() {
                             })
                             .appendTo($('body'));
                             
-                            //Player area: left hand, decks, play zone and counters
+                            //Player components: hand, decks, play zone and counters
                             $('.hand').attr('id', create.player.hand.id)
                             $('.play').attr('id', create.player.playableArea.id)
                             
@@ -122,167 +122,170 @@ function checkGameStart() {
                             for(i = 0; i < decks.length; i++) {
                                 id = decks[i].id;
                                 
-                                left = $(document.createElement('div'))
-                                .addClass('deck-info-left');
+                                //left = $(document.createElement('div'))
+                                //.addClass('deck-info-left');
                                 
-                                right = $(document.createElement('div'))
-                                .addClass('deck-info-right');
+                                //right = $(document.createElement('div'))
+                                //.addClass('deck-info-right');
                                 
-                                $(document.createElement('a'))
-                                .attr('href', 'javascript:;')
-                                .click(function(e) {
-                                    drawCard(id);
-                                })
-                                .html('Draw to Hand')
-                                .appendTo(left);
-                                left.append('<br />');
+                                //$(document.createElement('a'))
+                                //.attr('href', 'javascript:;')
+                                //.click(function(e) {
+                                //    drawCard(id);
+                                //})
+                                //.html('Draw to Hand')
+                                //.appendTo(left);
+                                //left.append('<br />');
                                 
-                                $(document.createElement('a'))
-                                .attr('href', 'javascript:;')
-                                .click(function(e) {
-                                    drawCardToTable(id);
-                                })
-                                .html('Draw to Table')
-                                .appendTo(left);
-                                left.append('<br />');
+                                //$(document.createElement('a'))
+                                //.attr('href', 'javascript:;')
+                                //.click(function(e) {
+                                //    drawCardToTable(id);
+                                //})
+                                //.html('Draw to Table')
+                                //.appendTo(left);
+                                //left.append('<br />');
                                 
-                                $(document.createElement('a'))
-                                .attr('href', 'javascript:;')
-                                .click(function(e) {
-                                    shuffleDeck(id);
-                                })
-                                .html('Shuffle')
-                                .appendTo(left);
-                                left.append('<br />');
+                                //$(document.createElement('a'))
+                                //.attr('href', 'javascript:;')
+                                //.click(function(e) {
+                                //    shuffleDeck(id);
+                                //})
+                                //.html('Shuffle')
+                                //.appendTo(left);
+                                //left.append('<br />');
                                 
-                                $(document.createElement('img'))
-                                .attr({
-                                    id: decks[i].id, 
-                                    src: '_game/cards/thumbs/cardback.png'
-                                })
-                                .appendTo(right);
+                                //$(document.createElement('img'))
+                                //.attr({
+                                //    id: decks[i].id, 
+                                //    src: '_game/cards/thumbs/cardback.png'
+                                //})
+                                //.appendTo(right);
                                 
-                                $(document.createElement('div'))
-                                .addClass('deck-info')
-                                .append('<h3>' + decks[i].name + '</h3>')
-                                .append(left)
-                                .append(right)                             
-                                .appendTo(dest);
+                                //$(document.createElement('div'))
+                                //.addClass('deck-info')
+                                //.append('<h3>' + decks[i].name + '</h3>')
+                                //.append(left)
+                                //.append(right)                             
+                                //.appendTo(dest);
                                 
-                                dest.append('<div class="clearfix"></div>');
+                                //dest.append('<div class="clearfix"></div>');
                             }
+                            //finished creating decks
                             
                             if(create.player.graveyard) {                                                             
-                                left = $(document.createElement('div'))
-                                .addClass('deck-info-left');
+                                //left = $(document.createElement('div'))
+                                //.addClass('deck-info-left');
                                 
-                                right = $(document.createElement('div'))
-                                .addClass('deck-info-right');
+                                //right = $(document.createElement('div'))
+                                //.addClass('deck-info-right');
                                 
-                                $(document.createElement('a'))
-                                .attr('href', 'javascript:;')
-                                .click(drawFromGraveyard)
-                                .html('Draw to Hand')
-                                .appendTo(left);
-                                left.append('<br />');
+                                //$(document.createElement('a'))
+                                //.attr('href', 'javascript:;')
+                                //.click(drawFromGraveyard)
+                                //.html('Draw to Hand')
+                                //.appendTo(left);
+                                //left.append('<br />');
                                 
-                                $(document.createElement('a'))
-                                .attr('href', 'javascript:;')
-                                .click(drawFromGraveyardToTable)
-                                .html('Draw to Table')
-                                .appendTo(left);
-                                left.append('<br />');
+                                //$(document.createElement('a'))
+                                //.attr('href', 'javascript:;')
+                                //.click(drawFromGraveyardToTable)
+                                //.html('Draw to Table')
+                                //.appendTo(left);
+                                //left.append('<br />');
                                 
-                                $(document.createElement('a'))
-                                .attr('href', 'javascript:;')
-                                .click(shuffleGraveyard)
-                                .html('Shuffle')
-                                .appendTo(left);
-                                left.append('<br />');
+                                //$(document.createElement('a'))
+                                //.attr('href', 'javascript:;')
+                                //.click(shuffleGraveyard)
+                                //.html('Shuffle')
+                                //.appendTo(left);
+                                //left.append('<br />');
                                 
-                                $(document.createElement('img'))
-                                .attr({
-                                    id: create.player.graveyard.id,
-                                    src: '_game/cards/thumbs/noimage.png'
-                                })
-                                .appendTo(right);
+                                //$(document.createElement('img'))
+                                //.attr({
+                                //    id: create.player.graveyard.id,
+                                //    src: '_game/cards/thumbs/noimage.png'
+                                //})
+                                //.appendTo(right);
                                 
-                                $(document.createElement('div'))
-                                .addClass('deck-info')
-                                .append('<h3>Graveyard</h3>')
-                                .append(left)
-                                .append(right)                             
-                                .appendTo(dest);
+                                //$(document.createElement('div'))
+                                //.addClass('deck-info')
+                                //.append('<h3>Graveyard</h3>')
+                                //.append(left)
+                                //.append(right)                             
+                                //.appendTo(dest);
                                 
-                                dest.append('<div class="clearfix"></div>');
+                                //dest.append('<div class="clearfix"></div>');
                             }
+                            //finished adding the graveyard
                             
                             //Counters
                             //player own counters
                             counters = create.player.counters;
                             for(i = 0; i < counters.length; i++) {
-                                mixed = $(document.createElement('div'))
-                                .addClass(counters[i].color);
+                                //mixed = $(document.createElement('div'))
+                                //.addClass(counters[i].color);
                                 
-                                $(document.createElement('div'))
-                                .attr({
-                                    id: 'pctext-' + counters[i].id
-                                })
-                                .text(counters[i].name)
-                                .appendTo(mixed);
+                                //$(document.createElement('div'))
+                                //.attr({
+                                //    id: 'pctext-' + counters[i].id
+                                //})
+                                //.text(counters[i].name)
+                                //.appendTo(mixed);
                                 
-                                $(document.createElement('input'))
-                                .attr({
-                                    id: 'pc-' + counters[i].id,
-                                    value: counters[i].value
-                                })
-                                .data('counter', counters[i].id)
-                                .appendTo(mixed);
+                                //$(document.createElement('input'))
+                                //.attr({
+                                //    id: 'pc-' + counters[i].id,
+                                //    value: counters[i].value
+                                //})
+                                //.data('counter', counters[i].id)
+                                //.appendTo(mixed);
                                 
-                                $(document.createElement('img'))
-                                .attr({
-                                    id: 'incpc-' + counters[i].id,
-                                    src: '_resources/images/icon-x16-plus.png'
-                                })
-                                .data('counter', counters[i].id)
-                                .click(increasePlayerCounter)
-                                .appendTo(mixed);
+                                //$(document.createElement('img'))
+                                //.attr({
+                                //    id: 'incpc-' + counters[i].id,
+                                //    src: '_resources/images/icon-x16-plus.png'
+                                //})
+                                //.data('counter', counters[i].id)
+                                //.click(increasePlayerCounter)
+                                //.appendTo(mixed);
                                 
-                                $(document.createElement('img'))
-                                .attr({
-                                    id: 'decpc-' + counters[i].id,
-                                    src: '_resources/images/icon-x16-minus.png'
-                                })
-                                .data('counter', counters[i].id)
-                                .click(decreasePlayerCounter)
-                                .appendTo(mixed);
+                                //$(document.createElement('img'))
+                                //.attr({
+                                //    id: 'decpc-' + counters[i].id,
+                                //    src: '_resources/images/icon-x16-minus.png'
+                                //})
+                                //.data('counter', counters[i].id)
+                                //.click(decreasePlayerCounter)
+                                //.appendTo(mixed);
                                 
-                                $('#pc-area').append(mixed);
+                                //$('#pc-area').append(mixed);
                             }
+                            //finished player counters
                             mixed = null;
                             
-                            //opponent counters
+                            //opponent counters, these can only be changed by the opponent
                             counters = create.player.counters;
                             for(i = 0; i < counters.length; i++) {
-                                mixed = $(document.createElement('div'))
-                                .addClass(counters[i].color);
+                                //mixed = $(document.createElement('div'))
+                                //.addClass(counters[i].color);
                                 
-                                $(document.createElement('div'))
-                                .attr({
-                                    id: 'opctext-' + counters[i].id
-                                })
-                                .text(counters[i].name)
-                                .appendTo(mixed);
+                                //$(document.createElement('div'))
+                                //.attr({
+                                //    id: 'opctext-' + counters[i].id
+                                //})
+                                //.text(counters[i].name)
+                                //.appendTo(mixed);
                                 
-                                $(document.createElement('input'))
-                                .attr({
-                                    id: 'opc-' + counters[i].id,
-                                    value: counters[i].value,
-                                    disabled: 'disabled'
-                                })
-                                .appendTo(mixed);
+                                //$(document.createElement('input'))
+                                //.attr({
+                                //    id: 'opc-' + counters[i].id,
+                                //    value: counters[i].value,
+                                //    disabled: 'disabled'
+                                //})
+                                //.appendTo(mixed);
                                 
-                                $('#opc-area').append(mixed);
+                                //$('#opc-area').append(mixed);
                             }
                             mixed = null;
                             
@@ -380,6 +383,7 @@ function checkGameStart() {
                                 
                                 updateCardExtras($('#'+card.id));
                             }
+                            //finished adding cards to the board
                             
                             $('.card').droppable({
                                 drop: function (event, ui) {
@@ -1019,10 +1023,6 @@ function pack() {
         bottom: 0
     });
     
-    $('#handwidget').css({
-        height: $(window).height() / 2
-    });
-    
     $('#message-div').css({
         bottom: 5,
         right: 15
@@ -1035,7 +1035,7 @@ function pack() {
  * Sends a chat message from the message input field.
  */
 function sendMessage(e) {
-    if(e.keyCode == 13) {
+/*    if(e.keyCode == 13) {
         var message = $("#message").val(), html;
         if(message.length > 0) {
             $.ajax({
@@ -1058,14 +1058,15 @@ function sendMessage(e) {
             });
             $("#message").val('');
         }
-    }
+    }*/
+    //$.jGrowl($('#message').val());
 }
 
 /**
  * Queries the server for new chat messages.
  */
 function updateMessages() {
-    $.ajax({
+/*    $.ajax({
         type: "POST",
         url: globals.chat.updateUrl,
         data: {
@@ -1089,15 +1090,15 @@ function updateMessages() {
         complete: function() {
             setTimeout(updateMessages, 5000);
         }
-    });
+    }); */
 }
 
 function sliderSetValue(event, ui) {
-    chatToBottom();
+    /*chatToBottom();*/
 }
 
 function chatToBottom() {
-    var sl = $('#chat-slider'), cm = $('#chat-messages'), bh = cm.height(), h = -(bh - 380);
+/*    var sl = $('#chat-slider'), cm = $('#chat-messages'), bh = cm.height(), h = -(bh - 380);
     if(bh > 380) {
         sl.slider('option', 'min', h)
         .slider('option', 'value', h);
@@ -1105,17 +1106,17 @@ function chatToBottom() {
         cm.animate({
             top: h
         }, 'slow');
-    }
+    }*/
 }
 
 function sliderChange(e, ui) {
-    $('#chat-messages').css({
+/*    $('#chat-messages').css({
         top: ui.value
-    });
+    });*/
 }
 
 function sliderScroll(e, ui) {   
-    $('#chat-messages').css({
+/*    $('#chat-messages').css({
         top: ui.value
-    });
+    });*/
 }
