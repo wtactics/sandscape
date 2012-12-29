@@ -36,6 +36,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'user-grid',
     'dataProvider' => $filter->search(),
     'filter' => $filter,
+    'cssFile' => false,
     'columns' => array(
         array(
             'name' => 'name',

@@ -2,12 +2,12 @@
     <ul>
         <li>
             <a href="javascript:;" onclick="showWidget('infowidget', false);">
-                <img src="_resources/images/icon-x16-cardinfo.png" />
+                <img src="_resources/images/board/I_Telescope.png" />
             </a>
         </li>
         <li>
             <a href="javascript:;" onclick="showWidget('chatwidget', false);">
-                <img src="_resources/images/icon-x16-chat.png" />
+                <img src="_resources/images/board/I_Feather01.png" />
             </a>
         </li>
     </ul>

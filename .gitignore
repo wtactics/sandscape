@@ -17,3 +17,4 @@ Thumbs.db
 # Exclude system card images from ignore  list
 !cardback.png
 !noimage.png
+*~

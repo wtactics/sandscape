@@ -262,10 +262,11 @@ div.card > img.state {
 /*IN-GAME MENUS*/
 .nob {
     position: fixed;
-    background-color: #FEFEFE;
+    /*background-color: #FEFEFE;
     border: 1px solid #000;
     border-right: none;
-    width: 32px;
+    width: 32px;*/
+    width: 48px;
     text-align: center;
     z-index: 65;
 }
@@ -276,9 +277,11 @@ div.card > img.state {
 .nob li {
     width: 100%;
     text-align: center;
-    line-height: 24px;
-    height: 24px;
-    border-bottom: 1px solid #CCC;
+    /*line-height: 24px;
+    height: 24px;*/
+    line-height: 42px;
+    height: 42px;
+    /*border-bottom: 1px solid #CCC;*/
 }
 
 .nob li:last-child {
@@ -287,18 +290,21 @@ div.card > img.state {
 
 #rightmenunob {
     right: 0;
-    top: 50px;
-    height: 100px;
+    top: 25px;
+    /*height: 100px;*/
+    min-height: 168px;
 }
 
 #leftmenunob {
     left: 0;
     top: 10px;
-    height: 50px;
+    /*height: 50px;*/
+    min-height: 84px;
 }
 
 #handnob {
-    height: 24px;
+    /*height: 24px;*/
+    height: 42px;
 }
 
 #handnob li {

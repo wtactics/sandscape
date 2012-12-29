@@ -143,7 +143,7 @@ body {
     color: #FFF;
 }
 
-#menu li a:hover, #menu ul li:hover a {
+#menu li a:hover, #menu li ul a:hover {
     color: #81ACCC;
 }
 
@@ -167,15 +167,14 @@ body {
     width: 10em;
 }
 
-#menu li:hover li a {
-
-}
 #menu li ul a {
     display: block;
     padding: 0px 10px 0px 15px;
+    color: #FFF;
 }
 
-#menu li ul a:hover, #menu li ul li:hover a {
+#menu .administration {
+    color: red;
 }
 
 /* General CSS */

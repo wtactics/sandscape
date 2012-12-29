@@ -319,27 +319,27 @@ function checkGameStart() {
                                 
                                 opts = [{
                                     //details
-                                    option: '<img src="_resources/images/icon-x16-eye.png" title="Card Details" />',
+                                    option: '<img src="_resources/images/board/I_Telescope.png" title="Card Details" />',
                                     event: function (card) {
                                         requestCardInfo($(card).attr('id'));
                                     }
                                 }, {
                                     //tokens
-                                    option: '<img src="_resources/images/icon-x16-bookmarks.png" title="Tokens" />',
+                                    option: '<img src="_resources/images/board/S_Light02.png" title="Tokens" />',
                                     subMenu: tokenMenu
                                 }, {
                                     //states
-                                    option: '<img src="_resources/images/icon-x16-hand-state.png" title="States" />',
+                                    option: '<img src="_resources/images/board/S_Bow10.png" title="States" />',
                                     subMenu: statesMenu
                                 }, {
                                     //flip the card
-                                    option: '<img src="_resources/images/icon-x16-flip" title="Flip Card" />',
+                                    option: '<img src="_resources/images/board/Ac_Gloves04.png" title="Flip Card" />',
                                     event: function(card) {
                                         flipCard($(card).attr('id'));
                                     }
                                 }, {
                                     //edit label
-                                    option: '<img src="_resources/images/icon-x16-label.png" title="Custom Label" />',
+                                    option: '<img src="_resources/images/board/I_Scroll02.png" title="Custom Label" />',
                                     event: function (card) {
                                         $('#label-text').val($(card).find('.label').html());
                                         $('#label-card-id').val($(card).attr('id'));
@@ -347,7 +347,7 @@ function checkGameStart() {
                                     }
                                 }, {
                                     //counters
-                                    option: '<img src="_resources/images/icon-x16-cardinal.png" title="Counters" />',
+                                    option: '<img src="_resources/images/board/S_Buff08.png" title="Counters" />',
                                     event: function (card) {
                                         $('#counter-card-id').val($(card).attr('id'));
                                         $('#counter-dlg').modal();
@@ -357,7 +357,7 @@ function checkGameStart() {
                                 if(useGrave) {
                                     opts.push({
                                         //send card to graveyard
-                                        option: '<img src="_resources/images/icon-x16-headstone.png" title="Send to Graveyard" />',
+                                        option: '<img src="_resources/images/board/S_Death02.png" title="Send to Graveyard" />',
                                         event: function(card) {
                                             moveToGraveyard($(card).attr('id'));
                                         }

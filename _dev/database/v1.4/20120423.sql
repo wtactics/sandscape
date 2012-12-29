@@ -1,0 +1,1 @@
+ALTER TABLE `User` ADD `handCorner` TINYINT NOT NULL DEFAULT 1 ; 

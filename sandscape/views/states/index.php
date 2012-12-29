@@ -10,6 +10,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'state-grid',
     'dataProvider' => $filter->search(),
     'filter' => $filter,
+    'cssFile' => false,
     'columns' => array(
         array(
             'name' => 'name',

@@ -6,6 +6,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'game-grid',
     'dataProvider' => $filter->search(),
     'filter' => $filter,
+    'cssFile' => false,
     'ajaxUrl' => $this->createURL('account/games'),
     'columns' => array(
         array(

@@ -35,7 +35,7 @@
 
 <div class="buttonrow">
     <?php
-    echo CHtml::submitButton($counter->isNewRecord ? 'Create' : 'Save', array('class' => 'button')),
+    echo CHtml::submitButton('Save', array('class' => 'button')),
     CHtml::link('Cancel', $this->createUrl('counters/index'));
     ?>
 </div>

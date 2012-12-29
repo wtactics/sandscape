@@ -2,7 +2,7 @@
     <u>
         <li>
             <a href="javascript:;" onclick="showHandWidget()">
-                <img src="_resources/images/icon-x16-hand.png" />
+                <img src="_resources/images/board/W_Book01.png" />
             </a>
         </li>
     </u>

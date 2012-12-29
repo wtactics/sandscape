@@ -10,6 +10,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'decktemplate-grid',
     'dataProvider' => $filter->search(),
     'filter' => $filter,
+    'cssFile' => false,
     'columns' => array(
         'name',
         array(

@@ -27,7 +27,7 @@ foreach ($deck->deckCards as $dc) {
 
 <div class="buttonrow">
     <?php
-    echo CHtml::submitButton($deck->isNewRecord ? 'Create' : 'Save', array('class' => 'button'));
+    echo CHtml::submitButton('Save', array('class' => 'button'));
 
     if (!$deck->isNewRecord && Yii::app()->user->class) {
         CHtml::link('Make Template', $this->createURL('deck/maketemplate', array('id' => $deck->deckId)));

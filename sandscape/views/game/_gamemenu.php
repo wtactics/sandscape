@@ -2,20 +2,22 @@
     <ul>
         <li>
             <a href="javascript:;" onclick="showWidget('dicewidget', true);">
-                <img src="_resources/images/icon-x16-dice.png" />
+                <img src="_resources/images/board/I_Diamond.png" />
             </a>
         </li>
         <li>
             <a href="javascript:;" onclick="showWidget('counterswidget', true);">
-                <img src="_resources/images/icon-x16-cardinal.png" />
+                <img src="_resources/images/board/S_Buff08.png" />
             </a>
         </li>
         <li>
-            <a href="javascript:;" onclick="showWidget('deckswidget', true);">D</a>
+            <a href="javascript:;" onclick="showWidget('deckswidget', true);">
+                <img src="_resources/images/board/W_Book02.png" />
+            </a>
         </li>
         <li>
             <a href="javascript:;" onclick="showWidget('systemwidget', true);">
-                <img src="_resources/images/icon-x16-system.png" />
+                <img src="_resources/images/board/I_Key01.png" />
             </a>
         </li>
     </ul>

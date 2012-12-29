@@ -20,6 +20,7 @@ $this->title = 'Deck List';
         'id' => 'deck-grid',
         'dataProvider' => $filter->search(Yii::app()->user->id),
         'filter' => $filter,
+        'cssFile' => false,
         'columns' => array(
             array(
                 'name' => 'name',
