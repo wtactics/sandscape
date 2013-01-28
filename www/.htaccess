@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /www/opensource/zmeverta/
+RewriteBase /www/opensource/sandscape/
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

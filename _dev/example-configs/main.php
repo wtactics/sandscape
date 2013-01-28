@@ -28,27 +28,66 @@
 return array(
     'basePath' => dirname(__FILE__) . '/..',
     'name' => 'Sandscape',
-    'charset' => 'utf-8',
+    'preload' => array('log', 'bootstrap'),
     'import' => array(
         'application.models.*',
         'application.models.scserver.*',
         'application.components.*',
+        'application.extensions.*',
     ),
+    // application components
     'components' => array(
+        'bootstrap' => array(
+            'class' => 'ext.bootstrap.components.Bootstrap'
+        ),
+        'clientScript' => array(
+            'scriptMap' => array(
+                'jquery.js' => false,
+                'jquery.min.js' => false,
+                'jquery-ui.js' => false,
+                'jquery-ui.min.js' => false,
+                'jquery-ui.css' => false
+            )
+        ),
         'user' => array(
             'allowAutoLogin' => true,
         ),
-        //CONFIGURE THE FOLLOWING SETTINGS:
-        /* 'db' => array(
-          'connectionString' => 'mysql:host=<HOST ADDRESS>;dbname=<DATABASE NAME>',
-          'emulatePrepare' => true,
-          'username' => '<DATABASE USER>',
-          'password' => '<DATABASE PASSWORD>',
-          'charset' => 'utf8'
-          ), */
+        'urlManager' => array(
+            'urlFormat' => 'path',
+            'rules' => array(
+                '<controller:\w+>/<id:\d+>' => '<controller>/view',
+                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+            ),
+            'showScriptName' => false,
+            'caseSensitive' => false,
+        ),
+        // setup mysql, please check Yii's documentation on how to use other database 
+        // engines.
+        // 
+        //'db' => array(
+        //    'connectionString' => 'mysql:host=127.0.0.1;dbname=sandscape',
+        //    'emulatePrepare' => true,
+        //    'username' => '<YOUR DB USERNAME>',
+        //    'password' => '<YOUR DB PASSWORD>',
+        //    'charset' => 'utf8'
+        //    'tablePrefix' => ''
+        //),
         'errorHandler' => array(
             'errorAction' => 'site/error',
         ),
+    // activates logs, make sure runtime is writable and debug.php exists in 
+    // you www folder.
+    // 
+    //'log' => array(
+    //    'class' => 'CLogRouter',
+    //    'routes' => array(
+    //        array(
+    //            'class' => 'CFileLogRoute',
+    //            'levels' => 'error',
+    //        ),
+    //    )
+    //)
     ),
     'params' => include('params.php')
 );
