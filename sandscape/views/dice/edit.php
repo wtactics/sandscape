@@ -1,8 +1,8 @@
-<?php 
-
-$this->title = ($dice->isNewRecord ? 'Create Dice' : 'Edit Dice'); 
-
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms' . (YII_DEBUG ? '' : '.min') . '.css');
+<?php
+$this->title = ($dice->isNewRecord ? 'Create Dice' : 'Edit Dice');
+if (YII_DEBUG) {
+    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/development/forms.css');
+}
 ?>
 
 <h2><?php echo ($dice->isNewRecord ? 'Create Dice' : 'Edit Dice'); ?></h2>   

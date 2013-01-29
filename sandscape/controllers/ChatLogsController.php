@@ -28,7 +28,7 @@
 
 /**
  */
-class ChatLogsController extends AppController {
+class ChatLogsController extends ApplicationController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);

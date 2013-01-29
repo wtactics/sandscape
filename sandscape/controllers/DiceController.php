@@ -30,7 +30,7 @@
  * Allows administrators to manage dice that will be available for users and 
  * their games.
  */
-class DiceController extends AppController {
+class DiceController extends ApplicationController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);

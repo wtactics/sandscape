@@ -30,7 +30,7 @@
  * The <em>SiteController</em> handles general website related information like 
  * static pages, login, logout and registration action.
  */
-class SiteController extends AppController {
+class SiteController extends ApplicationController {
 
     /**
      * Loads the home page.

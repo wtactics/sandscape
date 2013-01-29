@@ -30,7 +30,7 @@
  * Handles all deck management actions that users can perform.
  * This class was renamed from <em>DeckController</em>.
  */
-class DecksController extends AppController {
+class DecksController extends ApplicationController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);

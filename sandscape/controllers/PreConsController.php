@@ -30,7 +30,7 @@
  * Handles basic deck template (or pre-constructed deck), actions.
  * This class was renamed from <em>DeckTemplateController</em>.
  */
-class PreConsController extends AppController {
+class PreConsController extends ApplicationController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);

@@ -1,4 +1,8 @@
-<?php Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms' . (YII_DEBUG ? '' : '.min') . '.css'); ?>
+<?php
+if (YII_DEBUG) {
+    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/development/forms.css');
+}
+?>
 
 <h2>Chat Filter</h2>
 

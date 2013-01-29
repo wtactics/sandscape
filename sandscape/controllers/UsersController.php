@@ -33,7 +33,7 @@
  * This class was renamed from <em>UserController</em> after all profile/account 
  * related actions were removed and only administration actions were left.
  */
-class UsersController extends AppController {
+class UsersController extends ApplicationController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);

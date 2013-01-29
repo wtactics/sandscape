@@ -29,7 +29,7 @@
 /**
  * Handles all game related actions.
  */
-class GameController extends AppController {
+class GameController extends ApplicationController {
 
     /**
      * @var SCGame

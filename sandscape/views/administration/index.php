@@ -1,5 +1,7 @@
 <?php
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/administration' . (YII_DEBUG ? '' : '.min') . '.css');
+if (YII_DEBUG) {
+    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/development/administration.css');
+}
 
 $this->title = 'Sandscape Administration';
 ?>

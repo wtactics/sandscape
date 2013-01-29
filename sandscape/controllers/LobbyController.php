@@ -32,7 +32,7 @@
  * This controller was created by extracting all lobby related actions from the 
  * <em>GameController</em> class.
  */
-class LobbyController extends AppController {
+class LobbyController extends ApplicationController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);

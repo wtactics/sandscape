@@ -36,7 +36,7 @@
  * user. Most methods were just moved here from the <em>UsersController</em> 
  * class.
  */
-class AccountController extends AppController {
+class AccountController extends ApplicationController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);

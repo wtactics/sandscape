@@ -1,7 +1,9 @@
 <?php
 $this->title = 'Import Cards';
 
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/forms' . (YII_DEBUG ? '' : '.min') . '.css');
+if (YII_DEBUG) {
+    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/development/forms.css');
+}
 ?>
 
 <h2>Import Cards</h2>

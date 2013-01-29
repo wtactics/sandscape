@@ -30,7 +30,7 @@
  * Allows administrators to manage player counters that will be available for 
  * users and their games.
  */
-class CountersController extends AppController {
+class CountersController extends ApplicationController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
@@ -59,7 +59,7 @@ class CountersController extends AppController {
      */
     public function actionCreate() {
         $new = new PlayerCounter();
-        
+
         $this->performAjaxValidation('playercounter-form', $new);
 
         if (isset($_POST['PlayerCounter'])) {
@@ -79,7 +79,7 @@ class CountersController extends AppController {
      */
     public function actionUpdate($id) {
         $counter = $this->loadPlayerCounterModel($id);
-        
+
         $this->performAjaxValidation('playercounter-form', $counter);
 
         if (isset($_POST['PlayerCounter'])) {

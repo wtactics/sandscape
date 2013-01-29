@@ -30,7 +30,7 @@
  * Handles card administration available to administrations.
  * This class was renamed from <em>CardController</em>.
  */
-class CardsController extends AppController {
+class CardsController extends ApplicationController {
 
     private static $NORMAL_WIDTH = 250;
     private static $NORMAL_HEIGHT = 354;

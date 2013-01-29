@@ -30,7 +30,7 @@
  * The <em>AdministrationController</em> class provides most, if not all, of the 
  * administration actions available in Sandscape.
  */
-class AdministrationController extends AppController {
+class AdministrationController extends ApplicationController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);

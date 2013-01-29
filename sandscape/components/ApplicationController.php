@@ -40,7 +40,7 @@ class ApplicationController extends CController {
      * @var string The current layout used by this controller. Should always be 
      * a valid layout file form the default layout folder, <em>//layouts</em> 
      */
-    public $layout = '//layouts/site';
+    public $layout;
 
     /**
      * @var array Main menu used by every controller. Though it shows and hides 
@@ -59,96 +59,120 @@ class ApplicationController extends CController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
+        $this->layout = '//layouts/site';
 
-        //main menu and its options
         $this->menu = array(
             array(
-                'label' => 'Home',
-                'url' => array('site/index'),
-            ),
-            array(
-                'label' => 'Play',
-                'url' => array('lobby/index'),
-                'visible' => !Yii::app()->user->isGuest
-            ),
-            array(
-                'label' => 'Decks',
-                'url' => array('decks/index'),
-                'visible' => !Yii::app()->user->isGuest
-            ),
-            array(
-                'label' => 'Games',
-                'url' => array('account/games'),
-                'visible' => !Yii::app()->user->isGuest
-            ),
-            array(
-                'label' => 'Game Settings',
-                'url' => '#',
+                'class' => 'bootstrap.widgets.TbMenu',
                 'items' => array(
+                    '---',
                     array(
-                        'label' => 'Cards',
-                        'url' => array('cards/index'),
+                        'label' => Yii::t('oppas', 'Home'),
+                        'url' => array('site/index'),
+                        'visible' => Yii::app()->user->isGuest
                     ),
                     array(
-                        'label' => 'Dice',
-                        'url' => array('dice/index'),
+                        'label' => Yii::t('oppas', 'Login'),
+                        'url' => array('site/login'),
+                        'visible' => Yii::app()->user->isGuest
                     ),
                     array(
-                        'label' => 'Player Counters',
-                        'url' => array('counters/index'),
+                        'label' => Yii::t('oppas', 'Dashboard'),
+                        'url' => array('dashboard/index'),
+                        'visible' => !Yii::app()->user->isGuest
                     ),
                     array(
-                        'label' => 'States',
-                        'url' => array('states/index'),
+                        'label' => Yii::t('oppas', 'Play'),
+                        'url' => array('lobby/index'),
+                        'visible' => !Yii::app()->user->isGuest
                     ),
                     array(
-                        'label' => 'Tokens',
-                        'url' => array('tokens/index'),
-                    ),
-                    //TODO: reactivate
-                    //array(
-                    //    'label' => 'Pre-constructed',
-                    //    'url' => array('precons/index'),
-                    //),
-                    array(
-                        'label' => 'General Options',
-                        'url' => array('administration/gameoptions'),
+                        'class' => 'bootstrap.widgets.TbMenu',
+                        'label' => Yii::t('backend', 'Game Settings'),
+                        'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class,
+                        'items' => array(
+                            array(
+                                'label' => Yii::t('oppas', 'Cards'),
+                                'url' => array('cards/index'),
+                            ),
+                            '---',
+                            array(
+                                'label' => Yii::t('oppas', 'Dice'),
+                                'url' => array('dice/index'),
+                            ),
+                            array(
+                                'label' => Yii::t('oppas', 'States'),
+                                'url' => array('states/index'),
+                            ),
+                            array(
+                                'label' => Yii::t('oppas', 'Tokens'),
+                                'url' => array('tokens/guardian'),
+                            ),
+                            '---',
+                            array(
+                                'label' => Yii::t('oppas', 'Player Counters'),
+                                'url' => array('counters/index'),
+                            ),
+                            '---',
+                            array(
+                                'label' => Yii::t('oppas', 'Gameplay Options'),
+                                'url' => array('administration/gameoptions'),
+                            ),
+                        ),
                     ),
                 ),
-                'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class,
             ),
             array(
-                'label' => 'System',
-                'url' => '#',
+                'class' => 'bootstrap.widgets.TbMenu',
+                'htmlOptions' => array('class' => 'pull-right'),
                 'items' => array(
                     array(
-                        'label' => 'Users',
+                        'label' => Yii::t('oppas', 'System Settings'),
                         'url' => array('users/index'),
+                        'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class == 2,
+                        'items' => array(
+                            array(
+                                'label' => 'Users',
+                                'url' => array('users/index'),
+                            ),
+                            '---',
+                            array(
+                                'label' => 'Chat Filter',
+                                'url' => array('administration/chatfilter'),
+                            ),
+                            array(
+                                'label' => 'Chat Logs',
+                                'url' => array('chatlogs/index'),
+                            ),
+                            array(
+                                'label' => 'Maintenance Tools',
+                                'url' => array('administration/maintenancetools'),
+                            ),
+                            array(
+                                'label' => 'System Settings',
+                                'url' => array('administration/sandscapesettings'),
+                            )
+                        )
                     ),
+                    '---',
                     array(
-                        'label' => 'Chat Filter',
-                        'url' => array('administration/chatfilter'),
+                        'label' => Yii::app()->user->name,
+                        'url' => array('account/profile'),
+                        'items' => array(
+                            array('label' => Yii::t('oppas', 'Decks'), 'url' => array('account/index')),
+                            array('label' => Yii::t('oppas', 'Games'), 'url' => array('account/index')),
+                            '---',
+                            array('label' => Yii::t('oppas', 'Logout'), 'url' => array('site/logout')),
+                        ),
+                        'visible' => !Yii::app()->user->isGuest
                     ),
-                    array(
-                        'label' => 'Chat Logs',
-                        'url' => array('chatlogs/index'),
-                    ),
-                    array(
-                        'label' => 'Maintenance Tools',
-                        'url' => array('administration/maintenancetools'),
-                    ),
-                    array(
-                        'label' => 'System Settings',
-                        'url' => array('administration/sandscapesettings'),
-                    )
                 ),
-                'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class == 2,
-            )
+            ),
         );
 
-        $this->gameCount = intval(Game::model()->count('ended IS NOT NULL'));
-        $this->deckCount = intval(Deck::model()->count('active = 1'));
-        $this->userCount = intval(User::model()->count('active = 1'));
+        //$this->gameCount = intval(Game::model()->count('ended IS NOT NULL'));
+        //$this->deckCount = intval(Deck::model()->count('active = 1'));
+        //$this->userCount = intval(User::model()->count('active = 1'));
     }
 
     /**

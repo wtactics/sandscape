@@ -1,15 +1,16 @@
 <?php
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/game.common' . (YII_DEBUG ? '' : '.min') . '.css');
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/game.play' . (YII_DEBUG ? '' : '.min') . '.css');
-Yii::app()->clientScript->registerCssFile('_resources/css/sandscape/modal' . (YII_DEBUG ? '' : '.min') . '.css');
-//
-Yii::app()->clientScript->registerCoreScript('jquery.ui');
-//
-Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.jgrowl.min.js', CClientScript::POS_HEAD);
-Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.simplemodal.1.4.1.min.js', CClientScript::POS_HEAD);
-Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/game.common' . (YII_DEBUG ? '' : '.min') . '.js', CClientScript::POS_HEAD);
-Yii::app()->clientScript->registerScriptFile('_resources/js/sandscape/game.play' . (YII_DEBUG ? '' : '.min') . '.js', CClientScript::POS_HEAD);
-Yii::app()->clientScript->registerScriptFile('_resources/js/thirdparty/jquery.radialmenu.min.js', CClientScript::POS_HEAD);
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/libraries/jquery-jgrowl-min.js', CClientScript::POS_HEAD);
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/libraries/jquery-simplemodal-min.js', CClientScript::POS_HEAD);
+Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/libraries/jquery-radialmenu-min.js', CClientScript::POS_HEAD);
+
+if (YII_DEBUG) {
+    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/development/game.common.css');
+    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/development/game.play.css');
+    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/development/modal.css');
+
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/development/game.common.js', CClientScript::POS_HEAD);
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/development/game.play.js', CClientScript::POS_HEAD);
+}
 
 $playUrl = $this->createURL('game/play', array('id' => $gameId));
 $sendMessageUrl = $this->createUrl('game/sendmessage', array('id' => $gameId));
