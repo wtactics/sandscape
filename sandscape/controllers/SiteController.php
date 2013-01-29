@@ -34,37 +34,15 @@ class SiteController extends ApplicationController {
 
     /**
      * Loads the home page.
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function actionIndex() {
-        $this->render('pages/home');
-    }
-
-    /**
-     * Loads the about page.
-     * 
-     * @since 1.0, Sudden Growth
-     */
-    public function actionAbout() {
-        $this->render('pages/about');
-    }
-
-    /**
-     * Loads the attribution page with all the credits.
-     * 
-     * @since 1.3, Soulharvester
-     */
-    public function actionAttribution() {
-        $this->render('pages/attribution');
+        $this->render('index');
     }
 
     /**
      * Allows users to login and to register new accounts.
      * Registration and authentication are handle in the same action since they 
      * are made in the same view.
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function actionLogin() {
         $login = new LoginForm();
@@ -96,8 +74,6 @@ class SiteController extends ApplicationController {
 
     /**
      * Action to remove a logged in user.
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function actionLogout() {
         if (($sd = SessionData::model()->findByPk(Yii::app()->user->id)) !== null) {
@@ -116,8 +92,6 @@ class SiteController extends ApplicationController {
      * 
      * @throws CHttpException If the e-mail doesn't exist or no user could be 
      * found.
-     * 
-     * @since 1.3, Soulharvester
      */
     public function actionRecoverPassword() {
         $recover = new RecoverForm();
@@ -208,8 +182,6 @@ class SiteController extends ApplicationController {
      * the <em>logout</em> action.
      * 
      * @return array The new rules array.
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function accessRules() {
         return array_merge(array(

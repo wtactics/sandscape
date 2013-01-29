@@ -1,36 +1,20 @@
 <?php
-$form = $this->beginWidget('CActiveForm', array(
+
+/** @var BootActiveForm $form */
+/** @var SiteController $this */
+$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'id' => 'login-form',
+    'type' => 'vertical',
+    'htmlOptions' => array('class' => 'well'),
     'focus' => array($login, 'email'),
         ));
-?>
-<fieldset>
-    <legend>Login</legend>
-    <div class="formrow">
-        <?php
-        echo $form->labelEx($login, 'email'),
-        $form->textField($login, 'email', array('class' => 'standard'));
-        ?>
-    </div>
-    <?php echo $form->error($login, 'email'); ?>
-    <div class="formrow">
-        <?php
-        echo $form->labelEx($login, 'password'),
-        $form->passwordField($login, 'password', array('class' => 'standard'));
-        ?>
-    </div>
-    <?php echo $form->error($login, 'password'); ?>
-    <div class="formrow">
-        <?php
-        echo $form->checkBox($login, 'rememberMe'),
-        $form->label($login, 'rememberMe', array('class' => 'standard'));
-        ?>
-    </div>
-    <?php echo $form->error($login, 'rememberMe'); ?>
-</fieldset>
 
-<div class="buttonrow">
-    <?php echo CHtml::submitButton('Login', array('class' => 'button')); ?>
-</div>
-<?php
+echo $form->textFieldRow($login, 'email');
+
+echo $form->passwordFieldRow($login, 'password');
+
+echo $form->checkboxRow($login, 'rememberMe');
+
+$this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'submit', 'label' => 'Login'));
+
 $this->endWidget();

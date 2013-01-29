@@ -67,22 +67,22 @@ class ApplicationController extends CController {
                 'items' => array(
                     '---',
                     array(
-                        'label' => Yii::t('oppas', 'Home'),
+                        'label' => Yii::t('sandscape', 'Home'),
                         'url' => array('site/index'),
                         'visible' => Yii::app()->user->isGuest
                     ),
                     array(
-                        'label' => Yii::t('oppas', 'Login'),
+                        'label' => Yii::t('sandscape', 'Login'),
                         'url' => array('site/login'),
                         'visible' => Yii::app()->user->isGuest
                     ),
                     array(
-                        'label' => Yii::t('oppas', 'Dashboard'),
+                        'label' => Yii::t('sandscape', 'Dashboard'),
                         'url' => array('dashboard/index'),
                         'visible' => !Yii::app()->user->isGuest
                     ),
                     array(
-                        'label' => Yii::t('oppas', 'Play'),
+                        'label' => Yii::t('sandscape', 'Play'),
                         'url' => array('lobby/index'),
                         'visible' => !Yii::app()->user->isGuest
                     ),
@@ -92,30 +92,30 @@ class ApplicationController extends CController {
                         'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class,
                         'items' => array(
                             array(
-                                'label' => Yii::t('oppas', 'Cards'),
+                                'label' => Yii::t('sandscape', 'Cards'),
                                 'url' => array('cards/index'),
                             ),
                             '---',
                             array(
-                                'label' => Yii::t('oppas', 'Dice'),
+                                'label' => Yii::t('sandscape', 'Dice'),
                                 'url' => array('dice/index'),
                             ),
                             array(
-                                'label' => Yii::t('oppas', 'States'),
+                                'label' => Yii::t('sandscape', 'States'),
                                 'url' => array('states/index'),
                             ),
                             array(
-                                'label' => Yii::t('oppas', 'Tokens'),
+                                'label' => Yii::t('sandscape', 'Tokens'),
                                 'url' => array('tokens/guardian'),
                             ),
                             '---',
                             array(
-                                'label' => Yii::t('oppas', 'Player Counters'),
+                                'label' => Yii::t('sandscape', 'Player Counters'),
                                 'url' => array('counters/index'),
                             ),
                             '---',
                             array(
-                                'label' => Yii::t('oppas', 'Gameplay Options'),
+                                'label' => Yii::t('sandscape', 'Gameplay Options'),
                                 'url' => array('administration/gameoptions'),
                             ),
                         ),
@@ -127,29 +127,28 @@ class ApplicationController extends CController {
                 'htmlOptions' => array('class' => 'pull-right'),
                 'items' => array(
                     array(
-                        'label' => Yii::t('oppas', 'System Settings'),
-                        'url' => array('users/index'),
+                        'label' => Yii::t('sandscape', 'System Settings'),
                         'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class == 2,
                         'items' => array(
                             array(
-                                'label' => 'Users',
+                                'label' => Yii::t('sandscape', 'Users'),
                                 'url' => array('users/index'),
                             ),
                             '---',
                             array(
-                                'label' => 'Chat Filter',
+                                'label' => Yii::t('sandscape', 'Chat Filter'),
                                 'url' => array('administration/chatfilter'),
                             ),
                             array(
-                                'label' => 'Chat Logs',
+                                'label' => Yii::t('sandscape', 'Chat Logs'),
                                 'url' => array('chatlogs/index'),
                             ),
                             array(
-                                'label' => 'Maintenance Tools',
+                                'label' => Yii::t('sandscape', 'Maintenance Tools'),
                                 'url' => array('administration/maintenancetools'),
                             ),
                             array(
-                                'label' => 'System Settings',
+                                'label' => Yii::t('sandscape', 'System Settings'),
                                 'url' => array('administration/sandscapesettings'),
                             )
                         )
@@ -157,12 +156,13 @@ class ApplicationController extends CController {
                     '---',
                     array(
                         'label' => Yii::app()->user->name,
-                        'url' => array('account/profile'),
                         'items' => array(
-                            array('label' => Yii::t('oppas', 'Decks'), 'url' => array('account/index')),
-                            array('label' => Yii::t('oppas', 'Games'), 'url' => array('account/index')),
+                            array('label' => Yii::t('sandscape', 'Decks'), 'url' => array('account/index')),
+                            array('label' => Yii::t('sandscape', 'Games'), 'url' => array('account/index')),
                             '---',
-                            array('label' => Yii::t('oppas', 'Logout'), 'url' => array('site/logout')),
+                            array('label' => Yii::t('sandscape', 'Profile'), 'url' => array('account/profile')),
+                            '---',
+                            array('label' => Yii::t('sandscape', 'Logout'), 'url' => array('site/logout')),
                         ),
                         'visible' => !Yii::app()->user->isGuest
                     ),
