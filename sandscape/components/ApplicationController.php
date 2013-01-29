@@ -66,99 +66,99 @@ class ApplicationController extends CController {
                 'class' => 'bootstrap.widgets.TbMenu',
                 'items' => array(
                     '---',
-                    array(
-                        'label' => Yii::t('sandscape', 'Home'),
-                        'url' => array('site/index'),
-                        'visible' => Yii::app()->user->isGuest
-                    ),
-                    array(
-                        'label' => Yii::t('sandscape', 'Login'),
-                        'url' => array('site/login'),
-                        'visible' => Yii::app()->user->isGuest
-                    ),
-                    array(
-                        'label' => Yii::t('sandscape', 'Dashboard'),
-                        'url' => array('dashboard/index'),
-                        'visible' => !Yii::app()->user->isGuest
-                    ),
-                    array(
-                        'label' => Yii::t('sandscape', 'Play'),
-                        'url' => array('lobby/index'),
-                        'visible' => !Yii::app()->user->isGuest
-                    ),
-                    array(
-                        'class' => 'bootstrap.widgets.TbMenu',
-                        'label' => Yii::t('backend', 'Game Settings'),
-                        'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class,
-                        'items' => array(
-                            array(
-                                'label' => Yii::t('sandscape', 'Cards'),
-                                'url' => array('cards/index'),
-                            ),
-                            '---',
-                            array(
-                                'label' => Yii::t('sandscape', 'Dice'),
-                                'url' => array('dice/index'),
-                            ),
-                            array(
-                                'label' => Yii::t('sandscape', 'States'),
-                                'url' => array('states/index'),
-                            ),
-                            array(
-                                'label' => Yii::t('sandscape', 'Tokens'),
-                                'url' => array('tokens/guardian'),
-                            ),
-                            '---',
-                            array(
-                                'label' => Yii::t('sandscape', 'Player Counters'),
-                                'url' => array('counters/index'),
-                            ),
-                            '---',
-                            array(
-                                'label' => Yii::t('sandscape', 'Gameplay Options'),
-                                'url' => array('administration/gameoptions'),
-                            ),
-                        ),
-                    ),
+//                    array(
+//                        'label' => Yii::t('sandscape', 'Home'),
+//                        'url' => array('site/index'),
+//                        'visible' => Yii::app()->user->isGuest
+//                    ),
+//                    array(
+//                        'label' => Yii::t('sandscape', 'Login'),
+//                        'url' => array('site/login'),
+//                        'visible' => Yii::app()->user->isGuest
+//                    ),
+//                    array(
+//                        'label' => Yii::t('sandscape', 'Dashboard'),
+//                        'url' => array('dashboard/index'),
+//                        'visible' => !Yii::app()->user->isGuest
+//                    ),
+//                    array(
+//                        'label' => Yii::t('sandscape', 'Play'),
+//                        'url' => array('lobby/index'),
+//                        'visible' => !Yii::app()->user->isGuest
+//                    ),
+//                    array(
+//                        'class' => 'bootstrap.widgets.TbMenu',
+//                        'label' => Yii::t('backend', 'Game Settings'),
+//                        'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class,
+//                        'items' => array(
+//                            array(
+//                                'label' => Yii::t('sandscape', 'Cards'),
+//                                'url' => array('cards/index'),
+//                            ),
+//                            '---',
+//                            array(
+//                                'label' => Yii::t('sandscape', 'Dice'),
+//                                'url' => array('dice/index'),
+//                            ),
+//                            array(
+//                                'label' => Yii::t('sandscape', 'States'),
+//                                'url' => array('states/index'),
+//                            ),
+//                            array(
+//                                'label' => Yii::t('sandscape', 'Tokens'),
+//                                'url' => array('tokens/guardian'),
+//                            ),
+//                            '---',
+//                            array(
+//                                'label' => Yii::t('sandscape', 'Player Counters'),
+//                                'url' => array('counters/index'),
+//                            ),
+//                            '---',
+//                            array(
+//                                'label' => Yii::t('sandscape', 'Gameplay Options'),
+//                                'url' => array('administration/gameoptions'),
+//                            ),
+//                        ),
+//                    ),
                 ),
             ),
             array(
                 'class' => 'bootstrap.widgets.TbMenu',
                 'htmlOptions' => array('class' => 'pull-right'),
                 'items' => array(
-                    array(
-                        'label' => Yii::t('sandscape', 'System Settings'),
-                        'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class == 2,
-                        'items' => array(
-                            array(
-                                'label' => Yii::t('sandscape', 'Users'),
-                                'url' => array('users/index'),
-                            ),
-                            '---',
-                            array(
-                                'label' => Yii::t('sandscape', 'Chat Filter'),
-                                'url' => array('administration/chatfilter'),
-                            ),
-                            array(
-                                'label' => Yii::t('sandscape', 'Chat Logs'),
-                                'url' => array('chatlogs/index'),
-                            ),
-                            array(
-                                'label' => Yii::t('sandscape', 'Maintenance Tools'),
-                                'url' => array('administration/maintenancetools'),
-                            ),
-                            array(
-                                'label' => Yii::t('sandscape', 'System Settings'),
-                                'url' => array('administration/sandscapesettings'),
-                            )
-                        )
-                    ),
+//                    array(
+//                        'label' => Yii::t('sandscape', 'System Settings'),
+//                        'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class == 2,
+//                        'items' => array(
+//                            array(
+//                                'label' => Yii::t('sandscape', 'Users'),
+//                                'url' => array('users/index'),
+//                            ),
+//                            '---',
+//                            array(
+//                                'label' => Yii::t('sandscape', 'Chat Filter'),
+//                                'url' => array('administration/chatfilter'),
+//                            ),
+//                            array(
+//                                'label' => Yii::t('sandscape', 'Chat Logs'),
+//                                'url' => array('chatlogs/index'),
+//                            ),
+//                            array(
+//                                'label' => Yii::t('sandscape', 'Maintenance Tools'),
+//                                'url' => array('administration/maintenancetools'),
+//                            ),
+//                            array(
+//                                'label' => Yii::t('sandscape', 'System Settings'),
+//                                'url' => array('administration/sandscapesettings'),
+//                            )
+//                        )
+//                    ),
                     '---',
                     array(
                         'label' => Yii::app()->user->name,
                         'items' => array(
-                            array('label' => Yii::t('sandscape', 'Decks'), 'url' => array('account/index')),
-                            array('label' => Yii::t('sandscape', 'Games'), 'url' => array('account/index')),
+                            //array('label' => Yii::t('sandscape', 'Decks'), 'url' => array('account/index')),
+                            //array('label' => Yii::t('sandscape', 'Games'), 'url' => array('account/index')),
                             '---',
                             array('label' => Yii::t('sandscape', 'Profile'), 'url' => array('account/profile')),
                             '---',
@@ -220,22 +220,6 @@ class ApplicationController extends CController {
         return array(
             'accessControl',
         );
-    }
-
-    /**
-     * Default access rules. These rules will deny access to every action from 
-     * any user, either a regular user, and administrator or a simple guest.
-     * 
-     * Every child class needs to override this method and merge their access 
-     * rules to the default rules.
-     * 
-     * If the child class only overrides the method returning a complete new set 
-     * of rules, it must make sure that all actions have an access rule.
-     * 
-     * @return array The rules array
-     */
-    public function accessRules() {
-        return array(array('deny', 'users' => array('*')));
     }
 
 }
