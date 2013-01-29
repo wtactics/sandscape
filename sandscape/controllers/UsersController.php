@@ -32,8 +32,6 @@
  * 
  * This class was renamed from <em>UserController</em> after all profile/account 
  * related actions were removed and only administration actions were left.
- * 
- * @since 1.2, Elvish Shaman
  */
 class UsersController extends AppController {
 

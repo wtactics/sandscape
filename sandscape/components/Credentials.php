@@ -27,7 +27,7 @@
  */
 
 /**
- * @since 1.0, Sudden Growth
+ * 
  */
 class Credentials extends CBaseUserIdentity {
 

@@ -33,8 +33,6 @@
  * @property string $current The current password for the user that is changing the password.
  * @property string $password The new password.
  * @property string $password_repeat The new password repeated for validation purposes.
- * 
- * @since 1.0, Sudden Growth
  */
 class PasswordForm extends CFormModel {
 

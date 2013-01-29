@@ -38,8 +38,6 @@
  * 
  * @see Deck
  * @see Card
- * 
- * @since 1.0, Sudden Growth
  */
 class DeckCard extends CActiveRecord {
 

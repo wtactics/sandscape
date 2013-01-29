@@ -35,9 +35,6 @@
  * <em>UsersController</em> class from those that should be used by every other 
  * user. Most methods were just moved here from the <em>UsersController</em> 
  * class.
- * 
- * @see
- * @since 1.2, Elvish Shaman
  */
 class AccountController extends AppController {
 

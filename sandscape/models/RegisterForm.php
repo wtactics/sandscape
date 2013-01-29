@@ -28,8 +28,6 @@
 
 /**
  * Form model for the registration process.
- * 
- * @since 1.0, Sudden Growth
  */
 class RegisterForm extends CFormModel {
 

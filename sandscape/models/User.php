@@ -56,8 +56,6 @@
  * @property Game[] $gamesAsPlayer2
  * @property Reward[] $rewards
  * @property Title[] $titles
- * 
- * @since 1.0, Sudden Growth
  */
 class User extends CActiveRecord {
 

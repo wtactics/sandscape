@@ -34,8 +34,6 @@
  * Relations:
  * @property DeckTemplate $template
  * @property Card $card
- * 
- * @since 1.1, Green Shield
  */
 class DeckTemplateCard extends CActiveRecord {
 

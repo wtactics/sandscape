@@ -36,8 +36,6 @@
  *
  * Relations:
  * @property Games[] $games
- * 
- * @since 1.3, Soulharvester
  */
 class PlayerCounter extends CActiveRecord {
 

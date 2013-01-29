@@ -29,8 +29,6 @@
 /**
  * @property int $gameId
  * @property int $deckId
- * 
- * @since 1.0, Sudden Growth
  */
 class GameDeck extends CActiveRecord {
 

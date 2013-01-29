@@ -37,8 +37,6 @@
  * @property string $token The security token for authenticated users
  * @property string $tokenExpires The date in which the security token will expire
  * @property string $lastActivity The last time this user made an action in the system
- * 
- * @since 1.0, Sudden Growth
  */
 class SessionData extends CActiveRecord {
 

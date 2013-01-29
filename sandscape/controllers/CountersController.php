@@ -29,8 +29,6 @@
 /**
  * Allows administrators to manage player counters that will be available for 
  * users and their games.
- * 
- * @since 1.3, Soulharvester
  */
 class CountersController extends AppController {
 

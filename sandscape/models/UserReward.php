@@ -29,8 +29,6 @@
 /**
  * @property int $userId
  * @property int $rewardId
- * 
- * @since 1.4, Serenity
  */
 class UserReward extends CActiveRecord {
 

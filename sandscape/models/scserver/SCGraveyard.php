@@ -28,8 +28,6 @@
 
 /**
  * Container that represents the user's graveyard.
- * 
- * @since 1.2, Elvish Shaman
  */
 class SCGraveyard extends SCContainer {
 

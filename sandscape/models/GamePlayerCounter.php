@@ -29,8 +29,6 @@
 /**
  * @property int $gameId
  * @property int $playerCounterId
- * 
- * @since 1.3, Soulharvester
  */
 class GamePlayerCounter extends CActiveRecord {
 

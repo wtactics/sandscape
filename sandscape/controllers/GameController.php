@@ -28,8 +28,6 @@
 
 /**
  * Handles all game related actions.
- * 
- * @since 1.0, Sudden Growth
  */
 class GameController extends AppController {
 

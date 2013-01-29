@@ -43,8 +43,6 @@
  * 
  * Relations:
  * @property DeckCard[] $deckCards
- * 
- * @since 1.0, Sudden Growth
  */
 class Card extends CActiveRecord {
 

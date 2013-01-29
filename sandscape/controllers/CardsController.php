@@ -29,8 +29,6 @@
 /**
  * Handles card administration available to administrations.
  * This class was renamed from <em>CardController</em>.
- * 
- * @since 1.2, Elvish Shaman
  */
 class CardsController extends AppController {
 

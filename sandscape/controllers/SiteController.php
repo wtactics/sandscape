@@ -29,8 +29,6 @@
 /**
  * The <em>SiteController</em> handles general website related information like 
  * static pages, login, logout and registration action.
- * 
- * @since 1.0, Sudden Growth
  */
 class SiteController extends AppController {
 

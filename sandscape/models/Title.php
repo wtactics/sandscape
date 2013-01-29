@@ -33,8 +33,6 @@
  *
  * Relations:
  * @property User[] $users
- * 
- * @since 1.4, Serenity
  */
 class Title extends CActiveRecord {
 

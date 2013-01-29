@@ -29,8 +29,6 @@
 /**
  * The <em>AdministrationController</em> class provides most, if not all, of the 
  * administration actions available in Sandscape.
- * 
- * @since 1.0, Sudden Growth
  */
 class AdministrationController extends AppController {
 

@@ -31,8 +31,6 @@
  * all the elements that belong to a given player. There should be 2 player sides
  * per game and each will keep track of it's own cards, decks, graveyards and 
  * anything else that a player owns.
- * 
- * @since 1.0, Sudden Growth
  */
 class SCPlayerSide {
 

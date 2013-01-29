@@ -29,8 +29,6 @@
 /**
  * Model used in the recover form page. Allows users to recover their password.
  * Recovering a password will create a new password.
- * 
- * @since 1.0, Sudden Growth
  */
 class RecoverForm extends CFormModel {
 

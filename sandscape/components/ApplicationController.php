@@ -1,6 +1,6 @@
 <?php
 
-/* AppController.php
+/* AppicationController.php
  * 
  * This file is part of Sandscape, a virtual, browser based, table allowing 
  * people to play a customizable card games (CCG) online.
@@ -33,10 +33,8 @@
  * created to answer standard web requests.
  * 
  * Any sub-class should override the <em>accessRules</em> method.
- * 
- * @since 1.0
  */
-class AppController extends CController {
+class ApplicationController extends CController {
 
     /**
      * @var string The current layout used by this controller. Should always be 

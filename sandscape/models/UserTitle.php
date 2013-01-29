@@ -29,8 +29,6 @@
 /**
  * @property int $userId
  * @property int $titleId
- * 
- * @since 1.0, Sudden Growth
  */
 class UserTitle extends CActiveRecord {
 

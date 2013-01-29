@@ -27,7 +27,6 @@
  */
 
 /**
- * @since 1.3, Shoulhavester
  */
 class ChatLogsController extends AppController {
 

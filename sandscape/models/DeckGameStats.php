@@ -34,8 +34,6 @@
  *
  * @property Deck $deck
  * @property Game $game
- * 
- * @since 1.3, Soulharvester
  */
 class DeckGameStats extends CActiveRecord {
 

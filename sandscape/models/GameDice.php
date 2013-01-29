@@ -32,8 +32,6 @@
  *
  * @property Deck $deck
  * @property Game $game
- * 
- * @since 1.2, Elvish Shaman
  */
 class GameDice extends CActiveRecord {
 

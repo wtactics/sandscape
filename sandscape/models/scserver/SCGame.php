@@ -27,7 +27,6 @@
  */
 
 /**
- * @since 1.0, Sudden Growth
  */
 class SCGame {
 

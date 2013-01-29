@@ -27,7 +27,6 @@
  */
 
 /**
- * @since 1.2, Elvish Shaman
  */
 class SCState {
 

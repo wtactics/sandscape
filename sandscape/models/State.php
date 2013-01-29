@@ -39,7 +39,6 @@
  * @property integer $active
  * 
  * @see Token
- * @since 1.2, Elvish Shaman
  */
 class State extends CActiveRecord {
 

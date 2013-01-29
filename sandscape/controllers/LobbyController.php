@@ -31,8 +31,6 @@
  * 
  * This controller was created by extracting all lobby related actions from the 
  * <em>GameController</em> class.
- * 
- * @since 1.2, Elvish Shaman
  */
 class LobbyController extends AppController {
 

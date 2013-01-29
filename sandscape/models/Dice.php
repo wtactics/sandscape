@@ -35,8 +35,6 @@
  *
  * Relations:
  * @property Games[] $games
- * 
- * @since 1.2, Elvish Shaman
  */
 class Dice extends CActiveRecord {
 

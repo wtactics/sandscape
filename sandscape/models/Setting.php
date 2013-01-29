@@ -35,8 +35,6 @@
  * @property string $value The setting value
  * @property string $description A text description that explains what this setting does
  * @property string $group
- * 
- * @since 1.1, Green Shield
  */
 class Setting extends CActiveRecord {
 

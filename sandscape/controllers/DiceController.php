@@ -29,8 +29,6 @@
 /**
  * Allows administrators to manage dice that will be available for users and 
  * their games.
- * 
- * @since 1.2, Elvish Shaman
  */
 class DiceController extends AppController {
 

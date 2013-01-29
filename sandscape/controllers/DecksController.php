@@ -29,8 +29,6 @@
 /**
  * Handles all deck management actions that users can perform.
  * This class was renamed from <em>DeckController</em>.
- * 
- * @since 1.2, Elvish Shaman
  */
 class DecksController extends AppController {
 

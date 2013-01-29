@@ -35,8 +35,6 @@
  *
  * Relations:
  * @property User[] $users
- * 
- * @since 1.4, Serenitu
  */
 class Reward extends CActiveRecord {
 

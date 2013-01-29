@@ -29,8 +29,6 @@
 /**
  * Handles basic deck template (or pre-constructed deck), actions.
  * This class was renamed from <em>DeckTemplateController</em>.
- * 
- * @since 1.2, Elvish Shaman
  */
 class PreConsController extends AppController {
 

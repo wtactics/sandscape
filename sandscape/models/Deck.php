@@ -43,8 +43,6 @@
  * @property Game[] $games
  * @property DeckTemplate[] preCons
  * @property DeckGameStats $stats
- * 
- * @since 1.0, Sudden Growth
  */
 class Deck extends CActiveRecord {
 

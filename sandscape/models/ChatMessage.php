@@ -40,8 +40,6 @@
  * The followings are the available model relations:
  * @property User $user
  * @property Game $game
- * 
- * @since 1.0, Sudden Growth
  */
 class ChatMessage extends CActiveRecord {
 

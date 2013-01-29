@@ -58,8 +58,6 @@
  * @property User $accept
  * @property PlayerCounter[] $counters
  * @property DeckGameStats $stats
- * 
- * @since 1.0, Sudden Growth
  */
 class Game extends CActiveRecord {
 

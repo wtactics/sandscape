@@ -28,8 +28,6 @@
 
 /**
  * Represents counters, these can be added to cards or become part of a user.
- * 
- * @since 1.3, Soulharvester
  */
 class SCCounter {
 
