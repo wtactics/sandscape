@@ -69,7 +69,7 @@ class Game extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'Game';
+        return '{{Game}}';
     }
 
     public function rules() {
@@ -139,7 +139,7 @@ class Game extends CActiveRecord {
         $criteria->compare('winnerId', $this->winnerId);
         $criteria->compare('acceptUser', $this->acceptUser);
 
-        return new CActiveDataProvider('Game', array('criteria' => $criteria));
+        return new CActiveDataProvider($this, array('criteria' => $criteria));
     }
 
 }

@@ -46,7 +46,7 @@ class Dice extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'Dice';
+        return '{{Dice}}';
     }
 
     public function rules() {
@@ -87,7 +87,7 @@ class Dice extends CActiveRecord {
         $criteria->compare('enabled', $this->enabled);
         $criteria->compare('active', 1);
 
-        return new CActiveDataProvider('Dice', array('criteria' => $criteria));
+        return new CActiveDataProvider($this, array('criteria' => $criteria));
     }
 
 }

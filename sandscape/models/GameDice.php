@@ -43,7 +43,7 @@ class GameDice extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'GameDice';
+        return '{{GameDice}}';
     }
 
     public function relations() {

@@ -40,7 +40,7 @@ class GameDeck extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'GameDeck';
+        return '{{GameDeck}}';
     }
 
 }

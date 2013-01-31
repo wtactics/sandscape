@@ -126,14 +126,14 @@ class ApplicationController extends CController {
                 'class' => 'bootstrap.widgets.TbMenu',
                 'htmlOptions' => array('class' => 'pull-right'),
                 'items' => array(
-//                    array(
-//                        'label' => Yii::t('sandscape', 'System Settings'),
-//                        'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class == 2,
-//                        'items' => array(
-//                            array(
-//                                'label' => Yii::t('sandscape', 'Users'),
-//                                'url' => array('users/index'),
-//                            ),
+                    array(
+                        'label' => Yii::t('sandscape', 'System Settings'),
+                        //'visible' => !Yii::app()->user->isGuest && Yii::app()->user->role == '',
+                        'items' => array(
+                            array(
+                                'label' => Yii::t('sandscape', 'Users'),
+                                'url' => array('users/index'),
+                            ),
 //                            '---',
 //                            array(
 //                                'label' => Yii::t('sandscape', 'Chat Filter'),
@@ -151,8 +151,8 @@ class ApplicationController extends CController {
 //                                'label' => Yii::t('sandscape', 'System Settings'),
 //                                'url' => array('administration/sandscapesettings'),
 //                            )
-//                        )
-//                    ),
+                        )
+                    ),
                     '---',
                     array(
                         'label' => Yii::app()->user->name,

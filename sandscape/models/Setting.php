@@ -54,7 +54,7 @@ class Setting extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'Setting';
+        return '{{Setting}}';
     }
 
 }

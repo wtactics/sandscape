@@ -129,10 +129,9 @@ class User extends CActiveRecord {
 
         $criteria->compare('email', $this->email, true);
         $criteria->compare('name', $this->name, true);
-        $criteria->compare('class', $this->class);
-        $criteria->compare('active', 1);
+        $criteria->compare('role', $this->role);
 
-        return new CActiveDataProvider('User', array('criteria' => $criteria));
+        return new CActiveDataProvider($this, array('criteria' => $criteria));
     }
 
     /**
@@ -159,6 +158,13 @@ class User extends CActiveRecord {
      */
     public final static function hash($password) {
         return sha1($password . Yii::app()->params['hash']);
+    }
+
+    public final static function rolesArray() {
+        return array(
+            'administrator' => Yii::t('sandscape', 'Administrator'),
+            'player' => Yii::t('sandscape', 'Player')
+        );
     }
 
     public final static function countries() {

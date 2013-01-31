@@ -49,7 +49,7 @@ class Card extends CActiveRecord {
     /**
      * @return Card
      */
-    public static function model($className=__CLASS__) {
+    public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
@@ -96,10 +96,8 @@ class Card extends CActiveRecord {
 
         $criteria->compare('name', $this->name, true);
         $criteria->compare('rules', $this->rules, true);
-        $criteria->compare('cardscapeId', $this->cardscapeId, true);
-        $criteria->compare('active', 1);
 
-        return new CActiveDataProvider('Card', array('criteria' => $criteria));
+        return new CActiveDataProvider($this, array('criteria' => $criteria));
     }
 
 }

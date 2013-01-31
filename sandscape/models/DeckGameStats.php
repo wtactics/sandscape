@@ -45,7 +45,7 @@ class DeckGameStats extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'DeckGameStats';
+        return '{{DeckGameStats}}';
     }
 
     public function relations() {

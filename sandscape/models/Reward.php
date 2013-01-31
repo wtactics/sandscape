@@ -46,7 +46,7 @@ class Reward extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'Reward';
+        return '{{Reward}}';
     }
 
     public function rules() {
@@ -82,9 +82,8 @@ class Reward extends CActiveRecord {
         $criteria = new CDbCriteria();
 
         $criteria->compare('description', $this->description, true);
-        $criteria->compare('active', 1);
 
-        return new CActiveDataProvider('Reward', array('criteria' => $criteria));
+        return new CActiveDataProvider($this, array('criteria' => $criteria));
     }
 
 }

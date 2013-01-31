@@ -40,7 +40,7 @@ class GamePlayerCounter extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'GamePlayerCounter';
+        return '{{GamePlayerCounter}}';
     }
 
 }

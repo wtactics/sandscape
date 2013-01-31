@@ -45,7 +45,7 @@ class DeckTemplateCard extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'DeckTemplateCard';
+        return '{{DeckTemplateCard}}';
     }
 
     public function relations() {

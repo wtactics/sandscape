@@ -50,7 +50,7 @@ class Token extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'Token';
+        return '{{Token}}';
     }
 
     public function rules() {
@@ -78,9 +78,8 @@ class Token extends CActiveRecord {
         $criteria = new CDbCriteria();
 
         $criteria->compare('name', $this->name, true);
-        $criteria->compare('active', 1);
 
-        return new CActiveDataProvider('Token', array('criteria' => $criteria));
+        return new CActiveDataProvider($this, array('criteria' => $criteria));
     }
 
 }

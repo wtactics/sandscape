@@ -46,7 +46,7 @@ class DeckTemplate extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'DeckTemplate';
+        return '{{DeckTemplate}}';
     }
 
     public function rules() {
@@ -77,7 +77,6 @@ class DeckTemplate extends CActiveRecord {
         $criteria = new CDbCriteria();
 
         $criteria->compare('name', $this->name, true);
-        $criteria->compare('active', 1);
 
         return new CActiveDataProvider('DeckTemplate', array('criteria' => $criteria));
     }

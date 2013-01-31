@@ -54,7 +54,7 @@ class Deck extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'Deck';
+        return '{{Deck}}';
     }
 
     public function rules() {
@@ -101,7 +101,6 @@ class Deck extends CActiveRecord {
         $criteria = new CDbCriteria();
 
         $criteria->compare('name', $this->name, true);
-        $criteria->compare('active', 1);
         if ($owner) {
             $criteria->compare('userId', $owner);
         }

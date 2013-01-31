@@ -28,7 +28,7 @@
 
 /**
  */
-class SSWebUser extends CWebUser {
+class SandscapeWebUser extends CWebUser {
 
     /**
      *
@@ -37,8 +37,6 @@ class SSWebUser extends CWebUser {
      * @param boolean $fromCookie
      * 
      * @return boolean 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function beforeLogin($id, $states, $fromCookie) {
 

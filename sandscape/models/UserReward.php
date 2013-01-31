@@ -40,7 +40,7 @@ class UserReward extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'UserReward';
+        return '{{UserReward}}';
     }
 
 }

@@ -47,7 +47,7 @@ class PlayerCounter extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'PlayerCounter';
+        return '{{PlayerCounter}}';
     }
 
     public function rules() {
@@ -87,9 +87,8 @@ class PlayerCounter extends CActiveRecord {
         $criteria->compare('startValue', $this->startValue);
         $criteria->compare('step', $this->step);
         $criteria->compare('available', $this->available);
-        $criteria->compare('active', 1);
 
-        return new CActiveDataProvider('PlayerCounter', array('criteria' => $criteria));
+        return new CActiveDataProvider('{{PlayerCounter}}', array('criteria' => $criteria));
     }
 
 }

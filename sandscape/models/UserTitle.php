@@ -40,7 +40,7 @@ class UserTitle extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'UserTitle';
+        return '{{UserTitle}}';
     }
 
 }

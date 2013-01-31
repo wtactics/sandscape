@@ -26,6 +26,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 return array(
+    'Actions' => 'Acções',
+    'Administrator' => 'Administrador',
     'Avatar' => 'Avatar',
     'Birth Year' => 'Ano Nascimento',
     'Cancel' => 'Cancelar',
@@ -41,6 +43,7 @@ return array(
     'Logout' => 'Sair',
     'Name' => 'Nome',
     'Password' => 'Password',
+    'Player' => 'Jogador',
     'Profile' => 'Perfil',
     'Public Information' => 'Informação Pública',
     'Reverse Cards' => 'Inverter Cartas',
@@ -49,5 +52,6 @@ return array(
     'Skype' => 'Skype',
     'The user you are trying to find is invalid.' => 'O utilizador que está a tentar encontrar não é válido.',
     'Twitter' => 'Twitter',
+    'Users' => 'Utilizadores',
     'Website' => 'Website',
 );

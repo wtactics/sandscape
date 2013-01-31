@@ -1,5 +1,5 @@
 <?php
-$this->title = 'Users';
+$this->title = Yii::t('sandscape', 'Users');
 
 $js = <<<JS
 $('a.reset').click(function() {
@@ -32,42 +32,44 @@ Yii::app()->clientScript->registerScript('resetjs', $js);
 </div>
 
 <?php
-$this->widget('zii.widgets.grid.CGridView', array(
+$this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'user-grid',
     'dataProvider' => $filter->search(),
     'filter' => $filter,
-    'cssFile' => false,
+    'template' => '{items} {pager} {summary}',
+    'type' => 'striped condensed bordered',
     'columns' => array(
         array(
             'name' => 'name',
             'type' => 'html',
             'value' => 'CHtml::link($data->name, Yii::app()->createUrl("users/update", array("id" => $data->userId)))'
         ),
+        'email:email',
         array(
-            'name' => 'email',
-            'type' => 'email'
-        ),
-        array(
-            'name' => 'class',
-            'filter' => array(0 => 'Regular', 1 => 'Power User', 2 => 'Administrator'),
+            'name' => 'role',
+            'filter' => User::rolesArray(),
             'type' => 'raw',
-            'value' => '($data->class == 2 ? "Administrator" : ($data->class == 1 ? "Power User" : "Regular"))'
+            'value' => '($data->role == 2 ? "Administrator" : ($data->role == 1 ? "Power User" : "Regular"))'
         ),
         array(
-            'header' => 'Actions',
-            'class' => 'CButtonColumn',
-            'buttons' => array(
-                'view' => array('visible' => 'false'),
-                'reset' => array(
-                    'label' => 'Reset Password',
-                    'url' => 'Yii::app()->createUrl("users/resetpassword", array("id" => $data->userId))',
-                    'imageUrl' => '_resources/images/icon-x16-key.png',
-                    'visible' => 'true',
-                    'options' => array('class' => 'reset')
-                )
-            ),
-            'template' => '{update} {delete} {reset}'
+            'class' => 'bootstrap.widgets.TbButtonColumn',
+            'htmlOptions' => array('style' => 'width: 50px'),
         )
+
+//        array(
+//            'header' => Yii::t('sandscape', 'Actions'),
+//            'class' => 'CButtonColumn',
+//            'buttons' => array(
+//                'view' => array('visible' => 'false'),
+    //'reset' => array(
+    //    'label' => 'Reset Password',
+    //    'url' => 'Yii::app()->createUrl("users/resetpassword", array("id" => $data->userId))',
+    //    'imageUrl' => '_resources/images/icon-x16-key.png',
+    //    'visible' => 'true',
+    //    'options' => array('class' => 'reset')
+    //)
+//            ),
+//            'template' => '{update} {delete} {reset}'
+    //)
     ),
-    'template' => '{items} {pager} {summary}'
 ));

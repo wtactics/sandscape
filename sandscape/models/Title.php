@@ -44,7 +44,7 @@ class Title extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'Title';
+        return '{{Title}}';
     }
 
     public function rules() {
@@ -77,9 +77,8 @@ class Title extends CActiveRecord {
         $criteria = new CDbCriteria();
 
         $criteria->compare('description', $this->description, true);
-        $criteria->compare('active', 1);
 
-        return new CActiveDataProvider('Title', array('criteria' => $criteria));
+        return new CActiveDataProvider($this, array('criteria' => $criteria));
     }
 
 }

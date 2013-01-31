@@ -51,7 +51,7 @@ class ChatMessage extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'ChatMessage';
+        return '{{ChatMessage}}';
     }
 
     public function relations() {
