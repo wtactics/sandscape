@@ -1,41 +1,45 @@
 <?php
-$form = $this->beginWidget('CActiveForm', array(
+/** @var BootActiveForm $form */
+/** @var SiteController $this */
+$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'id' => 'user-form',
-    'enableAjaxValidation' => true
+    'type' => 'horizontal',
+    'enableAjaxValidation' => true,
+    'focus' => array($user, 'name'),
         ));
 ?>
 
-<fieldset>
-    <legend>General information</legend>
-    <div class="formrow">
-        <?php
-        echo $form->labelEx($user, 'name'),
-        $form->textField($user, 'name', array('size' => 25, 'maxlength' => 15, 'class' => 'text'));
-        ?>
-    </div>
-    <?php echo $form->error($user, 'name'); ?>
+<legend><?php echo Yii::t('sandscape', 'Public Information'); ?></legend>
 
-    <div class="formrow">
-        <?php
-        echo $form->labelEx($user, 'email'),
-        $form->textField($user, 'email', array('size' => 60, 'maxlength' => 255, 'class' => 'text'));
-        ?>
-    </div>
-    <?php echo $form->error($user, 'email'); ?>
-    <div class="formrow">
-        <?php
-        echo $form->labelEx($user, 'class', array('class' => 'standard')),
-        $form->dropDownList($user, 'class', array(0 => 'Regular', 1 => 'Power User', 2 => 'Administrator'));
-        ?>
-    </div>
-    <?php echo $form->error($user, 'class'); ?>
-</fieldset>
 
-<div class="buttonrow">
-    <?php
-    echo CHtml::submitButton('Save', array('class' => 'button')),
-    CHtml::link('Cancel', $this->createUrl('users/index'));
-    ?>
-</div>
 <?php
+echo $form->textFieldRow($user, 'name', array('maxlength' => 150)),
+ $form->textFieldRow($user, 'email', array('maxlength' => 255)),
+ $form->dropDownListRow($user, 'role', User::rolesArray()),
+ $form->textFieldRow($user, 'website', array('maxlength' => 255)),
+ $form->textFieldRow($user, 'twitter', array('maxlength' => 255)),
+ $form->textFieldRow($user, 'facebook', array('maxlength' => 255)),
+ $form->textFieldRow($user, 'googleplus', array('maxlength' => 255)),
+ $form->textFieldRow($user, 'skype', array('maxlength' => 255)),
+ $form->dropDownListRow($user, 'country', array_merge(array('' => ''), User::countries()));
+?>
+
+<legend><?php echo Yii::t('sandscape', 'Game Options'); ?></legend>
+
+<?php
+echo $form->checkboxRow($user, 'reverseCards'),
+ $form->checkboxRow($user, 'onHoverDetails');
+
+$this->widget('bootstrap.widgets.TbButton', array(
+    'buttonType' => 'submit',
+    'label' => Yii::t('sandscape', 'Save'),
+    'type' => 'success'
+));
+
+$this->widget('bootstrap.widgets.TbButton', array(
+    'url' => $this->createUrl('users/index'),
+    'label' => Yii::t('sandscape', 'Cancel'),
+    'type' => 'warning'
+));
+
 $this->endWidget();

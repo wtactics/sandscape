@@ -16,7 +16,7 @@
         <script type="text/javascript" src="<?php echo $url; ?>/js/libraries/jquery-min.js"></script>
         <script type="text/javascript" src="<?php echo $url; ?>/js/libraries/jquery-ui-min.js"></script>
 
-        <?php if (YII_DEBUG) { ?>
+        <?php if (!defined('YII_DEBUG') || !YII_DEBUG) { ?>
             <script type="text/javascript" src="<?php echo $url; ?>/js/sandscape.all.min.js"></script>
         <?php } ?>
 

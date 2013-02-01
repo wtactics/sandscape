@@ -73,14 +73,14 @@ class User extends CActiveRecord {
         return array(
             array('email, name', 'required'),
             array('gender, reverseCards, onHoverDetails', 'numerical', 'integerOnly' => true),
-            array('email, avatar, website, twitter, facebook, googleplus, skype, msn', 'length', 'max' => 255),
+            array('email, avatar, website, twitter, facebook, googleplus, skype', 'length', 'max' => 255),
             array('country', 'length', 'max' => 2),
             array('name', 'length', 'max' => 150),
             array('role', 'length', 'max' => 15),
             array('email', 'email'),
-            array('name, email', 'unique', 'className' => '{{User}}'),
-                //search
-                //array('email, name', 'safe', 'on' => 'search'),
+            array('name, email', 'unique', 'className' => 'User'),
+            //search
+            array('email, name, role', 'safe', 'on' => 'search'),
         );
     }
 
@@ -165,6 +165,30 @@ class User extends CActiveRecord {
             'administrator' => Yii::t('sandscape', 'Administrator'),
             'player' => Yii::t('sandscape', 'Player')
         );
+    }
+
+    public final function getRole() {
+        $roles = self::rolesArray();
+
+        return (isset($roles[$this->role]) ? $roles[$this->role] : '');
+    }
+
+    public final function getCountry() {
+        $countries = self::countries();
+
+        return (isset($countries[$this->country]) ? $countries[$this->country] : '');
+    }
+
+    public final function showReversedCards() {
+        return $this->reverseCards ? Yii::t('sandscape', 'Yes') : Yii::t('sandscape', 'No');
+    }
+
+    public final function showDetailsOnHover() {
+        return $this->onHoverDetails ? Yii::t('sandscape', 'Yes') : Yii::t('sandscape', 'No');
+    }
+
+    public final function getGender() {
+        return $this->gender == 1 ? Yii::t('sandscape', 'Male') : Yii::t('sandscape', 'Female');
     }
 
     public final static function countries() {

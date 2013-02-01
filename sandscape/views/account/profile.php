@@ -20,7 +20,7 @@ echo $form->textFieldRow($user, 'name', array('maxlength' => 150)),
  $form->textFieldRow($user, 'facebook', array('maxlength' => 255)),
  $form->textFieldRow($user, 'googleplus', array('maxlength' => 255)),
  $form->textFieldRow($user, 'skype', array('maxlength' => 255)),
- $form->dropDownListRow($user, 'country', User::countries());
+ $form->dropDownListRow($user, 'country', array_merge(array('' => ''), User::countries()));
 ?>
 
 <legend><?php echo Yii::t('sandscape', 'Game Options'); ?></legend>

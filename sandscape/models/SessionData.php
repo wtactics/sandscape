@@ -48,7 +48,7 @@ class SessionData extends CActiveRecord {
     }
 
     public function tableName() {
-        return '((SessionData}}';
+        return '{{SessionData}}';
     }
 
 }
