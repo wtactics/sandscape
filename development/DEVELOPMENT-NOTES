@@ -46,3 +46,9 @@ Maybe replace simple.modal with color box everywhere?
 
 If there are no counters setup for the game, disable the counters menu.
 Disable states and tokens if none exist.
+
+==================
+
+UPDATED NOTES AS OF REBOOT...
+
+Add deck and game counts to user view by administrators, also game lists when possible.

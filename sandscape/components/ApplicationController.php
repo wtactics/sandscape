@@ -86,16 +86,16 @@ class ApplicationController extends CController {
 //                        'url' => array('lobby/index'),
 //                        'visible' => !Yii::app()->user->isGuest
 //                    ),
-//                    array(
-//                        'class' => 'bootstrap.widgets.TbMenu',
-//                        'label' => Yii::t('backend', 'Game Settings'),
-//                        'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class,
-//                        'items' => array(
-//                            array(
-//                                'label' => Yii::t('sandscape', 'Cards'),
-//                                'url' => array('cards/index'),
-//                            ),
-//                            '---',
+                    array(
+                        'class' => 'bootstrap.widgets.TbMenu',
+                        'label' => Yii::t('backend', 'Game Settings'),
+                        //'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class,
+                        'items' => array(
+                            array(
+                                'label' => Yii::t('sandscape', 'Cards'),
+                                'url' => array('cards/index'),
+                            ),
+                            '---',
 //                            array(
 //                                'label' => Yii::t('sandscape', 'Dice'),
 //                                'url' => array('dice/index'),
@@ -108,18 +108,18 @@ class ApplicationController extends CController {
 //                                'label' => Yii::t('sandscape', 'Tokens'),
 //                                'url' => array('tokens/guardian'),
 //                            ),
-//                            '---',
+                            '---',
 //                            array(
 //                                'label' => Yii::t('sandscape', 'Player Counters'),
 //                                'url' => array('counters/index'),
 //                            ),
-//                            '---',
+                            '---',
 //                            array(
 //                                'label' => Yii::t('sandscape', 'Gameplay Options'),
 //                                'url' => array('administration/gameoptions'),
 //                            ),
-//                        ),
-//                    ),
+                        ),
+                    ),
                 ),
             ),
             array(
