@@ -54,6 +54,10 @@ class UsersController extends ApplicationController {
                 'allow',
                 'actions' => array('index', 'create', 'view', 'update'),
                 'expression' => '$user->role == "administrator"'
+            ),
+            array(
+                'deny',
+                'users' => array('*')
             )
         );
     }
@@ -135,11 +139,28 @@ class UsersController extends ApplicationController {
     public function actionDelete($id) {
         if (Yii::app()->request->isPostRequest && Yii::app()->user->role == 'administrator') {
             $user = $this->loadUserModel($id);
+
             $user->active = 0;
             $user->save();
+
+            if (!isset($_GET['ajax'])) {
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+            }
         } else {
             throw new CHttpException(400, Yii::t('sandscape', 'Invalid request. Please do not repeat this request again.'));
         }
+    }
+
+    /**
+     * Provides access to all public information about a given user. This action 
+     * is responsible for showing a user's profile to other users.
+     * 
+     * @param integer $id The user's ID
+     */
+    public function actionProfile() {
+        $user = $this->loadUserModel(Yii::app()->user->id);
+
+        $this->render('profile', array('user' => $user));
     }
 
 }

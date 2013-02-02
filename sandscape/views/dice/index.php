@@ -1,15 +1,16 @@
-<?php $this->title = 'Dice List'; ?>
-<h2>Dice List</h2>
-
-<div class="list-tools">
-    <a href="<?php echo $this->createURL('create'); ?>">Create Dice</a>
-</div>
 <?php
-$this->widget('zii.widgets.grid.CGridView', array(
+/** @var $this UsersController */
+$this->title = Yii::t('sandscape', 'Dice List');
+?>
+<h2><?php echo Yii::t('sandscape', 'Dice List') ?></h2>
+
+<?php
+$this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'dice-grid',
     'dataProvider' => $filter->search(),
     'filter' => $filter,
-    'cssFile' => false,
+    'template' => '{items} {pager} {summary}',
+    'type' => 'striped condensed bordered',
     'columns' => array(
         array(
             'name' => 'name',
@@ -19,17 +20,21 @@ $this->widget('zii.widgets.grid.CGridView', array(
         'face',
         array(
             'name' => 'enabled',
-            'filter' => array(0 => 'No', 1 => 'Yes'),
+            'filter' => array(0 => Yii::t('sandscape', 'No'), 1 => Yii::t('sandscape', 'Yes')),
             'type' => 'raw',
-            'value' => '($data->enabled ? \'<span class="yes">Yes</span>\' : \'<span class="no">No</span>\')'
+            'value' => '$data->getEnabled()'
         ),
         array(
-            'header' => 'Actions',
-            'class' => 'CButtonColumn',
-            'buttons' => array(
-                'view' => array('visible' => 'false'),
-            )
-        ),
+            'header' => Yii::t('sandscape', 'Actions'),
+            'class' => 'bootstrap.widgets.TbButtonColumn',
+            'htmlOptions' => array('style' => 'width: 50px'),
+        )
     ),
-    'template' => '{items} {pager} {summary}'
+));
+
+$this->widget('bootstrap.widgets.TbButton', array(
+    'label' => Yii::t('sandscape', 'New Die'),
+    'type' => 'info',
+    'size' => 'small',
+    'url' => $this->createURL('dice/create')
 ));

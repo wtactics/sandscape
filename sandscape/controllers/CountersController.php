@@ -37,9 +37,39 @@ class CountersController extends ApplicationController {
     }
 
     /**
-     * Default action, shows a list of existing (active) player counters.
+     * Adding to the default access rules.
      * 
-     * @since 1.3, Soulharvester
+     * @return array
+     */
+    public function accessRules() {
+        return array(
+            array(
+                'allow',
+                'actions' => array('index', 'create', 'view', 'update', 'delete'),
+                'expression' => '$user->role == "administrator"'
+            ),
+            array(
+                'deny',
+                'users' => array('*')
+            )
+        );
+    }
+
+    /**
+     * Retrieves a <em>PlayerCounter</em> model from the database.
+     * 
+     * @param integer $id The model's database ID
+     * @return Dice The loaded model or null if no model was found for the given ID
+     */
+    private function loadPlayerCounterModel($id) {
+        if (!($counter = PlayerCounter::model()->findByPk((int) $id))) {
+            throw new CHttpException(404, Yii::t('sandscape', 'The requested counter is unavailable.'));
+        }
+        return $counter;
+    }
+
+    /**
+     * Default action, shows a list of existing (active) player counters.
      */
     public function actionIndex() {
         $filter = new PlayerCounter('search');
@@ -58,84 +88,52 @@ class CountersController extends ApplicationController {
      * @since 1.3, Soulharvester
      */
     public function actionCreate() {
-        $new = new PlayerCounter();
-
-        $this->performAjaxValidation('playercounter-form', $new);
-
-        if (isset($_POST['PlayerCounter'])) {
-            $new->attributes = $_POST['PlayerCounter'];
-            if ($new->save()) {
-                $this->redirect(array('update', 'id' => $new->playerCounterId));
-            }
-        }
-
-        $this->render('edit', array('counter' => $new));
-    }
-
-    /**
-     * Updates a counter's information.
-     * 
-     * @since 1.3, Soulharvester
-     */
-    public function actionUpdate($id) {
-        $counter = $this->loadPlayerCounterModel($id);
-
+        $counter = new PlayerCounter();
         $this->performAjaxValidation('playercounter-form', $counter);
 
         if (isset($_POST['PlayerCounter'])) {
             $counter->attributes = $_POST['PlayerCounter'];
             if ($counter->save()) {
-                $this->redirect(array('update', 'id' => $counter->playerCounterId));
+                $this->redirect(array('view', 'id' => $counter->playerCounterId));
             }
         }
 
-        $this->render('edit', array('counter' => $counter));
+        $this->render('create', array('counter' => $counter));
+    }
+
+    /**
+     * Updates a counter's information.
+     */
+    public function actionUpdate($id) {
+        $counter = $this->loadPlayerCounterModel($id);
+        $this->performAjaxValidation('playercounter-form', $counter);
+
+        if (isset($_POST['PlayerCounter'])) {
+            $counter->attributes = $_POST['PlayerCounter'];
+            if ($counter->save()) {
+                $this->redirect(array('view', 'id' => $counter->playerCounterId));
+            }
+        }
+
+        $this->render('update', array('counter' => $counter));
     }
 
     /**
      * Marks the selected counter as inactive, removing it from the system.
-     * 
-     * @since 1.3, Soulharvester
      */
     public function actionDelete($id) {
-        if (Yii::app()->request->isPostRequest) {
+        if (Yii::app()->user->role == 'administrator' && Yii::app()->request->isPostRequest) {
             $counter = $this->loadPlayerCounterModel($id);
+
             $counter->active = 0;
             $counter->save();
+
+            if (!isset($_GET['ajax'])) {
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+            }
         } else {
-            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+            throw new CHttpException(400, Yii::t('sandscape', 'Invalid request. Please do not repeat this request again.'));
         }
-    }
-
-    /**
-     * Retrieves a <em>PlayerCounter</em> model from the database.
-     * 
-     * @param integer $id The model's database ID
-     * @return Dice The loaded model or null if no model was found for the given ID
-     * 
-     * @since 1.3, Soulharvester
-     */
-    private function loadPlayerCounterModel($id) {
-        if (($counter = PlayerCounter::model()->find('active = 1 AND playerCounterId = :id', array(':id' => (int) $id))) === null) {
-            throw new CHttpException(404, 'The requested counter is unavailable.');
-        }
-        return $counter;
-    }
-
-    /**
-     * Adding to the default access rules.
-     * 
-     * @return array
-     * 
-     * @since 1.3, Soulharvester
-     */
-    public function accessRules() {
-        return array_merge(array(
-                    array('allow',
-                        'actions' => array('index', 'create', 'update', 'delete'),
-                        'expression' => '$user->class'
-                    )
-                        ), parent::accessRules());
     }
 
 }

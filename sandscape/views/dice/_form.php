@@ -1,36 +1,31 @@
-<?php $form = $this->beginWidget('CActiveForm', array('id' => 'dice-form')); ?>
-<fieldset>
-    <legend>Die information</legend>
-
-    <div class="formrow">
-        <?php
-        echo $form->labelEx($dice, 'name'),
-        $form->textField($dice, 'name', array('size' => 60, 'maxlength' => 150, 'class' => 'large'));
-        ?>
-    </div>
-    <?php echo $form->error($dice, 'name'); ?>
-
-    <div class="formrow">
-        <?php
-        echo $form->labelEx($dice, 'face'),
-        $form->textField($dice, 'face', array('size' => 60, 'maxlength' => 3, 'class' => 'numeric'));
-        ?>
-    </div>
-    <?php echo $form->error($dice, 'face'); ?>
-
-    <div class="formrow">
-        <?php
-        echo $form->labelEx($dice, 'enabled'), $form->checkBox($dice, 'enabled');
-        ?>
-    </div>
-    <?php echo $form->error($dice, 'enabled'); ?>
-</fieldset>
-
-<div class="buttonrow">
-    <?php
-    echo CHtml::submitButton('Save', array('class' => 'button')),
-    CHtml::link('Cancel', $this->createUrl('dice/index'));
-    ?>
-</div>
 <?php
+/** @var BootActiveForm $form */
+/** @var DiceController $this */
+$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
+    'id' => 'dice-form',
+    'type' => 'horizontal',
+    'enableAjaxValidation' => true,
+    'focus' => array($dice, 'name'),
+        ));
+?>
+
+<legend><?php echo Yii::t('sandscape', 'Die Details'); ?></legend>
+
+<?php
+echo $form->textFieldRow($dice, 'name', array('maxlength' => 150)),
+ $form->textFieldRow($dice, 'face'),
+ $form->checkBoxRow($dice, 'enabled');
+
+$this->widget('bootstrap.widgets.TbButton', array(
+    'buttonType' => 'submit',
+    'label' => Yii::t('sandscape', 'Save'),
+    'type' => 'success'
+));
+
+$this->widget('bootstrap.widgets.TbButton', array(
+    'url' => $this->createUrl('dice/index'),
+    'label' => Yii::t('sandscape', 'Cancel'),
+    'type' => 'warning'
+));
+
 $this->endWidget();

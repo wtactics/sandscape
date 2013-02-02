@@ -16,6 +16,14 @@ $this->title = 'Deck List';
         <?php } ?>
     </div>
     <?php
+    $this->widget('bootstrap.widgets.TbGridView', array(
+    'id' => 'user-grid',
+    'dataProvider' => $filter->search(),
+    'filter' => $filter,
+    'template' => '{items} {pager} {summary}',
+    'type' => 'striped condensed bordered',
+    'columns' => array(
+
     $this->widget('zii.widgets.grid.CGridView', array(
         'id' => 'deck-grid',
         'dataProvider' => $filter->search(Yii::app()->user->id),
@@ -34,9 +42,10 @@ $this->title = 'Deck List';
                 'filter' => false
             ),
             array(
-                'header' => 'Actions',
-                'class' => 'CButtonColumn'
-            )
+            'header' => Yii::t('sandscape', 'Actions'),
+            'class' => 'bootstrap.widgets.TbButtonColumn',
+            'htmlOptions' => array('style' => 'width: 50px'),
+        )
         ),
         'template' => '{items} {pager} {summary}'
     ));
@@ -62,3 +71,10 @@ $this->title = 'Deck List';
         <?php
     }
 }?>
+
+    $this->widget('bootstrap.widgets.TbButton', array(
+    'label' => Yii::t('sandscape', 'New User'),
+    'type' => 'info',
+    'size' => 'small',
+    'url' => $this->createURL('users/create')
+));

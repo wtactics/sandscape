@@ -343,7 +343,11 @@ class LobbyController extends ApplicationController {
                             'sendMessage', 'ajaxusercomplete'
                         ),
                         'users' => array('@')
-                    )
+                    ),
+            array(
+                'deny',
+                'users' => array('*')
+            )
                         ), parent::accessRules());
     }
 

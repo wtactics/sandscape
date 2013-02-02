@@ -32,10 +32,10 @@
  */
 class CardsController extends ApplicationController {
 
-    private static $NORMAL_WIDTH = 250;
-    private static $NORMAL_HEIGHT = 354;
-    private static $SMALL_WIDTH = 81;
-    private static $SMALL_HEIGHT = 115;
+    //private static $NORMAL_WIDTH = 250;
+    //private static $NORMAL_HEIGHT = 354;
+    //private static $SMALL_WIDTH = 81;
+    //private static $SMALL_HEIGHT = 115;
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
@@ -50,8 +50,12 @@ class CardsController extends ApplicationController {
         return array(
             array(
                 'allow',
-                'actions' => array('index'),
+                'actions' => array('index', 'create', 'view', 'update'),
                 'expression' => '$user->role == "administrator"'
+            ),
+            array(
+                'deny',
+                'users' => array('*')
             )
         );
     }
@@ -63,10 +67,10 @@ class CardsController extends ApplicationController {
      * @return Card The card model.
      */
     private function loadCardModel($id) {
-        //if (!($card = Card::model()->findByPk((int) $id))) {
-        //    throw new CHttpException(404, 'The requested card does not exist.');
-        //}
-        //return $card;
+        if (!($card = Card::model()->findByPk((int) $id))) {
+            throw new CHttpException(404, Yii::t('sandscape', 'The requested card does not exist.'));
+        }
+        return $card;
     }
 
     /**
@@ -83,29 +87,27 @@ class CardsController extends ApplicationController {
         $this->render('index', array('filter' => $filter));
     }
 
-//    /**
-//     * Creates a new card and allows for image uploads, creating all the necessary 
-//     * thumbs and reverted copies.
-//     * 
-//     * @since 1.2, Elvish Shaman
-//     */
-//    public function actionCreate() {
-//        $new = new Card();
-//        $this->performAjaxValidation('card-form', $new);
-//
-//        if (isset($_POST['Card'])) {
-//            $new->attributes = $_POST['Card'];
-//
+    /**
+     * Creates a new card and allows for image uploads, creating all the necessary 
+     * thumbs and reverted copies.
+     */
+    public function actionCreate() {
+        $card = new Card();
+        $this->performAjaxValidation('card-form', $card);
+
+        if (isset($_POST['Card'])) {
+            $card->attributes = $_POST['Card'];
+
+//            //TODO: 
 //            Yii::import('ext.PhpThumbFactory');
-//
-//            $path = Yii::getPathOfAlias('webroot') . '/_game/cards';
-//            $upfile = CUploadedFile::getInstance($new, 'image');
+//            $path = Yii::getPathOfAlias('webroot') . '/gamedata/cards';
+//            $upfile = CUploadedFile::getInstance($card, 'image');
 //
 //            if ($upfile !== null) {
 //                $name = $upfile->name;
 //
 //                if (is_file($path . '/' . $name)) {
-//                    $name = $new->name . '.' . $name;
+//                    $name = $card->name . '.' . $name;
 //                }
 //
 //                $sizes = getimagesize($upfile->tempName);
@@ -120,93 +122,60 @@ class CardsController extends ApplicationController {
 //                $imgFactory->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)->save($path . '/thumbs/' . $name);
 //                $imgFactory->rotateImageNDegrees(180)->save($path . '/thumbs/reversed/' . $name);
 //
-//                $new->image = $name;
-//                $new->save();
-//            }
-//            $this->redirect(array('update', 'id' => $new->cardId));
+//                $card->image = $name;
 //        }
-//
-//        $this->render('edit', array('card' => $new));
-//    }
-//
-//    /**
-//     * Updates a card's information.
-//     * 
-//     * @param integer $id The card ID we want to update.
-//     * 
-//     * @since 1.2, Elvish Shaman
-//     */
-//    public function actionUpdate($id) {
-//        $card = $this->loadCardModel($id);
-//
-//        $this->performAjaxValidation('card-form', $card);
-//
-//        if (isset($_POST['Card'])) {
-//            $card->attributes = $_POST['Card'];
-//            if ($card->save()) {
-//                $path = Yii::getPathOfAlias('webroot') . '/_game/cards';
-//                $upfile = CUploadedFile::getInstance($new, 'image');
-//                if ($upfile !== null) {
-//
-//                    //remove old images, if they exist.
-//                    if ($card->image) {
-//                        //Don't really care if removable fails, will delete orphan 
-//                        //cards at a later time.
-//                        unlink($path . '/' . $card->image);
-//                        unlink($path . '/thumbs/' . $card->image);
-//                        unlink($path . '/thumbs/reversed/' . $card->image);
-//
-//                        $card->image = null;
-//                    }
-//
-//                    $name = $upfile->name;
-//                    if (is_file($path . '/' . $name)) {
-//                        $name = $new->name . '.' . $name;
-//                    }
-//
-//                    $sizes = getimagesize($upfile->tempName);
-//                    $imgFactory = PhpThumbFactory::create($upfile->tempName);
-//
-//                    //250 width, 354 height
-//                    if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
-//                        $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
-//                    }
-//
-//                    $imgFactory->save($path . '/' . $name);
-//                    $imgFactory->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)->save($path . '/thumbs/' . $name);
-//                    $imgFactory->rotateImageNDegrees(180)->save($path . '/thumbs/reversed/' . $name);
-//
-//                    $new->image = $name;
-//                    $new->save();
-//                }
-//                $this->redirect(array('update', 'id' => $card->cardId));
-//            }
-//        }
-//
-//        $this->render('edit', array('card' => $card));
-//    }
-//
-//    /**
-//     * Deletes a card by making it inactive.
-//     * 
-//     * @param integer $id The card ID.
-//     * 
-//     * @since 1.2, Elvish Shaman
-//     */
-//    public function actionDelete($id) {
-//        if (Yii::app()->user->class && Yii::app()->request->isPostRequest) {
-//            $card = $this->loadCardModel($id);
-//
-//            $card->active = 0;
-//            $card->save();
-//
-//            if (!isset($_GET['ajax'])) {
-//                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
-//            }
-//        } else {
-//            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
-//        }
-//    }
+            if ($card->save()) {
+                $this->redirect(array('view', 'id' => $card->cardId));
+            }
+        }
+
+        $this->render('create', array('card' => $card));
+    }
+
+    public function actionView($id) {
+        $card = $this->loadCardModel($id);
+        $this->render('view', array('card' => $card));
+    }
+
+    /**
+     * Updates a card's information.
+     * 
+     * @param integer $id The card ID we want to update.
+     */
+    public function actionUpdate($id) {
+        $card = $this->loadCardModel($id);
+        $this->performAjaxValidation('card-form', $card);
+
+        if (isset($_POST['Card'])) {
+            $card->attributes = $_POST['Card'];
+            if ($card->save()) {
+                $this->redirect(array('view', 'id' => $card->cardId));
+            }
+        }
+
+        $this->render('update', array('card' => $card));
+    }
+
+    /**
+     * Deletes a card by making it inactive.
+     * 
+     * @param integer $id The card ID.
+     */
+    public function actionDelete($id) {
+        if (Yii::app()->user->role == 'administrator' && Yii::app()->request->isPostRequest) {
+            $card = $this->loadCardModel($id);
+
+            $card->active = 0;
+            $card->save();
+
+            if (!isset($_GET['ajax'])) {
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+            }
+        } else {
+            throw new CHttpException(400, Yii::t('sandscape', 'Invalid request. Please do not repeat this request again.'));
+        }
+    }
+
 //
 //    /**
 //     * Allows administrators to import cards from CSV files.
@@ -221,8 +190,6 @@ class CardsController extends ApplicationController {
 //     *  named <em>images</em>, this is a required field
 //     *  - cardscape ID, the ID for cardscape system if this is a card imported 
 //     *  from Cardscape
-//     * 
-//     * @since 1.2, Elvish Shaman
 //     */
 //    public function actionImport() {
 //        $saveErrors = array();
@@ -306,5 +273,4 @@ class CardsController extends ApplicationController {
 //            'success' => $success
 //        ));
 //    }
-
 }

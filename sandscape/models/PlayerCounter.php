@@ -42,7 +42,7 @@ class PlayerCounter extends CActiveRecord {
     /**
      * @return PlayerCounter
      */
-    public static function model($className=__CLASS__) {
+    public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
@@ -68,11 +68,11 @@ class PlayerCounter extends CActiveRecord {
 
     public function attributeLabels() {
         return array(
-            'playerCounterId' => 'ID',
-            'name' => 'Name',
-            'startValue' => 'Start value',
-            'step' => 'Step',
-            'available' => 'Available for play'
+            'playerCounterId' => Yii::t('sandscape', 'ID'),
+            'name' => Yii::t('sandscape', 'Name'),
+            'startValue' => Yii::t('sandscape', 'Start value'),
+            'step' => Yii::t('sandscape', 'Step'),
+            'available' => Yii::t('sandscape', 'Available to play')
         );
     }
 
@@ -88,7 +88,7 @@ class PlayerCounter extends CActiveRecord {
         $criteria->compare('step', $this->step);
         $criteria->compare('available', $this->available);
 
-        return new CActiveDataProvider('{{PlayerCounter}}', array('criteria' => $criteria));
+        return new CActiveDataProvider($this, array('criteria' => $criteria));
     }
 
 }

@@ -28,19 +28,43 @@
 
 class TokensController extends ApplicationController {
 
-    private static $NORMAL_WIDTH = 270;
-    private static $NORMAL_HEIGHT = 382;
-    private static $SMALL_WIDTH = 101;
-    private static $SMALL_HEIGHT = 143;
+    //private static $NORMAL_WIDTH = 270;
+    //private static $NORMAL_HEIGHT = 382;
+    //private static $SMALL_WIDTH = 101;
+    //private static $SMALL_HEIGHT = 143;
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
     }
 
     /**
-     * Lists all existing tokens.
+     * Adding to the default access rules.
      * 
-     * @since 1.2, Elvish Shaman
+     * @return array
+     */
+    public function accessRules() {
+        return array(
+            array(
+                'allow',
+                'actions' => array('index', 'create', 'view', 'update', 'delete'),
+                'expression' => '$user->role == "administrator"'
+            ),
+            array(
+                'deny',
+                'users' => array('*')
+            )
+        );
+    }
+
+    private function loadTokenModel($id) {
+        if (!($token = Token::model()->findByPk((int) $id))) {
+            throw new CHttpException(404, Yii::t('sandscape', 'The requested token does not exist.'));
+        }
+        return $token;
+    }
+
+    /**
+     * Lists all existing tokens.
      */
     public function actionIndex() {
         $filter = new Token('search');
@@ -54,45 +78,49 @@ class TokensController extends ApplicationController {
     }
 
     public function actionCreate() {
-        $new = new Token();
-        $this->performAjaxValidation('token-form', $new);
+        $token = new Token();
+        $this->performAjaxValidation('token-form', $token);
 
         if (isset($_POST['Token'])) {
-            $new->attributes = $_POST['Token'];
-            
-            Yii::import('ext.PhpThumbFactory');
-            
-            $path = Yii::getPathOfAlias('webroot') . '/_game/tokens';
-            $upfile = CUploadedFile::getInstance($new, 'image');
+            $token->attributes = $_POST['Token'];
 
-            if ($upfile !== null) {
-                $name = $upfile->name;
-                
-                if (is_file($path . '/' . $name)) {
-                    $name = $new->name . '.' . $name;
-                }
-
-                $sizes = getimagesize($upfile->tempName);
-                $imgFactory = PhpThumbFactory::create($upfile->tempName);
-
-                //250 + 20 width, 354 + 28 height
-                if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
-                    $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
-                }
-                $imgFactory->save($path . '/' . $name)
-                        ->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)
-                        ->save($path . '/thumbs/' . $name)
-                        ->rotateImageNDegrees(180)
-                        ->save($path . '/thumbs/reversed/' . $name);
-
-                $new->image = $name;
-                $new->save();
+//            Yii::import('ext.PhpThumbFactory');
+//            $path = Yii::getPathOfAlias('webroot') . '/_game/tokens';
+//            $upfile = CUploadedFile::getInstance($new, 'image');
+//
+//            if ($upfile !== null) {
+//                $name = $upfile->name;
+//
+//                if (is_file($path . '/' . $name)) {
+//                    $name = $new->name . '.' . $name;
+//                }
+//
+//                $sizes = getimagesize($upfile->tempName);
+//                $imgFactory = PhpThumbFactory::create($upfile->tempName);
+//
+//                //250 + 20 width, 354 + 28 height
+//                if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
+//                    $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
+//                }
+//                $imgFactory->save($path . '/' . $name)
+//                        ->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)
+//                        ->save($path . '/thumbs/' . $name)
+//                        ->rotateImageNDegrees(180)
+//                        ->save($path . '/thumbs/reversed/' . $name);
+//
+//                $new->image = $name;
+//              }
+            if ($token->save()) {
+                $this->redirect(array('view', 'id' => $token->tokenId));
             }
-
-            $this->redirect(array('update', 'id' => $new->tokenId));
         }
 
-        $this->render('edit', array('token' => $new));
+        $this->render('create', array('token' => $token));
+    }
+
+    public function actionView($id) {
+        $token = $this->loadTokenModel($id);
+        $this->render('view', array('token' => $token));
     }
 
     public function actionUpdate($id) {
@@ -101,43 +129,16 @@ class TokensController extends ApplicationController {
 
         if (isset($_POST['Token'])) {
             $token->attributes = $_POST['Token'];
-            
-            Yii::import('ext.PhpThumbFactory');
-            
-            $path = Yii::getPathOfAlias('webroot') . '/_game/tokens';
-            $upfile = CUploadedFile::getInstance($token, 'image');
-
-            if ($upfile !== null) {
-                $name = $upfile->name;
-                
-                if (is_file($path . '/' . $name)) {
-                    $name = $new->name . '.' . $name;
-                }
-
-                $sizes = getimagesize($upfile->tempName);
-                $imgFactory = PhpThumbFactory::create($upfile->tempName);
-                //250 + 20 width, 354 + 28 height
-                if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
-                    $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
-                }
-                $imgFactory->save($path . '/' . $name)
-                        ->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)
-                        ->save($path . '/thumbs/' . $name)
-                        ->rotateImageNDegrees(180)
-                        ->save($path . '/thumbs/reversed/' . $name);
-
-                $token->image = $name;
-                $token->save();
+            if ($token->save()) {
+                $this->redirect(array('update', 'id' => $token->tokenId));
             }
-
-            $this->redirect(array('update', 'id' => $token->tokenId));
         }
 
-        $this->render('edit', array('token' => $token));
+        $this->render('update', array('token' => $token));
     }
 
     public function actionDelete($id) {
-        if (Yii::app()->user->class && Yii::app()->request->isPostRequest) {
+        if (Yii::app()->user->role == 'administrator' && Yii::app()->request->isPostRequest) {
             $token = $this->loadTokenModel($id);
 
             $token->active = 0;
@@ -147,31 +148,8 @@ class TokensController extends ApplicationController {
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
             }
         } else {
-            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+            throw new CHttpException(400, Yii::t('sandscape', 'Invalid request. Please do not repeat this request again.'));
         }
-    }
-
-    private function loadTokenModel($id) {
-        if (($token = Token::model()->find('active = 1 AND tokenId = :id', array(':id' => (int) $id))) === null) {
-            throw new CHttpException(404, 'The token you\'re trying to load doesn\'t exist.');
-        }
-        return $token;
-    }
-
-    /**
-     * Adding to the default access rules.
-     * 
-     * @return array
-     * 
-     * @since 1.2, Elvish Shaman
-     */
-    public function accessRules() {
-        return array_merge(array(
-                    array('allow',
-                        'actions' => array('index', 'create', 'update', 'delete'),
-                        'expression' => '$user->class'
-                    )
-                        ), parent::accessRules());
     }
 
 }

@@ -193,7 +193,11 @@ class SiteController extends ApplicationController {
                     array('allow',
                         'actions' => array('logout'),
                         'users' => array('@')
-                    )
+                    ),
+            array(
+                'deny',
+                'users' => array('*')
+            )
                         ), parent::accessRules());
     }
 

@@ -47,6 +47,7 @@
  * @property string $role
  * @property int $reverseCards
  * @property int $onHoverDetails
+ * @property int $showChatTimes
  * 
  * The followings are the available model relations:
  * @property ChatMessage[] $chatMessages
@@ -72,7 +73,7 @@ class User extends CActiveRecord {
     public function rules() {
         return array(
             array('email, name', 'required'),
-            array('gender, reverseCards, onHoverDetails', 'numerical', 'integerOnly' => true),
+            array('gender, reverseCards, onHoverDetails, showChatTimes', 'numerical', 'integerOnly' => true),
             array('email, avatar, website, twitter, facebook, googleplus, skype', 'length', 'max' => 255),
             array('country', 'length', 'max' => 2),
             array('name', 'length', 'max' => 150),

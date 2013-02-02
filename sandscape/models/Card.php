@@ -75,11 +75,11 @@ class Card extends CActiveRecord {
 
     public function attributeLabels() {
         return array(
-            'cardId' => 'ID',
-            'name' => 'Name',
-            'rules' => 'Rules',
-            'image' => 'Image',
-            'cardscapeId' => 'Cardscape ID',
+            'cardId' => Yii::t('sandscape', 'ID'),
+            'name' => Yii::t('sandscape', 'Card Name'),
+            'rules' => Yii::t('sandscape', 'Card Rules'),
+            'image' => Yii::t('sandscape', 'Card Face'),
+            'cardscapeId' => Yii::t('sandscape', 'Cardscape ID'),
         );
     }
 
@@ -96,6 +96,7 @@ class Card extends CActiveRecord {
 
         $criteria->compare('name', $this->name, true);
         $criteria->compare('rules', $this->rules, true);
+        $criteria->compare('cardscapeId', $this->cardscapeId);
 
         return new CActiveDataProvider($this, array('criteria' => $criteria));
     }

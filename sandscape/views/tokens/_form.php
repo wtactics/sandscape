@@ -1,45 +1,29 @@
 <?php
-$form = $this->beginWidget('CActiveForm', array(
+/** @var BootActiveForm $form */
+/** @var TokensController $this */
+$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'id' => 'token-form',
+    'type' => 'horizontal',
     'enableAjaxValidation' => true,
-    'htmlOptions' => array('enctype' => 'multipart/form-data')
+    'focus' => array($token, 'name'),
         ));
 ?>
 
-<div style="float: left; width: 60%;">
-    <fieldset>
-        <legend>Token Information</legend>
-        <div class="formrow">
-            <?php
-            echo $form->labelEx($token, 'name'),
-            $form->textField($token, 'name', array('maxlength' => 150, 'class' => 'large'));
-            ?>
-        </div>
-        <?php echo $form->error($token, 'name'); ?>
-    </fieldset>
-</div>
-
-<div style="float:right; width: 38%;text-align: center;">
-    <fieldset>
-        <legend>Token Image</legend>
-        <div class="formrow">
-            <?php
-            if (!$token->isNewRecord) {
-                echo CHtml::image('_game/tokens/' . $token->image);
-            }
-            ?>
-            <?php echo $form->fileField($token, 'image'); ?>
-        </div>
-        <?php echo $form->error($token, 'image'); ?>
-    </fieldset>
-</div>
-<div class="clearfix"></div>
-<div class="buttonrow">
-    <?php
-    echo CHtml::submitButton('Save', array('class' => 'button')),
-    CHtml::link('Cancel', $this->createUrl('tokens/index'));
-    ?>
-</div>
+<legend><?php echo Yii::t('sandscape', 'Token Details'); ?></legend>
 
 <?php
+echo $form->textFieldRow($token, 'name', array('maxlength' => 150));
+
+$this->widget('bootstrap.widgets.TbButton', array(
+    'buttonType' => 'submit',
+    'label' => Yii::t('sandscape', 'Save'),
+    'type' => 'success'
+));
+
+$this->widget('bootstrap.widgets.TbButton', array(
+    'url' => $this->createUrl('tokens/index'),
+    'label' => Yii::t('sandscape', 'Cancel'),
+    'type' => 'warning'
+));
+
 $this->endWidget();

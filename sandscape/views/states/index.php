@@ -1,16 +1,13 @@
-<?php $this->title = 'Card In-game States'; ?>
-<h2>Card In-game States</h2>
-
-<div class="list-tools">
-    <a href="<?php echo $this->createURL('create'); ?>">Create State</a>
-</div>
+<?php $this->title = Yii::t('sandscape', 'Card States'); ?>
+<h2><?php echo Yii::t('sandscape', 'Card States'); ?></h2>
 
 <?php
-$this->widget('zii.widgets.grid.CGridView', array(
-    'id' => 'state-grid',
+$this->widget('bootstrap.widgets.TbGridView', array(
+    'id' => 'user-grid',
     'dataProvider' => $filter->search(),
     'filter' => $filter,
-    'cssFile' => false,
+    'template' => '{items} {pager} {summary}',
+    'type' => 'striped condensed bordered',
     'columns' => array(
         array(
             'name' => 'name',
@@ -18,12 +15,16 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'value' => 'CHtml::link($data->name, Yii::app()->createUrl("states/update", array("id" => $data->stateId)))'
         ),
         array(
-            'header' => 'Actions',
-            'class' => 'CButtonColumn',
-            'buttons' => array(
-                'view' => array('visible' => 'false')
-            )
+            'header' => Yii::t('sandscape', 'Actions'),
+            'class' => 'bootstrap.widgets.TbButtonColumn',
+            'htmlOptions' => array('style' => 'width: 50px'),
         )
     ),
-    'template' => '{items} {pager} {summary}'
+));
+
+$this->widget('bootstrap.widgets.TbButton', array(
+    'label' => Yii::t('sandscape', 'New State'),
+    'type' => 'info',
+    'size' => 'small',
+    'url' => $this->createURL('users/create')
 ));

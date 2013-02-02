@@ -1,4 +1,10 @@
 <?php
+
+/** @var CardsController $this */
+$this->title = Yii::t('sandsacpe', 'Edit Card');
+
+echo $this->renderPartial('_form', array('card' => $card));
+<?php
 if (YII_DEBUG) {
     Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/development/forms.css');
     Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/development/deck.css');

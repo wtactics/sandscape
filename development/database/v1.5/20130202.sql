@@ -1,0 +1,3 @@
+ALTER TABLE `User` ADD `showChatTimes` TINYINT NOT NULL DEFAULT 1 ;
+
+ALTER TABLE `Card` CHANGE `image` `image` VARCHAR( 255 ) NULL ;

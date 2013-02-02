@@ -1,4 +1,5 @@
 <?php
+/** @var CardsController $this */
 $this->title = 'Import Cards';
 
 if (YII_DEBUG) {

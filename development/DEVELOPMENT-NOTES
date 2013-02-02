@@ -3,11 +3,6 @@
 CHECK VIEWS/CARDS/INDEX FOR EXAMPLE ON TWITTER BOOTSTRAP
 
 
-CSS para:
-    - filtros de listas (campos de input demasiado grandes)
-    - TR/TH das listas/grelhas
-    - game listings
-
 Remove hardcoded css in forms for cards, states and tokens.
 
 Setting to allow users to see deck after game ended.
@@ -39,8 +34,6 @@ Chat about adding more control and options to the game table, with NeWiTa.
 17:31:17 o marvel não dá, e suspeito que o magic também não
 ================================================================================
 
-Better navigation! Returning to lists, and any other navigation needs to have better 
-CSS to make the links different from standard links, maybe a few icons.
 Implement a card gallery available for everyone (use colorbox)
 Maybe replace simple.modal with color box everywhere?
 

@@ -38,9 +38,33 @@ class StatesController extends ApplicationController {
     }
 
     /**
-     * Lists all existing states.
+     * Adding to the default access rules.
      * 
-     * @since 1.2, Elvish Shaman
+     * @return array
+     */
+    public function accessRules() {
+        return array(
+            array(
+                'allow',
+                'actions' => array('index', 'create', 'view', 'update', 'delete'),
+                'expression' => '$user->role == "administrator"'
+            ),
+            array(
+                'deny',
+                'users' => array('*')
+            )
+        );
+    }
+
+    private function loadStateModel($id) {
+        if (!($state = State::model()->findByPk((int) $id))) {
+            throw new CHttpException(404, Yii::t('sandscape', 'The requested state does not exist.'));
+        }
+        return $state;
+    }
+
+    /**
+     * Lists all existing states.
      */
     public function actionIndex() {
         $filter = new State('search');
@@ -54,90 +78,64 @@ class StatesController extends ApplicationController {
     }
 
     public function actionCreate() {
-        $new = new State();
-        $this->performAjaxValidation('state-form', $new);
-
-        if (isset($_POST['State'])) {
-            $new->attributes = $_POST['State'];
-            
-            Yii::import('ext.PhpThumbFactory');
-            
-            $path = Yii::getPathOfAlias('webroot') . '/_game/states';
-            $upfile = CUploadedFile::getInstance($new, 'image');
-
-            if ($upfile !== null) {
-                $name = $upfile->name;
-                
-                if (is_file($path . '/' . $name)) {
-                    $name = $new->name . '.' . $name;
-                }
-
-                $sizes = getimagesize($upfile->tempName);
-                $imgFactory = PhpThumbFactory::create($upfile->tempName);
-                //250 + 20 width, 354 + 28 height
-                if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
-                    $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
-                }
-                $imgFactory->save($path . '/' . $name)
-                        ->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)
-                        ->save($path . '/thumbs/' . $name)
-                        ->rotateImageNDegrees(180)
-                        ->save($path . '/thumbs/reversed/' . $name);
-
-                $new->image = $name;
-                $new->save();
-            }
-
-            $this->redirect(array('update', 'id' => $new->stateId));
-        }
-
-        $this->render('edit', array('state' => $new));
-    }
-
-    public function actionUpdate($id) {
-        $state = $this->loadStateModel($id);
-
+        $state = new State();
         $this->performAjaxValidation('state-form', $state);
 
         if (isset($_POST['State'])) {
             $state->attributes = $_POST['State'];
-            
-            Yii::import('ext.PhpThumbFactory');
-            
-            $path = Yii::getPathOfAlias('webroot') . '/_game/states';
-            $upfile = CUploadedFile::getInstance($state, 'image');
 
-            if ($upfile !== null) {
-                $name = $upfile->name;
-                
-                if (is_file($path . '/' . $name)) {
-                    $name = $new->name . '.' . $name;
-                }
+//            Yii::import('ext.PhpThumbFactory');
+//
+//            $path = Yii::getPathOfAlias('webroot') . '/_game/states';
+//            $upfile = CUploadedFile::getInstance($new, 'image');
+//
+//            if ($upfile !== null) {
+//                $name = $upfile->name;
+//
+//                if (is_file($path . '/' . $name)) {
+//                    $name = $new->name . '.' . $name;
+//                }
+//
+//                $sizes = getimagesize($upfile->tempName);
+//                $imgFactory = PhpThumbFactory::create($upfile->tempName);
+//                //250 + 20 width, 354 + 28 height
+//                if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
+//                    $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
+//                }
+//                $imgFactory->save($path . '/' . $name)
+//                        ->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)
+//                        ->save($path . '/thumbs/' . $name)
+//                        ->rotateImageNDegrees(180)
+//                        ->save($path . '/thumbs/reversed/' . $name);
+//
+//                $new->image = $name;
+//            }
 
-                $sizes = getimagesize($upfile->tempName);
-                $imgFactory = PhpThumbFactory::create($upfile->tempName);
-                //250 + 20 width, 354 + 28 height
-                if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
-                    $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
-                }
-                $imgFactory->save($path . '/' . $name)
-                        ->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)
-                        ->save($path . '/thumbs/' . $name)
-                        ->rotateImageNDegrees(180)
-                        ->save($path . '/thumbs/reversed/' . $name);
-
-                $state->image = $name;
-                $state->save();
+            if ($state->save()) {
+                $this->redirect(array('view', 'id' => $state->stateId));
             }
-
-            $this->redirect(array('update', 'id' => $state->stateId));
         }
 
-        $this->render('edit', array('state' => $state));
+        $this->render('update', array('state' => $state));
+    }
+
+    public function actionUpdate($id) {
+        $state = $this->loadStateModel($id);
+        $this->performAjaxValidation('state-form', $state);
+
+        if (isset($_POST['State'])) {
+            $state->attributes = $_POST['State'];
+
+            if ($state->save()) {
+                $this->redirect(array('view', 'id' => $state->stateId));
+            }
+        }
+
+        $this->render('update', array('state' => $state));
     }
 
     public function actionDelete($id) {
-        if (Yii::app()->user->class && Yii::app()->request->isPostRequest) {
+        if (Yii::app()->user->role == 'administrator' && Yii::app()->request->isPostRequest) {
             $state = $this->loadStateModel($id);
 
             $state->active = 0;
@@ -147,31 +145,8 @@ class StatesController extends ApplicationController {
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
             }
         } else {
-            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+            throw new CHttpException(400, Yii::t('sandscape', 'Invalid request. Please do not repeat this request again.'));
         }
-    }
-
-    private function loadStateModel($id) {
-        if (($state = State::model()->find('active = 1 AND stateId = :id', array(':id' => (int) $id))) === null) {
-            throw new CHttpException(404, 'The state you\'re trying to load doesn\'t exist.');
-        }
-        return $state;
-    }
-
-    /**
-     * Adding to the default access rules.
-     * 
-     * @return array
-     * 
-     * @since 1.2, Elvish Shaman
-     */
-    public function accessRules() {
-        return array_merge(array(
-                    array('allow',
-                        'actions' => array('index', 'create', 'update', 'delete'),
-                        'expression' => '$user->class'
-                    )
-                        ), parent::accessRules());
     }
 
 }

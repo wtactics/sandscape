@@ -5,6 +5,14 @@
     <a href="<?php echo $this->createURL('create'); ?>">Create Counter</a>
 </div>
 <?php
+$this->widget('bootstrap.widgets.TbGridView', array(
+    'id' => 'user-grid',
+    'dataProvider' => $filter->search(),
+    'filter' => $filter,
+    'template' => '{items} {pager} {summary}',
+    'type' => 'striped condensed bordered',
+    'columns' => array(
+
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'counter-grid',
     'dataProvider' => $filter->search(),
@@ -25,12 +33,17 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'value' => '($data->available ? \'<span class="yes">Yes</span>\' : \'<span class="no">No</span>\')'
         ),
         array(
-            'header' => 'Actions',
-            'class' => 'CButtonColumn',
-            'buttons' => array(
-                'view' => array('visible' => 'false'),
-            )
-        ),
+            'header' => Yii::t('sandscape', 'Actions'),
+            'class' => 'bootstrap.widgets.TbButtonColumn',
+            'htmlOptions' => array('style' => 'width: 50px'),
+        )
     ),
     'template' => '{items} {pager} {summary}'
+));
+    
+    $this->widget('bootstrap.widgets.TbButton', array(
+    'label' => Yii::t('sandscape', 'New User'),
+    'type' => 'info',
+    'size' => 'small',
+    'url' => $this->createURL('users/create')
 ));

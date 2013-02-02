@@ -31,6 +31,7 @@ $this->widget('bootstrap.widgets.TbButton', array(
     'url' => $this->createUrl('cards/create'),
 ));
 
+//TODO: not implemented yet
 //$this->widget('bootstrap.widgets.TbButton', array(
 //    'label' => Yii::t('sandsacpe', 'CSV Import'),
 //    'type' => 'info',

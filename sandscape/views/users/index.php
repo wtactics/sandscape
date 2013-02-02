@@ -1,4 +1,5 @@
 <?php
+/** @var $this UsersController */
 $this->title = Yii::t('sandscape', 'Users');
 ?>
 

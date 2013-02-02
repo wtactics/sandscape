@@ -45,7 +45,7 @@ class Token extends CActiveRecord {
     /**
      * @return Token
      */
-    public static function model($className=__CLASS__) {
+    public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
@@ -64,9 +64,9 @@ class Token extends CActiveRecord {
 
     public function attributeLabels() {
         return array(
-            'tokenId' => 'ID',
-            'name' => 'Name',
-            'image' => 'Image'
+            'tokenId' => Yii::t('sandscape', 'ID'),
+            'name' => Yii::t('sandscape', 'Name'),
+            'image' => Yii::t('sandscape', 'Image')
         );
     }
 

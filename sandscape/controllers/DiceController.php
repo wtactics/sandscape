@@ -37,9 +37,39 @@ class DiceController extends ApplicationController {
     }
 
     /**
-     * Default action, shows a list of existing (active) dice in the system.
+     * Adding to the default access rules.
      * 
-     * @since 1.2, Elvish Shaman
+     * @return array
+     */
+    public function accessRules() {
+        return array(
+            array(
+                'allow',
+                'actions' => array('index', 'create', 'view', 'update', 'delete'),
+                'expression' => '$user->role == "administrator"'
+            ),
+            array(
+                'deny',
+                'users' => array('*')
+            )
+        );
+    }
+
+    /**
+     * Retrieves a <em>Dice</em> model from the database.
+     * 
+     * @param integer $id The model's database ID
+     * @return Dice The loaded model or null if no model was found for the given ID
+     */
+    private function loadDiceModel($id) {
+        if (!($dice = Dice::model()->findByPk((int) $id))) {
+            throw new CHttpException(404, Yii::t('sandscape', 'The requested page does not exist.'));
+        }
+        return $dice;
+    }
+
+    /**
+     * Default action, shows a list of existing (active) dice in the system.
      */
     public function actionIndex() {
         $filter = new Dice('search');
@@ -54,88 +84,60 @@ class DiceController extends ApplicationController {
 
     /**
      * Allows administrators to create new dice to be used in games.
-     * 
-     * @since 1.2, Elvish Shaman
      */
     public function actionCreate() {
-        $new = new Dice();
-
-        $this->performAjaxValidation('dice-form', $new);
-
-        if (isset($_POST['Dice'])) {
-            $new->attributes = $_POST['Dice'];
-            if ($new->save()) {
-                $this->redirect(array('update', 'id' => $new->diceId));
-            }
-        }
-
-        $this->render('edit', array('dice' => $new));
-    }
-
-    /**
-     * Updates a dice information.
-     * 
-     * @since 1.2, Elvish Shaman
-     */
-    public function actionUpdate($id) {
-        $dice = $this->loadDiceModel($id);
+        $dice = new Dice();
 
         $this->performAjaxValidation('dice-form', $dice);
 
         if (isset($_POST['Dice'])) {
             $dice->attributes = $_POST['Dice'];
             if ($dice->save()) {
-                $this->redirect(array('update', 'id' => $dice->diceId));
+                $this->redirect(array('view', 'id' => $dice->diceId));
             }
         }
 
-        $this->render('edit', array('dice' => $dice));
+        $this->render('create', array('dice' => $dice));
+    }
+
+    public function actionView($id) {
+        $dice = $this->loadDiceModel($id);
+        $this->render('view', array('dice' => $dice));
+    }
+
+    /**
+     * Updates a dice information.
+     */
+    public function actionUpdate($id) {
+        $dice = $this->loadDiceModel($id);
+        $this->performAjaxValidation('dice-form', $dice);
+
+        if (isset($_POST['Dice'])) {
+            $dice->attributes = $_POST['Dice'];
+            if ($dice->save()) {
+                $this->redirect(array('view', 'id' => $dice->diceId));
+            }
+        }
+
+        $this->render('update', array('dice' => $dice));
     }
 
     /**
      * Marks selected dice as inactive, removing them from the system.
-     * 
-     * @since 1.2, Elvish Shaman
      */
     public function actionDelete($id) {
-        if (Yii::app()->request->isPostRequest) {
+        if (Yii::app()->user->role == 'administrator' && Yii::app()->request->isPostRequest) {
             $dice = $this->loadDiceModel($id);
+
             $dice->active = 0;
             $dice->save();
+
+            if (!isset($_GET['ajax'])) {
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+            }
         } else {
-            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+            throw new CHttpException(400, Yii::t('sandscape', 'Invalid request. Please do not repeat this request again.'));
         }
-    }
-
-    /**
-     * Retrieves a <em>Dice</em> model from the database.
-     * 
-     * @param integer $id The model's database ID
-     * @return Dice The loaded model or null if no model was found for the given ID
-     * 
-     * @since 1.2, Elvish Shaman
-     */
-    private function loadDiceModel($id) {
-        if (($dice = Dice::model()->find('active = 1 AND diceId = :id', array(':id' => (int) $id))) === null) {
-            throw new CHttpException(404, 'The requested page does not exist.');
-        }
-        return $dice;
-    }
-
-    /**
-     * Adding to the default access rules.
-     * 
-     * @return array
-     * 
-     * @since 1.2, Elvish Shaman
-     */
-    public function accessRules() {
-        return array_merge(array(
-                    array('allow',
-                        'actions' => array('index', 'create', 'update', 'delete'),
-                        'expression' => '$user->class'
-                    )
-                        ), parent::accessRules());
     }
 
 }

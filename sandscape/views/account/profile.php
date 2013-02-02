@@ -23,10 +23,11 @@ echo $form->textFieldRow($user, 'name', array('maxlength' => 150)),
  $form->dropDownListRow($user, 'country', array_merge(array('' => ''), User::countries()));
 ?>
 
-<legend><?php echo Yii::t('sandscape', 'Game Options'); ?></legend>
+<legend><?php echo Yii::t('sandscape', 'Iterface Options'); ?></legend>
 
 <?php
-echo $form->checkboxRow($user, 'reverseCards'),
+echo $form->checkboxRow($user, 'showChatTimes'),
+ $form->checkboxRow($user, 'reverseCards'),
  $form->checkboxRow($user, 'onHoverDetails');
 
 $this->widget('bootstrap.widgets.TbButton', array(

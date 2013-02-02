@@ -339,7 +339,11 @@ class DecksController extends ApplicationController {
                     array('allow',
                         'actions' => array('makeTemplate'),
                         'expression' => '$user->class'
-                    )
+                    ),
+            array(
+                'deny',
+                'users' => array('*')
+            )
                         ), parent::accessRules());
     }
 

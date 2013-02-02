@@ -1,16 +1,16 @@
-<?php $this->title = 'Game Tokens'; ?>
-<h2>Game Tokens</h2>
-
-<div class="list-tools">
-    <a href="<?php echo $this->createURL('create'); ?>">Create Token</a>
-</div>
+<?php
+/** @var $this TokensController */
+$this->title = Yii::t('sandsacep', 'Game Tokens');
+?>
+<h2><?php echo Yii::t('sandsacep', 'Game Tokens'); ?></h2>
 
 <?php
-$this->widget('zii.widgets.grid.CGridView', array(
+$this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'token-grid',
     'dataProvider' => $filter->search(),
     'filter' => $filter,
-    'cssFile' => false,
+    'template' => '{items} {pager} {summary}',
+    'type' => 'striped condensed bordered',
     'columns' => array(
         array(
             'name' => 'name',
@@ -18,12 +18,16 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'value' => 'CHtml::link($data->name, Yii::app()->createUrl("tokens/update", array("id" => $data->tokenId)))'
         ),
         array(
-            'header' => 'Actions',
-            'class' => 'CButtonColumn',
-            'buttons' => array(
-                'view' => array('visible' => 'false')
-            )
+            'header' => Yii::t('sandscape', 'Actions'),
+            'class' => 'bootstrap.widgets.TbButtonColumn',
+            'htmlOptions' => array('style' => 'width: 50px'),
         )
     ),
-    'template' => '{items} {pager} {summary}'
+));
+
+$this->widget('bootstrap.widgets.TbButton', array(
+    'label' => Yii::t('sandscape', 'New Token'),
+    'type' => 'info',
+    'size' => 'small',
+    'url' => $this->createURL('tokens/create')
 ));

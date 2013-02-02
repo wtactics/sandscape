@@ -41,7 +41,7 @@ class Dice extends CActiveRecord {
     /**
      * @return Dice
      */
-    public static function model($className=__CLASS__) {
+    public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
@@ -67,11 +67,11 @@ class Dice extends CActiveRecord {
 
     public function attributeLabels() {
         return array(
-            'diceId' => 'ID',
-            'name' => 'Name',
-            'enabled' => 'Enabled',
-            'face' => 'Nr. Faces',
-            'enabled' => 'Available for play'
+            'diceId' => Yii::t('sandscape', 'ID'),
+            'name' => Yii::t('sandscape', 'Name'),
+            'enabled' => Yii::t('sandscape', 'Enabled'),
+            'face' => Yii::t('sandscape', 'Nr. Faces'),
+            'enabled' => Yii::t('sandscape', 'Available to play'),
         );
     }
 
@@ -85,9 +85,12 @@ class Dice extends CActiveRecord {
         $criteria->compare('name', $this->name, true);
         $criteria->compare('face', $this->face);
         $criteria->compare('enabled', $this->enabled);
-        $criteria->compare('active', 1);
 
         return new CActiveDataProvider($this, array('criteria' => $criteria));
+    }
+
+    public function getEnabled() {
+        return ($this->enabled ? Yii::t('sandscape', 'Yes') : Yii::t('sandscape', 'No'));
     }
 
 }

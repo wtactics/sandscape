@@ -1,5 +1,5 @@
 <?php
-
+/** @var $this UsersController */
 $this->widget('bootstrap.widgets.TbDetailView', array(
     'data' => $user,
     'attributes' => array(

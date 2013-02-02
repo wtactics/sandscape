@@ -784,7 +784,11 @@ class GameController extends ApplicationController {
                             'chatUpdate', 'leave', 'watch'
                         ),
                         'users' => array('@')
-                    )
+                    ),
+            array(
+                'deny',
+                'users' => array('*')
+            )
                         ), parent::accessRules());
     }
 

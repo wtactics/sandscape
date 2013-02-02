@@ -96,23 +96,23 @@ class ApplicationController extends CController {
                                 'url' => array('cards/index'),
                             ),
                             '---',
-//                            array(
-//                                'label' => Yii::t('sandscape', 'Dice'),
-//                                'url' => array('dice/index'),
-//                            ),
-//                            array(
-//                                'label' => Yii::t('sandscape', 'States'),
-//                                'url' => array('states/index'),
-//                            ),
-//                            array(
-//                                'label' => Yii::t('sandscape', 'Tokens'),
-//                                'url' => array('tokens/guardian'),
-//                            ),
+                            array(
+                                'label' => Yii::t('sandscape', 'Dice'),
+                                'url' => array('dice/index'),
+                            ),
+                            array(
+                                'label' => Yii::t('sandscape', 'Card States'),
+                                'url' => array('states/index'),
+                            ),
+                            array(
+                                'label' => Yii::t('sandscape', 'Card Tokens'),
+                                'url' => array('tokens/index'),
+                            ),
                             '---',
-//                            array(
-//                                'label' => Yii::t('sandscape', 'Player Counters'),
-//                                'url' => array('counters/index'),
-//                            ),
+                            array(
+                                'label' => Yii::t('sandscape', 'Player Counters'),
+                                'url' => array('counters/index'),
+                            ),
                             '---',
 //                            array(
 //                                'label' => Yii::t('sandscape', 'Gameplay Options'),
@@ -160,7 +160,7 @@ class ApplicationController extends CController {
                             //array('label' => Yii::t('sandscape', 'Decks'), 'url' => array('account/index')),
                             //array('label' => Yii::t('sandscape', 'Games'), 'url' => array('account/index')),
                             '---',
-                            array('label' => Yii::t('sandscape', 'Profile'), 'url' => array('account/profile')),
+                            array('label' => Yii::t('sandscape', 'Profile'), 'url' => array('users/profile')),
                             '---',
                             array('label' => Yii::t('sandscape', 'Logout'), 'url' => array('site/logout')),
                         ),
