@@ -15,6 +15,9 @@ echo $form->passwordFieldRow($login, 'password');
 
 echo $form->checkboxRow($login, 'rememberMe');
 
-$this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'submit', 'label' => 'Login'));
+$this->widget('bootstrap.widgets.TbButton', array(
+    'buttonType' => 'submit',
+    'label' => 'Login'
+));
 
 $this->endWidget();

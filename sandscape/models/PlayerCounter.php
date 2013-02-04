@@ -91,4 +91,8 @@ class PlayerCounter extends CActiveRecord {
         return new CActiveDataProvider($this, array('criteria' => $criteria));
     }
 
+    public function getAvailable() {
+        return ($this->available ? Yii::t('sandscape', 'Yes') : Yii::t('sandscape', 'No'));
+    }
+
 }

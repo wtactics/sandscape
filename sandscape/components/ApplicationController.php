@@ -66,30 +66,30 @@ class ApplicationController extends CController {
                 'class' => 'bootstrap.widgets.TbMenu',
                 'items' => array(
                     '---',
-//                    array(
-//                        'label' => Yii::t('sandscape', 'Home'),
-//                        'url' => array('site/index'),
-//                        'visible' => Yii::app()->user->isGuest
-//                    ),
-//                    array(
-//                        'label' => Yii::t('sandscape', 'Login'),
-//                        'url' => array('site/login'),
-//                        'visible' => Yii::app()->user->isGuest
-//                    ),
-//                    array(
-//                        'label' => Yii::t('sandscape', 'Dashboard'),
-//                        'url' => array('dashboard/index'),
-//                        'visible' => !Yii::app()->user->isGuest
-//                    ),
-//                    array(
-//                        'label' => Yii::t('sandscape', 'Play'),
-//                        'url' => array('lobby/index'),
-//                        'visible' => !Yii::app()->user->isGuest
-//                    ),
+                    array(
+                        'label' => Yii::t('sandscape', 'Home'),
+                        'url' => array('site/index'),
+                        'visible' => Yii::app()->user->isGuest
+                    ),
+                    array(
+                        'label' => Yii::t('sandscape', 'Login'),
+                        'url' => array('site/login'),
+                        'visible' => Yii::app()->user->isGuest
+                    ),
+                    array(
+                        'label' => Yii::t('sandscape', 'Dashboard'),
+                        'url' => array('dashboard/index'),
+                        'visible' => !Yii::app()->user->isGuest
+                    ),
+                    array(
+                        'label' => Yii::t('sandscape', 'Play'),
+                        'url' => array('lobby/index'),
+                        'visible' => !Yii::app()->user->isGuest
+                    ),
                     array(
                         'class' => 'bootstrap.widgets.TbMenu',
                         'label' => Yii::t('backend', 'Game Settings'),
-                        //'visible' => !Yii::app()->user->isGuest && Yii::app()->user->class,
+                        'visible' => !Yii::app()->user->isGuest && Yii::app()->user->role == 'administrator',
                         'items' => array(
                             array(
                                 'label' => Yii::t('sandscape', 'Cards'),
@@ -113,7 +113,7 @@ class ApplicationController extends CController {
                                 'label' => Yii::t('sandscape', 'Player Counters'),
                                 'url' => array('counters/index'),
                             ),
-                            '---',
+//                            '---',
 //                            array(
 //                                'label' => Yii::t('sandscape', 'Gameplay Options'),
 //                                'url' => array('administration/gameoptions'),
@@ -128,7 +128,7 @@ class ApplicationController extends CController {
                 'items' => array(
                     array(
                         'label' => Yii::t('sandscape', 'System Settings'),
-                        //'visible' => !Yii::app()->user->isGuest && Yii::app()->user->role == '',
+                        'visible' => !Yii::app()->user->isGuest && Yii::app()->user->role == 'administrator',
                         'items' => array(
                             array(
                                 'label' => Yii::t('sandscape', 'Users'),
@@ -157,7 +157,7 @@ class ApplicationController extends CController {
                     array(
                         'label' => Yii::app()->user->name,
                         'items' => array(
-                            //array('label' => Yii::t('sandscape', 'Decks'), 'url' => array('account/index')),
+                            array('label' => Yii::t('sandscape', 'Decks'), 'url' => array('users/decks')),
                             //array('label' => Yii::t('sandscape', 'Games'), 'url' => array('account/index')),
                             '---',
                             array('label' => Yii::t('sandscape', 'Profile'), 'url' => array('users/profile')),

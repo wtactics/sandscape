@@ -84,8 +84,6 @@ class CountersController extends ApplicationController {
 
     /**
      * Allows administrators to create new counters.
-     * 
-     * @since 1.3, Soulharvester
      */
     public function actionCreate() {
         $counter = new PlayerCounter();
@@ -99,6 +97,11 @@ class CountersController extends ApplicationController {
         }
 
         $this->render('create', array('counter' => $counter));
+    }
+
+    public function actionView($id) {
+        $counter = $this->loadPlayerCounterModel($id);
+        $this->render('view', array('counter' => $counter));
     }
 
     /**

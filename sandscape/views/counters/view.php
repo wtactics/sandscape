@@ -1,21 +1,22 @@
 <?php
 
-/** @var $this CardsController */
+/** @var $this CountersController */
 $this->widget('bootstrap.widgets.TbDetailView', array(
-    'data' => $card,
+    'data' => $counter,
     'attributes' => array(
-        'cardId',
+        'playerCounterId',
         'name',
+        'startValue',
+        'step',
         array(
-            'name' => 'cardscapeId',
-            'value' => $card->cardscapeId ? $card->cardscapeId : '-'
-        ),
-        'rules',
+            'name' => 'available',
+            'value' => $counter->getAvailable()
+        )
     ),
 ));
 
 $this->widget('bootstrap.widgets.TbButton', array(
-    'url' => $this->createUrl('cards/update', array('id' => $card->cardId)),
+    'url' => $this->createUrl('counters/update', array('id' => $counter->playerCounterId)),
     'label' => Yii::t('sandscape', 'Edit'),
     'type' => 'info'
 ));
