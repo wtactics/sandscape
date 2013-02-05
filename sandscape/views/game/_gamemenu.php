@@ -2,22 +2,22 @@
     <ul>
         <li>
             <a href="javascript:;" onclick="showWidget('dicewidget', true);">
-                <img src="_resources/images/board/I_Diamond.png" />
+                <img src="<?php echo Yii::app()->baseUrl; ?>/images/gameboard/I_Diamond.png" />
             </a>
         </li>
         <li>
             <a href="javascript:;" onclick="showWidget('counterswidget', true);">
-                <img src="_resources/images/board/S_Buff08.png" />
+                <img src="<?php echo Yii::app()->baseUrl; ?>/images/gameboard/S_Buff08.png" />
             </a>
         </li>
         <li>
             <a href="javascript:;" onclick="showWidget('deckswidget', true);">
-                <img src="_resources/images/board/W_Book02.png" />
+                <img src="<?php echo Yii::app()->baseUrl; ?>/images/gameboard/W_Book02.png" />
             </a>
         </li>
         <li>
             <a href="javascript:;" onclick="showWidget('systemwidget', true);">
-                <img src="_resources/images/board/I_Key01.png" />
+                <img src="<?php echo Yii::app()->baseUrl; ?>/images/gameboard/I_Key01.png" />
             </a>
         </li>
     </ul>

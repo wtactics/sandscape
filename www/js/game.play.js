@@ -44,7 +44,8 @@ var globals = {
         id: 0,
         name: '',
         isOne: false
-    }
+    },
+    url: null
 }
 
 function init() {
@@ -158,7 +159,7 @@ function checkGameStart() {
                                 //$(document.createElement('img'))
                                 //.attr({
                                 //    id: decks[i].id, 
-                                //    src: '_game/cards/thumbs/cardback.png'
+                                //    src: globals.url + 'gamedata/cards/thumbs/cardback.png'
                                 //})
                                 //.appendTo(right);
                                 
@@ -204,7 +205,7 @@ function checkGameStart() {
                                 //$(document.createElement('img'))
                                 //.attr({
                                 //    id: create.player.graveyard.id,
-                                //    src: '_game/cards/thumbs/noimage.png'
+                                //    src: globals.url + 'gamedata/cards/thumbs/noimage.png'
                                 //})
                                 //.appendTo(right);
                                 
@@ -244,7 +245,7 @@ function checkGameStart() {
                                 //$(document.createElement('img'))
                                 //.attr({
                                 //    id: 'incpc-' + counters[i].id,
-                                //    src: '_resources/images/icon-x16-plus.png'
+                                //    src: globals.url + '/images/general/icon-x16-plus.png'
                                 //})
                                 //.data('counter', counters[i].id)
                                 //.click(increasePlayerCounter)
@@ -253,7 +254,7 @@ function checkGameStart() {
                                 //$(document.createElement('img'))
                                 //.attr({
                                 //    id: 'decpc-' + counters[i].id,
-                                //    src: '_resources/images/icon-x16-minus.png'
+                                //    src: globals.url + '/images/general/icon-x16-minus.png'
                                 //})
                                 //.data('counter', counters[i].id)
                                 //.click(decreasePlayerCounter)
@@ -319,27 +320,27 @@ function checkGameStart() {
                                 
                                 opts = [{
                                     //details
-                                    option: '<img src="_resources/images/board/I_Telescope.png" title="Card Details" />',
+                                    option: '<img src="' + globals.url + '/images/gameboard/board/I_Telescope.png" title="Card Details" />',
                                     event: function (card) {
                                         requestCardInfo($(card).attr('id'));
                                     }
                                 }, {
                                     //tokens
-                                    option: '<img src="_resources/images/board/S_Light02.png" title="Tokens" />',
+                                    option: '<img src="' + globals.url + '/images/gameboard/board/S_Light02.png" title="Tokens" />',
                                     subMenu: tokenMenu
                                 }, {
                                     //states
-                                    option: '<img src="_resources/images/board/S_Bow10.png" title="States" />',
+                                    option: '<img src="' + globals.url + '/images/gameboard/board/S_Bow10.png" title="States" />',
                                     subMenu: statesMenu
                                 }, {
                                     //flip the card
-                                    option: '<img src="_resources/images/board/Ac_Gloves04.png" title="Flip Card" />',
+                                    option: '<img src="' + globals.url + '/images/gameboard/board/Ac_Gloves04.png" title="Flip Card" />',
                                     event: function(card) {
                                         flipCard($(card).attr('id'));
                                     }
                                 }, {
                                     //edit label
-                                    option: '<img src="_resources/images/board/I_Scroll02.png" title="Custom Label" />',
+                                    option: '<img src="' + globals.url + '/images/gameboard/board/I_Scroll02.png" title="Custom Label" />',
                                     event: function (card) {
                                         $('#label-text').val($(card).find('.label').html());
                                         $('#label-card-id').val($(card).attr('id'));
@@ -347,7 +348,7 @@ function checkGameStart() {
                                     }
                                 }, {
                                     //counters
-                                    option: '<img src="_resources/images/board/S_Buff08.png" title="Counters" />',
+                                    option: '<img src="' + globals.url + '/images/gameboard/board/S_Buff08.png" title="Counters" />',
                                     event: function (card) {
                                         $('#counter-card-id').val($(card).attr('id'));
                                         $('#counter-dlg').modal();
@@ -357,7 +358,7 @@ function checkGameStart() {
                                 if(useGrave) {
                                     opts.push({
                                         //send card to graveyard
-                                        option: '<img src="_resources/images/board/S_Death02.png" title="Send to Graveyard" />',
+                                        option: '<img src="' + globals.url + '/images/gameboard/board/S_Death02.png" title="Send to Graveyard" />',
                                         event: function(card) {
                                             moveToGraveyard($(card).attr('id'));
                                         }
@@ -378,7 +379,7 @@ function checkGameStart() {
                                     radius: 60,
                                     options: opts
                                 })
-                                .children('img.face').attr('src', '_game/cards/thumbs/' 
+                                .children('img.face').attr('src', globals.url + '/gamedata/cards/thumbs/' 
                                     + (card.invertView ? 'reversed/' : '') + card.src);
                                 
                                 updateCardExtras($('#'+card.id));
@@ -405,7 +406,7 @@ function checkGameStart() {
                             });
                             
                             globals.game.running = true;                     
-                            setTimeout(updateGame, 3000);
+                            setTimeout(updateGame, 10000);
                             cyclicPositionUpdate();
                             
                             $('#game-loader').fadeOut('slow', function () {
@@ -433,7 +434,7 @@ function updateCardExtras(card) {
         for (i = 0; i < cstatus.tokens.length; ++i) {
             $(document.createElement('img'))
             .addClass('token')
-            .attr('src', '_game/tokens/thumbs/' + (cstatus.invertView ? 'reversed/' : '') 
+            .attr('src', globals.url + '/gamedata/tokens/thumbs/' + (cstatus.invertView ? 'reversed/' : '') 
                 + cstatus.tokens[i].src)
             .appendTo(card);
         }
@@ -443,7 +444,7 @@ function updateCardExtras(card) {
         for(i = 0; i < cstatus.states.length; ++i) {
             $(document.createElement('img'))
             .addClass('state')
-            .attr('src', '_game/states/thumbs/' + (cstatus.invertView ? 'reversed/' : '') 
+            .attr('src', globals.url + '/gamedata/states/thumbs/' + (cstatus.invertView ? 'reversed/' : '') 
                 + cstatus.states[i].src)
             .appendTo(card);
         }
@@ -510,7 +511,7 @@ function doGameUpdate(json) {
                 zIndex: json.update[i].zIndex,
                 visibility: json.update[i].visibility
             })
-            .children('img.face').attr('src',  '_game/cards/thumbs/' + (json.update[i].invertView ? 'reversed/' : '') 
+            .children('img.face').attr('src',  globals.url + '/gamedata/cards/thumbs/' + (json.update[i].invertView ? 'reversed/' : '') 
                 + json.update[i].src);
             
             updateCardExtras($('#' + json.update[i].id));
@@ -636,12 +637,12 @@ function requestCardInfo(id) {
             $('#card-info .temp').remove();
             if(json.success) {
                 var owner = $('#card-info'), i;
-                $('#card-image').attr('src', '_game/cards/' + json.status.src);
+                $('#card-image').attr('src', globals.url + '/gamedata/cards/' + json.status.src);
                 for(i = 0; i < json.status.tokens.length; i++) {
                     $(document.createElement('img'))
                     .addClass('temp')
                     .css('z-index', 1)
-                    .attr('src', '_game/tokens/' + json.status.tokens[i].src)
+                    .attr('src', globals.url + '/gamedata/tokens/' + json.status.tokens[i].src)
                     .appendTo(owner);
                 }
                 
@@ -649,7 +650,7 @@ function requestCardInfo(id) {
                     $(document.createElement('img'))
                     .addClass('temp')
                     .css('z-index', -1)
-                    .attr('src', '_game/states/' + json.status.states[i].src)
+                    .attr('src', globals.url + '/gamedata/states/' + json.status.states[i].src)
                     .appendTo(owner);
                 }
                 
@@ -669,7 +670,7 @@ function requestCardInfo(id) {
                 .html(json.status.label);
             } else {
                 
-                $('#card-image').attr('src', '_game/cards/cardback.png');
+                $('#card-image').attr('src', globals.url + '/gamedata/cards/cardback.png');
             }
         }
     })
@@ -724,7 +725,7 @@ function flipCard(id) {
         dataType: 'json',
         success: function (json) {
             if(json.success) {
-                $('#' + id).attr('src', '_game/cards/thumbs/' 
+                $('#' + id).attr('src', globals.url + '/gamedata/cards/thumbs/' 
                     + (json.status.invertView ? 'reversed/' : '') + json.status.src);
             }
         }
@@ -900,13 +901,13 @@ function placeCounter(card, counterId, value, name, color, top) {
     .append($(document.createElement('div'))
         .addClass('counter-tools')
         .append($(document.createElement('img'))
-            .attr('src', '_resources/images/icon-x16-plus.png')
+            .attr('src', globals.url + '/images/general/icon-x16-plus.png')
             .data('counter', name)
             .data('counterId', counterId)
             .data('card', card.attr('id'))
             .click(increaseCounter))
         .append($(document.createElement('img'))
-            .attr('src', '_resources/images/icon-x16-minus.png')
+            .attr('src', globals.url + '/images/general/icon-x16-minus.png')
             .data('counter', name)
             .data('counterId', counterId)
             .data('card', card.attr('id'))

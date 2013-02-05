@@ -7,7 +7,7 @@
         $url = Yii::app()->baseUrl;
         if (YII_DEBUG) {
             ?>
-            <link href="<?php echo $url; ?>/css/development/main.css" rel="stylesheet" type="text/css" />
+            <link href="<?php echo $url; ?>/css/main.css" rel="stylesheet" type="text/css" />
         <?php } else { ?>
             <link href="<?php echo $url; ?>/css/sandscape.all.min.css" rel="stylesheet" type="text/css" />
         <?php } ?>

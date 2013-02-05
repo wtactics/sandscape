@@ -1,15 +1,13 @@
 <?php
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/libraries/jquery-jgrowl-min.js', CClientScript::POS_HEAD);
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/libraries/jquery-simplemodal-min.js', CClientScript::POS_HEAD);
 Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/libraries/jquery-radialmenu-min.js', CClientScript::POS_HEAD);
 
 if (YII_DEBUG) {
-    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/development/game.common.css');
-    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/development/game.play.css');
-    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/development/modal.css');
+    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/game.common.css');
+    Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/game.play.css');
 
-    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/development/game.common.js', CClientScript::POS_HEAD);
-    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/development/game.play.js', CClientScript::POS_HEAD);
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/game.common.js', CClientScript::POS_HEAD);
+    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/game.play.js', CClientScript::POS_HEAD);
 }
 
 $playUrl = $this->createURL('game/play', array('id' => $gameId));
@@ -22,6 +20,9 @@ if (count($messages)) {
     $last = $last->messageId;
 }
 
+//TODO: full URL in a better place
+$url = Yii::app()->baseUrl;
+
 $startJS = <<<JS
 globals.chat.sendUrl = '{$sendMessageUrl}';
 globals.chat.updateUrl = '{$updateMessageUrl}';
@@ -29,7 +30,7 @@ globals.chat.lastReceived = {$last};
 globals.game.url = '{$playUrl}';
 globals.user.id = {$user->id};
 globals.user.name = '{$user->name}';
-    
+globals.url = '{$url}';    
 init();
 
 JS;

@@ -30,7 +30,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    background: transparent url(../../images/gameboard/game-background-hline.png) repeat-x bottom left;
+    background: transparent url("../../../images/gameboard/game-background-hline.png") repeat-x bottom left;
 }
 
 /* UNIQUE CLASS: This class is handled as if it was an ID */

@@ -2,7 +2,7 @@
     <u>
         <li>
             <a href="javascript:;" onclick="showHandWidget()">
-                <img src="_resources/images/board/W_Book01.png" />
+                <img src="<?php echo Yii::app()->baseUrl; ?>/images/gameboard/W_Book01.png" />
             </a>
         </li>
     </u>
@@ -14,7 +14,7 @@
     <div class="menububble-a-bottom"></div>
     <div class="closewidget">
         <a href="javascript:;" onclick="hideHandWidget()">
-            <img src="_resources/images/icon-x16-cross.png" />
+            <img src="<?php echo Yii::app()->baseUrl; ?>/images/general/icon-x16-cross.png" />
         </a>
     </div>
 </div>

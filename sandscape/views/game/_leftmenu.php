@@ -2,12 +2,12 @@
     <ul>
         <li>
             <a href="javascript:;" onclick="showWidget('infowidget', false);">
-                <img src="_resources/images/board/I_Telescope.png" />
+                <img src="<?php echo Yii::app()->baseUrl; ?>/images/gameboard/I_Telescope.png" />
             </a>
         </li>
         <li>
             <a href="javascript:;" onclick="showWidget('chatwidget', false);">
-                <img src="_resources/images/board/I_Feather01.png" />
+                <img src="<?php echo Yii::app()->baseUrl; ?>/images/gameboard/I_Feather01.png" />
             </a>
         </li>
     </ul>
@@ -22,7 +22,7 @@
     <div class="menububble-a-left"></div>
     <div class="closewidget">
         <a href="javascript:;" onclick="closeWidget('infowidget')">
-            <img src="_resources/images/icon-x16-cross.png" />
+            <img src="<?php echo Yii::app()->baseUrl; ?>/images/general/icon-x16-cross.png" />
         </a>
     </div>
 </div>
@@ -68,7 +68,7 @@
     <div class="menububble-a-left"></div>
     <div class="closewidget">
         <a href="javascript:;" onclick="closeWidget('chatwidget')">
-            <img src="_resources/images/icon-x16-cross.png" />
+            <img src="<?php echo Yii::app()->baseUrl; ?>/images/general/icon-x16-cross.png" />
         </a>
     </div>
 </div>
