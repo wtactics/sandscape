@@ -31,18 +31,19 @@
  * <em>Deck</em> is just a name that is used to group cards.
  *
  * Properties:
- * @property int $deckId
+ * @property int $id
  * @property string $name
- * @property int $userId
- * @property string $created
+ * @property string $createdOn
+ * @property string $back
+ * @property int $ownerId
  * @property int $active
  *
  * Relations:
  * @property User $user
- * @property DeckCard[] $deckCards
+ * @property Card[] $cards
+ * 
  * @property Game[] $games
- * @property DeckTemplate[] preCons
- * @property DeckGameStats $stats
+ * @property DeckStats $stats
  */
 class Deck extends CActiveRecord {
 
@@ -60,29 +61,31 @@ class Deck extends CActiveRecord {
     public function rules() {
         return array(
             array('name', 'required'),
-            array('name', 'length', 'max' => 100),
+            array('name, back', 'length', 'max' => 255),
+            array('ownerId', 'numerical', 'integerOnly' => true),
+            array('active', 'boolean'),
             //search
-            array('name', 'safe', 'on' => 'search'),
+            array('name, createdOn', 'safe', 'on' => 'search'),
         );
     }
 
     public function relations() {
         return array(
-            'user' => array(self::BELONGS_TO, 'User', 'userId'),
-            'deckCards' => array(self::HAS_MANY, 'DeckCard', 'deckId'),
+            'user' => array(self::BELONGS_TO, 'User', 'ownerId'),
+            'cards' => array(self::MANY_MANY, 'Card', 'DeckCard(deckId, cardId)'),
             'games' => array(self::MANY_MANY, 'Game', 'GameDeck(deckId, gameId)'),
-            'preCons' => array(self::HAS_MANY, 'DeckTemplate', 'deckId'),
-            'stats' => array(self::HAS_MANY, 'DeckGameStats', 'deckId'),
-            'cards' => array(self::HAS_MANY, 'Card', 'DeckCard(deckId, cardId)')
+            'stats' => array(self::HAS_MANY, 'DeckStats', 'deckId')
         );
     }
 
     public function attributeLabels() {
         return array(
-            'deckId' => 'ID',
-            'name' => 'Name',
-            'userId' => 'Owner',
-            'created' => 'Created',
+            'id' => Yii::t('deck', 'ID'),
+            'name' => Yii::t('deck', 'Name'),
+            'createdOn' => Yii::t('deck', 'Created On'),
+            'back' => Yii::t('deck', 'Back Image'),
+            'userId' => Yii::t('deck', 'Owner'),
+            'active' => Yii::t('deck', 'Active'),
         );
     }
 
@@ -97,15 +100,14 @@ class Deck extends CActiveRecord {
      * @return CActiveDataProvider the data provider that can return the models 
      * based on the search/filter conditions.
      */
-    public function search($owner = null) {
+    public function search() {
         $criteria = new CDbCriteria();
 
         $criteria->compare('name', $this->name, true);
-        if ($owner) {
-            $criteria->compare('userId', $owner);
-        }
+        $criteria->compare('ownerId', $this->ownerId);
+        $criteria->compare('createdOn', $this->createdOn, true);
 
-        return new CActiveDataProvider('Deck', array('criteria' => $criteria));
+        return new CActiveDataProvider($this, array('criteria' => $criteria));
     }
 
 }

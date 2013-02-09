@@ -30,12 +30,12 @@
  * This is the model class for the <em>User</em> table.
  *
  * The followings are the available columns in table 'User':
- * @property int $userId
+ * @property int $id
  * @property string $email
- * @property string $password
- * @property string $name
- * @property int $active
- * @property string $avatar
+ * @property string $password Hashed version of the user's password.
+ * @property string $name User full name.
+ * @property string $role 
+ * @property string $avatar URI for the user's avatar image.
  * @property int $gender
  * @property string $birthyear
  * @property string $website
@@ -43,19 +43,22 @@
  * @property string $facebook
  * @property string $googleplus
  * @property string $skype
- * @property string country
- * @property string $role
+ * @property string country A 2 letter country code that identifies this user's country.
+ * @property int $showChatTimes
  * @property int $reverseCards
  * @property int $onHoverDetails
- * @property int $showChatTimes
+ * @property string $handCorner
+ * @property int $active
  * 
  * The followings are the available model relations:
- * @property ChatMessage[] $chatMessages
+ * @property SessionData[] $sessions List of <em>SessionData</em> objects containing 
+ * every session this user has created and that is still in the DB.
+ * 
  * @property Deck[] $decks
- * @property Game[] $gamesAsPlayer1
- * @property Game[] $gamesAsPlayer2
- * @property Reward[] $rewards
- * @property Title[] $titles
+ * 
+ * //@property ChatMessage[] $chatMessages
+ * //@property Game[] $gamesAsPlayer1
+ * //@property Game[] $gamesAsPlayer2
  */
 class User extends CActiveRecord {
 
@@ -72,14 +75,17 @@ class User extends CActiveRecord {
 
     public function rules() {
         return array(
+            array('password', 'required', 'on' => 'inser'),
             array('email, name', 'required'),
-            array('gender, reverseCards, onHoverDetails, showChatTimes', 'numerical', 'integerOnly' => true),
+            array('name', 'length', 'max' => 150),
+            array('email', 'email'),
+            array('email, unique', 'unique'),
+            array('gender, reverseCards, onHoverDetails, showChatTimes, active', 'boolean'),
             array('email, avatar, website, twitter, facebook, googleplus, skype', 'length', 'max' => 255),
             array('country', 'length', 'max' => 2),
-            array('name', 'length', 'max' => 150),
-            array('role', 'length', 'max' => 15),
-            array('email', 'email'),
-            array('name, email', 'unique', 'className' => 'User'),
+            array('birthyear', 'length', 'max' => 4),
+            array('role', 'range', 'range' => array('player', 'administrator', 'gamemaster')),
+            array('handCorner', 'range', 'range' => array('left', 'right')),
             //search
             array('email, name, role', 'safe', 'on' => 'search'),
         );
@@ -87,33 +93,36 @@ class User extends CActiveRecord {
 
     public function relations() {
         return array(
-            'chatMessages' => array(self::HAS_MANY, 'ChatMessage', 'userId'),
-            'decks' => array(self::HAS_MANY, 'Deck', 'userId'),
-            'gamesAsPlayer1' => array(self::HAS_MANY, 'Game', 'player1'),
-            'gamesAsPlayer2' => array(self::HAS_MANY, 'Game', 'player2'),
-            'rewards' => array(self::MANY_MANY, 'Reward', 'UserReward(userId, rewardId)'),
-            'titles' => array(self::MANY_MANY, 'Title', 'UserTitle(userId, titleId)')
+            'sessions' => array(self::HAS_MANY, 'SessionData', 'userId'),
+            'decks' => array(self::HAS_MANY, 'Deck', 'ownerId'),
+            'messages' => array(self::HAS_MANY, 'ChatMessage', 'senderId'),
+            'gamesAsPlayer' => array(self::HAS_MANY, 'Game', 'playerId'),
+            'gamesAsOpponent' => array(self::HAS_MANY, 'Game', 'opponentId'),
+            'gamesWon' => array(self::HAS_MANY, 'Game', 'winnerId'),
         );
     }
 
     public function attributeLabels() {
         return array(
-            'userId' => Yii::t('sandscape', 'ID'),
-            'email' => Yii::t('sandscape', 'E-mail'),
-            'password' => Yii::t('sandscape', 'Password'),
-            'name' => Yii::t('sandscape', 'Name'),
-            'avatar' => Yii::t('sandscape', 'Avatar'),
-            'gender' => Yii::t('sandscape', 'Gender'),
-            'birthyear' => Yii::t('sandscape', 'Birth Year'),
-            'website' => Yii::t('sandscape', 'Website'),
-            'twitter' => Yii::t('sandscape', 'Twitter'),
-            'facebook' => Yii::t('sandscape', 'Facebook'),
-            'googleplus' => Yii::t('sandscape', 'Google+'),
-            'skype' => Yii::t('sandscape', 'Skype'),
-            'country' => Yii::t('sandscape', 'Country'),
-            'reverseCards' => Yii::t('sandscape', 'Reverse Cards'),
-            'onHoverDetails' => Yii::t('sandscape', 'Details On Hover'),
-            'role' => Yii::t('sandscape', 'Role')
+            'id' => Yii::t('user', 'ID'),
+            'email' => Yii::t('user', 'E-mail'),
+            'password' => Yii::t('user', 'Password'),
+            'name' => Yii::t('user', 'Name'),
+            'role' => Yii::t('user', 'Role'),
+            'avatar' => Yii::t('user', 'Avatar'),
+            'gender' => Yii::t('user', 'Gender'),
+            'birthyear' => Yii::t('user', 'Birth Year'),
+            'website' => Yii::t('user', 'Website'),
+            'twitter' => Yii::t('user', 'Twitter'),
+            'facebook' => Yii::t('user', 'Facebook'),
+            'googleplus' => Yii::t('user', 'Google+'),
+            'skype' => Yii::t('user', 'Skype/MSN'),
+            'country' => Yii::t('user', 'Country'),
+            'showChatTimes' => Yii::t('user', 'Show Message Time'),
+            'reverseCards' => Yii::t('user', 'Reverse Cards'),
+            'onHoverDetails' => Yii::t('user', 'Details On Hover'),
+            'handCorner' => Yii::t('user', 'Hand Corner'),
+            'active' => Yii::t('user', 'Active')
         );
     }
 
@@ -140,14 +149,13 @@ class User extends CActiveRecord {
      * 
      * @return CActiveDataProvider
      */
-    public function findAllAuthenticated() {
-        $criteria = new CDbCriteria();
-        $criteria->select = 't.*';
-        $criteria->join = 'INNER JOIN SessionData ON t.userId = SessionData.userId';
-        $criteria->condition = 'TOKEN IS NOT NULL AND tokenExpires > NOW() AND lastActivity > DATE_SUB(NOW(), INTERVAL 15 MINUTE)';
-
-        return new CActiveDataProvider('User', array('criteria' => $criteria));
-    }
+    //public function findAllAuthenticated() {
+    //    $criteria = new CDbCriteria();
+    //    $criteria->select = 't.*';
+    //    $criteria->join = 'INNER JOIN SessionData ON t.userId = SessionData.userId';
+    //    $criteria->condition = 'TOKEN IS NOT NULL AND tokenExpires > NOW() AND lastActivity > DATE_SUB(NOW(), INTERVAL 15 MINUTE)';
+    //    return new CActiveDataProvider('User', array('criteria' => $criteria));
+    //}
 
     /**
      * Creates a hash from the given password using the correct hashing process.
@@ -161,20 +169,26 @@ class User extends CActiveRecord {
         return sha1($password . Yii::app()->params['hash']);
     }
 
+    public final static function randomPassword() {
+        //TODO: ...
+        return 'RANDOM';
+    }
+
     public final static function rolesArray() {
         return array(
-            'administrator' => Yii::t('sandscape', 'Administrator'),
-            'player' => Yii::t('sandscape', 'Player')
+            'administrator' => Yii::t('user', 'Administrator'),
+            'player' => Yii::t('user', 'Player'),
+            'gamemaster' => Yii::t('user', 'Game Master')
         );
     }
 
-    public final function getRole() {
+    public final function getRoleName() {
         $roles = self::rolesArray();
 
         return (isset($roles[$this->role]) ? $roles[$this->role] : '');
     }
 
-    public final function getCountry() {
+    public final function getCountryName() {
         $countries = self::countries();
 
         return (isset($countries[$this->country]) ? $countries[$this->country] : '');
@@ -188,11 +202,11 @@ class User extends CActiveRecord {
         return $this->onHoverDetails ? Yii::t('sandscape', 'Yes') : Yii::t('sandscape', 'No');
     }
 
-    public final function getGender() {
-        return $this->gender == 1 ? Yii::t('sandscape', 'Male') : Yii::t('sandscape', 'Female');
+    public final function getGenderName() {
+        return $this->gender == 1 ? Yii::t('user', 'Male') : Yii::t('user', 'Female');
     }
 
-    public final static function countries() {
+    public final static function countriesArray() {
         return array(
             'AD' => Yii::t('countries', 'Andorra'),
             'AE' => Yii::t('countries', 'United Arab Emirates'),

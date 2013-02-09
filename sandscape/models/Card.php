@@ -33,16 +33,19 @@
  * Card images are not placed in the database, only their file name is.
  *
  * Properties:
- * @property int $cardId The card ID in the database.
- * @property string $name The name of the card.
- * @property string $rules The rules text for this card.
- * @property string $image The image file for this card.
+ * @property int $id
+ * @property string $name
+ * @property string $rules
+ * @property string $face
+ * @property string $back
+ * @property string $backFrom
  * @property int $cardscapeId If this is a card imported from or that exists in
  * Cardscape, this is the ID used by Cardscape to identify the card.
+ * 
  * @property int $active
  * 
  * Relations:
- * @property DeckCard[] $deckCards
+ * @property Deck[] $decks
  */
 class Card extends CActiveRecord {
 
@@ -54,13 +57,14 @@ class Card extends CActiveRecord {
     }
 
     public function tableName() {
-        return 'Card';
+        return '{{Card}}';
     }
 
     public function rules() {
         return array(
-            array('name, rules', 'required'),
-            array('name', 'length', 'max' => 150),
+            array('name, rules, face', 'required'),
+            array('name, face, back', 'length', 'max' => 255),
+            array('backFrom', 'range', 'range' => array('default', 'own', 'deck')),
             array('cardscapeId', 'numerical', 'integerOnly' => true),
             //search
             array('name, rules, cardscapeId', 'safe', 'on' => 'search'),
@@ -69,17 +73,19 @@ class Card extends CActiveRecord {
 
     public function relations() {
         return array(
-            'deckCards' => array(self::HAS_MANY, 'DeckCard', 'cardId'),
+            'decks' => array(self::MANY_MANY, 'Deck', 'DeckCard(deckId, cardId)'),
         );
     }
 
     public function attributeLabels() {
         return array(
-            'cardId' => Yii::t('sandscape', 'ID'),
-            'name' => Yii::t('sandscape', 'Card Name'),
-            'rules' => Yii::t('sandscape', 'Card Rules'),
-            'image' => Yii::t('sandscape', 'Card Face'),
-            'cardscapeId' => Yii::t('sandscape', 'Cardscape ID'),
+            'cardId' => Yii::t('card', 'ID'),
+            'name' => Yii::t('card', 'Card Name'),
+            'rules' => Yii::t('card', 'Card Rules'),
+            'face' => Yii::t('card', 'Card Face'),
+            'back' => Yii::t('card', 'Card Back'),
+            'backFrom' => Yii::t('card', 'Use Back From'),
+            'cardscapeId' => Yii::t('carde', 'Cardscape ID'),
         );
     }
 

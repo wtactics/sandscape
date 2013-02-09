@@ -33,12 +33,11 @@
  * 
  * Properties for the <em>Token</em> class:
  * 
- * @property int $tokenId Database ID
- * @property string $name Token name
- * @property string $image Image file name
+ * @property int $id
+ * @property string $name
+ * @property string $image
+ * @property string $description
  * @property integer $active
- * 
- * @see State
  */
 class Token extends CActiveRecord {
 
@@ -55,8 +54,11 @@ class Token extends CActiveRecord {
 
     public function rules() {
         return array(
-            array('name', 'required'),
+            array('name, image', 'required'),
             array('name', 'length', 'max' => 150),
+            array('image', 'length', 'max' => 255),
+            array('description', 'safe'),
+            array('active', 'boolean'),
             //search
             array('name', 'safe', 'on' => 'search'),
         );
@@ -64,9 +66,11 @@ class Token extends CActiveRecord {
 
     public function attributeLabels() {
         return array(
-            'tokenId' => Yii::t('sandscape', 'ID'),
-            'name' => Yii::t('sandscape', 'Name'),
-            'image' => Yii::t('sandscape', 'Image')
+            'id' => Yii::t('token', 'ID'),
+            'name' => Yii::t('token', 'Name'),
+            'image' => Yii::t('token', 'Image'),
+            'description' => Yii::t('token', 'Description'),
+            'active' => Yii::t('token', 'Active')
         );
     }
 

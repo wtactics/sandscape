@@ -43,7 +43,7 @@ class RecoverForm extends CFormModel {
 
     public function attributeLabels() {
         return array(
-            'email' => 'Registration E-mail',
+            'email' => Yii::t('recover', 'Registration E-mail'),
         );
     }
 

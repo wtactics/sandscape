@@ -40,29 +40,29 @@ class RegisterForm extends CFormModel {
         return array(
             array('email, password, password_repeat', 'required'),
             array('email', 'email'),
-            array('email', 'unique', 'className' => 'User'),
+            array('email, name', 'unique', 'className' => 'User'),
             array('password', 'compare'),
-            array('name', 'length', 'max' => 100),
+            array('name', 'length', 'max' => 150),
         );
     }
 
     public function attributeLabels() {
         return array(
-            'email' => 'E-mail',
-            'password' => 'Password',
-            'password_repeat' => 'Repeat Password',
-            'name' => 'Name'
+            'email' => Yii::t('register', 'E-mail'),
+            'password' => Yii::t('register', 'Password'),
+            'password_repeat' => Yii::t('register', 'Repeat Password'),
+            'name' => Yii::t('register', 'Name')
         );
     }
 
     public function register() {
-        $new = new User();
+        $user = new User();
 
-        $new->email = $this->email;
-        $new->password = sha1($this->password . Yii::app()->params['hash']);
-        $new->name = $this->name;
+        $user->email = $this->email;
+        $user->password = User::hash($this->password);
+        $user->name = $this->name;
 
-        return $new->save();
+        return $user->save();
     }
 
 }

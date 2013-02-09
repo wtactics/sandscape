@@ -38,26 +38,12 @@ class GameDice extends CActiveRecord {
     /**
      * @return GameDice
      */
-    public static function model($className=__CLASS__) {
+    public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
     public function tableName() {
         return '{{GameDice}}';
-    }
-
-    public function relations() {
-        return array(
-            'game' => array(self::BELONGS_TO, 'Game', 'gameId'),
-            'dice' => array(self::BELONGS_TO, 'Dice', 'diceId'),
-        );
-    }
-
-    public function attributeLabels() {
-        return array(
-            'gameId' => 'Game ID',
-            'diceId' => 'Dice ID',
-        );
     }
 
 }

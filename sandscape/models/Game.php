@@ -28,43 +28,39 @@
 
 /**
  * 
- * @property int $gameId
- * @property int $player1
- * @property int $player2
- * @property string $created
- * @property string $started
- * @property string $ended
+ * @property int $id
+ * @property int $playerId
+ * @property int $opponentId
+ * @property int $limitOpponentId
+ * @property int $winnerId
+ * @property string $createdOn
+ * @property string $startedOn
+ * @property string $endedOn
+ * @property string $state
  * @property int $running
  * @property int $paused
- * @property string $state
- * 
- * @property int $maxDecks
- * @property int $graveyard
- * @property int $player1Ready
- * @property int $player2Ready
- * 
- * @property int $lastChange
- * @property int $acceptUser
- * @property int $winnerId
+ * @property int $useGraveyard
+ * @property int $playerReady
+ * @property int $opponentReady 
  * @property int $spectatorsSpeak
  *
  * Relations:
- * @property ChatMessage[] $chatMessages
+ * @property ChatMessage[] $messages
  * @property User $creator
  * @property User $opponent
  * @property Deck[] $decks
  * @property Dice[] $dice
  * @property User $winner
- * @property User $accept
- * @property PlayerCounter[] $counters
- * @property DeckGameStats $stats
+ * @property User $limitOpponent
+ * @property Counter[] $counters
+ * @property DeckStats $stats
  */
 class Game extends CActiveRecord {
 
     /**
      * @return Game
      */
-    public static function model($className=__CLASS__) {
+    public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
@@ -74,47 +70,46 @@ class Game extends CActiveRecord {
 
     public function rules() {
         return array(
-            array('running, paused', 'numerical', 'integerOnly' => true),
-            array('started, ended', 'safe'),
+            array('playerId, createdOn', 'required'),
+            array('playerId, opponentId, limitOpponentId, winnerId', 'numerical', 'integerOnly'),
+            array('startedOn, endedOn, state', 'safe'),
+            array('running, paused, useGraveyard, playerReady, opponentReady, spectatorsSpeak', 'boolean'),
             //search
-            array(
-                'player1, player2, created, started, ended, running, paused, winnerId, acceptUser',
-                'safe',
-                'on' => 'search'
-            ),
+            array('playerId, opponentId, createdOn, startedOn, endedOn, running, paused, winnerId, limitOpponentId', 'safe', 'on' => 'search'),
         );
     }
 
     public function relations() {
         return array(
-            'chatMessages' => array(self::HAS_MANY, 'ChatMessage', 'gameId'),
-            'creator' => array(self::BELONGS_TO, 'User', 'player1'),
-            'opponent' => array(self::BELONGS_TO, 'User', 'player2'),
+            'messages' => array(self::HAS_MANY, 'ChatMessage', 'gameId'),
+            'creator' => array(self::BELONGS_TO, 'User', 'playerId'),
+            'opponent' => array(self::BELONGS_TO, 'User', 'opponentId'),
             'decks' => array(self::MANY_MANY, 'Deck', 'GameDeck(gameId, deckId)'),
             'dice' => array(self::MANY_MANY, 'Dice', 'GameDice(gameId, diceId)'),
             'winner' => array(self::BELONGS_TO, 'User', 'winnerId'),
-            'accept' => array(self::BELONGS_TO, 'User', 'acceptUser'),
-            'counters' => array(self::MANY_MANY, 'PlayerCounter', 'GamePlayerCounter(gameId, playerCounterId)'),
-            'stats' => array(self::HAS_MANY, 'DeckGameStats', 'gameId')
+            'limitOpponent' => array(self::BELONGS_TO, 'User', 'limitOpponetId'),
+            'counters' => array(self::MANY_MANY, 'Counter', 'GameCounter(gameId, counterId)'),
+            'stats' => array(self::HAS_MANY, 'DeckStats', 'gameId')
         );
     }
 
     public function attributeLabels() {
         return array(
-            'gameId' => 'ID',
-            'player1' => 'Player 1',
-            'player2' => 'Player 2',
-            'created' => 'Created',
-            'started' => 'Started',
-            'ended' => 'Ended',
-            'running' => 'Running',
-            'paused' => 'Paused',
-            'maxDecks' => 'Max. number of decks',
-            'graveyard' => 'Game has graveyard',
-            'player1Ready' => 'Player 1 is ready',
-            'player2Ready' => 'Player 2 is ready',
-            'acceptUser' => 'Accept only',
-            'winnerId' => 'Winner'
+            'id' => Yii::t('game', 'ID'),
+            'playerId' => Yii::t('game', 'Player'),
+            'opponentId' => Yii::t('game', 'Opponent'),
+            'limitOpponentId' => Yii::t('game', 'Limit Opponent'),
+            'winnerId' => Yii::t('game', 'Winner'),
+            'createdOn' => Yii::t('game', 'Created On'),
+            'startedOn' => Yii::t('game', 'Started On'),
+            'endedOn' => Yii::t('game', 'Ended On'),
+            'state' => Yii::t('game', 'Game Internal State'),
+            'running' => Yii::t('game', 'Running'),
+            'paused' => Yii::t('game', 'Paused'),
+            'useGraveyard' => Yii::t('game', 'Uses Graveyard'),
+            'playerReady' => Yii::t('game', 'Player Is Ready'),
+            'opponentReady' => Yii::t('game', 'Opponent Is Ready'),
+            'spectatorsSpeak' => Yii::t('game', 'Spectators Can Speak'),
         );
     }
 
@@ -129,17 +124,29 @@ class Game extends CActiveRecord {
     public function search() {
         $criteria = new CDbCriteria();
 
-        $criteria->compare('player1', $this->player1);
-        $criteria->compare('player2', $this->player2);
-        $criteria->compare('created', $this->created, true);
-        $criteria->compare('started', $this->started, true);
-        $criteria->compare('ended', $this->ended, true);
+        $criteria->compare('playerId', $this->playerId);
+        $criteria->compare('opponentId', $this->opponentId);
+        $criteria->compare('createdOn', $this->createdOn, true);
+        $criteria->compare('startedOn', $this->startedOn, true);
+        $criteria->compare('endedOn', $this->endedOn, true);
         $criteria->compare('running', $this->running);
         $criteria->compare('paused', $this->paused);
         $criteria->compare('winnerId', $this->winnerId);
-        $criteria->compare('acceptUser', $this->acceptUser);
+        $criteria->compare('limitOpponentId', $this->limitOpponentId);
 
         return new CActiveDataProvider($this, array('criteria' => $criteria));
+    }
+
+    public function isRunningString() {
+        return ($this->running ? Yii::t('sandscape', 'Yes') : Yii::t('sandscape', 'No'));
+    }
+
+    public function isPausedString() {
+        return ($this->paused ? Yii::t('sandscape', 'Yes') : Yii::t('sandscape', 'No'));
+    }
+
+    public function usesGraveyardString() {
+        return ($this->useGraveyard ? Yii::t('sandscape', 'Yes') : Yii::t('sandscape', 'No'));
     }
 
 }

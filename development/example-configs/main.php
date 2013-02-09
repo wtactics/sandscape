@@ -64,15 +64,14 @@ return array(
         ),
         // setup mysql, please check Yii's documentation on how to use other database 
         // engines.
-        // 
-        //'db' => array(
-        //    'connectionString' => 'mysql:host=127.0.0.1;dbname=sandscape',
-        //    'emulatePrepare' => true,
-        //    'username' => '<YOUR DB USERNAME>',
-        //    'password' => '<YOUR DB PASSWORD>',
-        //    'charset' => 'utf8'
-        //    'tablePrefix' => ''
-        //),
+        'db' => array(
+            'connectionString' => 'mysql:host=127.0.0.1;dbname=sandscape',
+            'emulatePrepare' => true,
+            'username' => '<YOUR DB USERNAME>',
+            'password' => '<YOUR DB PASSWORD>',
+            'charset' => 'utf8',
+            'tablePrefix' => ''
+        ),
         'errorHandler' => array(
             'errorAction' => 'site/error',
         ),

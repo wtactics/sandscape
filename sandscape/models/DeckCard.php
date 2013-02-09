@@ -29,8 +29,8 @@
 /**
  * 
  * Properties;
- * @property int $cardId The database ID for the corresponding card.
  * @property int $deckId The database ID for the deck.
+ * @property int $cardId The database ID for the corresponding card.
  *
  * Relations:
  * @property Deck $deck The <em>Deck</em> object.
@@ -44,7 +44,7 @@ class DeckCard extends CActiveRecord {
     /**
      * @return DeckCard
      */
-    public static function model($className=__CLASS__) {
+    public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
@@ -61,8 +61,8 @@ class DeckCard extends CActiveRecord {
 
     public function attributeLabels() {
         return array(
-            'cardId' => 'Card ID',
-            'deckId' => 'Deck ID',
+            'cardId' => Yii::t('deckcard', 'Card ID'),
+            'deckId' => Yii::t('deckcard', 'Deck ID'),
         );
     }
 

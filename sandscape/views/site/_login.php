@@ -9,11 +9,9 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'focus' => array($login, 'email'),
         ));
 
-echo $form->textFieldRow($login, 'email');
-
-echo $form->passwordFieldRow($login, 'password');
-
-echo $form->checkboxRow($login, 'rememberMe');
+echo $form->textFieldRow($login, 'email'),
+ $form->passwordFieldRow($login, 'password'),
+ $form->checkboxRow($login, 'rememberMe');
 
 $this->widget('bootstrap.widgets.TbButton', array(
     'buttonType' => 'submit',

@@ -1,6 +1,6 @@
 <?php
 
-/* ChatMessage.php
+/* GameCounter.php
  * 
  * This file is part of Sandscape, a virtual, browser based, table allowing 
  * people to play a customizable card games (CCG) online.
@@ -27,53 +27,20 @@
  */
 
 /**
- * This is the model class for table "ChatMessage".
- *
- * The followings are the available columns in table 'ChatMessage':
- * @property int $id
- * @property string $message
- * @property string $sentTime
- * @property int $senderId
  * @property int $gameId
- * @property int $system
- *
- * The followings are the available model relations:
- * @property User $sender
- * @property Game $game
+ * @property int $counterId
  */
-class ChatMessage extends CActiveRecord {
+class GameCounter extends CActiveRecord {
 
     /**
-     * @return ChatMessage
+     * @return GameCounter
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
     public function tableName() {
-        return '{{ChatMessage}}';
-    }
-
-    public function relations() {
-        return array(
-            'sender' => array(self::BELONGS_TO, 'User', 'senderId'),
-            'game' => array(self::BELONGS_TO, 'Game', 'gameId'),
-        );
-    }
-
-    public function attributeLabels() {
-        return array(
-            'id' => Yii::t('chatmessage', 'ID'),
-            'message' => Yii::t('chatmessage', 'Message'),
-            'sentTime' => Yii::t('chatmessage', 'Sent Time'),
-            'senderId' => Yii::t('chatmessage', 'Sender'),
-            'gameId' => Yii::t('chatmessage', 'Game Message'),
-            'system' => Yii::t('chatmessage', 'System Message')
-        );
-    }
-
-    public function isSystemString() {
-        return ($this->system ? Yii::t('sandscape', 'Yes') : Yii::t('sandscape', 'No'));
+        return '{{GameCounter}}';
     }
 
 }

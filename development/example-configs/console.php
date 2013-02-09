@@ -1,6 +1,6 @@
 <?php
 
-/* GamePlayerCounter.php
+/* console.php
  * 
  * This file is part of Sandscape, a virtual, browser based, table allowing 
  * people to play a customizable card games (CCG) online.
@@ -25,22 +25,31 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-/**
- * @property int $gameId
- * @property int $playerCounterId
- */
-class GamePlayerCounter extends CActiveRecord {
-
-    /**
-     * @return GamePlayerCounter
-     */
-    public static function model($className=__CLASS__) {
-        return parent::model($className);
-    }
-
-    public function tableName() {
-        return '{{GamePlayerCounter}}';
-    }
-
-}
+return array(
+    'basePath' => dirname(__FILE__) . '/..',
+    'name' => 'Sandscape Console App',
+    'preload' => array('log'),
+    'import' => array(
+        'application.models.*',
+    ),
+    // application components
+    'components' => array(
+        'db' => array(
+            'connectionString' => 'mysql:host=127.0.0.1;dbname=sandscape',
+            'emulatePrepare' => true,
+            'username' => '<YOUR DB USERNAME>',
+            'password' => '<YOUR DB PASSWORD>',
+            'charset' => 'utf8',
+            'tablePrefix' => ''
+        ),
+        'log' => array(
+            'class' => 'CLogRouter',
+            'routes' => array(
+                array(
+                    'class' => 'CFileLogRoute',
+                    'levels' => 'error',
+                ),
+            )
+        )
+    ),
+);

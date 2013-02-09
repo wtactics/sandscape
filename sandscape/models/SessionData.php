@@ -33,22 +33,31 @@
  * 
  * Properties for the <em>SessionData</em> class:
  * 
- * @property integer $userId The user ID this data relates to, also the primary key
- * @property string $token The security token for authenticated users
- * @property string $tokenExpires The date in which the security token will expire
- * @property string $lastActivity The last time this user made an action in the system
+ * @property integer $id
+ * @property string $token
+ * @property string $tokenExpires
+ * @property string $lastActivity
+ * @property integer $userId
+ * 
+ * @property User $user The owner of this session data.
  */
 class SessionData extends CActiveRecord {
 
     /**
      * @return SessionData
      */
-    public static function model($className=__CLASS__) {
+    public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
     public function tableName() {
         return '{{SessionData}}';
+    }
+
+    public function relations() {
+        return array(
+            'user' => array(self::BELONGS_TO, 'User', 'userId')
+        );
     }
 
 }

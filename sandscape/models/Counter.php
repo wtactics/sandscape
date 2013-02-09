@@ -1,6 +1,6 @@
 <?php
 
-/* PlayerCounter.php
+/* Counter.php
  * 
  * This file is part of Sandscape, a virtual, browser based, table allowing 
  * people to play a customizable card games (CCG) online.
@@ -27,52 +27,56 @@
  */
 
 /**
- * @property int $playerCounterId
+ * @property int $id
  * @property string $name
  * @property int $starValue
  * @property int $step
- * @property int $available
+ * @property int $enabled
+ * @property string $description
  * @property int $active
  *
  * Relations:
  * @property Games[] $games
  */
-class PlayerCounter extends CActiveRecord {
+class Counter extends CActiveRecord {
 
     /**
-     * @return PlayerCounter
+     * @return Counter
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
     public function tableName() {
-        return '{{PlayerCounter}}';
+        return '{{Counter}}';
     }
 
     public function rules() {
         return array(
-            array('name, startValue, step, available', 'required'),
-            array('name', 'length', 'max' => 255),
-            array('startValue, step, available', 'numerical', 'integerOnly' => true),
+            array('name, startValue, step, enabled', 'required'),
+            array('name', 'length', 'max' => 150),
+            array('startValue, step', 'numerical', 'integerOnly' => true),
+            array('active, enabled', 'boolean'),
             //search
-            array('name, startValue, available', 'safe', 'on' => 'search'),
+            array('name, startValue, enabled', 'safe', 'on' => 'search'),
         );
     }
 
     public function relations() {
         return array(
-            'games' => array(self::MANY_MANY, 'Game', 'GamePlayerCounter(gameId, playerCounterId)'),
+            'games' => array(self::MANY_MANY, 'Game', 'GameCounter(gameId, counterId)'),
         );
     }
 
     public function attributeLabels() {
         return array(
-            'playerCounterId' => Yii::t('sandscape', 'ID'),
-            'name' => Yii::t('sandscape', 'Name'),
-            'startValue' => Yii::t('sandscape', 'Start value'),
-            'step' => Yii::t('sandscape', 'Step'),
-            'available' => Yii::t('sandscape', 'Available to play')
+            'id' => Yii::t('counter', 'ID'),
+            'name' => Yii::t('counter', 'Name'),
+            'startValue' => Yii::t('counter', 'Start value'),
+            'step' => Yii::t('counter', 'Step'),
+            'description' => Yii::t('counter', 'Description'),
+            'enabled' => Yii::t('counter', 'Available to play'),
+            'active' => Yii::t('counter', 'Step'),
         );
     }
 
@@ -86,12 +90,12 @@ class PlayerCounter extends CActiveRecord {
         $criteria->compare('name', $this->name, true);
         $criteria->compare('startValue', $this->startValue);
         $criteria->compare('step', $this->step);
-        $criteria->compare('available', $this->available);
+        $criteria->compare('enabled', $this->enabled);
 
         return new CActiveDataProvider($this, array('criteria' => $criteria));
     }
 
-    public function getAvailable() {
+    public function isEnabledString() {
         return ($this->available ? Yii::t('sandscape', 'Yes') : Yii::t('sandscape', 'No'));
     }
 

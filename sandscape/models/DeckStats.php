@@ -1,6 +1,6 @@
 <?php
 
-/* DeckGameStats.php
+/* DeckStats.php
  * 
  * This file is part of Sandscape, a virtual, browser based, table allowing 
  * people to play a customizable card games (CCG) online.
@@ -35,17 +35,17 @@
  * @property Deck $deck
  * @property Game $game
  */
-class DeckGameStats extends CActiveRecord {
+class DeckStats extends CActiveRecord {
 
     /**
-     * @return DeckGameStats
+     * @return DeckStats
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
     public function tableName() {
-        return '{{DeckGameStats}}';
+        return '{{DeckStats}}';
     }
 
     public function relations() {
@@ -57,10 +57,10 @@ class DeckGameStats extends CActiveRecord {
 
     public function attributeLabels() {
         return array(
-            'gameId' => 'Game ID',
-            'deckId' => 'Dice ID',
-            'rating' => 'Rating',
-            'notes' => 'Notes'
+            'gameId' => Yii::t('deckstats', 'Game'),
+            'deckId' => Yii::t('deckstats', 'Deck'),
+            'rating' => Yii::t('deckstats', 'Rating'),
+            'notes' => Yii::t('deckstats', 'Notes')
         );
     }
 

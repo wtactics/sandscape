@@ -27,9 +27,10 @@
  */
 
 /**
- * @property int $diceId
- * @property string $name
+ * @property int $dd
  * @property int $face
+ * @property string $name
+ * @property int $description
  * @property int $enabled
  * @property int $active
  *
@@ -51,9 +52,11 @@ class Dice extends CActiveRecord {
 
     public function rules() {
         return array(
-            array('face, name', 'required'),
+            array('face, name, enabled', 'required'),
             array('name', 'length', 'max' => 150),
-            array('face, enabled', 'numerical', 'integerOnly' => true),
+            array('face', 'numerical', 'integerOnly' => true),
+            array('description', 'safe'),
+            array('active, enabled', 'boolean'),
             //search
             array('name, face, enabled', 'safe', 'on' => 'search'),
         );
@@ -67,11 +70,12 @@ class Dice extends CActiveRecord {
 
     public function attributeLabels() {
         return array(
-            'diceId' => Yii::t('sandscape', 'ID'),
-            'name' => Yii::t('sandscape', 'Name'),
-            'enabled' => Yii::t('sandscape', 'Enabled'),
-            'face' => Yii::t('sandscape', 'Nr. Faces'),
-            'enabled' => Yii::t('sandscape', 'Available to play'),
+            'id' => Yii::t('dice', 'ID'),
+            'name' => Yii::t('dice', 'Name'),
+            'face' => Yii::t('dice', 'Number of Faces'),
+            'description' => Yii::t('dice', 'Description'),
+            'enabled' => Yii::t('dice', 'Can be used in games'),
+            'active' => Yii::t('dice', 'Active'),
         );
     }
 
@@ -89,7 +93,7 @@ class Dice extends CActiveRecord {
         return new CActiveDataProvider($this, array('criteria' => $criteria));
     }
 
-    public function getEnabled() {
+    public function isEnabledString() {
         return ($this->enabled ? Yii::t('sandscape', 'Yes') : Yii::t('sandscape', 'No'));
     }
 

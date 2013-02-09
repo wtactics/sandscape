@@ -33,9 +33,9 @@
  * 
  * Properties for the <em>State</em> class:
  * 
- * @property integer $stateId The database ID
- * @property string $name The name for this state
- * @property string $image The state's image file
+ * @property integer $id
+ * @property string $name
+ * @property string $image
  * @property integer $active
  * 
  * @see Token
@@ -55,8 +55,11 @@ class State extends CActiveRecord {
 
     public function rules() {
         return array(
-            array('name', 'required'),
+            array('name, image', 'required'),
             array('name', 'length', 'max' => 150),
+            array('image', 'length', 'max' => 255),
+            array('description', 'safe'),
+            array('active', 'boolean'),
             //search
             array('name', 'safe', 'on' => 'search'),
         );
@@ -64,9 +67,11 @@ class State extends CActiveRecord {
 
     public function attributeLabels() {
         return array(
-            'tokenId' => Yii::t('sandscape', 'ID'),
-            'name' => Yii::t('sandscape', 'Name'),
-            'image' => Yii::t('sandscape', 'Image')
+            'id' => Yii::t('state', 'ID'),
+            'name' => Yii::t('state', 'Name'),
+            'image' => Yii::t('state', 'Image'),
+            'desription' => Yii::t('state', 'Description'),
+            'active' => Yii::t('state', 'Actice'),
         );
     }
 
