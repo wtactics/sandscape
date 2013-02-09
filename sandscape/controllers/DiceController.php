@@ -93,7 +93,7 @@ class DiceController extends ApplicationController {
         if (isset($_POST['Dice'])) {
             $dice->attributes = $_POST['Dice'];
             if ($dice->save()) {
-                $this->redirect(array('view', 'id' => $dice->diceId));
+                $this->redirect(array('view', 'id' => $dice->id));
             }
         }
 
@@ -115,7 +115,7 @@ class DiceController extends ApplicationController {
         if (isset($_POST['Dice'])) {
             $dice->attributes = $_POST['Dice'];
             if ($dice->save()) {
-                $this->redirect(array('view', 'id' => $dice->diceId));
+                $this->redirect(array('view', 'id' => $dice->id));
             }
         }
 

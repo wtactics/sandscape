@@ -111,7 +111,7 @@ class TokensController extends ApplicationController {
 //                $new->image = $name;
 //              }
             if ($token->save()) {
-                $this->redirect(array('view', 'id' => $token->tokenId));
+                $this->redirect(array('view', 'id' => $token->id));
             }
         }
 
@@ -130,7 +130,7 @@ class TokensController extends ApplicationController {
         if (isset($_POST['Token'])) {
             $token->attributes = $_POST['Token'];
             if ($token->save()) {
-                $this->redirect(array('update', 'id' => $token->tokenId));
+                $this->redirect(array('update', 'id' => $token->id));
             }
         }
 

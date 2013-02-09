@@ -79,13 +79,13 @@ class User extends CActiveRecord {
             array('email, name', 'required'),
             array('name', 'length', 'max' => 150),
             array('email', 'email'),
-            array('email, unique', 'unique'),
+            array('email, name', 'unique'),
             array('gender, reverseCards, onHoverDetails, showChatTimes, active', 'boolean'),
             array('email, avatar, website, twitter, facebook, googleplus, skype', 'length', 'max' => 255),
             array('country', 'length', 'max' => 2),
             array('birthyear', 'length', 'max' => 4),
-            array('role', 'range', 'range' => array('player', 'administrator', 'gamemaster')),
-            array('handCorner', 'range', 'range' => array('left', 'right')),
+            array('role', 'in', 'range' => array('player', 'administrator', 'gamemaster')),
+            array('handCorner', 'in', 'range' => array('left', 'right')),
             //search
             array('email, name, role', 'safe', 'on' => 'search'),
         );
@@ -147,15 +147,14 @@ class User extends CActiveRecord {
     /**
      * Retrieves all users that were active in the last 15 minutes.
      * 
-     * @return CActiveDataProvider
+     * @return User[]
      */
-    //public function findAllAuthenticated() {
-    //    $criteria = new CDbCriteria();
-    //    $criteria->select = 't.*';
-    //    $criteria->join = 'INNER JOIN SessionData ON t.userId = SessionData.userId';
-    //    $criteria->condition = 'TOKEN IS NOT NULL AND tokenExpires > NOW() AND lastActivity > DATE_SUB(NOW(), INTERVAL 15 MINUTE)';
-    //    return new CActiveDataProvider('User', array('criteria' => $criteria));
-    //}
+    public function findAllAuthenticated() {
+        return User::model()->with(array(
+                    'sessions' => array(
+                        'condition' => 'TOKEN IS NOT NULL AND tokenExpires > NOW() AND lastActivity > DATE_SUB(NOW(), INTERVAL 15 MINUTE)'
+                        )))->findAll();
+    }
 
     /**
      * Creates a hash from the given password using the correct hashing process.
@@ -170,8 +169,36 @@ class User extends CActiveRecord {
     }
 
     public final static function randomPassword() {
-        //TODO: ...
-        return 'RANDOM';
+        $a = 'aeiou';
+        $b = 'bcdfghjklmnpqrstvwxyz';
+        $c = '1234567890';
+        $d = '+#&@';
+
+        $password = '';
+        for ($i = 0; $i < 8; $i++) {
+            switch (rand(0, 5)) {
+                case 0:
+                    $password .= $a[rand(0, strlen($a))];
+                    break;
+                case 1:
+                    $password .= $b[rand(0, strlen($a))];
+                    break;
+                case 2:
+                    $password .= $c[rand(0, strlen($c))];
+                    break;
+                case 3:
+                    $password .= strtoupper($a[rand(0, strlen($a))]);
+                    break;
+                case 4:
+                    $password .= $d[rand(0, strlen($d))];
+                    break;
+                case 5:
+                    $password .= strtoupper($b[rand(0, strlen($b))]);
+                    break;
+            }
+        }
+
+        return $password;
     }
 
     public final static function rolesArray() {

@@ -24,31 +24,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Global object with properties used mostly in AJAX calls.
- */
-var globals = {
-    lastReceived: 0,
-    //update and send message URLs
-    urls: {
-        upd: '',
-        send: ''
-    },
-    //Filter constants
-    filter: {
-        ALL: 0,    
+$(function (lobby, $, _, undefined) {
+    var gameFilters = {
+        ALL: 0,
         PAUSED: 1,
         RUNNING: 2,
-        IPLAY: 3,
+        INPLAY: 3,
         WAITINGME: 4,
-        WAITINGOPPONENT: 5
-    }
-}
+        WAINTINGOPPONENT: 5
+    };
+    
+    _.extend(lobby, {
+        urls: {
+            update: null,
+            send: null
+        },
+
+        initialize: function (updateUrl, sendUrl) {
+            lobby.urls.update = updateUrl;
+            lobby.urls.send = sendUrl;
+            
+        //$('#writemessage').keypress(function(e) {
+        //    if(e.which == 13) {
+        //        $('#sendbtn').click();
+        //    }
+        //});
+        }
+    });
+
+}(window.lobby = window.lobby || {}, jQuery, _));
 
 /**
  * Creates the initial lobby objects and events.
  */
-function initLobby() {
+/*function initLobby() {
     $('#writemessage').keypress(function(e) {
         if(e.which == 13) {
             $('#sendbtn').click();
@@ -78,7 +87,7 @@ function initLobby() {
 /**
  * Sends a message to the server.
  */
-function sendMessage() {
+/*function sendMessage() {
     var message = $("#writemessage").val();
     if(message.length > 0) {
         $.ajax({
@@ -104,7 +113,7 @@ function sendMessage() {
 /**
  * Requests new messages from other users.
  */
-function updateMessages() {
+/*function updateMessages() {
     $.ajax({
         type: "POST",
         url: globals.urls.upd,
@@ -137,7 +146,7 @@ function updateMessages() {
  * This function is used by several dialog windows and thus the button selector 
  * string needs to be passed as a parameter.
  */
-function limitDeckSelection(jqSearch) {
+/*function limitDeckSelection(jqSearch) {
     var max = parseInt($('#maxDecks').val(), 10), sel = $('.marker').filter(':checked').length,
     button = $(jqSearch);
     
@@ -153,7 +162,7 @@ function limitDeckSelection(jqSearch) {
 /**
  * Slider JS for user listing. Used by jQuery UI Slider.
  */
-function usersSliderScroll(e, ui) {
+/*function usersSliderScroll(e, ui) {
     var view = $('#users-view'), list = $('#users-list'), scroll = list.height() - view.height();
     if(scroll > 0) {
         $('#users-list').css({
@@ -165,7 +174,7 @@ function usersSliderScroll(e, ui) {
 /**
  * Slider JS for user listing. Used by jQuery UI Slider.
  */
-function usersSliderChange(e, ui) {
+/*function usersSliderChange(e, ui) {
     var view = $('#users-view'), list = $('#users-list'), scroll = list.height() - view.height();
     if(scroll > 0) {
         $('#users-list').css({
@@ -177,7 +186,7 @@ function usersSliderChange(e, ui) {
 /**
  * Slider JS for chat messages. Used by jQuery UI Slider.
  */
-function chatSliderScroll(e, ui) {
+/*function chatSliderScroll(e, ui) {
     $('#messages-list').css({
         top: ui.value
     });
@@ -186,7 +195,7 @@ function chatSliderScroll(e, ui) {
 /**
  * Slider JS for chat messages. Used by jQuery UI Slider.
  */
-function chatSliderChange(e, ui) {
+/*function chatSliderChange(e, ui) {
     $('#messages-list').css({
         top: ui.value
     });
@@ -195,7 +204,7 @@ function chatSliderChange(e, ui) {
 /**
  * Slider JS for chat messages. Used by jQuery UI Slider.
  */
-function chatSliderSetValue(e, ui) {
+/*function chatSliderSetValue(e, ui) {
     chatChatToBottom();
 }
 
@@ -204,7 +213,7 @@ function chatSliderSetValue(e, ui) {
  * time the message list is updated, a new message is added and when the slider 
  * is created so that the slider value is properly set.
  */
-function chatChatToBottom() {
+/*function chatChatToBottom() {
     var csl = $('#chat-slider'), ml = $('#messages-list'), bh = ml.height(), 
     vh = $('#chat-view').height(), h = -(bh - vh);
     console.log('bh: ' + bh + ', vh: ' + vh + ', h: ' + h);
@@ -221,7 +230,7 @@ function chatChatToBottom() {
 /**
  * Slider JS for game listing. Used by jQuery UI Slider.
  */
-function gamesSliderScroll(e, ui) {
+/*function gamesSliderScroll(e, ui) {
     var view = $('#games-view'), list = $('#games-list'), scroll = list.height() - view.height();
     if(scroll > 0) {
         $('#games-list').css({
@@ -233,7 +242,7 @@ function gamesSliderScroll(e, ui) {
 /**
  * Slider JS for game listing. Used by jQuery UI Slider.
  */
-function gamesSliderChange(e, ui) {
+/*function gamesSliderChange(e, ui) {
     var view = $('#games-view'), list = $('#games-list'), scroll = list.height() - view.height();
     if(scroll > 0) {
         $('#games-list').css({
@@ -248,7 +257,7 @@ function gamesSliderChange(e, ui) {
  * the combobox and the text and the JS function comparing to fixed integer 
  * values defined in the <em>globals.filter</em> object.
  */
-function filterGameList() {
+/*function filterGameList() {
     switch(parseInt($('#filterGames').val(), 10)) {
         //all
         case globals.filter.ALL:
@@ -309,4 +318,4 @@ function filterGameList() {
     });
     
     $('#games-slider').slider('option', 'value', 100);
-}
+}*/

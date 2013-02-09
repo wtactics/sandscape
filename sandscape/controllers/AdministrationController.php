@@ -56,8 +56,6 @@ class AdministrationController extends ApplicationController {
 
     /**
      * Finds and removes images that are not in use by card objects.
-     * 
-     * @since 1.2, Elvish Shaman
      */
     public function actionRemoveOrphan() {
         $images = CFileHelper::find('', array(
@@ -91,8 +89,6 @@ class AdministrationController extends ApplicationController {
 
     /**
      * Allows an administrator to change the words filtered in the chat area.
-     * 
-     * @since 1.3, Soulharvester 
      */
     public function actionChatFilter() {
         $words = '';
@@ -116,8 +112,6 @@ class AdministrationController extends ApplicationController {
 
     /**
      * Game related settings.
-     * 
-     * @since 1.3, Soulharvester 
      */
     public function actionGameOptions() {
         $settings = array(
@@ -172,8 +166,6 @@ class AdministrationController extends ApplicationController {
 
     /**
      * General Sandscape settings.
-     * 
-     * @since 1.3, Soulharvester  
      */
     public function actionSandscapeSettings() {
         $settings = array(
@@ -227,8 +219,6 @@ class AdministrationController extends ApplicationController {
 
     /**
      * Access to basic maintenance tools.
-     * 
-     * @since 1.3, Soulharvester 
      */
     public function actionMaintenanceTools() {
         $this->render('tools');
@@ -237,8 +227,6 @@ class AdministrationController extends ApplicationController {
     /**
      *
      * @return array New rules array.
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function accessRules() {
         return array_merge(array(

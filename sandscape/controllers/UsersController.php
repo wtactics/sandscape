@@ -99,7 +99,7 @@ class UsersController extends ApplicationController {
         if (isset($_POST['User'])) {
             $user->attributes = $_POST['User'];
             if ($user->save()) {
-                $this->redirect(array('view', 'id' => $user->userId));
+                $this->redirect(array('view', 'id' => $user->id));
             }
         }
 
@@ -123,7 +123,7 @@ class UsersController extends ApplicationController {
         if (isset($_POST['User'])) {
             $user->attributes = $_POST['User'];
             if ($user->save()) {
-                $this->redirect(array('update', 'id' => $user->userId));
+                $this->redirect(array('update', 'id' => $user->id));
             }
         }
 

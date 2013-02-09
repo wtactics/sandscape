@@ -112,7 +112,7 @@ class StatesController extends ApplicationController {
 //            }
 
             if ($state->save()) {
-                $this->redirect(array('view', 'id' => $state->stateId));
+                $this->redirect(array('view', 'id' => $state->id));
             }
         }
 
@@ -127,7 +127,7 @@ class StatesController extends ApplicationController {
             $state->attributes = $_POST['State'];
 
             if ($state->save()) {
-                $this->redirect(array('view', 'id' => $state->stateId));
+                $this->redirect(array('view', 'id' => $state->id));
             }
         }
 

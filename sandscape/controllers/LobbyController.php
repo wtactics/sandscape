@@ -39,38 +39,47 @@ class LobbyController extends ApplicationController {
     }
 
     /**
+     * Prepends new access rules to the default rules.
+     * Only registered users can execute <em>GameController</em> actions.
+     * @return array The new rules array
+     */
+    public function accessRules() {
+        return array(
+            array(
+                'allow',
+                'actions' => array('index', 'create', 'join', 'lobbyUpdate', 'sendMessage', 'ajaxusercomplete'),
+                'users' => array('@')
+            ),
+            array(
+                'deny',
+                'users' => array('*')
+            )
+        );
+    }
+
+    /**
      * The lobby offers a way to create games, join existing games and exchange
      * messages between other users.
-     * 
-     * @since 1.2, Elvish Shaman
      */
     public function actionIndex() {
         $this->updateUserActivity();
 
-        $cardCount = intval(Card::model()->count('active = 1'));
-        $games = Game::model()->findAll('ended IS NULL ORDER BY created');
-        $users = User::model()->findAllAuthenticated()->getData();
-        $messages = ChatMessage::model()->findAll('gameId IS NULL AND DATE_SUB(sent, INTERVAL 1 HOUR); ORDER BY sent');
+        $criteria = new CDbCriteria();
+        $criteria->condition = 'endedOn IS NULL';
+        $criteria->order = 'createdOn';
+        
+        $games = Game::model()->findAll();
+        $users = User::model()->findAllAuthenticated();
 
-        $decks = Deck::model()->findAll('userId = :id', array(':id' => (int) (Yii::app()->user->id)));
-
-        $fixDeckNr = 0;
-        $decksPerGame = 1;
-        if (($fixDeckNr = Setting::model()->findByPk('fixdecknr')) !== null) {
-            $fixDeckNr = (int) $fixDeckNr->value;
-            if (($decksPerGame = Setting::model()->findByPk('deckspergame')) !== null) {
-                $decksPerGame = (int) $decksPerGame->value;
-            }
-        }
+        $criteria = new CDbCriteria();
+        $criteria->condition = 'gameId IS NULL AND DATE_SUB(sentTime, INTERVAL 1 HOUR)';
+        $criteria->order = 'sentTime';
+        $messages = ChatMessage::model()->findAll($criteria);
 
         $this->render('lobby', array(
             'games' => $games,
             'users' => $users,
             'messages' => $messages,
-            'decks' => $decks,
-            'decksPerGame' => $decksPerGame,
-            'fixDeckNr' => $fixDeckNr,
-            'cardCount' => $cardCount
         ));
     }
 
@@ -95,29 +104,29 @@ class LobbyController extends ApplicationController {
      * 
      * @since 1.2, Elvish Shaman
      */
-    public function actionSendMessage() {
-        $result = array('success' => 0);
-        if (Yii::app()->request->isPostRequest) {
-            if (isset($_POST['chatmessage'])) {
-                $cm = new ChatMessage();
-
-                $cm->message = $this->chatWordFilter($_POST['chatmessage']);
-                $cm->userId = Yii::app()->user->id;
-
-                if ($cm->save()) {
-                    $cm->refresh();
-                    $result = array(
-                        'success' => 1,
-                        'id' => $cm->messageId,
-                        'name' => Yii::app()->user->name,
-                        'date' => $cm->sent
-                    );
-                }
-                $this->updateUserActivity();
-            }
-        }
-        echo json_encode($result);
-    }
+//    public function actionSendMessage() {
+//        $result = array('success' => 0);
+//        if (Yii::app()->request->isPostRequest) {
+//            if (isset($_POST['chatmessage'])) {
+//                $cm = new ChatMessage();
+//
+//                $cm->message = $this->chatWordFilter($_POST['chatmessage']);
+//                $cm->userId = Yii::app()->user->id;
+//
+//                if ($cm->save()) {
+//                    $cm->refresh();
+//                    $result = array(
+//                        'success' => 1,
+//                        'id' => $cm->messageId,
+//                        'name' => Yii::app()->user->name,
+//                        'date' => $cm->sent
+//                    );
+//                }
+//                $this->updateUserActivity();
+//            }
+//        }
+//        echo json_encode($result);
+//    }
 
     /**
      * Allows for clients to request updates on existing lobby chat messages.
@@ -138,38 +147,38 @@ class LobbyController extends ApplicationController {
      * 
      * @since 1.2, Elvish Shaman
      */
-    public function actionLobbyUpdate() {
-        $result = array('has' => 0);
-        if (Yii::app()->request->isPostRequest) {
-            if (isset($_POST['lastupdate'])) {
-                $lastUpdate = (int) $_POST['lastupdate'];
-                $messages = array();
-
-                $cms = ChatMessage::model()->findAll('messageId > :last AND gameId IS NULL', array(':last' => $lastUpdate));
-                foreach ($cms as $cm) {
-                    $messages[] = array(
-                        'name' => $cm->user->name,
-                        'message' => $cm->message,
-                        'date' => $cm->sent
-                    );
-                }
-                $count = count($messages);
-
-                $last = $lastUpdate;
-                if ($count) {
-                    $last = end($cms)->messageId;
-                }
-                $result = array(
-                    'has' => $count,
-                    'messages' => $messages,
-                    'last' => $last
-                );
-                $this->updateUserActivity();
-            }
-        }
-
-        echo json_encode($result);
-    }
+//    public function actionLobbyUpdate() {
+//        $result = array('has' => 0);
+//        if (Yii::app()->request->isPostRequest) {
+//            if (isset($_POST['lastupdate'])) {
+//                $lastUpdate = (int) $_POST['lastupdate'];
+//                $messages = array();
+//
+//                $cms = ChatMessage::model()->findAll('messageId > :last AND gameId IS NULL', array(':last' => $lastUpdate));
+//                foreach ($cms as $cm) {
+//                    $messages[] = array(
+//                        'name' => $cm->user->name,
+//                        'message' => $cm->message,
+//                        'date' => $cm->sent
+//                    );
+//                }
+//                $count = count($messages);
+//
+//                $last = $lastUpdate;
+//                if ($count) {
+//                    $last = end($cms)->messageId;
+//                }
+//                $result = array(
+//                    'has' => $count,
+//                    'messages' => $messages,
+//                    'last' => $last
+//                );
+//                $this->updateUserActivity();
+//            }
+//        }
+//
+//        echo json_encode($result);
+//    }
 
     /**
      * Creates a new game and redirects the first player to the game area.
@@ -182,81 +191,81 @@ class LobbyController extends ApplicationController {
      * 
      * @since 1.2, Elvish Shaman
      */
-    public function actionCreate() {
-        if (isset($_POST['CreateGame']) && isset($_POST['deckList'])) {
-
-            $fixDeckNr = 0;
-            $decksPerGame = 1;
-            if (($fixDeckNr = Setting::model()->findByPk('fixdecknr')) !== null) {
-                $fixDeckNr = (int) $fixDeckNr->value;
-                if (($decksPerGame = Setting::model()->findByPk('deckspergame')) !== null) {
-                    $decksPerGame = (int) $decksPerGame->value;
-                }
-            }
-
-            if ($fixDeckNr && isset($_POST['maxDecks']) && ($decksPerGame != (int) $_POST['maxDecks'])) {
-                //TODO: show correct error message
-                $this->redirect(array('index'));
-            } else {
-                $game = new Game();
-                $game->player1 = Yii::app()->user->id;
-                $game->created = date('Y-m-d H:i');
-                $game->maxDecks = isset($_POST['maxDecks']) ? (int) $_POST['maxDecks'] : $decksPerGame;
-                $game->graveyard = isset($_POST['useGraveyard']) ? (int) $_POST['useGraveyard'] : 1;
-                $game->player1Ready = 1;
-                $game->spectatorsSpeak = intval($_POST['gameChatSpectators']);
-
-                if (isset($_POST['limitOpponent']) && !empty($_POST['limitOpponent']) && intval($_POST['limitOpponent']) != 0) {
-                    $game->acceptUser = intval($_POST['limitOpponent']);
-                }
-
-                if ($game->save()) {
-                    $error = false;
-
-                    foreach ($_POST['deckList'] as $deckId) {
-                        $gameDeck = new GameDeck();
-                        $gameDeck->gameId = $game->gameId;
-                        $gameDeck->deckId = $deckId;
-                        if (!$gameDeck->save()) {
-                            $error = true;
-                            break;
-                        }
-                    }
-
-                    if (!$error) {
-                        foreach (Dice::model()->findAll('enabled = 1') as $dice) {
-                            $gd = new GameDice();
-                            $gd->diceId = $dice->diceId;
-                            $gd->gameId = $game->gameId;
-                            if (!$gd->save()) {
-                                $error = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (!$error) {
-                        foreach (PlayerCounter::model()->findAll('available = 1') as $pc) {
-                            $gpc = new GamePlayerCounter();
-                            $gpc->playerCounterId = $pc->playerCounterId;
-                            $gpc->gameId = $game->gameId;
-                            if (!$gpc->save()) {
-                                $error = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (!$error) {
-                        $this->redirect(array('game/play', 'id' => $game->gameId));
-                    }
-                }
-            }
-        }
-        $this->updateUserActivity();
-        //TODO: show correct error message
-        $this->redirect(array('lobby'));
-    }
+//    public function actionCreate() {
+//        if (isset($_POST['CreateGame']) && isset($_POST['deckList'])) {
+//
+//            $fixDeckNr = 0;
+//            $decksPerGame = 1;
+//            if (($fixDeckNr = Setting::model()->findByPk('fixdecknr')) !== null) {
+//                $fixDeckNr = (int) $fixDeckNr->value;
+//                if (($decksPerGame = Setting::model()->findByPk('deckspergame')) !== null) {
+//                    $decksPerGame = (int) $decksPerGame->value;
+//                }
+//            }
+//
+//            if ($fixDeckNr && isset($_POST['maxDecks']) && ($decksPerGame != (int) $_POST['maxDecks'])) {
+//                //TODO: show correct error message
+//                $this->redirect(array('index'));
+//            } else {
+//                $game = new Game();
+//                $game->player1 = Yii::app()->user->id;
+//                $game->created = date('Y-m-d H:i');
+//                $game->maxDecks = isset($_POST['maxDecks']) ? (int) $_POST['maxDecks'] : $decksPerGame;
+//                $game->graveyard = isset($_POST['useGraveyard']) ? (int) $_POST['useGraveyard'] : 1;
+//                $game->player1Ready = 1;
+//                $game->spectatorsSpeak = intval($_POST['gameChatSpectators']);
+//
+//                if (isset($_POST['limitOpponent']) && !empty($_POST['limitOpponent']) && intval($_POST['limitOpponent']) != 0) {
+//                    $game->acceptUser = intval($_POST['limitOpponent']);
+//                }
+//
+//                if ($game->save()) {
+//                    $error = false;
+//
+//                    foreach ($_POST['deckList'] as $deckId) {
+//                        $gameDeck = new GameDeck();
+//                        $gameDeck->gameId = $game->gameId;
+//                        $gameDeck->deckId = $deckId;
+//                        if (!$gameDeck->save()) {
+//                            $error = true;
+//                            break;
+//                        }
+//                    }
+//
+//                    if (!$error) {
+//                        foreach (Dice::model()->findAll('enabled = 1') as $dice) {
+//                            $gd = new GameDice();
+//                            $gd->diceId = $dice->diceId;
+//                            $gd->gameId = $game->gameId;
+//                            if (!$gd->save()) {
+//                                $error = true;
+//                                break;
+//                            }
+//                        }
+//                    }
+//
+//                    if (!$error) {
+//                        foreach (PlayerCounter::model()->findAll('available = 1') as $pc) {
+//                            $gpc = new GamePlayerCounter();
+//                            $gpc->playerCounterId = $pc->playerCounterId;
+//                            $gpc->gameId = $game->gameId;
+//                            if (!$gpc->save()) {
+//                                $error = true;
+//                                break;
+//                            }
+//                        }
+//                    }
+//
+//                    if (!$error) {
+//                        $this->redirect(array('game/play', 'id' => $game->gameId));
+//                    }
+//                }
+//            }
+//        }
+//        $this->updateUserActivity();
+//        //TODO: show correct error message
+//        $this->redirect(array('lobby'));
+//    }
 
     /**
      * Allows a user to join a previously created game. The game ID will be given 
@@ -268,88 +277,66 @@ class LobbyController extends ApplicationController {
      * 
      * @since 1.2, Elvish Shaman
      */
-    public function actionJoin() {
-        if (isset($_POST['JoinGame']) && isset($_POST['deckList']) && isset($_POST['game'])) {
-
-            if (($game = Game::model()->findByPk((int) $_POST['game'])) === null) {
-                throw new CHttpException(404, 'You\'re trying to join an invalid game.');
-            }
-
-            if ($game->player1 != Yii::app()->user->id) {
-
-                $fixDeckNr = 0;
-                $decksPerGame = 1;
-                if (($fixDeckNr = Setting::model()->findByPk('fixdecknr')) !== null) {
-                    $fixDeckNr = (int) $fixDeckNr->value;
-                    if (($decksPerGame = Setting::model()->findByPk('deckspergame')) !== null) {
-                        $decksPerGame = (int) $decksPerGame->value;
-                    }
-                }
-
-                $deckCount = count($_POST['deckList']);
-                if ($fixDeckNr && $decksPerGame != $deckCount) {
-                    //TODO: show correct error message
-                    $this->redirect(array('index'));
-                } else {
-                    $game->player2 = Yii::app()->user->id;
-                    $game->player2Ready = 1;
-                    if ($game->save()) {
-                        $error = false;
-                        foreach ($_POST['deckList'] as $deckId) {
-                            $gameDeck = new GameDeck();
-                            $gameDeck->gameId = $game->gameId;
-                            $gameDeck->deckId = (int) $deckId;
-                            if (!$gameDeck->save()) {
-                                $error = true;
-                                break;
-                            }
-                        }
-
-                        if (!$error) {
-                            $this->redirect(array('game/play', 'id' => $game->gameId));
-                        }
-                    }
-                }
-            }
-        }
-        $this->updateUserActivity();
-        //TODO: show correct error message
-        $this->redirect(array('lobby'));
-    }
-
-    public function actionAjaxUserComplete() {
-        $users = array();
-        if (isset($_REQUEST['term'])) {
-            foreach (User::model()->findAll('name = :n', array(':n' => $_REQUEST['term'])) as $user) {
-                $users[] = $user->name;
-            }
-        }
-
-        echo json_encode($users);
-        Yii::app()->end();
-    }
-
-    /**
-     * Prepends new access rules to the default rules.
-     * Only registered users can execute <em>GameController</em> actions.
-     * @return array The new rules array
-     * 
-     * @since 1.2, Elvish Shaman
-     */
-    public function accessRules() {
-        return array_merge(array(
-                    array('allow',
-                        'actions' => array('index', 'create', 'join', 'lobbyUpdate',
-                            'sendMessage', 'ajaxusercomplete'
-                        ),
-                        'users' => array('@')
-                    ),
-            array(
-                'deny',
-                'users' => array('*')
-            )
-                        ), parent::accessRules());
-    }
+//    public function actionJoin() {
+//        if (isset($_POST['JoinGame']) && isset($_POST['deckList']) && isset($_POST['game'])) {
+//
+//            if (($game = Game::model()->findByPk((int) $_POST['game'])) === null) {
+//                throw new CHttpException(404, 'You\'re trying to join an invalid game.');
+//            }
+//
+//            if ($game->player1 != Yii::app()->user->id) {
+//
+//                $fixDeckNr = 0;
+//                $decksPerGame = 1;
+//                if (($fixDeckNr = Setting::model()->findByPk('fixdecknr')) !== null) {
+//                    $fixDeckNr = (int) $fixDeckNr->value;
+//                    if (($decksPerGame = Setting::model()->findByPk('deckspergame')) !== null) {
+//                        $decksPerGame = (int) $decksPerGame->value;
+//                    }
+//                }
+//
+//                $deckCount = count($_POST['deckList']);
+//                if ($fixDeckNr && $decksPerGame != $deckCount) {
+//                    //TODO: show correct error message
+//                    $this->redirect(array('index'));
+//                } else {
+//                    $game->player2 = Yii::app()->user->id;
+//                    $game->player2Ready = 1;
+//                    if ($game->save()) {
+//                        $error = false;
+//                        foreach ($_POST['deckList'] as $deckId) {
+//                            $gameDeck = new GameDeck();
+//                            $gameDeck->gameId = $game->gameId;
+//                            $gameDeck->deckId = (int) $deckId;
+//                            if (!$gameDeck->save()) {
+//                                $error = true;
+//                                break;
+//                            }
+//                        }
+//
+//                        if (!$error) {
+//                            $this->redirect(array('game/play', 'id' => $game->gameId));
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        $this->updateUserActivity();
+//        //TODO: show correct error message
+//        $this->redirect(array('lobby'));
+//    }
+//
+//    public function actionAjaxUserComplete() {
+//        $users = array();
+//        if (isset($_REQUEST['term'])) {
+//            foreach (User::model()->findAll('name = :n', array(':n' => $_REQUEST['term'])) as $user) {
+//                $users[] = $user->name;
+//            }
+//        }
+//
+//        echo json_encode($users);
+//        Yii::app()->end();
+//    }
 
     /**
      * Applies a simple word filter to a chat message.
@@ -359,19 +346,18 @@ class LobbyController extends ApplicationController {
      * 
      * @since 1.2, Elvish Shaman
      */
-    private function chatWordFilter($message) {
-        if (($setting = Setting::model()->findByPk('wordfilter')) !== null) {
-            if (trim($setting->value) != '') {
-                $words = explode(',', $setting->value);
-                //remove any spaces, support for PHP < 5.3, it could be replaced 
-                //by a simple lambda in the future
-                array_walk($words, create_function('&$val', '$val = trim($val);'));
-
-                return str_ireplace($words, '***', $message);
-            }
-        }
-
-        return $message;
-    }
-
+//    private function chatWordFilter($message) {
+//        if (($setting = Setting::model()->findByPk('wordfilter')) !== null) {
+//            if (trim($setting->value) != '') {
+//                $words = explode(',', $setting->value);
+//                //remove any spaces, support for PHP < 5.3, it could be replaced 
+//                //by a simple lambda in the future
+//                array_walk($words, create_function('&$val', '$val = trim($val);'));
+//
+//                return str_ireplace($words, '***', $message);
+//            }
+//        }
+//
+//        return $message;
+//    }
 }

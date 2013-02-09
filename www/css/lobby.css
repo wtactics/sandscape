@@ -23,21 +23,22 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-.ui-slider-handle {
+
+/*.ui-slider-handle {
     width: 5px;
-}
+}*/
 
 #users-area {
     position: relative;
     float: left;
-    width: 23%;
+    width: 20%;
 }
 
-#users-slider {
+/*#users-slider {
     position: absolute;
     right: 0;
     height: 420px;
-}
+}*/
 
 #users-view {
     position: relative;
@@ -56,15 +57,15 @@
     position: relative;
     z-index: 0;
     float: left;
-    width: 43%;
+    width: 49%;
     margin-left: .5%;
 }
 
-#chat-slider {
+/*#chat-slider {
     position: absolute;
     right: 0;
     height: 420px;
-}
+}*/
 
 #chat-view {
     position: relative;
@@ -87,15 +88,15 @@
 #games-area {
     position: relative;
     float: left;
-    width: 33%;
+    width: 20%;
     margin-left: .5%;
 }
 
-#games-slider {
+/*#games-slider {
     position: absolute;
     right: 0;
     height: 420px;
-}
+}*/
 
 #games-view {
     position:relative;
@@ -104,6 +105,7 @@
     overflow: hidden;
     min-height: 250px;
 }
+
 #games-list {
     position: absolute;
     top: 0;
@@ -115,7 +117,7 @@
     clear: both;
 }
 
-#lobbytools {
+/*#lobbytools {
     margin-top: 35px;
 }
 
@@ -133,35 +135,9 @@
     float: right;
     width: 33%;
     text-align: right;
-}
+}*/
 
-/* DIALOG WINDOWS */
-.lobbydlg {
-    width: 640px;
-}
-
-.dlgbuttons {
-
-}
-
-.dlgrow {
-
-}
-
-.lobbydlg-left {
-    float: left;
-    width: 49%;
-}
-
-.lobbydlg-right {
-    float: right;
-    width: 49%;
-}
-
-.deck-list {
-    width: 300px;
-}
-
+/*
 .error, .notice, .info, .success {
     padding: 0.8em;
     margin-bottom: 1em;
@@ -191,4 +167,4 @@
     background: none repeat scroll 0 0 #E6EFC2;
     border-color: #C6D880;
     color: #264409;
-}
+}*/

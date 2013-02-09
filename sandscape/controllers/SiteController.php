@@ -32,6 +32,25 @@
  */
 class SiteController extends ApplicationController {
 
+    public function accessRules() {
+        return array(
+            array(
+                'allow',
+                'actions' => array('index', 'login', 'recoverPassword', 'error'),
+                'users' => array('*')
+            ),
+            array(
+                'allow',
+                'actions' => array('logout'),
+                'users' => array('@')
+            ),
+            array(
+                'deny',
+                'users' => array('*')
+            )
+        );
+    }
+
     /**
      * Loads the home page.
      */
@@ -94,72 +113,45 @@ class SiteController extends ApplicationController {
      * found.
      */
     public function actionRecoverPassword() {
-        $recover = new RecoverForm();
-        if (isset($_POST['RecoverForm'])) {
-            $recover->attributes = $_POST['RecoverForma'];
-            if ($recover->validate()) {
-                if (($setting = Setting::model()->findByPk('sysemail')) !== null && $setting->value != '') {
-                    $from = $setting->value;
-
-                    $user = User::model()->find('email = :e', array(':e' => $recover->email));
-
-                    if ($user) {
-                        $a = 'aeiou';
-                        $b = 'bcdfghjklmnpqrstvwxyz';
-                        $c = '1234567890';
-                        $d = '+#&@';
-
-                        $password = '';
-                        for ($i = 0; $i < 8; $i++) {
-                            switch (rand(0, 5)) {
-                                case 0:
-                                    $password .= $a[rand(0, strlen($a))];
-                                    break;
-                                case 1:
-                                    $password .= $b[rand(0, strlen($a))];
-                                    break;
-                                case 2:
-                                    $password .= $c[rand(0, strlen($c))];
-                                    break;
-                                case 3:
-                                    $password .= strtoupper($a[rand(0, strlen($a))]);
-                                    break;
-                                case 4:
-                                    $password .= $d[rand(0, strlen($d))];
-                                    break;
-                                case 5:
-                                    $password .= strtoupper($b[rand(0, strlen($b))]);
-                                    break;
-                            }
-                        }
-
-                        $user->password = User::hash($password);
-                        if ($user->save()) {
-                            Yii::import('ext.email.*');
-
-                            $mailer = new PHPMailer();
-                            $mailer->AddAddress($user->email, $user->name);
-                            $mailer->From = $from;
-                            $mailer->Subject = 'Password reset by administrator';
-                            $mailer->Body = "An administrator reset your password. Your new password is: {$password} \n\nSent by SandScape, please don't replay to this e-mail.";
-
-                            try {
-                                $mailer->Send();
-                                $this->redirect('site/login');
-                            } catch (phpmailerException $pe) {
-                                throw new CException('Unable to send new password to user\'s e-mail address.');
-                            }
-                        }
-                    } else {
-                        throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
-                    }
-                } else {
-                    throw new CException('Unable to reset the user\'s password.');
-                }
-            }
-        }
-
-        $this->render('lostpwd', array('recover' => $recover));
+        //TODO: make into template
+//        $recover = new RecoverForm();
+//        if (isset($_POST['RecoverForm'])) {
+//            $recover->attributes = $_POST['RecoverForma'];
+//            if ($recover->validate()) {
+//                if (($setting = Setting::model()->findByPk('sysemail')) !== null && $setting->value != '') {
+//                    $from = $setting->value;
+//
+//                    $user = User::model()->find('email = :e', array(':e' => $recover->email));
+//
+//                    if ($user) {
+//                        $password = User::randomPassword();
+//                        $user->password = User::hash($password);
+//                        if ($user->save()) {
+//                            Yii::import('ext.email.*');
+//
+//                            $mailer = new PHPMailer();
+//                            $mailer->AddAddress($user->email, $user->name);
+//                            $mailer->From = $from;
+//                            $mailer->Subject = Yii::t('sandscape', 'Password reset by administrator');
+//                            $mailer->Body = Yii::t('sandscape', "An administrator reset your password. Your new password is: {password} \n\nSent by SandScape, please don't replay to this e-mail.", array('{password}' => $password));
+//
+//                            try {
+//                                $mailer->Send();
+//                                $this->redirect('site/login');
+//                            } catch (phpmailerException $pe) {
+//                                throw new CException(Yii::t('sandscape', 'Unable to send new password to user\'s e-mail address.'));
+//                            }
+//                        }
+//                    } else {
+//                        throw new CHttpException(400, Yii::t('sandscape', 'Invalid request. Please do not repeat this request again.'));
+//                    }
+//                } else {
+//                    throw new CException(Yii::t('sandscape', 'Unable to reset the user\'s password.'));
+//                }
+//            }
+//        }
+//
+//        $this->render('lostpwd', array('recover' => $recover));
     }
 
     /**
@@ -175,30 +167,6 @@ class SiteController extends ApplicationController {
                 $this->render('error', $error);
             }
         }
-    }
-
-    /**
-     * Site access rules allow for every action without restriction, except for 
-     * the <em>logout</em> action.
-     * 
-     * @return array The new rules array.
-     */
-    public function accessRules() {
-        return array_merge(array(
-                    array('allow',
-                        'actions' => array('index', 'about', 'login', 'recoverPassword',
-                            'error', 'attribution'),
-                        'users' => array('*')
-                    ),
-                    array('allow',
-                        'actions' => array('logout'),
-                        'users' => array('@')
-                    ),
-            array(
-                'deny',
-                'users' => array('*')
-            )
-                        ), parent::accessRules());
     }
 
 }

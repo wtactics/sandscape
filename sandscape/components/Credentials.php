@@ -57,14 +57,14 @@ class Credentials extends CBaseUserIdentity {
             if ($user->password !== User::hash($this->password)) {
                 $this->errorCode = self::ERROR_PASSWORD_INVALID;
             } else {
-                $this->id = $user->userId;
+                $this->id = $user->id;
                 $this->name = ($user->name ? $user->name : $user->email);
 
 
                 $sd = null;
-                if (($sd = SessionData::model()->findByPk($user->userId)) === null) {
+                if (($sd = SessionData::model()->findByPk($user->id)) === null) {
                     $sd = new SessionData();
-                    $sd->userId = $user->userId;
+                    $sd->userId = $user->id;
                 }
 
                 $time = time();

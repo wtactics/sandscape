@@ -125,7 +125,7 @@ class CardsController extends ApplicationController {
 //                $card->image = $name;
 //        }
             if ($card->save()) {
-                $this->redirect(array('view', 'id' => $card->cardId));
+                $this->redirect(array('view', 'id' => $card->id));
             }
         }
 
@@ -149,7 +149,7 @@ class CardsController extends ApplicationController {
         if (isset($_POST['Card'])) {
             $card->attributes = $_POST['Card'];
             if ($card->save()) {
-                $this->redirect(array('view', 'id' => $card->cardId));
+                $this->redirect(array('view', 'id' => $card->id));
             }
         }
 

@@ -54,7 +54,7 @@ CREATE TABLE `SessionData` (
 `tokenExpires` DATETIME NULL ,
 `lastActivity` DATETIME NULL ,
 `userId` INT UNSIGNED NOT NULL ,
-CONSTRAINT `fkChatMessageUser` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) 
+CONSTRAINT `fkSessionDataUser` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) 
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
 -- Card table records existing cards. Currently only very basic info is kept but 
@@ -138,7 +138,7 @@ CREATE TABLE `ChatMessage` (
 `senderId` INT UNSIGNED NOT NULL ,
 `gameId` INT UNSIGNED NULL ,
 `system` TINYINT NOT NULL DEFAULT 0 ,
-CONSTRAINT `fkChatMessageUser` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ,
+CONSTRAINT `fkChatMessageUser` FOREIGN KEY (`senderId`) REFERENCES `User`(`id`) ,
 CONSTRAINT `fkChatMessageGame` FOREIGN KEY (`gameId`) REFERENCES `Game`(`id`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 

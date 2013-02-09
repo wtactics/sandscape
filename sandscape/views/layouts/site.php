@@ -5,7 +5,7 @@
 
         <?php
         $url = Yii::app()->baseUrl;
-        if (YII_DEBUG) {
+        if (defined('YII_DEBUG') && YII_DEBUG) {
             ?>
             <link href="<?php echo $url; ?>/css/main.css" rel="stylesheet" type="text/css" />
         <?php } else { ?>
@@ -13,11 +13,13 @@
         <?php } ?>
         <link rel="stylesheet" type="text/css" href="<?php echo $url; ?>/css/libraries/jquery-ui-custom-min.css" />
 
-        <script type="text/javascript" src="<?php echo $url; ?>/js/libraries/jquery-min.js"></script>
-        <script type="text/javascript" src="<?php echo $url; ?>/js/libraries/jquery-ui-min.js"></script>
+        <script src="<?php echo $url; ?>/js/libraries/jquery-min.js"></script>
+        <script src="<?php echo $url; ?>/js/libraries/jquery-ui-min.js"></script>
+        <script src="<?php echo $url; ?>/js/libraries/underscore-min.js"></script>
+        <script src="<?php echo $url; ?>/js/libraries/backbone-min.js"></script>
 
         <?php if (!defined('YII_DEBUG') || !YII_DEBUG) { ?>
-            <script type="text/javascript" src="<?php echo $url; ?>/js/sandscape.all.min.js"></script>
+            <script src="<?php echo $url; ?>/js/sandscape.all.min.js"></script>
         <?php } ?>
 
         <title><?php echo CHtml::encode($this->title); ?></title>

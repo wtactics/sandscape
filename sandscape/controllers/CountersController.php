@@ -56,13 +56,13 @@ class CountersController extends ApplicationController {
     }
 
     /**
-     * Retrieves a <em>PlayerCounter</em> model from the database.
+     * Retrieves a <em>Counter</em> model from the database.
      * 
      * @param integer $id The model's database ID
-     * @return Dice The loaded model or null if no model was found for the given ID
+     * @return Counter The loaded model or null if no model was found for the given ID
      */
-    private function loadPlayerCounterModel($id) {
-        if (!($counter = PlayerCounter::model()->findByPk((int) $id))) {
+    private function loadCounterModel($id) {
+        if (!($counter = Counter::model()->findByPk((int) $id))) {
             throw new CHttpException(404, Yii::t('sandscape', 'The requested counter is unavailable.'));
         }
         return $counter;
@@ -72,11 +72,11 @@ class CountersController extends ApplicationController {
      * Default action, shows a list of existing (active) player counters.
      */
     public function actionIndex() {
-        $filter = new PlayerCounter('search');
+        $filter = new Counter('search');
         $filter->unsetAttributes();
 
-        if (isset($_GET['PlayerCounter'])) {
-            $filter->attributes = $_GET['PlayerCounter'];
+        if (isset($_GET['Counter'])) {
+            $filter->attributes = $_GET['Counter'];
         }
 
         $this->render('index', array('filter' => $filter));
@@ -86,13 +86,13 @@ class CountersController extends ApplicationController {
      * Allows administrators to create new counters.
      */
     public function actionCreate() {
-        $counter = new PlayerCounter();
-        $this->performAjaxValidation('playercounter-form', $counter);
+        $counter = new Counter();
+        $this->performAjaxValidation('counter-form', $counter);
 
-        if (isset($_POST['PlayerCounter'])) {
-            $counter->attributes = $_POST['PlayerCounter'];
+        if (isset($_POST['Counter'])) {
+            $counter->attributes = $_POST['Counter'];
             if ($counter->save()) {
-                $this->redirect(array('view', 'id' => $counter->playerCounterId));
+                $this->redirect(array('view', 'id' => $counter->id));
             }
         }
 
@@ -100,7 +100,7 @@ class CountersController extends ApplicationController {
     }
 
     public function actionView($id) {
-        $counter = $this->loadPlayerCounterModel($id);
+        $counter = $this->loadCounterModel($id);
         $this->render('view', array('counter' => $counter));
     }
 
@@ -108,13 +108,13 @@ class CountersController extends ApplicationController {
      * Updates a counter's information.
      */
     public function actionUpdate($id) {
-        $counter = $this->loadPlayerCounterModel($id);
-        $this->performAjaxValidation('playercounter-form', $counter);
+        $counter = $this->loadCounterModel($id);
+        $this->performAjaxValidation('counter-form', $counter);
 
-        if (isset($_POST['PlayerCounter'])) {
-            $counter->attributes = $_POST['PlayerCounter'];
+        if (isset($_POST['erCounter'])) {
+            $counter->attributes = $_POST['Counter'];
             if ($counter->save()) {
-                $this->redirect(array('view', 'id' => $counter->playerCounterId));
+                $this->redirect(array('view', 'id' => $counter->id));
             }
         }
 
@@ -126,7 +126,7 @@ class CountersController extends ApplicationController {
      */
     public function actionDelete($id) {
         if (Yii::app()->user->role == 'administrator' && Yii::app()->request->isPostRequest) {
-            $counter = $this->loadPlayerCounterModel($id);
+            $counter = $this->loadCounterModel($id);
 
             $counter->active = 0;
             $counter->save();
