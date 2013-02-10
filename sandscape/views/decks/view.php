@@ -1,21 +1,27 @@
 <?php
-
-/** @var $this CardsController */
+/** @var $this DecksController */
 $this->widget('bootstrap.widgets.TbDetailView', array(
-    'data' => $card,
+    'data' => $deck,
     'attributes' => array(
-        'cardId',
+        'id',
         'name',
-        array(
-            'name' => 'cardscapeId',
-            'value' => $card->cardscapeId ? $card->cardscapeId : '-'
-        ),
-        'rules',
+        'createdOn'
     ),
 ));
-
+if ($deck->back) {
+    ?>
+    <!-- <h4><?php echo Yii::t('interface', 'Current Image'); ?></h4> -->
+    <ul class="thumbnails">
+        <li class="span3">
+            <a href="#" class="thumbnail" rel="tooltip" data-title="<?php echo Yii::t('interface', 'Deck Back Image'); ?>">
+                <img src="<?php echo Yii::app()->baseUrl, '/gamedata/decks/', $deck->back; ?>" alt="" />
+            </a>
+        </li>
+    </ul>
+    <?php
+}
 $this->widget('bootstrap.widgets.TbButton', array(
-    'url' => $this->createUrl('cards/update', array('id' => $card->cardId)),
-    'label' => Yii::t('sandscape', 'Edit'),
+    'url' => $this->createUrl('decks/update', array('id' => $deck->id)),
+    'label' => Yii::t('interface', 'Edit'),
     'type' => 'info'
 ));

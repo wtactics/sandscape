@@ -67,50 +67,50 @@ class ApplicationController extends CController {
                 'items' => array(
                     '---',
                     array(
-                        'label' => Yii::t('sandscape', 'Home'),
+                        'label' => Yii::t('interface', 'Home'),
                         'url' => array('site/index'),
                         'visible' => Yii::app()->user->isGuest
                     ),
                     array(
-                        'label' => Yii::t('sandscape', 'Login'),
+                        'label' => Yii::t('interface', 'Login'),
                         'url' => array('site/login'),
                         'visible' => Yii::app()->user->isGuest
                     ),
                     array(
-                        'label' => Yii::t('sandscape', 'Dashboard'),
+                        'label' => Yii::t('interface', 'Dashboard'),
                         'url' => array('dashboard/index'),
                         'visible' => !Yii::app()->user->isGuest
                     ),
                     array(
-                        'label' => Yii::t('sandscape', 'Play'),
+                        'label' => Yii::t('interface', 'Play'),
                         'url' => array('lobby/index'),
                         'visible' => !Yii::app()->user->isGuest
                     ),
                     array(
                         'class' => 'bootstrap.widgets.TbMenu',
-                        'label' => Yii::t('backend', 'Game Settings'),
+                        'label' => Yii::t('interface', 'Game Settings'),
                         'visible' => !Yii::app()->user->isGuest && Yii::app()->user->role == 'administrator',
                         'items' => array(
                             array(
-                                'label' => Yii::t('sandscape', 'Cards'),
+                                'label' => Yii::t('interface', 'Cards'),
                                 'url' => array('cards/index'),
                             ),
                             '---',
                             array(
-                                'label' => Yii::t('sandscape', 'Dice'),
+                                'label' => Yii::t('interface', 'Dice'),
                                 'url' => array('dice/index'),
                             ),
                             array(
-                                'label' => Yii::t('sandscape', 'Card States'),
+                                'label' => Yii::t('interface', 'Card States'),
                                 'url' => array('states/index'),
                             ),
                             array(
-                                'label' => Yii::t('sandscape', 'Card Tokens'),
+                                'label' => Yii::t('interface', 'Card Tokens'),
                                 'url' => array('tokens/index'),
                             ),
                             '---',
                             array(
-                                'label' => Yii::t('sandscape', 'Player Counters'),
+                                'label' => Yii::t('interface', 'Player Counters'),
                                 'url' => array('counters/index'),
                             ),
 //                            '---',
@@ -127,11 +127,11 @@ class ApplicationController extends CController {
                 'htmlOptions' => array('class' => 'pull-right'),
                 'items' => array(
                     array(
-                        'label' => Yii::t('sandscape', 'System Settings'),
+                        'label' => Yii::t('interface', 'System Settings'),
                         'visible' => !Yii::app()->user->isGuest && Yii::app()->user->role == 'administrator',
                         'items' => array(
                             array(
-                                'label' => Yii::t('sandscape', 'Users'),
+                                'label' => Yii::t('interface', 'Users'),
                                 'url' => array('users/index'),
                             ),
 //                            '---',
@@ -157,12 +157,12 @@ class ApplicationController extends CController {
                     array(
                         'label' => Yii::app()->user->name,
                         'items' => array(
-                            array('label' => Yii::t('sandscape', 'Decks'), 'url' => array('users/decks')),
+                            array('label' => Yii::t('interface', 'Decks'), 'url' => array('decks/index')),
                             //array('label' => Yii::t('sandscape', 'Games'), 'url' => array('account/index')),
                             '---',
-                            array('label' => Yii::t('sandscape', 'Profile'), 'url' => array('users/profile')),
+                            array('label' => Yii::t('interface', 'Profile'), 'url' => array('users/profile')),
                             '---',
-                            array('label' => Yii::t('sandscape', 'Logout'), 'url' => array('site/logout')),
+                            array('label' => Yii::t('interface', 'Logout'), 'url' => array('site/logout')),
                         ),
                         'visible' => !Yii::app()->user->isGuest
                     ),
