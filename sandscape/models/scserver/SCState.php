@@ -42,9 +42,7 @@ class SCState {
 
     /**
      *
-     * @return type 
-     * 
-     * @since 1.0, Sudden Growth
+     * @return int
      */
     public function getId() {
         return $this->id;
@@ -52,9 +50,7 @@ class SCState {
 
     /**
      *
-     * @return type 
-     * 
-     * @since 1.0, Sudden Growth
+     * @return string
      */
     public function getName() {
         return $this->name;
@@ -62,9 +58,7 @@ class SCState {
 
     /**
      *
-     * @return type 
-     * 
-     * @since 1.0, Sudden Growth
+     * @return string
      */
     public function getImage() {
         return $this->image;
@@ -72,9 +66,7 @@ class SCState {
 
     /**
      *
-     * @return type 
-     * 
-     * @since 1.0, Sudden Growth
+     * @return stdClass
      */
     public function getInfo() {
         return (object) array(
@@ -85,9 +77,7 @@ class SCState {
 
     /**
      *
-     * @return type 
-     * 
-     * @since 1.0, Sudden Growth
+     * @return stdClass
      */
     public function getJSONData() {
         return (object) array(
@@ -97,5 +87,3 @@ class SCState {
     }
 
 }
-
-?>

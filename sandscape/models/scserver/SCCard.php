@@ -51,10 +51,8 @@ class SCCard extends SCContainer {
      * @param type $dbId
      * @param type $face
      * @param type $back 
-     * 
-     * @since 1.0, Sudden Growth
      */
-    public function __construct(SCGame $game, $player, $dbId, $face, $back = 'cardback.png') {
+    public function __construct(SCGame $game, $player, $dbId, $face, $back = 'cardback-standard.png') {
         parent::__construct($game, false, true, 1);
         $this->player = $player;
         $this->dbId = $dbId;

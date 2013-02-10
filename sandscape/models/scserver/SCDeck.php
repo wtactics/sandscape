@@ -38,8 +38,6 @@ class SCDeck extends SCContainer {
      * @param SCGame $game
      * @param string $name
      * @param SCCard[] $cards 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function __construct(SCGame $game, $name, $cards, $dbId) {
         parent::__construct($game, false, false);
@@ -53,21 +51,17 @@ class SCDeck extends SCContainer {
     /**
      *
      * @return string
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function getName() {
         return $this->name;
     }
-    
+
     /**
      *
      * @return int
-     * 
-     * @since 1.3, Soulharvester
      */
     public function getDbId() {
-        return $thi->dbId;
+        return $this->dbId;
     }
 
 }

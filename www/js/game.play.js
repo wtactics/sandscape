@@ -23,8 +23,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-$(function (game, $, _, undefined) {
-    var state = {
+$(function (scGame, $, _, undefined) {
+    
+    var gameState = {
         chat: {
             lastReceived: 0, 
             updID: 0, 
@@ -46,23 +47,72 @@ $(function (game, $, _, undefined) {
             name: '',
             isOne: false
         },
-        url: null
-    }
+        baseUrl: null,
+        cardUrl: null,
+        cardThumbUrl: null,
+        stateUrl: null,
+        stateThumbUrl: null,
+        tokenUrl: null,
+        tokenThumbUrl: null
+    };
     
-    _.extend(lobby, {
-        initialize: function () {
-            $('#message').keypress(sendMessage);    
+    _.extend(scGame, {
+        
+        initialize: function (options) {
+            $('#message').keypress(scGame.ui.sendMessage);    
             $('#opponent-loader').show();
-    
+            
+            gameState.chat.lastReceived = options.lastReceived;
+            gameState.chat.updID = 0, 
+            gameState.chat.sendUrl = options.chatSendUrl;
+            gameState.chat.updateUrl = options.chatUpdateUrl;
+            gameState.game.url = options.gameUrl;
+            gameState.user.id = options.userId;
+            gameState.user.name = options.userName;
+            gameState.user.isOne = options.userIsOne;
+            gameState.baseUrl = options.baseUrl;
+            
+            gameState.cardUrl=  options.baseUrl + '/gamedata/cards/';
+            gameState.cardThumbUrl = options.baseUrl + '/gamedata/cards/thumbs/';
+            gameState.stateUrl = options.baseUrl + '/gamedata/states/';
+            gameState.stateThumbUrl = options.baseUrl + '/gamedata/states/thumbs/';
+            gameState.tokenUrl = options.baseUrl + '/gamedata/tokens/';
+            gameState.tokenThumbUrl = options.baseUrl + '/gamedata/tokens/thumbs/';
+            
             //start game creation
-            game.pack();
-            game.checkGameStart();
+            scGame.pack();
+            scGame.checkGameStart();
         //setTimeout(updateMessages, 1000);
+        },
+        
+        /**
+         * Generates the poper sizes for the various game areas and elements with sizes 
+         * that are dependent on window width/height or some user preference.
+         */
+        pack: function() {   
+            $('.opponent-area').css({
+                height: $(window).height() / 2
+            });
+    
+            $('.play').css({
+                height: $(window).height() / 2,
+                top:$(window).height()/2
+            });    
+
+            $('#handnob').css({
+                left: 20,
+                bottom: 0
+            });
+    
+            $('#message-div').css({
+                bottom: 5,
+                right: 15
+            });
         },
         
         checkGameStart: function() {
             $.ajax({
-                url: globals.game.url,
+                url: gameState.game.url,
                 data: {
                     event: 'startGame'
                 },
@@ -73,7 +123,7 @@ $(function (game, $, _, undefined) {
                         $('#opponent-loader').hide();
                         $('#game-loader').show();
                         $.ajax({
-                            url: globals.game.url,
+                            url: gameState.game.url,
                             data: {
                                 event: 'startUp'
                             },
@@ -161,7 +211,7 @@ $(function (game, $, _, undefined) {
                                     //$(document.createElement('img'))
                                     //.attr({
                                     //    id: decks[i].id, 
-                                    //    src: globals.url + 'gamedata/cards/thumbs/cardback.png'
+                                    //    src: gameState.baseUrl + 'gamedata/cards/thumbs/cardback.png'
                                     //})
                                     //.appendTo(right);
                                 
@@ -207,7 +257,7 @@ $(function (game, $, _, undefined) {
                                     //$(document.createElement('img'))
                                     //.attr({
                                     //    id: create.player.graveyard.id,
-                                    //    src: globals.url + 'gamedata/cards/thumbs/noimage.png'
+                                    //    src: gameState.baseUrl + 'gamedata/cards/thumbs/noimage.png'
                                     //})
                                     //.appendTo(right);
                                 
@@ -247,7 +297,7 @@ $(function (game, $, _, undefined) {
                                         //$(document.createElement('img'))
                                         //.attr({
                                         //    id: 'incpc-' + counters[i].id,
-                                        //    src: globals.url + '/images/general/icon-x16-plus.png'
+                                        //    src: gameState.baseUrl + '/images/general/icon-x16-plus.png'
                                         //})
                                         //.data('counter', counters[i].id)
                                         //.click(increasePlayerCounter)
@@ -256,7 +306,7 @@ $(function (game, $, _, undefined) {
                                         //$(document.createElement('img'))
                                         //.attr({
                                         //    id: 'decpc-' + counters[i].id,
-                                        //    src: globals.url + '/images/general/icon-x16-minus.png'
+                                        //    src: gameState.baseUrl + '/images/general/icon-x16-minus.png'
                                         //})
                                         //.data('counter', counters[i].id)
                                         //.click(decreasePlayerCounter)
@@ -322,27 +372,32 @@ $(function (game, $, _, undefined) {
                                 
                                         opts = [{
                                             //details
-                                            option: '<img src="' + globals.url + '/images/gameboard/board/I_Telescope.png" title="Card Details" />',
+                                            //option: '<img src="' + gameState.baseUrl + '/images/gameboard/board/I_Telescope.png" title="Card Details" />',
+                                            option: 'D',
                                             event: function (card) {
                                                 requestCardInfo($(card).attr('id'));
                                             }
                                         }, {
                                             //tokens
-                                            option: '<img src="' + globals.url + '/images/gameboard/board/S_Light02.png" title="Tokens" />',
+                                            //option: '<img src="' + gameState.baseUrl + '/images/gameboard/board/S_Light02.png" title="Tokens" />',
+                                            option: 'T',
                                             subMenu: tokenMenu
                                         }, {
                                             //states
-                                            option: '<img src="' + globals.url + '/images/gameboard/board/S_Bow10.png" title="States" />',
+                                            //option: '<img src="' + gameState.baseUrl + '/images/gameboard/board/S_Bow10.png" title="States" />',
+                                            option: 'S',
                                             subMenu: statesMenu
                                         }, {
                                             //flip the card
-                                            option: '<img src="' + globals.url + '/images/gameboard/board/Ac_Gloves04.png" title="Flip Card" />',
+                                            //option: '<img src="' + gameState.baseUrl + '/images/gameboard/board/Ac_Gloves04.png" title="Flip Card" />',
+                                            option: 'F',
                                             event: function(card) {
                                                 flipCard($(card).attr('id'));
                                             }
                                         }, {
                                             //edit label
-                                            option: '<img src="' + globals.url + '/images/gameboard/board/I_Scroll02.png" title="Custom Label" />',
+                                            //option: '<img src="' + gameState.baseUrl + '/images/gameboard/board/I_Scroll02.png" title="Custom Label" />',
+                                            option: 'L',
                                             event: function (card) {
                                                 $('#label-text').val($(card).find('.label').html());
                                                 $('#label-card-id').val($(card).attr('id'));
@@ -350,7 +405,8 @@ $(function (game, $, _, undefined) {
                                             }
                                         }, {
                                             //counters
-                                            option: '<img src="' + globals.url + '/images/gameboard/board/S_Buff08.png" title="Counters" />',
+                                            //option: '<img src="' + gameState.baseUrl + '/images/gameboard/board/S_Buff08.png" title="Counters" />',
+                                            option: 'C',
                                             event: function (card) {
                                                 $('#counter-card-id').val($(card).attr('id'));
                                                 $('#counter-dlg').modal();
@@ -360,7 +416,8 @@ $(function (game, $, _, undefined) {
                                         if(useGrave) {
                                             opts.push({
                                                 //send card to graveyard
-                                                option: '<img src="' + globals.url + '/images/gameboard/board/S_Death02.png" title="Send to Graveyard" />',
+                                                //option: '<img src="' + gameState.baseUrl + '/images/gameboard/board/S_Death02.png" title="Send to Graveyard" />',
+                                                option: 'G',
                                                 event: function(card) {
                                                     moveToGraveyard($(card).attr('id'));
                                                 }
@@ -381,10 +438,9 @@ $(function (game, $, _, undefined) {
                                             radius: 60,
                                             options: opts
                                         })
-                                        .children('img.face').attr('src', globals.url + '/gamedata/cards/thumbs/' 
-                                            + (card.invertView ? 'reversed/' : '') + card.src);
+                                        .children('img.face').attr('src', gameState.cardThumbUrl + (card.invertView ? 'reversed/' : '') + card.src);
                                 
-                                        updateCardExtras($('#'+card.id));
+                                        scGame.updateCardExtras($('#'+card.id));
                                     }
                                     //finished adding cards to the board
                             
@@ -407,9 +463,9 @@ $(function (game, $, _, undefined) {
                                         }
                                     });
                             
-                                    globals.game.running = true;                     
-                                    setTimeout(updateGame, 10000);
-                                    cyclicPositionUpdate();
+                                    gameState.game.running = true;                     
+                                    setTimeout(scGame.updateGame, 10000);
+                                    scGame.cyclicPositionUpdate();
                             
                                     $('#game-loader').fadeOut('slow', function () {
                                         $('#game-loader').remove();
@@ -418,11 +474,11 @@ $(function (game, $, _, undefined) {
                             }
                         });
                     } else  {
-                        setTimeout(checkGameStart, 3000);
+                        setTimeout(scGame.checkGameStart, 3000);
                     }
                 },
                 error: function () {
-                    setTimeout(checkGameStart, 3000);
+                    setTimeout(scGame.checkGameStart, 3000);
                 }
             });
         },
@@ -436,7 +492,7 @@ $(function (game, $, _, undefined) {
                 for (i = 0; i < cstatus.tokens.length; ++i) {
                     $(document.createElement('img'))
                     .addClass('token')
-                    .attr('src', globals.url + '/gamedata/tokens/thumbs/' + (cstatus.invertView ? 'reversed/' : '') 
+                    .attr('src', gameState.tokenThumbUrl + (cstatus.invertView ? 'reversed/' : '') 
                         + cstatus.tokens[i].src)
                     .appendTo(card);
                 }
@@ -446,7 +502,7 @@ $(function (game, $, _, undefined) {
                 for(i = 0; i < cstatus.states.length; ++i) {
                     $(document.createElement('img'))
                     .addClass('state')
-                    .attr('src', globals.url + '/gamedata/states/thumbs/' + (cstatus.invertView ? 'reversed/' : '') 
+                    .attr('src', gameState.stateThumbUrl + (cstatus.invertView ? 'reversed/' : '') 
                         + cstatus.states[i].src)
                     .appendTo(card);
                 }
@@ -466,7 +522,7 @@ $(function (game, $, _, undefined) {
         },
 
         cyclicPositionUpdate: function() {
-            if (!globals.stopPositionUpdate){
+            if (!gameState.stopPositionUpdate){
                 $('.update').each(function (i, o) {
                     o = $(o);
             
@@ -496,12 +552,12 @@ $(function (game, $, _, undefined) {
                     }
                 });         
             }
-            setTimeout(cyclicPositionUpdate, 300);
+            setTimeout(scGame.cyclicPositionUpdate, 300);
         },
 
         doGameUpdate: function(json) {
-            if(json.result == 'ok'  &&  parseInt(json.clientTime) == globals.time.getTime()) {
-                if (json.lastChange) globals.game.lastChange = json.lastChange;
+            if(json.result == 'ok'  &&  parseInt(json.clientTime) == gameState.time.getTime()) {
+                if (json.lastChange) gameState.game.lastChange = json.lastChange;
         
                 for(var i = 0; i < json.update.length; i++) {
                     $('#' + json.update[i].id).data('status', json.update[i]);
@@ -513,122 +569,122 @@ $(function (game, $, _, undefined) {
                         zIndex: json.update[i].zIndex,
                         visibility: json.update[i].visibility
                     })
-                    .children('img.face').attr('src',  globals.url + '/gamedata/cards/thumbs/' + (json.update[i].invertView ? 'reversed/' : '') 
+                    .children('img.face').attr('src',  gameState.cardThumbUrl + (json.update[i].invertView ? 'reversed/' : '') 
                         + json.update[i].src);
             
                     updateCardExtras($('#' + json.update[i].id));
                 }
             }
-            globals.updatingGame = false;
+            gameState.updatingGame = false;
         },
 
         updateGame: function() {
-            globals.time = new Date();
-            if (!globals.updatingGame  &&  parseInt($.active) == 0  &&  $('.ui-draggable-dragging').length == 0){
-                globals.updatingGame = true;
+            gameState.time = new Date();
+            if (!gameState.updatingGame  &&  parseInt($.active) == 0  &&  $('.ui-draggable-dragging').length == 0){
+                gameState.updatingGame = true;
                 $.ajax({
-                    url: globals.game.url,
+                    url: gameState.game.url,
                     data: {
                         event: 'update',
                         // TODO: Solve the sync problems; lastChange will still disabled 
-                        // until then: lastChange: globals.game.lastChange,
-                        clientTime: globals.time.getTime()
+                        // until then: lastChange: gameState.game.lastChange,
+                        clientTime: gameState.time.getTime()
                     },
                     dataType: 'json',
                     type: 'POST',
-                    success: doGameUpdate,
+                    success: scGame.doGameUpdate,
                     complete: function () { 
-                        setTimeout(updateGame, 3000);
+                        setTimeout(scGame.updateGame, 3000);
                     }
                 });
             }
-            else setTimeout(updateGame, 3000);
+            else setTimeout(scGame.updateGame, 3000);
         },
 
         toggleCardToken: function(cardId, tokenId) {
-            globals.updatingGame = true;
-            globals.time = new Date();
+            gameState.updatingGame = true;
+            gameState.time = new Date();
             if ($('.ui-draggable-dragging').length == 0) {
                 $.ajax({
-                    url: globals.game.url,
+                    url: gameState.game.url,
                     data: {
                         event: 'toggleCardToken',
                         card: cardId,
                         token: tokenId,
-                        clientTime: globals.time.getTime()
+                        clientTime: gameState.time.getTime()
                     },
                     dataType: 'json',
                     type: 'POST',
-                    success: doGameUpdate
+                    success: scGame.doGameUpdate
                 })
             }
         },
 
         toggleCardState: function(cardId, stateId) {
-            globals.updatingGame = true;
-            globals.time = new Date();
+            gameState.updatingGame = true;
+            gameState.time = new Date();
             if ($('.ui-draggable-dragging').length == 0) {
                 $.ajax({
-                    url: globals.game.url,
+                    url: gameState.game.url,
                     data: {
                         event: 'toggleCardState',
                         card: cardId, 
                         state: stateId,
-                        clientTime: globals.time.getTime()
+                        clientTime: gameState.time.getTime()
                     },
                     dataType: 'json',
                     type: 'POST',
-                    success: doGameUpdate
+                    success: scGame.doGameUpdate
                 })
             }
         },
 
         drawCard: function(deckId) {
-            globals.updatingGame = true;
-            globals.stopPositionUpdate = true;
-            globals.time = new Date();
+            gameState.updatingGame = true;
+            gameState.stopPositionUpdate = true;
+            gameState.time = new Date();
             $.ajax({
-                url: globals.game.url,
+                url: gameState.game.url,
                 data: {
                     event: 'drawCard',
                     deck: deckId,
-                    clientTime: globals.time.getTime()
+                    clientTime: gameState.time.getTime()
                 },
                 dataType: 'json',
                 type: 'POST',
-                success: doGameUpdate,
+                success: scGame.doGameUpdate,
                 complete: function () {
-                    globals.stopPositionUpdate = false;
+                    gameState.stopPositionUpdate = false;
                 }
             });
         },
 
         moveCard: function(cardId, destinationId, xOffset, yOffset) {
-            globals.updatingGame = true;
-            globals.stopPositionUpdate = true;
-            globals.time = new Date();
+            gameState.updatingGame = true;
+            gameState.stopPositionUpdate = true;
+            gameState.time = new Date();
             $.ajax({
-                url: globals.game.url,
+                url: gameState.game.url,
                 data: {
                     event: 'moveCard',
                     card: cardId,
                     location: destinationId,
                     xOffset: xOffset,
                     yOffset: yOffset,
-                    clientTime: globals.time.getTime()
+                    clientTime: gameState.time.getTime()
                 },
                 dataType: 'json',
                 type: 'POST',
-                success: doGameUpdate,
+                success: scGame.doGameUpdate,
                 complete: function () {
-                    globals.stopPositionUpdate = false;
+                    gameState.stopPositionUpdate = false;
                 }
             });
         },
 
         requestCardInfo: function(id) {
             $.ajax({
-                url: globals.game.url,
+                url: gameState.game.url,
                 data: {
                     event: 'cardInfo',
                     card: id
@@ -639,12 +695,12 @@ $(function (game, $, _, undefined) {
                     $('#card-info .temp').remove();
                     if(json.success) {
                         var owner = $('#card-info'), i;
-                        $('#card-image').attr('src', globals.url + '/gamedata/cards/' + json.status.src);
+                        $('#card-image').attr('src', gameState.cardUrl + json.status.src);
                         for(i = 0; i < json.status.tokens.length; i++) {
                             $(document.createElement('img'))
                             .addClass('temp')
                             .css('z-index', 1)
-                            .attr('src', globals.url + '/gamedata/tokens/' + json.status.tokens[i].src)
+                            .attr('src', gameState.tokenUrl + json.status.tokens[i].src)
                             .appendTo(owner);
                         }
                 
@@ -652,7 +708,7 @@ $(function (game, $, _, undefined) {
                             $(document.createElement('img'))
                             .addClass('temp')
                             .css('z-index', -1)
-                            .attr('src', globals.url + '/gamedata/states/' + json.status.states[i].src)
+                            .attr('src', gameState.stateUrl + json.status.states[i].src)
                             .appendTo(owner);
                         }
                 
@@ -671,8 +727,7 @@ $(function (game, $, _, undefined) {
                         .css('display', json.status.label ? '' : 'none')
                         .html(json.status.label);
                     } else {
-                
-                        $('#card-image').attr('src', globals.url + '/gamedata/cards/cardback.png');
+                        $('#card-image').attr('src', gameState.cardUrl + 'cardback-standard.png');
                     }
                 }
             })
@@ -701,7 +756,7 @@ $(function (game, $, _, undefined) {
 
         roll: function(diceId) {
             $.ajax({
-                url: globals.game.url,
+                url: gameState.game.url,
                 data: {
                     event: 'roll',
                     dice: diceId
@@ -718,7 +773,7 @@ $(function (game, $, _, undefined) {
 
         flipCard: function(id) {
             $.ajax({
-                url: globals.game.url,
+                url: gameState.game.url,
                 data: {
                     event: 'flipCard',
                     card: id
@@ -727,8 +782,7 @@ $(function (game, $, _, undefined) {
                 dataType: 'json',
                 success: function (json) {
                     if(json.success) {
-                        $('#' + id).attr('src', globals.url + '/gamedata/cards/thumbs/' 
-                            + (json.status.invertView ? 'reversed/' : '') + json.status.src);
+                        $('#' + id).attr('src', gameState.cardThumbUrl + (json.status.invertView ? 'reversed/' : '') + json.status.src);
                     }
                 }
             });
@@ -736,7 +790,7 @@ $(function (game, $, _, undefined) {
 
         shuffleDeck: function(deckId) {
             $.ajax({
-                url: globals.game.url,
+                url: gameState.game.url,
                 data: {
                     event: 'shuffleDeck',
                     deck: deckId
@@ -750,107 +804,107 @@ $(function (game, $, _, undefined) {
         },
 
         drawCardToTable: function(deckId) {
-            globals.updatingGame = true;
-            globals.stopPositionUpdate = true;
-            globals.time = new Date();
+            gameState.updatingGame = true;
+            gameState.stopPositionUpdate = true;
+            gameState.time = new Date();
             $.ajax({
-                url: globals.game.url,
+                url: gameState.game.url,
                 data: {
                     event: 'drawCardToTable',
                     deck: deckId,
-                    clientTime: globals.time.getTime()
+                    clientTime: gameState.time.getTime()
                 },
                 dataType: 'json',
                 type: 'POST',
-                success: doGameUpdate,
+                success: scGame.doGameUpdate,
                 complete: function () {
-                    globals.stopPositionUpdate = false;
+                    gameState.stopPositionUpdate = false;
                 }
             });
         },
 
         setLabel: function() {
-            globals.updatingGame = true;
-            globals.stopPositionUpdate = true;
-            globals.time = new Date();
+            gameState.updatingGame = true;
+            gameState.stopPositionUpdate = true;
+            gameState.time = new Date();
             $.ajax({
-                url: globals.game.url,
+                url: gameState.game.url,
                 data: {
                     event: 'label',
                     card: $('#label-card-id').val(),
                     label: $('#label-text').val(),
-                    clientTime: globals.time.getTime()
+                    clientTime: gameState.time.getTime()
                 },
                 dataType: 'json',
                 type: 'POST',
-                success: doGameUpdate,
+                success: scGame.doGameUpdate,
                 complete: function () {
-                    globals.stopPositionUpdate = false;
+                    gameState.stopPositionUpdate = false;
                 }
             });
         },
 
         moveToGraveyard: function(cardId) {
-            globals.updatingGame = true;
-            globals.stopPositionUpdate = true;
-            globals.time = new Date();
+            gameState.updatingGame = true;
+            gameState.stopPositionUpdate = true;
+            gameState.time = new Date();
             $.ajax({
-                url: globals.game.url,
+                url: gameState.game.url,
                 data: {
                     event: 'toGraveyard',
                     card: cardId,
-                    clientTime: globals.time.getTime()
+                    clientTime: gameState.time.getTime()
                 },
                 dataType: 'json',
                 type: 'POST',
-                success: doGameUpdate,
+                success: scGame.doGameUpdate,
                 complete: function () {
-                    globals.stopPositionUpdate = false;
+                    gameState.stopPositionUpdate = false;
                 }
             });
         },
 
         drawFromGraveyard: function() {
-            globals.updatingGame = true;
-            globals.stopPositionUpdate = true;
-            globals.time = new Date();
+            gameState.updatingGame = true;
+            gameState.stopPositionUpdate = true;
+            gameState.time = new Date();
             $.ajax({
-                url: globals.game.url,
+                url: gameState.game.url,
                 data: {
                     event: 'fromGraveyard',
-                    clientTime: globals.time.getTime()
+                    clientTime: gameState.time.getTime()
                 },
                 dataType: 'json',
                 type: 'POST',
-                success: doGameUpdate,
+                success: scGame.doGameUpdate,
                 complete: function () {
-                    globals.stopPositionUpdate = false;
+                    gameState.stopPositionUpdate = false;
                 }
             });
         },
 
         drawFromGraveyardToTable: function() {
-            globals.updatingGame = true;
-            globals.stopPositionUpdate = true;
-            globals.time = new Date();
+            gameState.updatingGame = true;
+            gameState.stopPositionUpdate = true;
+            gameState.time = new Date();
             $.ajax({
-                url: globals.game.url,
+                url: gameState.game.url,
                 data: {
                     event: 'fromGraveyardToTable',
-                    clientTime: globals.time.getTime()
+                    clientTime: gameState.time.getTime()
                 },
                 dataType: 'json',
                 type: 'POST',
-                success: doGameUpdate,
+                success: scGame.doGameUpdate,
                 complete: function () {
-                    globals.stopPositionUpdate = false;
+                    gameState.stopPositionUpdate = false;
                 }
             });
         },
 
         shuffleGraveyard: function() {
             $.ajax({
-                url: globals.game.url,
+                url: gameState.game.url,
                 data: {
                     event: 'shuffleGraveyard'
                 },
@@ -866,10 +920,10 @@ $(function (game, $, _, undefined) {
             var cardId = $('#counter-card-id').val(), card = $('#' + cardId);
     
             $.ajax({
-                url: globals.game.url,
+                url: gameState.game.url,
                 data: {
                     event: 'addCounter',
-                    clientTime: globals.time.getTime(),
+                    clientTime: gameState.time.getTime(),
                     card: cardId,
                     name: $('#counter-name').val(),
                     start: $('#counter-value').val(),
@@ -903,17 +957,17 @@ $(function (game, $, _, undefined) {
             .append($(document.createElement('div'))
                 .addClass('counter-tools')
                 .append($(document.createElement('img'))
-                    .attr('src', globals.url + '/images/general/icon-x16-plus.png')
+                    .attr('src', gameState.baseUrl + '/images/general/icon-x16-plus.png')
                     .data('counter', name)
                     .data('counterId', counterId)
                     .data('card', card.attr('id'))
-                    .click(increaseCounter))
+                    .click(scGame.increaseCounter))
                 .append($(document.createElement('img'))
-                    .attr('src', globals.url + '/images/general/icon-x16-minus.png')
+                    .attr('src', gameState.baseUrl + '/images/general/icon-x16-minus.png')
                     .data('counter', name)
                     .data('counterId', counterId)
                     .data('card', card.attr('id'))
-                    .click(decreaseCounter))
+                    .click(scGame.decreaseCounter))
                 )
             .appendTo(card);
         },
@@ -922,7 +976,7 @@ $(function (game, $, _, undefined) {
             var counter = $(this);
     
             $.ajax({
-                url: globals.game.url,
+                url: gameState.game.url,
                 data: {
                     event: 'increaseCounter',
                     card: counter.data('card'),
@@ -943,7 +997,7 @@ $(function (game, $, _, undefined) {
             var counter = $(this);
     
             $.ajax({
-                url: globals.game.url,
+                url: gameState.game.url,
                 data: {
                     event: 'decreaseCounter',
                     card: counter.data('card'),
@@ -963,11 +1017,11 @@ $(function (game, $, _, undefined) {
         increasePlayerCounter: function(event) {
             var counter = $(event.target);    
             $.ajax({
-                url: globals.game.url,
+                url: gameState.game.url,
                 data: {
                     event: 'increasePlayerCounter',
                     counter: counter.data('counter'),
-                    player: globals.user.id
+                    player: gameState.user.id
                 },
                 dataType: 'json',
                 type: 'POST',
@@ -984,11 +1038,11 @@ $(function (game, $, _, undefined) {
             var counter = $(event.target);
     
             $.ajax({
-                url: globals.game.url,
+                url: gameState.game.url,
                 data: {
                     event: 'decreasePlayerCounter',
                     counter: counter.data('counter'),
-                    player: globals.user.id
+                    player: gameState.user.id
                 },
                 dataType: 'json',
                 type: 'POST',
@@ -1000,121 +1054,131 @@ $(function (game, $, _, undefined) {
             });   
             return false;
         },
-
-        /**
-         * Generates the poper sizes for the various game areas and elements with sizes 
-         * that are dependent on window width/height or some user preference.
-         */
-        pack: function() {   
-            $('.opponent-area').css({
-                height: $(window).height() / 2
-            });
-    
-            $('.play').css({
-                height: $(window).height() / 2,
-                top:$(window).height()/2
-            });    
-
-            $('#handnob').css({
-                left: 20,
-                bottom: 0
-            });
-    
-            $('#message-div').css({
-                bottom: 5,
-                right: 15
-            });
-        },
-
-        /**
-         * Sends a chat message from the message input field.
-         */
-        sendMessage: function(e) {
-        /*    if(e.keyCode == 13) {
-        var message = $("#message").val(), html;
-        if(message.length > 0) {
-            $.ajax({
-                type: "POST",
-                url: globals.chat.sendUrl,
-                data: {
-                    'gamemessage': message
-                },
-                dataType: 'json',
-                success: function(json) {
-                    if(json.success) {
-                        $('#chat-messages').append('<li class="user-message ' 
-                            + (json.order == 1 ? 'player1-text' : (json.order == 2 
-                                ? 'player-text' : 'spectator-text')) + '"><strong>' 
-                            + json.date + '</strong>: ' + json.message + '</li>');
-                        globals.chat.lastReceived = json.id;
-                        chatToBottom();
+        
+        ui: {
+            /**
+             * Sends a chat message from the message input field.
+             */
+            sendMessage: function(e) {
+                if(e.keyCode == 13) {
+                    var message = $("#message").val(), html;
+                    if(message.length > 0) {
+                        $.ajax({
+                            type: "POST",
+                            url: gameState.chat.sendUrl,
+                            data: {
+                                'gamemessage': message
+                            },
+                            dataType: 'json',
+                            success: function(json) {
+                                if(json.success) {
+                                    $('#chat-messages').append('<li class="user-message ' 
+                                        + (json.order == 1 ? 'player1-text' : (json.order == 2 
+                                            ? 'player-text' : 'spectator-text')) + '"><strong>' 
+                                        + json.date + '</strong>: ' + json.message + '</li>');
+                                    gameState.chat.lastReceived = json.id;
+                                    chatToBottom();
+                                }
+                            }
+                        });
+                        $("#message").val('');
                     }
                 }
-            });
-            $("#message").val('');
-        }
-    }*/
-        //$.jGrowl($('#message').val());
-        },
+            //$.jGrowl($('#message').val());
+            },
 
-        /**
-         * Queries the server for new chat messages.
-         */
-        updateMessages: function() {
-        /*    $.ajax({
-        type: "POST",
-        url: globals.chat.updateUrl,
-        data: {
-            'lastupdate': globals.chat.lastReceived
-        },
-        dataType: 'json',
-        success: function(json) {
-            if(json.has) {
-                var cm = $('#chat-messages');
-                $.each(json.messages, function() {
-                    cm.append('<li class="' + (this.system ? 'system-message ' : 'user-message ') 
-                        + (this.order == 1 ? 'player1-text' : (this.order == 2 
-                            ? 'player-text' : 'spectator-text')) + '"><strong>' 
-                        + this.date + '</strong>: ' + this.message + '</li>');
-                });
+            /**
+             * Queries the server for new chat messages.
+             */
+            updateMessages: function() {
+                $.ajax({
+                    type: "POST",
+                    url: gameState.chat.updateUrl,
+                    data: {
+                        'lastupdate': gameState.chat.lastReceived
+                    },
+                    dataType: 'json',
+                    success: function(json) {
+                        if(json.has) {
+                            var cm = $('#chat-messages');
+                            $.each(json.messages, function() {
+                                cm.append('<li class="' + (this.system ? 'system-message ' : 'user-message ') 
+                                    + (this.order == 1 ? 'player1-text' : (this.order == 2 
+                                        ? 'player-text' : 'spectator-text')) + '"><strong>' 
+                                    + this.date + '</strong>: ' + this.message + '</li>');
+                            });
                 
-                globals.chat.lastReceived = json.last;
+                            gameState.chat.lastReceived = json.last;
+                            chatToBottom();
+                        }
+                    },
+                    complete: function() {
+                        setTimeout(scGame.ui.updateMessages, 5000);
+                    }
+                });
+            },
+
+            sliderSetValue: function(event, ui) {
                 chatToBottom();
-            }
-        },
-        complete: function() {
-            setTimeout(updateMessages, 5000);
-        }
-    }); */
-        },
+            },
 
-        sliderSetValue: function(event, ui) {
-        /*chatToBottom();*/
-        },
-
-        chatToBottom: function() {
-        /*    var sl = $('#chat-slider'), cm = $('#chat-messages'), bh = cm.height(), h = -(bh - 380);
-    if(bh > 380) {
-        sl.slider('option', 'min', h)
-        .slider('option', 'value', h);
+            chatToBottom: function() {
+                var sl = $('#chat-slider'), cm = $('#chat-messages'), bh = cm.height(), h = -(bh - 380);
+                if(bh > 380) {
+                    sl.slider('option', 'min', h)
+                    .slider('option', 'value', h);
         
-        cm.animate({
-            top: h
-        }, 'slow');
-    }*/
-        },
+                    cm.animate({
+                        top: h
+                    }, 'slow');
+                }
+            },
 
-        sliderChange: function(e, ui) {
-        /*    $('#chat-messages').css({
-        top: ui.value
-    });*/
-        },
+            sliderChange: function(e, ui) {
+                $('#chat-messages').css({
+                    top: ui.value
+                });
+            },
 
-        sliderScroll: function(e, ui) {   
-        /*    $('#chat-messages').css({
-        top: ui.value
-    });*/
+            sliderScroll: function(e, ui) {   
+                $('#chat-messages').css({
+                    top: ui.value
+                });
+            },
+            showWidget:function(elemId, withShader) {
+                closeAllWidgets();
+    
+                if(withShader) {
+                    $('#shader').show();
+                }
+                $('#' + elemId).show();
+            },
+
+            closeAllWidgets: function() {
+                $('.autoclosebubble').hide();
+                $('#shader').hide();
+            },
+
+            closeWidget: function(elemId) {
+                $('#' + elemId).hide();
+            },
+
+            closeShader:function() {
+                $('#shader').hide();
+            },
+
+            showHandWidget:function() {
+                $('#handwidget').css({
+                    left: 10
+                });
+            },
+
+            hideHandWidget: function() {
+                $('#handwidget').css({
+                    left: -500
+                });
+            }
         }
     });
 
-}(window.game = window.game || {}, jQuery, _));
+}(window.scGame = window.scGame || {}, jQuery, _));

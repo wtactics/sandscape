@@ -43,8 +43,6 @@ class SCToken {
     /**
      *
      * @return type 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function getId() {
         return $this->id;
@@ -53,8 +51,6 @@ class SCToken {
     /**
      *
      * @return type 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function getName() {
         return $this->name;
@@ -73,8 +69,6 @@ class SCToken {
     /**
      *
      * @return type 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function getInfo() {
         return (object) array(
@@ -86,8 +80,6 @@ class SCToken {
     /**
      *
      * @return type 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function getJSONData() {
         return (object) array(

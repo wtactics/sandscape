@@ -57,8 +57,6 @@ class SCPlayerSide {
     /**
      *
      * @param SCDeck $deck 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function addDeck(SCDeck $deck) {
         $this->decks[$deck->getId()] = $deck;
@@ -67,8 +65,6 @@ class SCPlayerSide {
     /**
      *
      * @return int
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function getPlayerId() {
         return $this->playerId;
@@ -77,8 +73,6 @@ class SCPlayerSide {
     /**
      *
      * @return SCGraveyard
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function getGraveyard() {
         return $this->graveyard;
@@ -87,8 +81,6 @@ class SCPlayerSide {
     /**
      *
      * @return SCContainer
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function getHand() {
         return $this->hand;
@@ -97,8 +89,6 @@ class SCPlayerSide {
     /**
      *
      * @return SCContainer
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function getPlayableArea() {
         return $this->playableArea;
@@ -106,9 +96,7 @@ class SCPlayerSide {
 
     /**
      *
-     * @return array 
-     * 
-     * @since 1.0, Sudden Growth
+     * @return array
      */
     public function getDecks() {
         return $this->decks;
@@ -116,9 +104,7 @@ class SCPlayerSide {
 
     /**
      *
-     * @return array 
-     * 
-     * @since 1.0, Sudden Growth
+     * @return array
      */
     public function getDecksInitialization() {
         $output = array();
@@ -137,8 +123,6 @@ class SCPlayerSide {
      * @param bool $toHand 
      * 
      * @return SCCard
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function drawCard($deckId, $toHand = true) {
         if (isset($this->decks[$deckId])) {
@@ -163,9 +147,7 @@ class SCPlayerSide {
     /**
      *
      * @param string $deckId
-     * @return type 
-     * 
-     * @since 1.2, Elvish Shaman
+     * @return bool
      */
     public function shuffleDeck($deckId) {
         if (isset($this->decks[$deckId])) {
@@ -178,8 +160,6 @@ class SCPlayerSide {
     /**
      *
      * @param bool $toHand 
-     * 
-     * @since 1.2, Elvish Shaman
      */
     public function drawFromGraveyard($toHand = true) {
         if ($this->graveyard) {
@@ -199,8 +179,6 @@ class SCPlayerSide {
     /**
      *
      * @return bool
-     * 
-     * @since 1.2, Elvish Shaman
      */
     public function shuffleGraveyard() {
         if ($this->graveyard) {
@@ -215,8 +193,6 @@ class SCPlayerSide {
      * @param string $deckId
      * 
      * @return SCDeck
-     * 
-     * @since 1.3, Soulharvester
      */
     public function getDeck($deckId) {
         return (isset($this->decks[$deckId]) ? $this->decks[$deckId] : null);
@@ -227,8 +203,6 @@ class SCPlayerSide {
      * @param SCCounter $counter
      * 
      * @return bool
-     * 
-     * @since 1.3, Soulharvester
      */
     public function addCounter(SCCounter $counter) {
         if (!isset($this->counters[$counter->getId()])) {
@@ -248,8 +222,6 @@ class SCPlayerSide {
     /**
      *
      * @param string $name
-     * 
-     * @since 1.3, Soulharvester
      */
     public function removeCounter($id) {
         unset($this->counters[$id]);
@@ -259,8 +231,6 @@ class SCPlayerSide {
      *
      * @param string $name
      * @param bool $discardStart 
-     * 
-     * @since 1.3, Soulharvester
      */
     public function resetCounter($id, $discardStart = false) {
         if (isset($this->countes[$id])) {
@@ -277,8 +247,6 @@ class SCPlayerSide {
      * @param string $name
      * 
      * @return int
-     * 
-     * @since 1.3, Soulharvester
      */
     public function increaseCounterValue($id) {
         if (isset($this->counters[$id])) {
@@ -295,8 +263,6 @@ class SCPlayerSide {
      * @param string $name 
      * 
      * @return int
-     * 
-     * @since 1.3, Soulharvester
      */
     public function decreaseCounterValue($id) {
         if (isset($this->counters[$id])) {
@@ -311,8 +277,6 @@ class SCPlayerSide {
     /**
      *
      * @return int
-     * 
-     * @since 1.3, Soulharvester
      */
     public function getCounterCount() {
         return count($this->counters);
@@ -323,8 +287,6 @@ class SCPlayerSide {
      * enconded as JSON.
      * 
      * @return array All existing counters as ready to encode objects.
-     * 
-     * @since 1.3, Soulharvester
      */
     public function getEncodedCounters() {
         $jsonData = array();

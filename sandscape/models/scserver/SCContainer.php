@@ -63,8 +63,6 @@ class SCContainer {
     /**
      *
      * @param type $id 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function setId($id) {
         if ($this->id)
@@ -76,8 +74,6 @@ class SCContainer {
     /**
      *
      * @return type 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function getId() {
         return $this->id;
@@ -89,8 +85,6 @@ class SCContainer {
      * @param type $xOffset
      * @param type $yOffset
      * @return type 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function push(SCCard $scCard, $xOffset = 0, $yOffset = 0) {
         if ($this->max === null || count($this->elements < $this->max)) {
@@ -108,8 +102,6 @@ class SCContainer {
      *
      * @param SCCard $card
      * @return SCCard 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function remove(SCCard $card) {
         $pos = array_search($card, $this->elements, true);
@@ -126,8 +118,6 @@ class SCContainer {
     /**
      * 
      * @return SCCard
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function pop() {
         $e = array_pop($this->elements);
@@ -142,8 +132,6 @@ class SCContainer {
     /**
      *
      * @return type 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function getRoot() {
         $o = $this;
@@ -155,8 +143,6 @@ class SCContainer {
     /**
      *
      * @return type 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function getParent() {
         return $this->parent;
@@ -165,8 +151,6 @@ class SCContainer {
     /**
      *
      * @param type $parent 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function setParent($parent) {
         $this->parent = $parent;
@@ -175,8 +159,6 @@ class SCContainer {
     /**
      *
      * @return type 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function getXOffset() {
         return $this->xOffset;
@@ -185,8 +167,6 @@ class SCContainer {
     /**
      *
      * @param type $xOffset 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function setXOffset($xOffset) {
         $this->xOffset = $xOffset;
@@ -195,8 +175,6 @@ class SCContainer {
     /**
      *
      * @return type 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function getYOffset() {
         return $this->yOffset;
@@ -205,8 +183,6 @@ class SCContainer {
     /**
      *
      * @param type $yOffset 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function setYOffset($yOffset) {
         $this->yOffset = $yOffset;
@@ -215,8 +191,6 @@ class SCContainer {
     /**
      *
      * @return bool
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function isMovable() {
         return $this->movable;
@@ -225,8 +199,6 @@ class SCContainer {
     /**
      *
      * @param bool $movable 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function setMovable($movable) {
         $this->movable = $movable;
@@ -235,8 +207,6 @@ class SCContainer {
     /**
      *
      * @param bool $droppable 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function setDropable($droppable) {
         $this->droppable = $droppable;
@@ -245,8 +215,6 @@ class SCContainer {
     /**
      *
      * @return bool
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function isDroppable() {
         return $this->droppable;
@@ -255,8 +223,6 @@ class SCContainer {
     /**
      *
      * @return int
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function getZIndex() {
         return 50;
@@ -264,9 +230,7 @@ class SCContainer {
 
     /**
      *
-     * @param type $invertView 
-     * 
-     * @since 1.0, Sudden Growth
+     * @param bool $invertView 
      */
     public function setInvertView($invertView) {
         $this->invertView = $invertView;
@@ -275,8 +239,6 @@ class SCContainer {
     /**
      *
      * @return bool
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function invertView() {
         $o = $this;
@@ -292,8 +254,6 @@ class SCContainer {
     /**
      *
      * @return StdClass 
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function getStatus() {
         $root = $this->getRoot();
@@ -313,9 +273,7 @@ class SCContainer {
      * 
      * @param SCContainer $container 
      * 
-     * @return boolean
-     * 
-     * @since 1.0, Sudden Growth
+     * @return bool
      */
     public function isInside(SCContainer $container) {
         $o = $this;
@@ -330,8 +288,6 @@ class SCContainer {
     /**
      *
      * @return string
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function __toString() {
         return 'ID: ' . $this->id . ', isMovable: ' . ($this->movable ? 'true' : 'false')
@@ -342,8 +298,6 @@ class SCContainer {
     /**
      *
      * @return bool 
-     * 
-     * @since 1.2, Elvish Shaman
      */
     public function shuffle() {
         return shuffle($this->elements);

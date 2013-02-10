@@ -8,9 +8,26 @@ if (YII_DEBUG) {
     Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/game.common.css');
     Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/game.play.css');
 
-    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/game.common.js', CClientScript::POS_HEAD);
     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/game.play.js', CClientScript::POS_HEAD);
 }
+
+$baseUrl = Yii::app()->baseUrl;
+$gameUrl = $this->createUrl('game/play', array('id' => $game->id));
+
+$initJs = <<<JS
+scGame.initialize({
+    lastReceived: 0,
+    chatSendUrl: '',
+    chatUpdateUrl: '',
+    gameUrl: '{$gameUrl}',
+    userId: {$user->id},
+    userName: '{$user->name}',
+    userIsOne: {$user->isOne},
+    baseUrl: '{$baseUrl}'
+});
+JS;
+
+Yii::app()->clientScript->registerScript('initGame', $initJs);
 ?>
 
 <div class="opponent-area"><!-- OPPONENT GAME AREA --></div>
@@ -24,7 +41,7 @@ if (YII_DEBUG) {
 <!-- EXTRA DOM ELEMENTS -->
 <?php
 //LOADER DIVS
-//$this->renderPartial('_loaders');
+$this->renderPartial('_loaders');
 
 //IN-GAME MENUS
 //$this->renderPartial('_leftmenu', array('messages' => $messages));

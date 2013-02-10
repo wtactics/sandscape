@@ -160,6 +160,7 @@ CREATE TABLE `Game` (
 `playerReady` TINYINT NOT NULL DEFAULT 0 ,
 `opponentReady` TINYINT NOT NULL DEFAULT 0 ,
 `spectatorsSpeak` TINYINT NOT NULL DEFAULT 0 ,
+`lastChange` INT UNSIGNED NULL ,
 CONSTRAINT `fkGameUserWinner` FOREIGN KEY (`winnerId`) REFERENCES `User`(`id`) ,
 CONSTRAINT `fkGameUserPlayer` FOREIGN KEY (`playerId`) REFERENCES `User`(`id`) ,
 CONSTRAINT `fkGameUserOpponent` FOREIGN KEY (`opponentId`) REFERENCES `User`(`id`) ,

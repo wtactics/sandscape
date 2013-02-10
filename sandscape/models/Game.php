@@ -43,7 +43,8 @@
  * @property int $playerReady
  * @property int $opponentReady 
  * @property int $spectatorsSpeak
- *
+ * @property int $lastChange
+ * 
  * Relations:
  * @property ChatMessage[] $messages
  * @property User $creator
