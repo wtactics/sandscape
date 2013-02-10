@@ -15,17 +15,17 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         array(
             'name' => 'name',
             'type' => 'html',
-            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("dice/update", array("id" => $data->diceId)))'
+            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("dice/update", array("id" => $data->id)))'
         ),
         'face',
         array(
             'name' => 'enabled',
             'filter' => array(0 => Yii::t('sandscape', 'No'), 1 => Yii::t('sandscape', 'Yes')),
             'type' => 'raw',
-            'value' => '$data->getEnabled()'
+            'value' => '$data->isEnabledString()'
         ),
         array(
-            'header' => Yii::t('sandscape', 'Actions'),
+            'header' => Yii::t('interface', 'Actions'),
             'class' => 'bootstrap.widgets.TbButtonColumn',
             'htmlOptions' => array('style' => 'width: 50px'),
         )
@@ -33,7 +33,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
 ));
 
 $this->widget('bootstrap.widgets.TbButton', array(
-    'label' => Yii::t('sandscape', 'New Die'),
+    'label' => Yii::t('interface', 'New Die'),
     'type' => 'info',
     'size' => 'small',
     'url' => $this->createURL('dice/create')

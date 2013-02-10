@@ -37,26 +37,27 @@ Repository Structure
 The Git repository is divided in four simple folders:
 
 [horizontal]
-_dev:: Stores any development related file, from design docs, diagrams, UI 
+development:: Stores any development related file, from design docs, diagrams, UI 
 sketches and spike solutions.
+
+framework:: Houses the Yii framework files, used by *Sandscape*. A file named 
+VERSION inside this folder contains the version number we're using.
 
 sandscape:: Contains the PHP base system that powers *Sandscape*.
 
 www:: Contains any public resources like imagens, CSS files and every 
 JavaScript file needed to run *Sandscape*.
 
-yii:: Houses the yii framework files, used by *Sandscape*.
-
 The root directory also contains the LICENSE file, the CONTRIBUTORS file and the 
 this README file you are reading.
 
-Tools
------
+Requirements
+------------
 
 To create a server:
 
 - Apache Web Server
-- PHP 5.2.9
+- PHP 5.3+
 - MySQL 5.0
 - Apache's mod-rewrite
 
@@ -77,15 +78,17 @@ to play, the software is installed in a server and accessed using a browser.
 2. Place the contents of the folder *www* in a public accessible place, normally 
 this is a folder named *htdocs*, *www* or *public_html*.
 
-3. Place the *sandscape* and *yii* folders outside the public accessible folder.
+3. Place the *sandscape* and *framework* folders outside the public accessible folder.
 These two folder contain the application's main files, configurations and many
 private informations, it is a security risk to have these files in a place
 where every browser can access.
 
-4. Change settings in the _sandscape/config/main.php_ and 
-_sandscape/config/params.php_.
+4. Copy the example settings files available in _development/example-configs_ to 
+_sandscape/config_. You should have three files, _main.php_, _params.php_ and 
+_console.php_. Copy the example _htaccess.example_ file to the _www_ folder and name 
+it _.htaccess_, please note the initial dot in the file name, it is important.
 
-5. Create the database using the provided _database.sql_ file and insert a new 
+5. Create the database using the provided SQL files and insert a new 
 user, manually, in the database and make sure that user is an administrator. 
 Remember that the password is an SHA1 hash created by appending the hash 
 sentence from _params.php_ to the password.
@@ -96,6 +99,7 @@ Version history
 There are no public versions so far. Every version listed here was an internal 
 version that was tagged but no release file was created.
 
+1.5, March of the Bones
 1.4, Serenity
 1.3, Soulharvester
 1.2, Elvish Shaman

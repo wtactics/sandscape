@@ -9,21 +9,22 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         ));
 ?>
 
-<legend><?php echo Yii::t('sandscape', 'State Details'); ?></legend>
-
+<legend><?php echo Yii::t('interface', 'State Details'); ?></legend>
 
 <?php
-echo $form->textFieldRow($user, 'name', array('maxlength' => 150));
+echo $form->textFieldRow($state, 'name', array('maxlength' => 150, 'class' => 'span6')),
+ $form->fileFieldRow($state, 'image'),
+ $form->textAreaRow($state, 'description', array('class' => 'span6', 'rows' => 3));
 
 $this->widget('bootstrap.widgets.TbButton', array(
     'buttonType' => 'submit',
-    'label' => Yii::t('sandscape', 'Save'),
+    'label' => Yii::t('interface', 'Save'),
     'type' => 'success'
 ));
 
 $this->widget('bootstrap.widgets.TbButton', array(
-    'url' => $this->createUrl('users/index'),
-    'label' => Yii::t('sandscape', 'Cancel'),
+    'url' => $this->createUrl('states/index'),
+    'label' => Yii::t('interface', 'Cancel'),
     'type' => 'warning'
 ));
 

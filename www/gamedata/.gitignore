@@ -1,3 +1,4 @@
 *.png
-!cardback.png
-!noimage.png
+*.jpg
+*.jpeg
+!default/*.png

@@ -21,7 +21,7 @@ echo $form->textFieldRow($user, 'name', array('maxlength' => 150)),
  $form->textFieldRow($user, 'facebook', array('maxlength' => 255)),
  $form->textFieldRow($user, 'googleplus', array('maxlength' => 255)),
  $form->textFieldRow($user, 'skype', array('maxlength' => 255)),
- $form->dropDownListRow($user, 'country', array_merge(array('' => ''), User::countries()));
+ $form->dropDownListRow($user, 'country', array_merge(array('' => ''), User::countriesArray()));
 ?>
 
 <legend><?php echo Yii::t('sandscape', 'Interface Options'); ?></legend>
@@ -33,13 +33,13 @@ echo $form->checkboxRow($user, 'showChatTimes'),
 
 $this->widget('bootstrap.widgets.TbButton', array(
     'buttonType' => 'submit',
-    'label' => Yii::t('sandscape', 'Save'),
+    'label' => Yii::t('interface', 'Save'),
     'type' => 'success'
 ));
 
 $this->widget('bootstrap.widgets.TbButton', array(
     'url' => $this->createUrl('users/index'),
-    'label' => Yii::t('sandscape', 'Cancel'),
+    'label' => Yii::t('interface', 'Cancel'),
     'type' => 'warning'
 ));
 

@@ -9,22 +9,23 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
         ));
 ?>
 
-<legend><?php echo Yii::t('sandscape', 'Die Details'); ?></legend>
+<legend><?php echo Yii::t('interface', 'Die Details'); ?></legend>
 
 <?php
-echo $form->textFieldRow($dice, 'name', array('maxlength' => 150)),
- $form->textFieldRow($dice, 'face'),
- $form->checkBoxRow($dice, 'enabled');
+echo $form->textFieldRow($dice, 'name', array('maxlength' => 150, 'class' => 'span6')),
+ $form->textFieldRow($dice, 'face', array('class' => 'input-small')),
+ $form->checkBoxRow($dice, 'enabled'),
+ $form->textAreaRow($dice, 'description', array('class' => 'span6', 'rows' => 3));
 
 $this->widget('bootstrap.widgets.TbButton', array(
     'buttonType' => 'submit',
-    'label' => Yii::t('sandscape', 'Save'),
+    'label' => Yii::t('interface', 'Save'),
     'type' => 'success'
 ));
 
 $this->widget('bootstrap.widgets.TbButton', array(
     'url' => $this->createUrl('dice/index'),
-    'label' => Yii::t('sandscape', 'Cancel'),
+    'label' => Yii::t('interface', 'Cancel'),
     'type' => 'warning'
 ));
 

@@ -6,6 +6,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'type' => 'horizontal',
     'enableAjaxValidation' => true,
     'focus' => array($card, 'name'),
+    'htmlOptions' => array('enctype' => 'multipart/form-data')
         ));
 ?>
 
@@ -13,19 +14,22 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 
 
 <?php
-echo $form->textFieldRow($card, 'name', array('maxlength' => 150)),
- $form->textFieldRow($card, 'cardscapeId'),
- $form->textAreaRow($card, 'rules');
+echo $form->textFieldRow($card, 'name', array('maxlength' => 255, 'class' => 'span8')),
+ $form->textAreaRow($card, 'rules', array('class' => 'span8', 'rows' => 5)),
+ $form->fileFieldRow($card, 'face'),
+ $form->fileFieldRow($card, 'back'),
+ $form->dropDownListRow($card, 'backFrom', Card::backOriginsArray()),
+ $form->textFieldRow($card, 'cardscapeId', array('class' => 'input-small'));
 
 $this->widget('bootstrap.widgets.TbButton', array(
     'buttonType' => 'submit',
-    'label' => Yii::t('sandscape', 'Save'),
+    'label' => Yii::t('interface', 'Save'),
     'type' => 'success'
 ));
 
 $this->widget('bootstrap.widgets.TbButton', array(
     'url' => $this->createUrl('cards/index'),
-    'label' => Yii::t('sandscape', 'Cancel'),
+    'label' => Yii::t('interface', 'Cancel'),
     'type' => 'warning'
 ));
 

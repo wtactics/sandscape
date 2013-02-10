@@ -83,33 +83,7 @@ class StatesController extends ApplicationController {
 
         if (isset($_POST['State'])) {
             $state->attributes = $_POST['State'];
-
-//            Yii::import('ext.PhpThumbFactory');
-//
-//            $path = Yii::getPathOfAlias('webroot') . '/_game/states';
-//            $upfile = CUploadedFile::getInstance($new, 'image');
-//
-//            if ($upfile !== null) {
-//                $name = $upfile->name;
-//
-//                if (is_file($path . '/' . $name)) {
-//                    $name = $new->name . '.' . $name;
-//                }
-//
-//                $sizes = getimagesize($upfile->tempName);
-//                $imgFactory = PhpThumbFactory::create($upfile->tempName);
-//                //250 + 20 width, 354 + 28 height
-//                if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
-//                    $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
-//                }
-//                $imgFactory->save($path . '/' . $name)
-//                        ->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)
-//                        ->save($path . '/thumbs/' . $name)
-//                        ->rotateImageNDegrees(180)
-//                        ->save($path . '/thumbs/reversed/' . $name);
-//
-//                $new->image = $name;
-//            }
+            $this->saveUpload($state);
 
             if ($state->save()) {
                 $this->redirect(array('view', 'id' => $state->id));
@@ -119,12 +93,18 @@ class StatesController extends ApplicationController {
         $this->render('update', array('state' => $state));
     }
 
+    public function actionView($id) {
+        $state = $this->loadStateModel($id);
+        $this->render('view', array('state' => $state));
+    }
+
     public function actionUpdate($id) {
         $state = $this->loadStateModel($id);
         $this->performAjaxValidation('state-form', $state);
 
         if (isset($_POST['State'])) {
             $state->attributes = $_POST['State'];
+            $this->saveUpload($state);
 
             if ($state->save()) {
                 $this->redirect(array('view', 'id' => $state->id));
@@ -146,6 +126,30 @@ class StatesController extends ApplicationController {
             }
         } else {
             throw new CHttpException(400, Yii::t('sandscape', 'Invalid request. Please do not repeat this request again.'));
+        }
+    }
+
+    private function saveUpload(State $state) {
+        Yii::import('ext.PhpThumbFactory');
+        $path = Yii::getPathOfAlias('webroot') . '/gamedata/states';
+        $upfile = CUploadedFile::getInstance($state, 'image');
+
+        if ($upfile !== null) {
+            $name = md5($upfile->name . time()) . substr($upfile->name, strpos($upfile->name, '.'));
+
+            $sizes = getimagesize($upfile->tempName);
+            $imgFactory = PhpThumbFactory::create($upfile->tempName);
+            //250 + 20 width, 354 + 28 height
+            if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
+                $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
+            }
+            $imgFactory->save($path . '/' . $name)
+                    ->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)
+                    ->save($path . '/thumbs/' . $name)
+                    ->rotateImageNDegrees(180)
+                    ->save($path . '/thumbs/reversed/' . $name);
+
+            $state->image = $name;
         }
     }
 

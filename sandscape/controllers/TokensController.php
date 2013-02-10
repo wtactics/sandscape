@@ -28,10 +28,10 @@
 
 class TokensController extends ApplicationController {
 
-    //private static $NORMAL_WIDTH = 270;
-    //private static $NORMAL_HEIGHT = 382;
-    //private static $SMALL_WIDTH = 101;
-    //private static $SMALL_HEIGHT = 143;
+    private static $NORMAL_WIDTH = 270;
+    private static $NORMAL_HEIGHT = 382;
+    private static $SMALL_WIDTH = 101;
+    private static $SMALL_HEIGHT = 143;
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
@@ -83,33 +83,8 @@ class TokensController extends ApplicationController {
 
         if (isset($_POST['Token'])) {
             $token->attributes = $_POST['Token'];
+            $this->saveUpload($token);
 
-//            Yii::import('ext.PhpThumbFactory');
-//            $path = Yii::getPathOfAlias('webroot') . '/_game/tokens';
-//            $upfile = CUploadedFile::getInstance($new, 'image');
-//
-//            if ($upfile !== null) {
-//                $name = $upfile->name;
-//
-//                if (is_file($path . '/' . $name)) {
-//                    $name = $new->name . '.' . $name;
-//                }
-//
-//                $sizes = getimagesize($upfile->tempName);
-//                $imgFactory = PhpThumbFactory::create($upfile->tempName);
-//
-//                //250 + 20 width, 354 + 28 height
-//                if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
-//                    $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
-//                }
-//                $imgFactory->save($path . '/' . $name)
-//                        ->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)
-//                        ->save($path . '/thumbs/' . $name)
-//                        ->rotateImageNDegrees(180)
-//                        ->save($path . '/thumbs/reversed/' . $name);
-//
-//                $new->image = $name;
-//              }
             if ($token->save()) {
                 $this->redirect(array('view', 'id' => $token->id));
             }
@@ -129,6 +104,8 @@ class TokensController extends ApplicationController {
 
         if (isset($_POST['Token'])) {
             $token->attributes = $_POST['Token'];
+            $this->saveUpload($token);
+
             if ($token->save()) {
                 $this->redirect(array('update', 'id' => $token->id));
             }
@@ -149,6 +126,31 @@ class TokensController extends ApplicationController {
             }
         } else {
             throw new CHttpException(400, Yii::t('sandscape', 'Invalid request. Please do not repeat this request again.'));
+        }
+    }
+
+    private function saveUpload(Token $token) {
+        Yii::import('ext.PhpThumbFactory');
+        $path = Yii::getPathOfAlias('webroot') . '/gamedata/tokens';
+        $upfile = CUploadedFile::getInstance($token, 'image');
+
+        if ($upfile !== null) {
+            $name = md5($upfile->name . time()) . substr($upfile->name, strpos($upfile->name, '.'));
+
+            $sizes = getimagesize($upfile->tempName);
+            $imgFactory = PhpThumbFactory::create($upfile->tempName);
+
+            //250 + 20 width, 354 + 28 height
+            if ($sizes[0] > self::$NORMAL_WIDTH || $sizes[1] > self::$NORMAL_HEIGHT) {
+                $imgFactory->resize(self::$NORMAL_WIDTH, self::$NORMAL_HEIGHT);
+            }
+            $imgFactory->save($path . '/' . $name)
+                    ->resize(self::$SMALL_WIDTH, self::$SMALL_HEIGHT)
+                    ->save($path . '/thumbs/' . $name)
+                    ->rotateImageNDegrees(180)
+                    ->save($path . '/thumbs/reversed/' . $name);
+
+            $token->image = $name;
         }
     }
 

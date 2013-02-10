@@ -15,10 +15,10 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         array(
             'name' => 'name',
             'type' => 'html',
-            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("cards/update", array("id" => $data->cardId)))'
+            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("cards/update", array("id" => $data->id)))'
         ),
         array(
-            'header' => Yii::t('sandscape', 'Actions'),
+            'header' => Yii::t('interface', 'Actions'),
             'class' => 'bootstrap.widgets.TbButtonColumn',
             'htmlOptions' => array('style' => 'width: 50px')
         )
@@ -26,14 +26,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
 ));
 
 $this->widget('bootstrap.widgets.TbButton', array(
-    'label' => Yii::t('sandsacpe', 'New Card'),
+    'label' => Yii::t('interface', 'New Card'),
     'type' => 'info',
     'url' => $this->createUrl('cards/create'),
 ));
-
-//TODO: not implemented yet
-//$this->widget('bootstrap.widgets.TbButton', array(
-//    'label' => Yii::t('sandsacpe', 'CSV Import'),
-//    'type' => 'info',
-//    'url' => $this->createUrl('cards/import'),
-//));

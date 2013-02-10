@@ -216,7 +216,7 @@ class User extends CActiveRecord {
     }
 
     public final function getCountryName() {
-        $countries = self::countries();
+        $countries = self::countriesArray();
 
         return (isset($countries[$this->country]) ? $countries[$this->country] : '');
     }

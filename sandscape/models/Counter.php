@@ -96,7 +96,7 @@ class Counter extends CActiveRecord {
     }
 
     public function isEnabledString() {
-        return ($this->available ? Yii::t('sandscape', 'Yes') : Yii::t('sandscape', 'No'));
+        return ($this->enabled ? Yii::t('sandscape', 'Yes') : Yii::t('sandscape', 'No'));
     }
 
 }

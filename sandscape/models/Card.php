@@ -62,7 +62,7 @@ class Card extends CActiveRecord {
 
     public function rules() {
         return array(
-            array('name, rules, face', 'required'),
+            array('name, rules', 'required'),
             array('name, face, back', 'length', 'max' => 255),
             array('backFrom', 'in', 'range' => array('default', 'own', 'deck')),
             array('cardscapeId', 'numerical', 'integerOnly' => true),
@@ -105,6 +105,19 @@ class Card extends CActiveRecord {
         $criteria->compare('cardscapeId', $this->cardscapeId);
 
         return new CActiveDataProvider($this, array('criteria' => $criteria));
+    }
+
+    public final static function backOriginsArray() {
+        return array(
+            'default' => Yii::t('card', 'System Default'),
+            'own' => Yii::t('card', 'Uploaded File'),
+            'deck' => Yii::t('card', 'Use Deck Image')
+        );
+    }
+
+    public function backOriginString() {
+        $origins = self::backOriginsArray();
+        return $origins[$this->backFrom];
     }
 
 }

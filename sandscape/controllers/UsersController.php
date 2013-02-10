@@ -56,6 +56,11 @@ class UsersController extends ApplicationController {
                 'expression' => '$user->role == "administrator"'
             ),
             array(
+                'allow',
+                'actions' => array('profile'),
+                'users' => array('@')
+            ),
+            array(
                 'deny',
                 'users' => array('*')
             )
@@ -151,14 +156,16 @@ class UsersController extends ApplicationController {
         }
     }
 
-    /**
-     * Provides access to all public information about a given user. This action 
-     * is responsible for showing a user's profile to other users.
-     * 
-     * @param integer $id The user's ID
-     */
     public function actionProfile() {
         $user = $this->loadUserModel(Yii::app()->user->id);
+        $this->performAjaxValidation('user-form', $user);
+
+        if (isset($_POST['User'])) {
+            $user->attributes = $_POST['User'];
+            if ($user->save()) {
+                $this->redirect(array('profile'));
+            }
+        }
 
         $this->render('profile', array('user' => $user));
     }

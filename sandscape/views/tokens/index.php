@@ -1,8 +1,8 @@
 <?php
 /** @var $this TokensController */
-$this->title = Yii::t('sandsacep', 'Game Tokens');
+$this->title = Yii::t('interface', 'Game Tokens');
 ?>
-<h2><?php echo Yii::t('sandsacep', 'Game Tokens'); ?></h2>
+<h2><?php echo Yii::t('interface', 'Game Tokens'); ?></h2>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
@@ -15,10 +15,10 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         array(
             'name' => 'name',
             'type' => 'html',
-            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("tokens/update", array("id" => $data->tokenId)))'
+            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("tokens/update", array("id" => $data->id)))'
         ),
         array(
-            'header' => Yii::t('sandscape', 'Actions'),
+            'header' => Yii::t('interface', 'Actions'),
             'class' => 'bootstrap.widgets.TbButtonColumn',
             'htmlOptions' => array('style' => 'width: 50px'),
         )
@@ -26,7 +26,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
 ));
 
 $this->widget('bootstrap.widgets.TbButton', array(
-    'label' => Yii::t('sandscape', 'New Token'),
+    'label' => Yii::t('interface', 'New Token'),
     'type' => 'info',
     'size' => 'small',
     'url' => $this->createURL('tokens/create')

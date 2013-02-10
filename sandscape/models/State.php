@@ -36,6 +36,7 @@
  * @property integer $id
  * @property string $name
  * @property string $image
+ * @property string $description
  * @property integer $active
  * 
  * @see Token

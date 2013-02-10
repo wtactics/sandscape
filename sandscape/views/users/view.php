@@ -3,12 +3,12 @@
 $this->widget('bootstrap.widgets.TbDetailView', array(
     'data' => $user,
     'attributes' => array(
-        'userId',
+        'id',
         'name',
         'email:email',
         array(
             'name' => 'gender',
-            'value' => $user->getGender()
+            'value' => $user->getGenderName()
         ),
         'birthyear',
         'website:url',
@@ -18,7 +18,7 @@ $this->widget('bootstrap.widgets.TbDetailView', array(
         'skype',
         array(
             'name' => 'county',
-            'value' => $user->getCountry()
+            'value' => $user->getCountryName()
         ),
         array(
             'name' => 'reverseCards',
@@ -30,13 +30,13 @@ $this->widget('bootstrap.widgets.TbDetailView', array(
         ),
         array(
             'name' => 'role',
-            'value' => $user->getRole()
+            'value' => $user->getRoleName()
         )
     ),
 ));
 
 $this->widget('bootstrap.widgets.TbButton', array(
-    'url' => $this->createUrl('users/update', array('id' => $user->userId)),
-    'label' => Yii::t('sandscape', 'Edit'),
+    'url' => $this->createUrl('users/update', array('id' => $user->id)),
+    'label' => Yii::t('interface', 'Edit'),
     'type' => 'info'
 ));
