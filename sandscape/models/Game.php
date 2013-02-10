@@ -71,7 +71,7 @@ class Game extends CActiveRecord {
     public function rules() {
         return array(
             array('playerId, createdOn', 'required'),
-            array('playerId, opponentId, limitOpponentId, winnerId', 'numerical', 'integerOnly'),
+            array('playerId, opponentId, limitOpponentId, winnerId', 'numerical', 'integerOnly' => true),
             array('startedOn, endedOn, state', 'safe'),
             array('running, paused, useGraveyard, playerReady, opponentReady, spectatorsSpeak', 'boolean'),
             //search

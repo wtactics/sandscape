@@ -40,12 +40,24 @@ class GameController extends ApplicationController {
         parent::__construct($id, $module);
     }
 
+    public function accessRules() {
+        return array(
+            array(
+                'allow',
+                'actions' => array('index', 'play'),
+                'users' => array('@')
+            ),
+            array(
+                'deny',
+                'users' => array('*')
+            )
+        );
+    }
+
     /**
      * As a convenience, the index action has been invalidated by making a redirect
      * whenever this action is requested. All actions in the game controller need 
      * to have an explicit name.
-     * 
-     * @since 1.0, Sudden Growth
      */
     public function actionIndex() {
         $this->redirect('lobby/index');
@@ -60,86 +72,82 @@ class GameController extends ApplicationController {
      * unfiltered message.
      *  
      * @param integer $id The game ID.
-     * 
-     * @since 1.2, Elvish Shaman
      */
-    public function actionSendMessage($id) {
-        $result = array('success' => 0);
-        if (Yii::app()->request->isPostRequest) {
-            $game = $this->loadGameById($id);
-            if (($game->player1 == Yii::app()->user->id || $game->player2 == Yii::app()->user->id)
-                    && isset($_REQUEST['gamemessage'])) {
-
-                $cm = new ChatMessage();
-
-                $cm->message = $this->chatWordFilter($_REQUEST['gamemessage']);
-                $cm->userId = Yii::app()->user->id;
-                $cm->gameId = $id;
-
-                if ($cm->save()) {
-                    $cm->refresh();
-                    $result = array(
-                        'success' => 1,
-                        'id' => $cm->messageId,
-                        'date' => date('H:i', strtotime($cm->sent)),
-                        'message' => $cm->message,
-                        'order' => ($game->player1 == Yii::app()->user->id ? 1 : 2)
-                    );
-                }
-                $this->updateUserActivity();
-            }
-        }
-
-        echo json_encode($result);
-    }
+//    public function actionSendMessage($id) {
+//        $result = array('success' => 0);
+//        if (Yii::app()->request->isPostRequest) {
+//            $game = $this->loadGameById($id);
+//            if (($game->player1 == Yii::app()->user->id || $game->player2 == Yii::app()->user->id)
+//                    && isset($_REQUEST['gamemessage'])) {
+//
+//                $cm = new ChatMessage();
+//
+//                $cm->message = $this->chatWordFilter($_REQUEST['gamemessage']);
+//                $cm->userId = Yii::app()->user->id;
+//                $cm->gameId = $id;
+//
+//                if ($cm->save()) {
+//                    $cm->refresh();
+//                    $result = array(
+//                        'success' => 1,
+//                        'id' => $cm->messageId,
+//                        'date' => date('H:i', strtotime($cm->sent)),
+//                        'message' => $cm->message,
+//                        'order' => ($game->player1 == Yii::app()->user->id ? 1 : 2)
+//                    );
+//                }
+//                $this->updateUserActivity();
+//            }
+//        }
+//
+//        echo json_encode($result);
+//    }
 
     /**
      * Retrieves chat messages from the game. Only the users participating in a 
      * game can request chat messages.
      * 
      * @param integer $id The game ID
-     * 
-     * @since 1.0, Sudden Growth
      */
-    public function actionChatUpdate($id) {
-        $result = array('has' => 0);
-        if (Yii::app()->request->isPostRequest) {
-            $game = $this->loadGameById($id);
-            if (isset($_REQUEST['lastupdate'])) {
-
-                $lastUpdate = (int) $_REQUEST['lastupdate'];
-                $messages = array();
-
-                $cms = ChatMessage::model()->findAll('messageId > :last AND gameId = :id', array(
-                    ':last' => $lastUpdate,
-                    ':id' => (int) $id
-                        ));
-
-                foreach ($cms as $cm) {
-                    $messages[] = array(
-                        'message' => $cm->message,
-                        'date' => date('H:i', strtotime($cm->sent)),
-                        'order' => ($game->player1 == Yii::app()->user->id ? 1 :
-                                ($game->player2 == Yii::app()->user->id ? 2 : 3)),
-                        'system' => $cm->system
-                    );
-                }
-                $count = count($messages);
-
-                $last = $lastUpdate;
-                if ($count) {
-                    $last = end($cms)->messageId;
-                }
-                $result = array(
-                    'has' => $count,
-                    'messages' => $messages,
-                    'last' => $last
-                );
-                $this->updateUserActivity();
-            }
-        }
-        echo json_encode($result);
-    }
+//    public function actionChatUpdate($id) {
+//        $result = array('has' => 0);
+//        if (Yii::app()->request->isPostRequest) {
+//            $game = $this->loadGameById($id);
+//            if (isset($_REQUEST['lastupdate'])) {
+//
+//                $lastUpdate = (int) $_REQUEST['lastupdate'];
+//                $messages = array();
+//
+//                $cms = ChatMessage::model()->findAll('messageId > :last AND gameId = :id', array(
+//                    ':last' => $lastUpdate,
+//                    ':id' => (int) $id
+//                        ));
+//
+//                foreach ($cms as $cm) {
+//                    $messages[] = array(
+//                        'message' => $cm->message,
+//                        'date' => date('H:i', strtotime($cm->sent)),
+//                        'order' => ($game->player1 == Yii::app()->user->id ? 1 :
+//                                ($game->player2 == Yii::app()->user->id ? 2 : 3)),
+//                        'system' => $cm->system
+//                    );
+//                }
+//                $count = count($messages);
+//
+//                $last = $lastUpdate;
+//                if ($count) {
+//                    $last = end($cms)->messageId;
+//                }
+//                $result = array(
+//                    'has' => $count,
+//                    'messages' => $messages,
+//                    'last' => $last
+//                );
+//                $this->updateUserActivity();
+//            }
+//        }
+//        echo json_encode($result);
+//    }
 
     /**
      * The main action that offers all "game" features allowing users to play games.
@@ -197,7 +205,7 @@ class GameController extends ApplicationController {
         }
 
         $game = $this->loadGameById($id);
-        if (in_array($currentUserId, array($game->player1, $game->player2))) {
+        if (in_array($currentUserId, array($game->playerId, $game->opponentId))) {
             if ($game->state) {
                 $this->scGame = unserialize($game->state);
             }
@@ -213,11 +221,11 @@ class GameController extends ApplicationController {
                      *    'wait' -> wait a few seconds and repeat this later
                      */
                     case 'startGame':
-                        if (!$game->player1Ready || !$game->player2Ready) {
+                        if (!$game->playerReady || !$game->opponentReady) {
                             echo json_encode((object) array('result' => 'wait'));
                         } elseif ($game->running) {
                             echo json_encode((object) array('result' => 'ok'));
-                        } elseif ($game->player1Ready && $game->player2Ready && !$game->running && $currentUserId == $game->player1) {
+                        } elseif ($game->playerReady && $game->opponentReady && !$game->running && $currentUserId == $game->playerId) {
                             $game->running = 1;
                             $game->started = date('Y-m-d H:i:s');
 
@@ -234,19 +242,19 @@ class GameController extends ApplicationController {
                             }
 
                             // create the game status
-                            $this->scGame = new SCGame($game->graveyard, $game->player1, $game->player2, $tokens, $states);
+                            $this->scGame = new SCGame($game->graveyard, $game->playerId, $game->opponentId, $tokens, $states);
 
                             // decks in the game
                             foreach ($game->decks as $deck) {
                                 $cards = array();
                                 foreach ($deck->deckCards as $card) {
-                                    $cards[] = $c = new SCCard($this->scGame, $deck->userId, $card->card->cardId, $card->card->image);
+                                    $cards[] = $c = new SCCard($this->scGame, $deck->userId, $card->card->id, $card->card->face);
                                 }
-                                $scdeck = new SCDeck($this->scGame, $deck->name, $cards, $deck->deckId);
+                                $scdeck = new SCDeck($this->scGame, $deck->name, $cards, $deck->id);
 
-                                if ($deck->userId == $game->player1) {
+                                if ($deck->userId == $game->playerId) {
                                     $this->scGame->addPlayer1Deck($scdeck);
-                                } elseif ($deck->userId == $game->player2) {
+                                } elseif ($deck->userId == $game->opponentId) {
                                     $this->scGame->addPlayer2Deck($scdeck);
                                 }
                             }
@@ -327,7 +335,7 @@ class GameController extends ApplicationController {
                                 } else {
                                     $msg .= ' places a new card on the table.';
                                 }
-                                $this->putChatMessage($msg, $game->gameId, $currentUserId);
+                                $this->putChatMessage($msg, $game->id, $currentUserId);
                             }
                             echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         }
@@ -365,7 +373,7 @@ class GameController extends ApplicationController {
                                     $msg .= ' on a card.';
                                 }
 
-                                $this->putChatMessage($msg, $game->gameId, $currentUserId);
+                                $this->putChatMessage($msg, $game->id, $currentUserId);
 
                                 echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                             }
@@ -393,7 +401,7 @@ class GameController extends ApplicationController {
                                     $msg .= ' on a card.';
                                 }
 
-                                $this->putChatMessage($msg, $game->gameId, $currentUserId);
+                                $this->putChatMessage($msg, $game->id, $currentUserId);
 
                                 echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                             }
@@ -465,7 +473,7 @@ class GameController extends ApplicationController {
                                 $msg = Yii::app()->user->name . ' suffled <span class="deck-name">'
                                         . $deckName . '</span>.';
 
-                                $this->putChatMessage($msg, $game->gameId, $currentUserId);
+                                $this->putChatMessage($msg, $game->id, $currentUserId);
                             }
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
@@ -477,7 +485,7 @@ class GameController extends ApplicationController {
                         $result = array('success' => 0);
                         if ($game->running && $this->scGame && isset($_REQUEST['dice']) && (int) $_REQUEST['dice']) {
                             if (($gd = GameDice::model()->find('gameId = :id AND diceId = :dice', array(
-                                ':id' => $game->gameId,
+                                ':id' => $game->id,
                                 ':dice' => (int) $_REQUEST['dice']
                                     ))) !== null) {
 
@@ -493,7 +501,7 @@ class GameController extends ApplicationController {
 
                                 $msg = Yii::app()->user->name . ' rolled <span class="die-name">' .
                                         $dice->name . '</span> for (1 - ' . $dice->face . '): ' . $roll . '.';
-                                $this->putChatMessage($msg, $game->gameId, $currentUserId);
+                                $this->putChatMessage($msg, $game->id, $currentUserId);
                             }
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
@@ -526,7 +534,7 @@ class GameController extends ApplicationController {
                             }
                             $msg .= ' to the graveyard.';
 
-                            $this->putChatMessage($msg, $game->gameId, $currentUserId);
+                            $this->putChatMessage($msg, $game->id, $currentUserId);
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         break;
@@ -545,7 +553,7 @@ class GameController extends ApplicationController {
                             } else {
                                 $msg .= ' takes a card from the <span class="deck-name">graveyard</span> and places it on the table.';
                             }
-                            $this->putChatMessage($msg, $game->gameId, $currentUserId);
+                            $this->putChatMessage($msg, $game->id, $currentUserId);
 
                             echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         }
@@ -559,7 +567,7 @@ class GameController extends ApplicationController {
                             );
 
                             $msg = Yii::app()->user->name . ' suffled the <span class="deck-name">graveyard</span>.';
-                            $this->putChatMessage($msg, $game->gameId, $currentUserId);
+                            $this->putChatMessage($msg, $game->id, $currentUserId);
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
                         break;
@@ -584,7 +592,7 @@ class GameController extends ApplicationController {
                                     } else {
                                         $msg .= ' a card.';
                                     }
-                                    $this->putChatMessage($msg, $game->gameId, $currentUserId);
+                                    $this->putChatMessage($msg, $game->id, $currentUserId);
                                 }
                             }
                         }
@@ -610,7 +618,7 @@ class GameController extends ApplicationController {
                                 }
 
                                 $msg .= ' to <strong>' . $value . '</strong>.';
-                                $this->putChatMessage($msg, $game->gameId, $currentUserId);
+                                $this->putChatMessage($msg, $game->id, $currentUserId);
                             }
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
@@ -635,7 +643,7 @@ class GameController extends ApplicationController {
                                 }
 
                                 $msg .= ' to <strong>' . $value . '</strong>.';
-                                $this->putChatMessage($msg, $game->gameId, $currentUserId);
+                                $this->putChatMessage($msg, $game->id, $currentUserId);
                             }
                         }
                         echo (YII_DEBUG ? $this->jsonIndent(json_encode($result)) : json_encode($result));
@@ -677,9 +685,7 @@ class GameController extends ApplicationController {
             }
 
             //getting chat messages
-            $messages = ChatMessage::model()->findAll('gameId = :id ORDER BY sent', array(
-                ':id' => (int) $game->gameId
-                    )
+            $messages = ChatMessage::model()->findAll('gameId = :id ORDER BY sentTime', array(':id' => (int) $game->id)
             );
 
             //getting game dice
@@ -694,10 +700,10 @@ class GameController extends ApplicationController {
                 'user' => (object) array(
                     'id' => $currentUserId,
                     'name' => Yii::app()->user->name,
-                    'isOne' => ($currentUserId === $game->player1)
+                    'isOne' => ($currentUserId === $game->playerId)
                 ),
-                'player1' => $game->player1,
-                'player2' => $game->player2
+                'player1' => $game->playerId,
+                'player2' => $game->opponentId
             ));
         } else {
             //unlock the game record before redirecting
@@ -707,60 +713,17 @@ class GameController extends ApplicationController {
         Yii::app()->db->createCommand("select release_lock('game.$id')");
     }
 
-    public function actionWatch($id) {
-//        $this->layout = '//layouts/game';
-//
-//        //lock record
-//        $id = intval($id);
-//        $lock = Yii::app()->db->createCommand("SELECT GET_LOCK('game.$id', 10)")->queryScalar();
-//        if ($lock != 1) {
-//            throw new CHttpException(500, 'Failed to get game lock');
-//        }
-//        $game = $this->loadGameById($id);
-//        if (in_array(yii::app()->user->id, array($game->player1, $game->player2))) {
-//            players can't spectate own games!
-//        }
-//        
-//        if ($game->state) {
-//            $this->scGame = unserialize($game->state);
-//        }
-//        //getting chat messages
-//        $start = ChatMessage::model()->count('gameId = :id ORDER BY sent', array(':id' => (int) $game->gameId));
-//        if ($start >= 15) {
-//            $start -= 15;
-//        } else {
-//            $start = 0;
-//        }
-//
-//        $messages = ChatMessage::model()->findAll('gameId = :id ORDER BY sent LIMIT :start, 15', array(
-//            ':id' => (int) $game->gameId,
-//            ':start' => (int) $start
-//                ));
-//
+//    public function actionLeave($id) {
 //        $this->updateUserActivity();
-//        $this->render('watch', array(
-//            'gameId' => $id,
-//            'messages' => $messages,
-//            'paused' => $game->paused,
-//            'user' => Yii::app()->user
-//        ));
-//
-//        Yii::app()->db->createCommand("select release_lock('game.$id')");
-    }
-
-    public function actionLeave($id) {
-        $this->updateUserActivity();
-        //TODO: not implemented yet, close game, notify all clients, dispose states.
-        $this->redirect('lobby/index');
-    }
+//        //TODO: not implemented yet, close game, notify all clients, dispose states.
+//        $this->redirect('lobby/index');
+//    }
 
     /**
      * Loads a Game object from the database.
      * 
      * @param integer $id The ID for the game being loaded.
      * @return Game The game or null if the ID is invalid.
-     * 
-     * @since 1.0, Sudden Growth
      */
     private function loadGameById($id) {
         if (($game = Game::model()->findByPk((int) $id)) === null) {
@@ -771,49 +734,25 @@ class GameController extends ApplicationController {
     }
 
     /**
-     * Prepends new access rules to the default rules.
-     * Only registered users can execute <em>GameController</em> actions.
-     * @return array The new rules array
-     * 
-     * @since 1.0, Sudden Growth
-     */
-    public function accessRules() {
-        return array_merge(array(
-                    array('allow',
-                        'actions' => array('index', 'play', 'sendMessage',
-                            'chatUpdate', 'leave', 'watch'
-                        ),
-                        'users' => array('@')
-                    ),
-            array(
-                'deny',
-                'users' => array('*')
-            )
-                        ), parent::accessRules());
-    }
-
-    /**
      * Applies a simple word filter to a chat message.
      * 
      * @param string $message The chat message to apply the filtering to.
      * @return string The message with words filtered, if any were found.
-     * 
-     * @since 1.1, Green Shield
      */
-    private function chatWordFilter($message) {
-        if (($setting = Setting::model()->findByPk('wordfilter')) !== null) {
-            if (trim($setting->value) != '') {
-                $words = explode(',', $setting->value);
-                //remove any spaces, support for PHP < 5.3, it could be replaced 
-                //by a simple lambda in the future
-                array_walk($words, create_function('&$val', '$val = trim($val);'));
-
-                return str_ireplace($words, '***', $message);
-            }
-        }
-
-        return $message;
-    }
+//    private function chatWordFilter($message) {
+//        if (($setting = Setting::model()->findByPk('wordfilter')) !== null) {
+//            if (trim($setting->value) != '') {
+//                $words = explode(',', $setting->value);
+//                //remove any spaces, support for PHP < 5.3, it could be replaced 
+//                //by a simple lambda in the future
+//                array_walk($words, create_function('&$val', '$val = trim($val);'));
+//
+//                return str_ireplace($words, '***', $message);
+//            }
+//        }
+//
+//        return $message;
+//    }
 
     /**
      * This method will indent a JSON string with proper spaces and alignment in 
