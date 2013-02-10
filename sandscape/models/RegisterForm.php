@@ -28,6 +28,11 @@
 
 /**
  * Form model for the registration process.
+ * 
+ * @property string $email
+ * @property string $password
+ * @property string $password_repeat
+ * @property string $name
  */
 class RegisterForm extends CFormModel {
 

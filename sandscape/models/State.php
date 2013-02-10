@@ -33,11 +33,11 @@
  * 
  * Properties for the <em>State</em> class:
  * 
- * @property integer $id
+ * @property int $id
  * @property string $name
  * @property string $image
  * @property string $description
- * @property integer $active
+ * @property int $active
  * 
  * @see Token
  */

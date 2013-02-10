@@ -28,3 +28,9 @@ $this->widget('bootstrap.widgets.TbButton', array(
 ));
 
 $this->endWidget();
+
+?>
+
+<div>
+    
+</div>

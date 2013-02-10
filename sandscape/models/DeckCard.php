@@ -29,15 +29,13 @@
 /**
  * 
  * Properties;
+ * @property int $id
  * @property int $deckId The database ID for the deck.
  * @property int $cardId The database ID for the corresponding card.
  *
  * Relations:
  * @property Deck $deck The <em>Deck</em> object.
  * @property Card $card The <em>Card</em> object.
- * 
- * @see Deck
- * @see Card
  */
 class DeckCard extends CActiveRecord {
 

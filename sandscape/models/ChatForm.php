@@ -27,6 +27,7 @@
  */
 
 /**
+ * @property string $text
  */
 class ChatForm extends CFormModel {
 

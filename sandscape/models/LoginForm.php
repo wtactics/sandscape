@@ -27,6 +27,9 @@
  */
 
 /**
+ * @property string $email
+ * @property string $password
+ * @property int $rememberMe
  */
 class LoginForm extends CFormModel {
 

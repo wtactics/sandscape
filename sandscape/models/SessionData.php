@@ -33,11 +33,11 @@
  * 
  * Properties for the <em>SessionData</em> class:
  * 
- * @property integer $id
+ * @property int $id
  * @property string $token
  * @property string $tokenExpires
  * @property string $lastActivity
- * @property integer $userId
+ * @property int $userId
  * 
  * @property User $user The owner of this session data.
  */

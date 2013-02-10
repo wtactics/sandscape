@@ -76,8 +76,6 @@ class DecksController extends ApplicationController {
 
     /**
      * Default action used to list all decks for the current user.
-     * The filter is applied in the view since it's there that the search method 
-     * is called.
      */
     public function actionIndex() {
         $this->updateUserActivity();
@@ -90,6 +88,7 @@ class DecksController extends ApplicationController {
         if (isset($_GET['Deck'])) {
             $filter->attributes = $_GET['Deck'];
         }
+        $filter->ownerId = Yii::app()->user->id;
 
         $this->render('index', array('filter' => $filter, 'cardCount' => $cardCount));
     }

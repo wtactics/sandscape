@@ -37,7 +37,7 @@
  * @property string $name
  * @property string $image
  * @property string $description
- * @property integer $active
+ * @property int $active
  */
 class Token extends CActiveRecord {
 

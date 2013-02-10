@@ -84,6 +84,7 @@ CONSTRAINT `fkDeckUser` FOREIGN KEY (`ownerId`) REFERENCES `User`(`id`)
 
 -- Creates the relation between a card and a deck object.
 CREATE TABLE `DeckCard` (
+`id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `deckId` INT UNSIGNED NOT NULL,
 `cardId` INT UNSIGNED NOT NULL,
 CONSTRAINT `fkDCDeck` FOREIGN KEY (`deckId`) REFERENCES `Deck`(`id`),
