@@ -28,9 +28,28 @@ $this->widget('bootstrap.widgets.TbButton', array(
 ));
 
 $this->endWidget();
-
 ?>
 
 <div>
-    
+    <div class="span5">
+        Available Cards
+        <div>
+            <div>
+                <span></span>
+                <input type="number" value="1" />
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="span5">
+        Cards in Deck
+        <ul>
+            <li>
+                <span></span>
+                <span></span>
+                <span></span>
+            </li>
+        </ul>
+    </div>
 </div>
