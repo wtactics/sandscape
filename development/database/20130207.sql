@@ -130,19 +130,6 @@ CREATE TABLE `Counter`(
 `active` TINYINT NOT NULL DEFAULT 1
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
--- Stores messages sent in chats.
--- Messages sent ingame have a game ID and messages sent in the lobby don't.
-CREATE TABLE `ChatMessage` (
-`id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
-`message` TEXT NOT NULL ,
-`sentTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-`senderId` INT UNSIGNED NOT NULL ,
-`gameId` INT UNSIGNED NULL ,
-`system` TINYINT NOT NULL DEFAULT 0 ,
-CONSTRAINT `fkChatMessageUser` FOREIGN KEY (`senderId`) REFERENCES `User`(`id`) ,
-CONSTRAINT `fkChatMessageGame` FOREIGN KEY (`gameId`) REFERENCES `Game`(`id`)
-) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
-
 -- Games are stored here, even if they have not started or haven't been played.
 CREATE TABLE `Game` (
 `id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
@@ -153,7 +140,7 @@ CREATE TABLE `Game` (
 `createdOn` DATETIME NOT NULL ,
 `startedOn` DATETIME NULL ,
 `endedOn` DATETIME NULL ,
-`state` LONGTEXT NULL
+`state` LONGTEXT NULL ,
 `running` TINYINT NOT NULL DEFAULT 0 ,
 `paused` TINYINT NOT NULL DEFAULT 0 ,
 `useGraveyard` TINYINT NOT NULL DEFAULT 1 ,
@@ -165,6 +152,19 @@ CONSTRAINT `fkGameUserWinner` FOREIGN KEY (`winnerId`) REFERENCES `User`(`id`) ,
 CONSTRAINT `fkGameUserPlayer` FOREIGN KEY (`playerId`) REFERENCES `User`(`id`) ,
 CONSTRAINT `fkGameUserOpponent` FOREIGN KEY (`opponentId`) REFERENCES `User`(`id`) ,
 CONSTRAINT `fkGameUserLimit` FOREIGN KEY (`limitOpponentId`) REFERENCES `User` (`id`)
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+-- Stores messages sent in chats.
+-- Messages sent ingame have a game ID and messages sent in the lobby don't.
+CREATE TABLE `ChatMessage` (
+`id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
+`message` TEXT NOT NULL ,
+`sentTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+`senderId` INT UNSIGNED NOT NULL ,
+`gameId` INT UNSIGNED NULL ,
+`system` TINYINT NOT NULL DEFAULT 0 ,
+CONSTRAINT `fkChatMessageUser` FOREIGN KEY (`senderId`) REFERENCES `User`(`id`) ,
+CONSTRAINT `fkChatMessageGame` FOREIGN KEY (`gameId`) REFERENCES `Game`(`id`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
 -- CREATE Game / Deck link
@@ -201,23 +201,3 @@ PRIMARY KEY (`diceId`, `gameId`) ,
 CONSTRAINT `fkGameDiceDice` FOREIGN KEY (`diceId`) REFERENCES `Dice`(`id`) ,
 CONSTRAINT `fkGameDiceDeck` FOREIGN KEY (`gameId`) REFERENCES `Game`(`id`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
-
--- Setting table will store configuration options for Sandscape and the games.
--- CREATE TABLE `Setting` (
--- `key` VARCHAR( 50 ) NOT NULL PRIMARY KEY ,
--- `value` TEXT NOT NULL ,
--- `description` TEXT NULL ,
--- `group` VARCHAR( 25 )
--- ) ENGINE=MyISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
--- Some of the current existing settings
--- INSERT INTO `Setting` 
--- VALUES ('wordfilter', '', 'Comma separated list of words that will be filtered by the chat system, both in-game and lobby.', 'general') ,
--- ('fixdecknr', '0', 'Fixes the number of decks used in every game.', 'game') ,
--- ('deckspergame', '1', 'The number of decks to use in a game, if system allows for variable decks number this setting is ignored.', 'game') ,
--- ('disabledice', '1', 'All dice will be disabled and users won\'t be able to use dice while playing. If this options is active, any enabled dice will be ignored.') ,
--- ('useanydice', 1, 'If active, users can choose any dice available in the system otherwise, only the dice selected by the admiistratior will be available.', 'game') ,
--- ('gamechatspectators', 1, 'Default setting that controls if spectators can speak in the game chat or not. Can be overriden at the game creation dialog.', 'game') ,
--- ('cardscapeurl', 'http://www.wtactics.org/cardscape', 'The URL for the CardScape.', 'general') ,
--- ('allowavatar', 1, 'Will users be able to upload avatar images.', 'general') ,
--- ('avatarsize', '100x75', 'The size of the avatar image, format is <em>WIDTH</em>x<em>HEIGHT</em>', 'general') ,
--- ('sysemail', '', 'general') ;
