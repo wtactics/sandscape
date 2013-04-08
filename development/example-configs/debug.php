@@ -1,6 +1,6 @@
 <?php
 
-/* index.php
+/* debug.php
  * 
  * This file is part of Sandscape, a virtual, browser based, table allowing 
  * people to play a customizable card games (CCG) online.
