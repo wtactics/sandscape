@@ -1,58 +1,49 @@
-SandScape README
-================
+# Sandscape
 
-Intro
------
+IMPORTANT: We're in the process of moving from Sourceforge.net to Github.com, 
+old tickets are still available in the Sourceforge.net page and will be 
+maintained there until closed. Only new issues will be added here.
 
-*Sandscape* is a browser-based implementation of a CCG being developed as part 
-of the *Wtactics* project (http://wtactics.org). It offers the player the 
+Sandscape is a browser-based implementation of a CCG being developed as part 
+of the [Wtactics project](http://wtactics.org). It offers the player the 
 basic tools for creating a CCG game, without forcing any rules on the actual 
 game being played.
 
-Along side the basic playing field, *SandScape* has the usual user management
+Along side the basic playing field, SandScape has the usual user management
 system, which requires valid authentication in order to play, a lobby system
 where players can see each other and arrange games and simple statistics
 recording.
 
 No artificial intelligence was implemented in the platform.
 
-About this README file
-~~~~~~~~~~~~~~~~~~~~~~
+## Resources
 
-This README file is created using asciidoc syntax and can be converted to any
-supported format, such as PDF, HTML or manpage.
+If you want to know more about the project please visit the following links or 
+read the suggested documents:
+- [WTactics wiki with project idea](http://wtactics.org/wiki/index.php?title=Sandscape)
+- [Sandscape development description](http://wtactics.org/wiki/index.php?title=Sandscape_Development)
 
-Resources
-~~~~~~~~~
-
-This file is just an introduction to *Sandscape*, if you want to know more about 
-the project please visit the following links or read the documents suggested:
-- http://wtactics.org/wiki/index.php?title=Sandscape
-- http://wtactics.org/wiki/index.php?title=Sandscape_Development
-- Sandscape Manual.pdf
-
-Repository Structure
---------------------
+## Repository Structure
 
 The Git repository is divided in four simple folders:
 
-[horizontal]
-development:: Stores any development related file, from design docs, diagrams, UI 
-sketches and spike solutions.
+- development: Stores any development related file, from design docs, diagrams, 
+UI sketches and spike solutions.
 
-framework:: Houses the Yii framework files, used by *Sandscape*. A file named 
+- framework: Houses the Yii framework files, used by Sandscape. A file named 
 VERSION inside this folder contains the version number we're using.
 
-sandscape:: Contains the PHP base system that powers *Sandscape*.
+- sandscape: Contains the PHP base system that powers Sandscape.
 
-www:: Contains any public resources like imagens, CSS files and every 
-JavaScript file needed to run *Sandscape*.
+- www: Contains any public resources like imagens, CSS files and every 
+JavaScript file needed to run Sandscape.
 
 The root directory also contains the LICENSE file, the CONTRIBUTORS file and the 
-this README file you are reading.
+this README.md file you are reading.
 
-Requirements
-------------
+## Installation
+
+### Requirements
 
 To create a server:
 
@@ -65,14 +56,13 @@ To play a game:
 
 - Browser: Firefox 3.5+, Opera 11+ and Google Chrome 5+
 
-Installation
-------------
+### Process
 
-Installing *Sandscape* is a step only users interested in having their own server
-instance should take. You *don't* need to have *Sandscape* installed in order 
+Installing Sandscape is a step only users interested in having their own server
+instance should take. You *don't* need to have Sandscape installed in order 
 to play, the software is installed in a server and accessed using a browser.
 
-.Steps
+#### Steps
 1. Please make sure you have Apache Web Server, PHP and MySQL installed.
 
 2. Place the contents of the folder *www* in a public accessible place, normally 
@@ -93,8 +83,7 @@ user, manually, in the database and make sure that user is an administrator.
 Remember that the password is an SHA1 hash created by appending the hash 
 sentence from _params.php_ to the password.
 
-Version history
----------------
+## Version history
 
 There are no public versions so far. Every version listed here was an internal 
 version that was tagged but no release file was created.
