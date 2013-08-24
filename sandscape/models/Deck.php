@@ -7,9 +7,6 @@
  *
  * Copyright (c) 2011 - 2013, the Sandscape team.
  * 
- * Sandscape uses several third party libraries and resources, a complete list 
- * can be found in the <README> file and in <_dev/thirdparty/about.html>.
- * 
  * Sandscape's team members are listed in the <CONTRIBUTORS> file.
  * 
  * This program is free software: you can redistribute it and/or modify

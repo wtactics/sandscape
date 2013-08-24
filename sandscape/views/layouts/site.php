@@ -13,10 +13,11 @@
         <?php } ?>
         <link rel="stylesheet" type="text/css" href="<?php echo $url; ?>/css/libraries/jquery-ui-custom-min.css" />
 
-        <script src="<?php echo $url; ?>/js/libraries/jquery-min.js"></script>
+        <script src="<?php echo $url; ?>/js/libraries/jquery-2.0.3.min.js"></script>
         <script src="<?php echo $url; ?>/js/libraries/jquery-ui-min.js"></script>
-        <script src="<?php echo $url; ?>/js/libraries/underscore-min.js"></script>
-        <script src="<?php echo $url; ?>/js/libraries/backbone-min.js"></script>
+        <script src="<?php echo $url; ?>/js/libraries/json3-3.2.5.min.js"></script>
+        <script src="<?php echo $url; ?>/js/libraries/underscore-1.5.1.min.js"></script>
+        <script src="<?php echo $url; ?>/js/libraries/backbone-1.0.0.min.js"></script>
 
         <?php if (!defined('YII_DEBUG') || !YII_DEBUG) { ?>
             <script src="<?php echo $url; ?>/js/sandscape.all.min.js"></script>
