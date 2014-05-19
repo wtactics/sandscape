@@ -1,14 +1,20 @@
-# Default ignore list file for Sandscape.
-#
+# Yii framework
+phpunit.xml
+/framework
 
-# IDE and system cache files
+# IDEs
 nbproject
-.DS_Store
-Thumbs.db
-*~
-.directory
-._*
 
-# Sandscape specific
-/www/.htaccess
-/www/debug.php
+# Cache files
+.DS_Store
+._.*
+*~
+*.orig
+Thumbs.db
+.directory
+
+# Development
+_dev-ignore
+sandscape/config/local
+public/.htaccess
+debug.lock
