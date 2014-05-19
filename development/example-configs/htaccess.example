@@ -1,7 +1,0 @@
-RewriteEngine On
-# Uncomment the following line if you're system in not on the domain root
-# RewriteBase /
-
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)\?*$ index.php/$1 [L,QSA]
