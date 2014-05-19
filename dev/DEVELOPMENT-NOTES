@@ -45,3 +45,84 @@ Disable states and tokens if none exist.
 UPDATED NOTES AS OF REBOOT...
 
 Add deck and game counts to user view by administrators, also game lists when possible.
+
+
+-----------------------------
+
+
+CREATE TABLE `SessionData` (
+`id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+`token` VARCHAR( 32 ) NULL, 
+`tokenExpires` DATETIME NULL ,
+`lastActivity` DATETIME NULL ,
+`userId` INT UNSIGNED NOT NULL ,
+CONSTRAINT `fkSessionDataUser` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) 
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+CREATE TABLE `Game` (
+`id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
+`playerId` INT UNSIGNED NOT NULL ,
+`opponentId` INT UNSIGNED NULL ,
+`limitOpponentId` INT UNSIGNED NULL ,
+`winnerId` INT UNSIGNED NULL ,
+`createdOn` DATETIME NOT NULL ,
+`startedOn` DATETIME NULL ,
+`endedOn` DATETIME NULL ,
+`state` LONGTEXT NULL ,
+`running` TINYINT NOT NULL DEFAULT 0 ,
+`paused` TINYINT NOT NULL DEFAULT 0 ,
+`useGraveyard` TINYINT NOT NULL DEFAULT 1 ,
+`playerReady` TINYINT NOT NULL DEFAULT 0 ,
+`opponentReady` TINYINT NOT NULL DEFAULT 0 ,
+`spectatorsSpeak` TINYINT NOT NULL DEFAULT 0 ,
+`lastChange` INT UNSIGNED NULL ,
+CONSTRAINT `fkGameUserWinner` FOREIGN KEY (`winnerId`) REFERENCES `User`(`id`) ,
+CONSTRAINT `fkGameUserPlayer` FOREIGN KEY (`playerId`) REFERENCES `User`(`id`) ,
+CONSTRAINT `fkGameUserOpponent` FOREIGN KEY (`opponentId`) REFERENCES `User`(`id`) ,
+CONSTRAINT `fkGameUserLimit` FOREIGN KEY (`limitOpponentId`) REFERENCES `User` (`id`)
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+CREATE TABLE `ChatMessage` (
+`id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
+`message` TEXT NOT NULL ,
+`sentTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+`senderId` INT UNSIGNED NOT NULL ,
+`gameId` INT UNSIGNED NULL ,
+`system` TINYINT NOT NULL DEFAULT 0 ,
+CONSTRAINT `fkChatMessageUser` FOREIGN KEY (`senderId`) REFERENCES `User`(`id`) ,
+CONSTRAINT `fkChatMessageGame` FOREIGN KEY (`gameId`) REFERENCES `Game`(`id`)
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+CREATE TABLE GameDeck (
+`gameId` INT UNSIGNED NOT NULL,
+`deckId` INT UNSIGNED NOT NULL,
+PRIMARY KEY (`gameId`, `deckId`),
+CONSTRAINT `fkGameDeckGame` FOREIGN KEY (`gameId`) REFERENCES `Game`(`id`),
+CONSTRAINT `fkGameDeckDeck` FOREIGN KEY (`deckId`) REFERENCES `Deck`(`id`)
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+CREATE TABLE `DeckStats`(
+`gameId` INT UNSIGNED NOT NULL ,
+`deckId` INT UNSIGNED NOT NULL ,
+`rating` FLOAT NULL ,
+`notes` TEXT NULL ,
+PRIMARY KEY (`gameId`, `deckId`) ,
+CONSTRAINT `fkDSGame` FOREIGN KEY (`gameId`) REFERENCES `Game`(`id` ) ,
+CONSTRAINT `fkDSDeck` FOREIGN KEY (`deckId`) REFERENCES `Deck`(`id` )
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+CREATE TABLE `GameCounter` (
+`gameId`  INT UNSIGNED NOT NULL ,
+`counterId` INT UNSIGNED NOT NULL ,
+PRIMARY KEY (`gameId`, `counterId`) ,
+CONSTRAINT `fkGCGame` FOREIGN KEY (`gameId`) REFERENCES `Game`(`id`) ,
+CONSTRAINT `fkGCCounter` FOREIGN KEY (`counterId`) REFERENCES `Counter`(`id`)
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+CREATE TABLE `GameDice` (
+`diceId` INT UNSIGNED NOT NULL ,
+`gameId` INT UNSIGNED NOT NULL  ,
+PRIMARY KEY (`diceId`, `gameId`) ,
+CONSTRAINT `fkGameDiceDice` FOREIGN KEY (`diceId`) REFERENCES `Dice`(`id`) ,
+CONSTRAINT `fkGameDiceDeck` FOREIGN KEY (`gameId`) REFERENCES `Game`(`id`)
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
