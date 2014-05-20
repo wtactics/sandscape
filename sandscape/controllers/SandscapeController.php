@@ -94,4 +94,8 @@ class SandscapeController extends BaseController {
         }
     }
 
+    public function actionDashboard() {
+        $this->render('dashboard');
+    }
+
 }

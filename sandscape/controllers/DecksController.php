@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class DecksController extends ApplicationController {
+class DecksController extends BaseController {
 
 //    private static $NORMAL_WIDTH = 250;
 //    private static $NORMAL_HEIGHT = 354;

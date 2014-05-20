@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class CountersController extends ApplicationController {
+class CountersController extends BaseController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);

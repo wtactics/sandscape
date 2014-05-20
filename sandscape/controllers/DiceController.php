@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class DiceController extends ApplicationController {
+class DiceController extends BaseController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);

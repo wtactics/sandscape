@@ -24,8 +24,8 @@ CREATE TABLE `User` (
 CREATE TABLE `Card` (
 `id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `name` VARCHAR( 255 ) NOT NULL ,
-`rules` TEXT NOT NULL ,
-`face` VARCHAR( 255 ) NOT NULL ,
+`rules` TEXT NULL ,
+`face` VARCHAR( 255 ) NULL ,
 `back` VARCHAR( 255 ) NULL ,
 `backFrom` ENUM('default', 'own', 'deck') NOT NULL DEFAULT 'default' ,
 `cardscapeRevisionId` INT UNSIGNED NULL ,

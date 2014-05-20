@@ -48,12 +48,12 @@ class Card extends CActiveRecord {
 
     public function rules() {
         return array(
-            array('name, rules', 'required'),
+            array('name', 'required'),
             array('name, face, back', 'length', 'max' => 255),
             array('backFrom', 'in', 'range' => array('default', 'own', 'deck')),
             array('cardscapeRevisionId', 'numerical', 'integerOnly' => true),
             //search
-            array('name, rules, cardscapeRevisionId', 'safe', 'on' => 'search'),
+            array('name, cardscapeRevisionId', 'safe', 'on' => 'search'),
         );
     }
 

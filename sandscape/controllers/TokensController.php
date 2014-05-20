@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class TokensController extends ApplicationController {
+class TokensController extends BaseController {
 
 //    private static $NORMAL_WIDTH = 270;
 //    private static $NORMAL_HEIGHT = 382;
