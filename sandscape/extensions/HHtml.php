@@ -31,6 +31,7 @@ class HHtml extends TbHtml {
 
         $output .= '<div >';
         $output .= self::submitButton('Sign in');
+        $output .= self::link('Register account', array('sandscape/register'), array('style' => 'margin-left: 2em;'));
         $output .= '</div>';
         $output .= parent::endForm();
         $output .= '</div>';

@@ -10,6 +10,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'user-grid',
     'dataProvider' => $filter->search(),
     'filter' => $filter,
+    'type' => TbHtml::GRID_TYPE_STRIPED . ', ' . TbHtml::GRID_TYPE_BORDERED,
     'columns' => array(
         array(
             'name' => 'name',
@@ -17,11 +18,11 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'value' => 'CHtml::link($data->name, Yii::app()->createUrl("users/edit", array("id" => $data->id)))'
         ),
         'email:email',
-//        array(
-//            'name' => 'role',
-//            'filter' => User::rolesArray(),
-//            'type' => 'html',
-//            'value' => '$data->getRoleName()'
-//        ),
+        array(
+            'name' => 'role',
+            'filter' => User::rolesArray(),
+            'type' => 'html',
+            'value' => '$data->roleName()'
+        ),
     ),
 ));

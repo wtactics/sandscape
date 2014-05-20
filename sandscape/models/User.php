@@ -50,6 +50,9 @@ class User extends CActiveRecord {
     const PLAYER_ROLE = 'player';
     const GAMEMASTER_ROLE = 'gamemaster';
 
+    public $password2;
+    public $hashed;
+
     /**
      * @return User
      */
@@ -103,7 +106,7 @@ class User extends CActiveRecord {
             'country' => Yii::t('user', 'Country'),
             'showChatTimes' => Yii::t('user', 'Show Message Time'),
             'reverseCards' => Yii::t('user', 'Reverse Cards'),
-            'onHoverDetails' => Yii::t('user', 'Details On Hover'),
+            'onHoverDetails' => Yii::t('user', 'Details <em>on hover</em>'),
             'handCorner' => Yii::t('user', 'Hand Corner')
         );
     }
@@ -168,6 +171,12 @@ class User extends CActiveRecord {
             'player' => Yii::t('user', 'Player'),
             'gamemaster' => Yii::t('user', 'Game Master')
         );
+    }
+
+    public final function roleName() {
+        $roles = self::rolesArray();
+
+        return $roles[$this->role];
     }
 
     public final function getRoleName() {

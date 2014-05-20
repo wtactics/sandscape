@@ -27,24 +27,24 @@ class UsersController extends BaseController {
         parent::__construct($id, $module);
     }
 
-//    public function accessRules() {
-//        return array(
-//            array(
-//                'allow',
-//                'actions' => array('index', 'create', 'view', 'update'),
-//                'expression' => '$user->role == "administrator"'
-//            ),
-//            array(
-//                'allow',
-//                'actions' => array('profile'),
-//                'users' => array('@')
-//            ),
-//            array(
-//                'deny',
-//                'users' => array('*')
-//            )
-//        );
-//    }
+    public function accessRules() {
+        return array(
+            array(
+                'allow',
+                'actions' => array('index', 'new', 'edit', 'delete'),
+                'expression' => '$user->isAdministrator()'
+            ),
+            array(
+                'allow',
+                'actions' => array('account', 'stats', 'decks'),
+                'users' => array('@')
+            ),
+            array(
+                'deny',
+                'users' => array('*')
+            )
+        );
+    }
 
     public function actionIndex() {
         $filter = new User('search');
@@ -58,68 +58,66 @@ class UsersController extends BaseController {
     }
 
     public function actionNew() {
-//        $user = new User();
-//        $this->performAjaxValidation('user-form', $user);
-//
-//        if (isset($_POST['User'])) {
-//            $user->attributes = $_POST['User'];
-//            if ($user->save()) {
-//                $this->redirect(array('view', 'id' => $user->id));
-//            }
-//        }
-//
-//        $this->render('create', array('user' => $user));
+        $user = new User();
+        $this->performAjaxValidation('user-form', $user);
+
+        if (isset($_POST['User'])) {
+            $user->attributes = $_POST['User'];
+            if ($user->save()) {
+                $this->redirect(array('edit', 'id' => $user->id));
+            }
+        }
+
+        $this->render('create', array('user' => $user));
     }
 
     public function actionEdit($id) {
-//        $user = $this->loadUserModel($id);
-//        $this->performAjaxValidation('user-form', $user);
-//
-//        if (isset($_POST['User'])) {
-//            $user->attributes = $_POST['User'];
-//            if ($user->save()) {
-//                $this->redirect(array('update', 'id' => $user->id));
-//            }
-//        }
-//
-//        $this->render('update', array('user' => $user));
+        $user = $this->loadUserModel($id);
+        $this->performAjaxValidation('user-form', $user);
+
+        if (isset($_POST['User'])) {
+            $user->attributes = $_POST['User'];
+            if ($user->save()) {
+                $this->redirect(array('edit', 'id' => $user->id));
+            }
+        }
+
+        $this->render('update', array('user' => $user));
     }
 
     public function actionDelete($id) {
-//        if (Yii::app()->request->isPostRequest && Yii::app()->user->role == 'administrator') {
-//            $user = $this->loadUserModel($id);
-//
-//            $user->active = 0;
-//            $user->save();
-//
-//            if (!isset($_GET['ajax'])) {
-//                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
-//            }
-//        } else {
-//            throw new CHttpException(400, Yii::t('sandscape', 'Invalid request. Please do not repeat this request again.'));
-//        }
+        $user = $this->loadUserModel($id);
+
+        $user->active = 0;
+        $user->save();
+
+        if (!isset($_GET['ajax'])) {
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+        }
     }
 
-    public function actionProfile() {
-//        $user = $this->loadUserModel(Yii::app()->user->id);
-//        $this->performAjaxValidation('user-form', $user);
-//
-//        if (isset($_POST['User'])) {
-//            $user->attributes = $_POST['User'];
-//            if ($user->save()) {
-//                $this->redirect(array('profile'));
-//            }
-//        }
-//
-//        $this->render('profile', array('user' => $user));
+    public function actionAccount() {
+        $user = $this->loadUserModel(Yii::app()->user->id);
+        $this->performAjaxValidation('user-form', $user);
+
+        if (isset($_POST['User'])) {
+            $user->attributes = $_POST['User'];
+            if ($user->save()) {
+                $this->redirect(array('account'));
+            }
+        }
+
+        $this->render('account', array('user' => $user));
     }
 
     public function actionStats($id) {
-        
+        $user = $this->loadUserModel(Yii::app()->user->id);
+        $this->render('stats');
     }
 
     public function actionDecks($id) {
-        
+        $user = $this->loadUserModel(Yii::app()->user->id);
+        $this->render('decks');
     }
 
     private function loadUserModel($id) {

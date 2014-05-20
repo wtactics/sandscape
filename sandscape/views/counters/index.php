@@ -10,15 +10,12 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'user-grid',
     'dataProvider' => $filter->search(),
     'filter' => $filter,
-    'template' => '{items} {pager} {summary}',
-    'type' => 'striped condensed bordered',
+    'type' => TbHtml::GRID_TYPE_STRIPED . ', ' . TbHtml::GRID_TYPE_BORDERED,
     'columns' => array(
         array(
             'name' => 'name',
             'type' => 'html',
             'value' => 'CHtml::link($data->name, Yii::app()->createUrl("counters/edit", array("id" => $data->id)))'
-        ),
-        'startValue',
-        'step',
-    ),
+        )
+    )
 ));

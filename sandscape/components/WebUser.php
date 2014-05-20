@@ -42,7 +42,7 @@ class WebUser extends CWebUser {
             return false;
         }
 
-        return $this->_user->role == User::ADMIN_ROLE;
+        return $this->user->role == User::ADMIN_ROLE;
     }
 
     public function isGameMaster() {
@@ -50,7 +50,7 @@ class WebUser extends CWebUser {
             return false;
         }
 
-        return ($this->_user->role == User::ADMIN_ROLE || $this->_user->role == User::GAMEMASTER_ROLE);
+        return ($this->user->role == User::ADMIN_ROLE || $this->user->role == User::GAMEMASTER_ROLE);
     }
 
     public function isPlayer() {

@@ -9,6 +9,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'token-grid',
     'dataProvider' => $filter->search(),
     'filter' => $filter,
+    'type' => TbHtml::GRID_TYPE_STRIPED . ', ' . TbHtml::GRID_TYPE_BORDERED,
     'columns' => array(
         array(
             'name' => 'name',

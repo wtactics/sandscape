@@ -1,6 +1,6 @@
 <?php
 
-/* LoginForm.php
+/* RegisterForm.php
  *  
  * This file is part of Sandscape, a virtual, browser based, table allowing 
  * people to play a customizable card games (CCG) online.
@@ -24,21 +24,23 @@
 /**
  * @property string $email
  * @property string $password
- * @property int $rememberMe
+ * @property string $password2
+ * @property string $name
  */
-class LoginForm extends CFormModel {
+class RegisterForm extends CFormModel {
 
     public $email;
     public $password;
-    public $rememberMe;
-    private $identity;
+    public $password2;
+    public $name;
 
     public function rules() {
         return array(
-            array('email, password', 'required'),
+            array('name, email, password, password2', 'required'),
             array('email', 'email'),
-            array('rememberMe', 'boolean'),
-            array('password', 'authenticate'),
+            array('email, name', 'unique', 'className' => 'User'),
+            array('password', 'compare', 'compareAttribute' => 'password2'),
+            array('name', 'length', 'max' => 150),
         );
     }
 
@@ -46,36 +48,21 @@ class LoginForm extends CFormModel {
         return array(
             'email' => Yii::t('sandscape', 'E-mail'),
             'password' => Yii::t('sandscape', 'Password'),
-            'rememberMe' => Yii::t('sandscape', 'Remember me'),
+            'password2' => Yii::t('regsandscapeister', 'Repeat Password'),
+            'name' => Yii::t('sandscape', 'Name')
         );
     }
 
-    public function authenticate($attribute, $params) {
-        if (!$this->hasErrors()) {
-            $this->identity = new UserIdentity($this->email, $this->password);
-            if (!$this->identity->authenticate()) {
-                $this->addError('password', Yii::t('sandscape', 'Incorrect e-mail or password.'));
-            }
-        }
-    }
-
-    public function login() {
+    public function register() {
         if ($this->validate()) {
+            $user = new User();
 
-            if ($this->identity === null) {
-                $this->identity = new UserIdentity($this->email, $this->password);
-                $this->identity->authenticate();
-            }
+            $user->email = $this->email;
+            $user->password = User::hash($this->password);
+            $user->name = $this->name;
 
-            if ($this->identity->errorCode === UserIdentity::ERROR_NONE) {
-                //remember for 7 days
-                $duration = $this->rememberMe ? 3600 * 24 * 7 : 0;
-                Yii::app()->user->login($this->identity, $duration);
-
-                return true;
-            }
+            return $user->save();
         }
-
         return false;
     }
 

@@ -23,25 +23,24 @@
 
 class SandscapeController extends BaseController {
 
-//    public function accessRules() {
-//        return array(
-//            array(
-//                'allow',
-//                'actions' => array('index', 'login', 'recoverPassword', 'error'),
-//                'users' => array('*')
-//            ),
-//            array(
-//                'allow',
-//                'actions' => array('logout'),
-//                'users' => array('@')
-//            ),
-//            array(
-//                'deny',
-//                'users' => array('*')
-//            )
-//        );
-//    }
-
+    public function accessRules() {
+        return array(
+            array(
+                'allow',
+                'actions' => array('index', 'login', 'error', 'register'),
+                'users' => array('*')
+            ),
+            array(
+                'allow',
+                'actions' => array('logout'),
+                'users' => array('@')
+            ),
+            array(
+                'deny',
+                'users' => array('*')
+            )
+        );
+    }
 
     public function actionIndex() {
         $this->render('index');
@@ -64,10 +63,6 @@ class SandscapeController extends BaseController {
     }
 
     public function actionLogout() {
-        //if (($sd = SessionData::model()->findByPk(Yii::app()->user->id)) !== null) {
-        //    $sd->delete();
-        //}
-
         Yii::app()->user->logout();
         $this->redirect(Yii::app()->homeUrl);
     }
@@ -84,6 +79,22 @@ class SandscapeController extends BaseController {
 
     public function actionDashboard() {
         $this->render('dashboard');
+    }
+
+    public function actionRegister() {
+        $register = new RegisterForm();
+        if (isset($_POST['RegisterForm'])) {
+            $register->attributes = $_POST['RegisterForm'];
+            if ($register->register()) {
+                //TODO: show success message;
+            }
+        }
+
+        $this->render('register', array('register' => $register));
+    }
+
+    public function actionSearch() {
+        $this->render('search');
     }
 
 }

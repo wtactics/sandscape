@@ -48,12 +48,12 @@ class BaseController extends CController {
                     ),
                     array(
                         'label' => Yii::t('sandscape', 'Play'),
-                        'url' => array('sandscape/lobby'),
+                        'url' => array('lobby/index'),
                         'visible' => !Yii::app()->user->isGuest
                     )
                 )
             ),
-            TbHtml::navbarSearchForm('#'),
+            TbHtml::navbarSearchForm(array('sandscape/search')),
             array(
                 'class' => 'bootstrap.widgets.TbNav',
                 'items' => array(array(
@@ -87,8 +87,8 @@ class BaseController extends CController {
                             ),
                             TbHtml::menuDivider(),
                             array(
-                                'label' => Yii::t('sandscape', 'Profile'),
-                                'url' => array('users/profile')
+                                'label' => Yii::t('sandscape', 'Account'),
+                                'url' => array('users/account')
                             ),
                             array(
                                 'label' => Yii::t('sandscape', 'Logout'),
@@ -137,7 +137,7 @@ class BaseController extends CController {
 
     public function filters() {
         return array(
-            //'accessControl',
+            'accessControl',
             'postOnly + delete'
         );
     }
