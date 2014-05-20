@@ -52,6 +52,7 @@ class Card extends CActiveRecord {
             array('name, face, back', 'length', 'max' => 255),
             array('backFrom', 'in', 'range' => array('default', 'own', 'deck')),
             array('cardscapeRevisionId', 'numerical', 'integerOnly' => true),
+            array('cardscapeRevisionId', 'default', 'setOnEmpty' => true, 'value' => null),
             //search
             array('name, cardscapeRevisionId', 'safe', 'on' => 'search'),
         );

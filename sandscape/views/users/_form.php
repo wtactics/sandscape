@@ -21,9 +21,12 @@ echo $form->checkBoxControlGroup($user, 'showChatTimes'),
  $form->checkBoxControlGroup($user, 'reverseCards'),
  $form->checkBoxControlGroup($user, 'onHoverDetails');
 
-echo TbHtml::formActions(array(
-    TbHtml::submitButton('Submit', array('color' => TbHtml::BUTTON_COLOR_PRIMARY)),
-    TbHtml::button('Cancel')
-));
+$buttons = array(TbHtml::submitButton('Submit', array('color' => TbHtml::BUTTON_COLOR_SUCCESS)));
+if (!$user->isNewRecord) {
+    $buttons[] = TbHtml::linkButton('Add New', array('url' => array('new'), 'color' => TbHtml::BUTTON_COLOR_INFO));
+}
+$buttons[] = TbHtml::linkButton('Cancel', array('url' => array('index')));
+
+echo TbHtml::formActions($buttons);
 
 $this->endWidget();

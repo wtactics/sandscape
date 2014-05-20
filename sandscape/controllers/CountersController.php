@@ -70,7 +70,7 @@ class CountersController extends BaseController {
         $counter = $this->loadCounterModel($id);
         $this->performAjaxValidation('counter-form', $counter);
 
-        if (isset($_POST['erCounter'])) {
+        if (isset($_POST['Counter'])) {
             $counter->attributes = $_POST['Counter'];
             if ($counter->save()) {
                 $this->redirect(array('edit', 'id' => $counter->id));
