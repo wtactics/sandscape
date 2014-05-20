@@ -46,6 +46,10 @@
  */
 class User extends CActiveRecord {
 
+    const ADMIN_ROLE = 'administrator';
+    const PLAYER_ROLE = 'player';
+    const GAMEMASTER_ROLE = 'gamemaster';
+
     /**
      * @return User
      */

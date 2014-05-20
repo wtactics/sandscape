@@ -39,14 +39,17 @@ class BaseController extends CController {
                     array(
                         'label' => Yii::t('sandscape', 'Home'),
                         'url' => array('sandscape/index'),
+                        'visible' => Yii::app()->user->isGuest
                     ),
                     array(
                         'label' => Yii::t('sandscape', 'Dashboard'),
-                        'url' => array('sandscape/dashboard')
+                        'url' => array('sandscape/dashboard'),
+                        'visible' => !Yii::app()->user->isGuest
                     ),
                     array(
                         'label' => Yii::t('sandscape', 'Play'),
-                        'url' => array('sandscape/lobby')
+                        'url' => array('sandscape/lobby'),
+                        'visible' => !Yii::app()->user->isGuest
                     )
                 )
             ),
@@ -58,13 +61,15 @@ class BaseController extends CController {
                         'items' => array(
                             array(
                                 'label' => Yii::t('sandscape', 'Users'),
-                                'url' => array('users/index')
+                                'url' => array('users/index'),
+                                'visible' => Yii::app()->user->isAdministrator()
                             ),
                         ),
                     ),
                     array(
                         'label' => Yii::t('sandscape', 'Login'),
-                        'url' => array('#')
+                        'url' => array('#'),
+                        'visible' => Yii::app()->user->isGuest
                     ),
                     array(
                         'label' => Yii::t('sandscape', Yii::app()->user->name),
@@ -86,7 +91,8 @@ class BaseController extends CController {
                                 'label' => Yii::t('sandscape', 'Logout'),
                                 'url' => array('sandscape/logout')
                             ),
-                        )
+                        ),
+                        'visible' => !Yii::app()->user->isGuest
                     ),
                 ),
                 'htmlOptions' => array('class' => 'pull-right')
@@ -118,6 +124,7 @@ class BaseController extends CController {
                                 'url' => array('tokens/index')
                             ),
                         ),
+                        'visible' => Yii::app()->user->isGameMaster()
                     ),
                 ),
                 'htmlOptions' => array('class' => 'pull-right')

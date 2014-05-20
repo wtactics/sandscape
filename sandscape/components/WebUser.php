@@ -37,27 +37,28 @@ class WebUser extends CWebUser {
         return $this->_user;
     }
 
-//    public function isAdministrator() {
-//        if ($this->isGuest) {
-//            return false;
-//        }
-//
-//        return $this->_user->role == User::ADMIN_ROLE;
-//    }
-//
-//    public function isModerator() {
-//        if ($this->isGuest) {
-//            return false;
-//        }
-//
-//        return ($this->_user->role == User::ADMIN_ROLE || $this->_user->role == User::MODERATOR_ROLE);
-//    }
-//
-//    public function isRegularUser() {
-//        if ($this->isGuest) {
-//            return false;
-//        }
-//
-//        return true;
-//    }
+    public function isAdministrator() {
+        if ($this->isGuest) {
+            return false;
+        }
+
+        return $this->_user->role == User::ADMIN_ROLE;
+    }
+
+    public function isGameMaster() {
+        if ($this->isGuest) {
+            return false;
+        }
+
+        return ($this->_user->role == User::ADMIN_ROLE || $this->_user->role == User::GAMEMASTER_ROLE);
+    }
+
+    public function isPlayer() {
+        if ($this->isGuest) {
+            return false;
+        }
+
+        return true;
+    }
+
 }
