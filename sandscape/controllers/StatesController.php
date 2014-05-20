@@ -32,19 +32,19 @@ class StatesController extends BaseController {
         parent::__construct($id, $module);
     }
 
-//    public function accessRules() {
-//        return array(
-//            array(
-//                'allow',
-//                'actions' => array('index', 'create', 'view', 'update', 'delete'),
-//                'expression' => '$user->role == "administrator"'
-//            ),
-//            array(
-//                'deny',
-//                'users' => array('*')
-//            )
-//        );
-//    }
+    public function accessRules() {
+        return array(
+            array(
+                'allow',
+                'actions' => array('index', 'new', 'edit', 'delete'),
+                'expression' => '$user->isGameMaster()'
+            ),
+            array(
+                'deny',
+                'users' => array('*')
+            )
+        );
+    }
 
     public function actionIndex() {
         $filter = new State('search');
@@ -58,50 +58,46 @@ class StatesController extends BaseController {
     }
 
     public function actionNew() {
-//        $state = new State();
-//        $this->performAjaxValidation('state-form', $state);
-//
-//        if (isset($_POST['State'])) {
-//            $state->attributes = $_POST['State'];
-//            $this->saveUpload($state);
-//
-//            if ($state->save()) {
-//                $this->redirect(array('view', 'id' => $state->id));
-//            }
-//        }
-//
-//        $this->render('update', array('state' => $state));
+        $state = new State();
+        $this->performAjaxValidation('state-form', $state);
+
+        if (isset($_POST['State'])) {
+            $state->attributes = $_POST['State'];
+            //$this->saveUpload($state);
+
+            if ($state->save()) {
+                $this->redirect(array('edit', 'id' => $state->id));
+            }
+        }
+
+        $this->render('update', array('state' => $state));
     }
 
     public function actionEdit($id) {
-//        $state = $this->loadStateModel($id);
-//        $this->performAjaxValidation('state-form', $state);
-//
-//        if (isset($_POST['State'])) {
-//            $state->attributes = $_POST['State'];
-//            $this->saveUpload($state);
-//
-//            if ($state->save()) {
-//                $this->redirect(array('view', 'id' => $state->id));
-//            }
-//        }
-//
-//        $this->render('update', array('state' => $state));
+        $state = $this->loadStateModel($id);
+        $this->performAjaxValidation('state-form', $state);
+
+        if (isset($_POST['State'])) {
+            $state->attributes = $_POST['State'];
+            //$this->saveUpload($state);
+
+            if ($state->save()) {
+                $this->redirect(array('edit', 'id' => $state->id));
+            }
+        }
+
+        $this->render('update', array('state' => $state));
     }
 
     public function actionDelete($id) {
-//        if (Yii::app()->user->role == 'administrator' && Yii::app()->request->isPostRequest) {
-//            $state = $this->loadStateModel($id);
-//
-//            $state->active = 0;
-//            $state->save();
-//
-//            if (!isset($_GET['ajax'])) {
-//                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
-//            }
-//        } else {
-//            throw new CHttpException(400, Yii::t('sandscape', 'Invalid request. Please do not repeat this request again.'));
-//        }
+        $state = $this->loadStateModel($id);
+
+        $state->active = 0;
+        $state->save();
+
+        if (!isset($_GET['ajax'])) {
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+        }
     }
 
     private function saveUpload(State $state) {

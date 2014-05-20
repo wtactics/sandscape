@@ -1,8 +1,8 @@
 <?php
-/** @var $this UsersController */
-$this->title = Yii::t('sandscape', 'Dice List');
+/** @var DiceController $this */
+$this->title = Yii::t('sandscape', 'Dice');
 ?>
-<h2><?php echo Yii::t('sandscape', 'Dice List') ?></h2>
+<h2><?php echo Yii::t('sandscape', 'Dice') ?></h2>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(

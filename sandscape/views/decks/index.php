@@ -3,7 +3,7 @@
 $this->title = Yii::t('sandscape', 'Decks');
 ?>
 
-<h2><?php echo Yii::t('sandscape', 'Deck List'); ?></h2>
+<h2><?php echo Yii::t('sandscape', 'Deck'); ?></h2>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(

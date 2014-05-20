@@ -3,7 +3,7 @@
 $this->title = Yii::t('sandscape', 'Edit User');
 ?>
 
-<h2>Edit User</h2>
+<h2><?php echo Yii::t('sandscape', 'Edit User'); ?></h2>
 
 <?php
 $this->renderPartial('_form', array('user' => $user));

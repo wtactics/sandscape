@@ -27,19 +27,19 @@ class CountersController extends BaseController {
         parent::__construct($id, $module);
     }
 
-//    public function accessRules() {
-//        return array(
-//            array(
-//                'allow',
-//                'actions' => array('index', 'create', 'view', 'update', 'delete'),
-//                'expression' => '$user->role == "administrator"'
-//            ),
-//            array(
-//                'deny',
-//                'users' => array('*')
-//            )
-//        );
-//    }
+    public function accessRules() {
+        return array(
+            array(
+                'allow',
+                'actions' => array('index', 'new', 'edit', 'delete'),
+                'expression' => '$user->isGameMaster()'
+            ),
+            array(
+                'deny',
+                'users' => array('*')
+            )
+        );
+    }
 
     public function actionIndex() {
         $filter = new Counter('search');
@@ -53,46 +53,42 @@ class CountersController extends BaseController {
     }
 
     public function actionNew() {
-//        $counter = new Counter();
-//        $this->performAjaxValidation('counter-form', $counter);
-//
-//        if (isset($_POST['Counter'])) {
-//            $counter->attributes = $_POST['Counter'];
-//            if ($counter->save()) {
-//                $this->redirect(array('view', 'id' => $counter->id));
-//            }
-//        }
-//
-//        $this->render('create', array('counter' => $counter));
+        $counter = new Counter();
+        $this->performAjaxValidation('counter-form', $counter);
+
+        if (isset($_POST['Counter'])) {
+            $counter->attributes = $_POST['Counter'];
+            if ($counter->save()) {
+                $this->redirect(array('edit', 'id' => $counter->id));
+            }
+        }
+
+        $this->render('create', array('counter' => $counter));
     }
 
     public function actionEdit($id) {
-//        $counter = $this->loadCounterModel($id);
-//        $this->performAjaxValidation('counter-form', $counter);
-//
-//        if (isset($_POST['erCounter'])) {
-//            $counter->attributes = $_POST['Counter'];
-//            if ($counter->save()) {
-//                $this->redirect(array('view', 'id' => $counter->id));
-//            }
-//        }
-//
-//        $this->render('update', array('counter' => $counter));
+        $counter = $this->loadCounterModel($id);
+        $this->performAjaxValidation('counter-form', $counter);
+
+        if (isset($_POST['erCounter'])) {
+            $counter->attributes = $_POST['Counter'];
+            if ($counter->save()) {
+                $this->redirect(array('edit', 'id' => $counter->id));
+            }
+        }
+
+        $this->render('update', array('counter' => $counter));
     }
 
     public function actionDelete($id) {
-//        if (Yii::app()->user->role == 'administrator' && Yii::app()->request->isPostRequest) {
-//            $counter = $this->loadCounterModel($id);
-//
-//            $counter->active = 0;
-//            $counter->save();
-//
-//            if (!isset($_GET['ajax'])) {
-//                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
-//            }
-//        } else {
-//            throw new CHttpException(400, Yii::t('sandscape', 'Invalid request. Please do not repeat this request again.'));
-//        }
+        $counter = $this->loadCounterModel($id);
+
+        $counter->active = 0;
+        $counter->save();
+
+        if (!isset($_GET['ajax'])) {
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+        }
     }
 
     private function loadCounterModel($id) {

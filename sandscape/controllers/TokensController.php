@@ -32,19 +32,19 @@ class TokensController extends BaseController {
         parent::__construct($id, $module);
     }
 
-//    public function accessRules() {
-//        return array(
-//            array(
-//                'allow',
-//                'actions' => array('index', 'create', 'view', 'update', 'delete'),
-//                'expression' => '$user->role == "administrator"'
-//            ),
-//            array(
-//                'deny',
-//                'users' => array('*')
-//            )
-//        );
-//    }
+    public function accessRules() {
+        return array(
+            array(
+                'allow',
+                'actions' => array('index', 'new', 'edit', 'delete'),
+                'expression' => '$user->isGameMaster()'
+            ),
+            array(
+                'deny',
+                'users' => array('*')
+            )
+        );
+    }
 
     public function actionIndex() {
         $filter = new Token('search');
@@ -58,50 +58,46 @@ class TokensController extends BaseController {
     }
 
     public function actionNew() {
-//        $token = new Token();
-//        $this->performAjaxValidation('token-form', $token);
-//
-//        if (isset($_POST['Token'])) {
-//            $token->attributes = $_POST['Token'];
-//            $this->saveUpload($token);
-//
-//            if ($token->save()) {
-//                $this->redirect(array('view', 'id' => $token->id));
-//            }
-//        }
-//
-//        $this->render('create', array('token' => $token));
+        $token = new Token();
+        $this->performAjaxValidation('token-form', $token);
+
+        if (isset($_POST['Token'])) {
+            $token->attributes = $_POST['Token'];
+            //$this->saveUpload($token);
+
+            if ($token->save()) {
+                $this->redirect(array('edit', 'id' => $token->id));
+            }
+        }
+
+        $this->render('create', array('token' => $token));
     }
 
     public function actionEdit($id) {
-//        $token = $this->loadTokenModel($id);
-//        $this->performAjaxValidation('token-form', $token);
-//
-//        if (isset($_POST['Token'])) {
-//            $token->attributes = $_POST['Token'];
-//            $this->saveUpload($token);
-//
-//            if ($token->save()) {
-//                $this->redirect(array('update', 'id' => $token->id));
-//            }
-//        }
-//
-//        $this->render('update', array('token' => $token));
+        $token = $this->loadTokenModel($id);
+        $this->performAjaxValidation('token-form', $token);
+
+        if (isset($_POST['Token'])) {
+            $token->attributes = $_POST['Token'];
+            //$this->saveUpload($token);
+
+            if ($token->save()) {
+                $this->redirect(array('edit', 'id' => $token->id));
+            }
+        }
+
+        $this->render('update', array('token' => $token));
     }
 
     public function actionDelete($id) {
-//        if (Yii::app()->user->role == 'administrator' && Yii::app()->request->isPostRequest) {
-//            $token = $this->loadTokenModel($id);
-//
-//            $token->active = 0;
-//            $token->save();
-//
-//            if (!isset($_GET['ajax'])) {
-//                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
-//            }
-//        } else {
-//            throw new CHttpException(400, Yii::t('sandscape', 'Invalid request. Please do not repeat this request again.'));
-//        }
+        $token = $this->loadTokenModel($id);
+
+        $token->active = 0;
+        $token->save();
+
+        if (!isset($_GET['ajax'])) {
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+        }
     }
 
     private function saveUpload(Token $token) {

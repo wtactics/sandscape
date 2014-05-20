@@ -32,19 +32,19 @@ class CardsController extends BaseController {
         parent::__construct($id, $module);
     }
 
-//    public function accessRules() {
-//        return array(
-//            array(
-//                'allow',
-//                'actions' => array('index', 'create', 'view', 'update'),
-//                'expression' => '$user->role == "administrator"'
-//            ),
-//            array(
-//                'deny',
-//                'users' => array('*')
-//            )
-//        );
-//    }
+    public function accessRules() {
+        return array(
+            array(
+                'allow',
+                'actions' => array('index', 'new', 'edit', 'delete'),
+                'expression' => '$user->isGameMaster()'
+            ),
+            array(
+                'deny',
+                'users' => array('*')
+            )
+        );
+    }
 
     public function actionIndex() {
         $filter = new Card('search');
@@ -58,54 +58,50 @@ class CardsController extends BaseController {
     }
 
     public function actionNew() {
-//        $card = new Card();
-//        $this->performAjaxValidation('card-form', $card);
-//
-//        if (isset($_POST['Card'])) {
-//            $card->attributes = $_POST['Card'];
-//
-//            $this->saveUpload($card, 'face');
-//            $this->saveUpload($card, 'back');
-//
-//            if ($card->save()) {
-//                $this->redirect(array('view', 'id' => $card->id));
-//            }
-//        }
-//
-//        $this->render('create', array('card' => $card));
+        $card = new Card();
+        $this->performAjaxValidation('card-form', $card);
+
+        if (isset($_POST['Card'])) {
+            $card->attributes = $_POST['Card'];
+
+            //$this->saveUpload($card, 'face');
+            //$this->saveUpload($card, 'back');
+
+            if ($card->save()) {
+                $this->redirect(array('edit', 'id' => $card->id));
+            }
+        }
+
+        $this->render('create', array('card' => $card));
     }
 
     public function actionEdit($id) {
-//        $card = $this->loadCardModel($id);
-//        $this->performAjaxValidation('card-form', $card);
-//
-//        if (isset($_POST['Card'])) {
-//            $card->attributes = $_POST['Card'];
-//
-//            $this->saveUpload($card, 'face');
-//            $this->saveUpload($card, 'back');
-//
-//            if ($card->save()) {
-//                $this->redirect(array('view', 'id' => $card->id));
-//            }
-//        }
-//
-//        $this->render('update', array('card' => $card));
+        $card = $this->loadCardModel($id);
+        $this->performAjaxValidation('card-form', $card);
+
+        if (isset($_POST['Card'])) {
+            $card->attributes = $_POST['Card'];
+
+            //$this->saveUpload($card, 'face');
+            //$this->saveUpload($card, 'back');
+
+            if ($card->save()) {
+                $this->redirect(array('edit', 'id' => $card->id));
+            }
+        }
+
+        $this->render('update', array('card' => $card));
     }
 
     public function actionDelete($id) {
-//        if (Yii::app()->user->role == 'administrator' && Yii::app()->request->isPostRequest) {
-//            $card = $this->loadCardModel($id);
-//
-//            $card->active = 0;
-//            $card->save();
-//
-//            if (!isset($_GET['ajax'])) {
-//                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
-//            }
-//        } else {
-//            throw new CHttpException(400, Yii::t('sandscape', 'Invalid request. Please do not repeat this request again.'));
-//        }
+        $card = $this->loadCardModel($id);
+
+        $card->active = 0;
+        $card->save();
+
+        if (!isset($_GET['ajax'])) {
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+        }
     }
 
     private function saveUpload(Card $card, $field) {

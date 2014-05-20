@@ -36,20 +36,9 @@ class DecksController extends BaseController {
         return array(
             array(
                 'allow',
-                'actions' => array('index', 'new'),
-                'users' => array('@')
+                'actions' => array('index', 'edit', 'delete'),
+                'expression' => '$user->isAdministrator()'
             ),
-            array(
-                'allow',
-                'actions' => array('edit', 'delete'),
-                'expression' => function($user) {
-            $deck = Deck::model()->findByPk((int) $_GET['id']);
-            if ($deck && $deck->ownerId == $user->id) {
-                return true;
-            }
-
-            return false;
-        }),
             array(
                 'deny',
                 'users' => array('*')
@@ -67,28 +56,8 @@ class DecksController extends BaseController {
         if (isset($_GET['Deck'])) {
             $filter->attributes = $_GET['Deck'];
         }
-        $filter->ownerId = Yii::app()->user->id;
 
         $this->render('index', array('filter' => $filter, 'cardCount' => $cardCount));
-    }
-
-    public function actionNew() {
-        $deck = new Deck();
-        $this->performAjaxValidation('deck-form', $deck);
-
-        if (isset($_POST['Deck'])) {
-            $deck->attributes = $_POST['Deck'];
-            $deck->userId = Yii::app()->user->id;
-            $deck->createdOn = date('Y-m-d H:i');
-
-            //$this->saveUpload($deck);
-
-            if ($deck->save()) {
-                //$this->redirect(array('view', 'id' => $deck->id));
-            }
-        }
-
-        $this->render('create', array('deck' => $deck));
     }
 
     public function actionEdit($id) {

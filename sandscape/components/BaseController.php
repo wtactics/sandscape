@@ -53,7 +53,6 @@ class BaseController extends CController {
                     )
                 )
             ),
-            TbHtml::navbarSearchForm(array('sandscape/search')),
             array(
                 'class' => 'bootstrap.widgets.TbNav',
                 'items' => array(array(
@@ -79,7 +78,7 @@ class BaseController extends CController {
                         'items' => array(
                             array(
                                 'label' => Yii::t('sandscape', 'Decks'),
-                                'url' => array('users/decks', 'id' => Yii::app()->user->id)
+                                'url' => array('decks/index', 'id' => Yii::app()->user->id)
                             ),
                             array(
                                 'label' => Yii::t('sandscape', 'Stats'),
@@ -103,11 +102,15 @@ class BaseController extends CController {
             array(
                 'class' => 'bootstrap.widgets.TbNav',
                 'items' => array(array(
-                        'label' => Yii::t('sandscape', 'Games'),
+                        'label' => Yii::t('sandscape', 'Game'),
                         'items' => array(
                             array(
                                 'label' => Yii::t('sandscape', 'Cards'),
                                 'url' => array('cards/index')
+                            ),
+                            array(
+                                'label' => Yii::t('sandscape', 'Decks'),
+                                'url' => array('userdecks/index')
                             ),
                             TbHtml::menuDivider(),
                             array(

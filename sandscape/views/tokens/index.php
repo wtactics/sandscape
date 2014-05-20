@@ -1,8 +1,8 @@
 <?php
 /** @var $this TokensController */
-$this->title = Yii::t('sandscape', 'Game Tokens');
+$this->title = Yii::t('sandscape', 'Tokens');
 ?>
-<h2><?php echo Yii::t('sandscape', 'Game Tokens'); ?></h2>
+<h2><?php echo Yii::t('sandscape', 'Tokens'); ?></h2>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(

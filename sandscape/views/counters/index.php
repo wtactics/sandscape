@@ -1,9 +1,9 @@
 <?php
-/** @var $this CounterController */
-$this->title = Yii::t('sandscape', 'Player Counters');
+/** @var CountersController $this */
+$this->title = Yii::t('sandscape', 'Counters');
 ?>
 
-<h2><?php echo Yii::t('sandscape', 'Player Counters'); ?></h2>
+<h2><?php echo Yii::t('sandscape', 'Counters'); ?></h2>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(

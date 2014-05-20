@@ -1,2 +1,5 @@
-<h2>Game Lobby</h2>
+<?php
+/** @var LobbyController $this */
+?>
+<h2><?php echo Yii::t('interface', 'Game Lobby'); ?></h2>
 

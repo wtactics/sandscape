@@ -32,7 +32,7 @@ class SandscapeController extends BaseController {
             ),
             array(
                 'allow',
-                'actions' => array('logout'),
+                'actions' => array('logout', 'dashboard'),
                 'users' => array('@')
             ),
             array(
@@ -91,10 +91,6 @@ class SandscapeController extends BaseController {
         }
 
         $this->render('register', array('register' => $register));
-    }
-
-    public function actionSearch() {
-        $this->render('search');
     }
 
 }

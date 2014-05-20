@@ -1,5 +1,8 @@
-<?php $this->title = Yii::t('sandscape', 'Card States'); ?>
-<h2><?php echo Yii::t('sandscape', 'Card States'); ?></h2>
+<?php
+/** @var StatesController $this */
+$this->title = Yii::t('sandscape', 'States');
+?>
+<h2><?php echo Yii::t('sandscape', 'States'); ?></h2>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
