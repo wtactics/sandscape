@@ -1,6 +1,6 @@
 <?php
 
-/* DecksController.php
+/* UserdecksController.php
  *  
  * This file is part of Sandscape, a virtual, browser based, table allowing 
  * people to play a customizable card games (CCG) online.
@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class DecksController extends BaseController {
+class UserdecksController extends BaseController {
 
 //    private static $NORMAL_WIDTH = 250;
 //    private static $NORMAL_HEIGHT = 354;
