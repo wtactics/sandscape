@@ -27,9 +27,8 @@ class UserIdentity extends CUserIdentity {
 
     public function authenticate() {
         $this->errorCode = self::ERROR_NONE;
-        $user = User::model()->find('email = :e OR name = :n', array(
-            ':e' => $this->username,
-            ':n' => $this->username
+        $user = User::model()->find('email = :e', array(
+            ':e' => $this->username
         ));
 
         if ($user === null) {

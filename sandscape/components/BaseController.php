@@ -69,6 +69,9 @@ class BaseController extends CController {
                     array(
                         'label' => Yii::t('sandscape', 'Login'),
                         'url' => array('#'),
+                        'items' => array(
+                            HHtml::loginForm(array('sandscape/login'))
+                        ),
                         'visible' => Yii::app()->user->isGuest
                     ),
                     array(

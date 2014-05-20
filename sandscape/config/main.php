@@ -11,6 +11,7 @@ return array(
     'import' => array(
         'application.models.*',
         'application.components.*',
+        'application.extensions.*',
         //
         'bootstrap.behaviors.*',
         'bootstrap.form.*',

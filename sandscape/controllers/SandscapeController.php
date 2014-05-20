@@ -48,31 +48,19 @@ class SandscapeController extends BaseController {
     }
 
     public function actionLogin() {
-//        $login = new LoginForm();
-//        $register = new RegisterForm();
-//
-//        $this->performAjaxValidation('register-form', $register);
-//
-//        if (isset($_POST['LoginForm'])) {
-//            $login->attributes = $_POST['LoginForm'];
-//            if ($login->validate() && $login->login()) {
-//                $this->redirect(Yii::app()->user->returnUrl);
-//            }
-//        } else if (isset($_POST['RegisterForm'])) {
-//            $register->attributes = $_POST['RegisterForm'];
-//            if ($register->validate() && $register->register()) {
-//                $login->email = $register->email;
-//                $login->password = $register->password;
-//
-//                if ($login->login()) {
-//                    $this->redirect(Yii::app()->user->returnUrl);
-//                } else {
-//                    $this->redirect(array('index'));
-//                }
-//            }
-//        }
-//
-//        $this->render('login', array('login' => $login, 'register' => $register));
+        $login = new LoginForm();
+        if (isset($_POST['LoginForm'])) {
+            $login->attributes = $_POST['LoginForm'];
+            if ($login->login()) {
+                if (Yii::app()->user->returnUrl) {
+                    $this->redirect(Yii::app()->user->returnUrl);
+                } else {
+                    $this->redirect(array('dashboard'));
+                }
+            }
+        }
+
+        $this->render('login', array('login' => $login));
     }
 
     public function actionLogout() {
