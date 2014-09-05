@@ -10,7 +10,7 @@ $baseUrl = Yii::app()->baseUrl;
 
         <link type="text/css" rel="stylesheet" href="<?php echo $baseUrl; ?>/css/sandscape.css">
 
-
+        <script src="<?php echo $baseUrl; ?>/js/jquery-2.1.1.min.js"></script>
         <title><?php echo CHtml::encode($this->title); ?></title>
     </head>
 

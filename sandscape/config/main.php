@@ -5,11 +5,12 @@ $params = include 'params.php';
 
 Yii::setPathOfAlias('bootstrap', dirname(__FILE__) . '/../extensions/yiistrap');
 return array(
-    'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..',
+    'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
     'name' => 'Sandscape',
     'defaultController' => 'sandscape',
     'import' => array(
         'application.models.*',
+        'application.models.game.*',
         'application.components.*',
         'application.extensions.*',
         //
@@ -21,6 +22,15 @@ return array(
     'components' => array(
         'bootstrap' => array(
             'class' => 'bootstrap.components.TbApi',
+        ),
+        'clientScript' => array(
+            'scriptMap' => array(
+                'jquery.js' => false,
+                'jquery.min.js' => false,
+                'jquery-ui.js' => false,
+                'jquery-ui.min.js' => false,
+                'jquery-ui.css' => false
+            )
         ),
         'user' => array(
             'allowAutoLogin' => true,

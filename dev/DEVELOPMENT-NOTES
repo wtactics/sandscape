@@ -1,55 +1,20 @@
-# Simple notes to remind me (and anyone that wants to use them), not always understandable :)
+Development Notes
+=================
 
-CHECK VIEWS/CARDS/INDEX FOR EXAMPLE ON TWITTER BOOTSTRAP
+Simple notes to remind me (and anyone that wants to use them), 
+not always understandable :). Will contain features in discussion, notes about 
+pending problems and any bit of info I want to review at a later time.
 
+Features
+--------
 
-Remove hardcoded css in forms for cards, states and tokens.
+- Implement a card gallery available for everyone
+- Add deck and game counts to user view by administrators, also game lists when possible.
+- Setting to allow users to see deck after game ended.
+- Game reports for each user and for system.
 
-Setting to allow users to see deck after game ended.
-Game reports for each user and for system.
-Replace right-click menu in game.
-
-================================================================================
-Chat about adding more control and options to the game table, with NeWiTa.
-17:23:20 isto por exemplo, para jogar marvel tcg, o jogador metia uma grelha de 3 linhas e colunas infinitas
-17:24:14 tornava-se logo mais fácil usar isto para jogar um match, visto que tinhas logo os sítios certos para meter as cartas em vez de ser a olhómetro, percebes?
-17:25:03 este género de jogos tem (quase?) sempre sítios específicos onde meter as coisas, pelo que se estiver um bocadinho ao lado já pode ser interpretado como uma carta a fazer um papel diferente
-17:25:27 por exemplo, no marvel, se estiver na célula do canto inferior esquerdo é o cemitério
-17:25:42 se estiver ao lado já é uma carta em mão (visível)
-17:25:48 se estiver mais ao lado é um recurso
-17:26:08 daí uma grelha customizável dar jeito para aquilo
-17:26:52 outra coisa é os turnos serem também customizáveis, com nomes atribuíveis
-17:27:20 porque num turno tens a fase dos recursos, a fase de recrutamento, combate, ataque, defesa
-17:27:22 etc
-17:27:36 magic the gathering é mais soft nesse aspecto
-17:28:18 mas é algo que importa, porque o que podes fazer com as cartas varia consoante o turno em que estás
-17:28:41 se o criador do jogo puder definir isso, dá para fazer tudo
-17:28:57 se não puder, a alternativa é dizer no chat "ok, agora estamos no turno tal"
-17:29:22 atenção que não é para programar as regras
-17:29:44 as regras os jogadores é que as têm de saber senão torna-se incomportável programar tudo
-17:30:00 era na criação de um novo jogo, escrever os nomes dos turnos em sequência
-17:30:43 e depois à medida que se joga, cada jogador clica em "next" no fim do seu turno, e aquilo passao ao próximo
-17:30:47 *passa ao
-17:31:03 é que sem turnos há certos jogos que não dão para jogar mesmo
-17:31:17 o marvel não dá, e suspeito que o magic também não
-================================================================================
-
-Implement a card gallery available for everyone (use colorbox)
-Maybe replace simple.modal with color box everywhere?
-
-If there are no counters setup for the game, disable the counters menu.
-Disable states and tokens if none exist.
-
-==================
-
-UPDATED NOTES AS OF REBOOT...
-
-Add deck and game counts to user view by administrators, also game lists when possible.
-
-
------------------------------
-
-
+Database Tables
+---------------
 CREATE TABLE `SessionData` (
 `id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
 `token` VARCHAR( 32 ) NULL, 
@@ -80,17 +45,6 @@ CONSTRAINT `fkGameUserWinner` FOREIGN KEY (`winnerId`) REFERENCES `User`(`id`) ,
 CONSTRAINT `fkGameUserPlayer` FOREIGN KEY (`playerId`) REFERENCES `User`(`id`) ,
 CONSTRAINT `fkGameUserOpponent` FOREIGN KEY (`opponentId`) REFERENCES `User`(`id`) ,
 CONSTRAINT `fkGameUserLimit` FOREIGN KEY (`limitOpponentId`) REFERENCES `User` (`id`)
-) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
-
-CREATE TABLE `ChatMessage` (
-`id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
-`message` TEXT NOT NULL ,
-`sentTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-`senderId` INT UNSIGNED NOT NULL ,
-`gameId` INT UNSIGNED NULL ,
-`system` TINYINT NOT NULL DEFAULT 0 ,
-CONSTRAINT `fkChatMessageUser` FOREIGN KEY (`senderId`) REFERENCES `User`(`id`) ,
-CONSTRAINT `fkChatMessageGame` FOREIGN KEY (`gameId`) REFERENCES `Game`(`id`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
 
 CREATE TABLE GameDeck (
@@ -126,3 +80,30 @@ PRIMARY KEY (`diceId`, `gameId`) ,
 CONSTRAINT `fkGameDiceDice` FOREIGN KEY (`diceId`) REFERENCES `Dice`(`id`) ,
 CONSTRAINT `fkGameDiceDeck` FOREIGN KEY (`gameId`) REFERENCES `Game`(`id`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+
+Other
+-----
+
+NOTE: Chat about adding more control and options to the game table, with NeWiTa.
+
+17:23:20 isto por exemplo, para jogar marvel tcg, o jogador metia uma grelha de 3 linhas e colunas infinitas
+17:24:14 tornava-se logo mais fácil usar isto para jogar um match, visto que tinhas logo os sítios certos para meter as cartas em vez de ser a olhómetro, percebes?
+17:25:03 este género de jogos tem (quase?) sempre sítios específicos onde meter as coisas, pelo que se estiver um bocadinho ao lado já pode ser interpretado como uma carta a fazer um papel diferente
+17:25:27 por exemplo, no marvel, se estiver na célula do canto inferior esquerdo é o cemitério
+17:25:42 se estiver ao lado já é uma carta em mão (visível)
+17:25:48 se estiver mais ao lado é um recurso
+17:26:08 daí uma grelha customizável dar jeito para aquilo
+17:26:52 outra coisa é os turnos serem também customizáveis, com nomes atribuíveis
+17:27:20 porque num turno tens a fase dos recursos, a fase de recrutamento, combate, ataque, defesa
+17:27:22 etc
+17:27:36 magic the gathering é mais soft nesse aspecto
+17:28:18 mas é algo que importa, porque o que podes fazer com as cartas varia consoante o turno em que estás
+17:28:41 se o criador do jogo puder definir isso, dá para fazer tudo
+17:28:57 se não puder, a alternativa é dizer no chat "ok, agora estamos no turno tal"
+17:29:22 atenção que não é para programar as regras
+17:29:44 as regras os jogadores é que as têm de saber senão torna-se incomportável programar tudo
+17:30:00 era na criação de um novo jogo, escrever os nomes dos turnos em sequência
+17:30:43 e depois à medida que se joga, cada jogador clica em "next" no fim do seu turno, e aquilo passao ao próximo
+17:30:47 *passa ao
+17:31:03 é que sem turnos há certos jogos que não dão para jogar mesmo
+17:31:17 o marvel não dá, e suspeito que o magic também não
