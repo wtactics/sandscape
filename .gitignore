@@ -1,20 +1,18 @@
-# Yii framework
+# IDE & Project Setup
+nbproject/private/
+vagrant.config.lock
 phpunit.xml
-/framework
+.vagrant
 
-# IDEs
-nbproject
-
-# Cache files
+# OS cache files
 .DS_Store
+Thumbs.db
 ._.*
+
+# Misc Dev
 *~
 *.orig
-Thumbs.db
-.directory
+database.seed.sql
 
-# Development
-_dev-ignore
-sandscape/config/local
-public/.htaccess
-debug.lock
+# Vendor & Tools
+/vendor

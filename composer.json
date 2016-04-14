@@ -1,0 +1,54 @@
+{
+    "name": "wtactics/sandscape",
+    "description": "A web and browser based platform that allows users to play CCGs, collectible card games.",
+    "keywords": ["wtactics, ccg, collectible card game"],
+    "homepage": "https://github.com/wtactics/sandscape",
+    "type": "project",
+    "license": "",
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2": "*",
+        "yiisoft/yii2-bootstrap": "*",
+        "yiisoft/yii2-swiftmailer": "*",
+        "masterexploder/phpthumb": "dev-master"
+    },
+    "require-dev": {
+        "yiisoft/yii2-codeception": "*",
+        "yiisoft/yii2-debug": "*",
+        "yiisoft/yii2-gii": "*",
+        "yiisoft/yii2-faker": "*",
+        "codeception/codeception": "*",
+        "squizlabs/php_codesniffer": "2.*",
+        "phploc/phploc": "*",
+        "pdepend/pdepend": "2.*",
+        "phpmd/phpmd": "@stable",
+        "sebastian/phpcpd": "*",
+        "theseer/phpdox": "*"
+    },
+    "config": {
+        "process-timeout": 1800
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "yii\\composer\\Installer::postCreateProject"
+        ]
+    },
+    "extra": {
+        "yii\\composer\\Installer::postCreateProject": {
+            "setPermission": [
+                {
+                    "sandscape/management/runtime": "0777",
+                    "sandscape/console/runtime": "0777",
+                    "sandscape/game/runtime": "0777",
+                    "sandscape/yii": "0755",
+                    "web/assets": "0777"
+                }
+            ]
+        },
+        "asset-installer-paths": {
+            "npm-asset-library": "vendor/npm",
+            "bower-asset-library": "vendor/bower"
+        }
+    }
+}
