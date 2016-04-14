@@ -10,7 +10,7 @@
  */
 Yii::setAlias('@container', realpath(__DIR__ . '/../../'));
 //
-Yii::setAlias('@management', realpath(__DIR__ . '/../../@management'));
+Yii::setAlias('@platform', realpath(__DIR__ . '/../../@platform'));
 Yii::setAlias('@common', realpath(__DIR__ . '/../../common'));
 Yii::setAlias('@console', realpath(__DIR__ . '/../../console'));
 Yii::setAlias('game', realpath(__DIR__ . '/../../game'));

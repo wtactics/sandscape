@@ -38,9 +38,8 @@
         "yii\\composer\\Installer::postCreateProject": {
             "setPermission": [
                 {
-                    "sandscape/management/runtime": "0777",
+                    "sandscape/platform/runtime": "0777",
                     "sandscape/console/runtime": "0777",
-                    "sandscape/game/runtime": "0777",
                     "sandscape/yii": "0755",
                     "web/assets": "0777"
                 }

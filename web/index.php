@@ -11,6 +11,5 @@ require(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');
 require(__DIR__ . '/../sandscape/common/config/bootstrap.php');
 
 $config = yii\helpers\ArrayHelper::merge(require(__DIR__ . '/../sandscape/common/config/main.php')
-                , require(__DIR__ . '/../sandscape/management/config/main.php')
-                , require(__DIR__ . '/../sandscape/game/config/main.php'));
+                , require(__DIR__ . '/../sandscape/platform/config/main.php'));
 (new yii\web\Application($config))->run();
