@@ -25,8 +25,10 @@ $config = yii\helpers\ArrayHelper::merge(
 
 // Debug toolbar is not available in console apps, removing it to avoid error 
 // messages in the log files.
-unset($config['bootstrap']['debug']);
-unset($config['modules']['debug']);
+if (isset($config['bootstrap']['debug'])) {
+    unset($config['bootstrap']['debug']);
+    unset($config['modules']['debug']);
+}
 
 $application = new yii\console\Application($config);
 $exitCode = $application->run();
