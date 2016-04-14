@@ -23,12 +23,14 @@
 
 namespace app\controllers;
 
+use app\models\filters\Users;
+use common\models\User;
+
 /**
  * @author Sérgio Lopes <knitter.is@gmail.com>
  * @copyright (c) 2016, WTactics Project
  */
 final class UserController extends \yii\web\Controller {
-
 //TODO: ...
 //    /**
 //     * @inheritdoc
@@ -51,79 +53,63 @@ final class UserController extends \yii\web\Controller {
 //        ];
 //    }
 
+    /**
+     * @return string
+     */
     public function actionIndex() {
-//        $filter = new User('search');
-//        $filter->unsetAttributes();
-//
-//        if (isset($_GET['User'])) {
-//            $filter->attributes = $_GET['User'];
-//        }
-//
-//        $this->render('index', array('filter' => $filter));
+        $filter = new Users();
+        return $this->render('index', ['filter' => $filter]);
     }
 
+    /**
+     * @return \yii\web\Response
+     */
     public function actionNew() {
-//        $user = new User();
-//        $this->performAjaxValidation('user-form', $user);
-//
-//        if (isset($_POST['User'])) {
-//            $user->attributes = $_POST['User'];
-//            if ($user->save()) {
-//                $this->redirect(array('edit', 'id' => $user->id));
-//            }
-//        }
-//
-//        $this->render('create', array('user' => $user));
+        $user = new User();
+
+        if ($user->load(Yii::$app->request->post())) {
+            if ($user->save()) {
+                return $this->redirect(['edit', 'id' => $user->id]);
+            }
+        }
+
+        $this->render('new', ['user' => $user]);
     }
 
+    /**
+     * @param string $id
+     * @return \yii\web\Response
+     */
     public function actionEdit($id) {
-//        $user = $this->loadUserModel($id);
-//        $this->performAjaxValidation('user-form', $user);
-//
-//        if (isset($_POST['User'])) {
-//            $user->attributes = $_POST['User'];
-//            if ($user->save()) {
-//                $this->redirect(array('edit', 'id' => $user->id));
-//            }
-//        }
-//
-//        $this->render('update', array('user' => $user));
+        $user = $this->findUser($id);
+        if ($user->load(Yii::$app->request->post())) {
+            if ($user->save()) {
+                return $this->redirect(['edit', 'id' => $user->id]);
+            }
+        }
+
+        return $this->render('edit', ['user' => $user]);
     }
 
-    public function actionDelete($id) {
-//        $user = $this->loadUserModel($id);
-//
-//        $user->active = 0;
-//        $user->save();
-//
-//        if (!isset($_GET['ajax'])) {
-//            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
-//        }
+    /**
+     * @param string $id
+     * @return \yii\web\Response
+     */
+    public function actionRemove($id) {
+        $user = $this->findUser($id);
+        //TODO: ...
+
+        return $this->redirect(['index']);
     }
 
-//    public function actionAccount() {
-//        $user = $this->loadUserModel(Yii::app()->user->id);
-//        $this->performAjaxValidation('user-form', $user);
-//
-//        if (isset($_POST['User'])) {
-//            $user->attributes = $_POST['User'];
-//            if ($user->save()) {
-//                $this->redirect(array('account'));
-//            }
-//        }
-//
-//        $this->render('account', array('user' => $user));
-//    }
-//
-//    public function actionStats($id) {
-//        $user = $this->loadUserModel(Yii::app()->user->id);
-//        $this->render('stats');
-//    }
-//
-//    public function actionDecks($id) {
+    /**
+     * @param integer $id
+     */
+    public function actionDecks($id) {
+//TODO: ...
 //        $user = $this->loadUserModel(Yii::app()->user->id);
 //        $this->render('decks');
-//    }
+    }
 
     /**
      * @param integer $id
@@ -136,7 +122,7 @@ final class UserController extends \yii\web\Controller {
             return $user;
         }
 
-        throw new NotFoundHttpException(Yii::t('sandscape', '//TODO: ...'));
+        throw new NotFoundHttpException(Yii::t('sandscape', 'Unable to find the requested user.'));
     }
 
 }

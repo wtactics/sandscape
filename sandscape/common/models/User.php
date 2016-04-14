@@ -23,6 +23,8 @@
 
 namespace common\models;
 
+use Yii;
+
 /**
  * //TODO: documentation
  * 
@@ -31,15 +33,6 @@ namespace common\models;
  * @property string $password
  * @property string $name
  * @property string $role 
- * @property string $avatar
- * @property string $gender
- * @property string $birthyear
- * @property string $website
- * @property string $twitter
- * @property string $facebook
- * @property string $googleplus
- * @property string $skype
- * @property string $country
  * @property integer $showChatTimes
  * @property integer $reverseCards
  * @property integer $onHoverDetails
@@ -51,10 +44,13 @@ namespace common\models;
  * @author Sérgio Lopes <knitter.is@gmail.com>
  * @copyright (c) 2016, WTactics Project
  */
-final class User extends \yii\db\ActiveRecord {
-    //TODO: ...
-    //const ADMIN_ROLE = 'administrator', PLAYER_ROLE = 'player', GAMEMASTER_ROLE = 'gamemaster';
-    //TODO: public $hashed;
+final class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface {
+
+    const ROLE_ADMINISTRATOR = 'administrator',
+            ROLE_PLAYER = 'player',
+            ROLE_GAMEMASTER = 'gamemaster';
+
+    private $hashed;
 
     /**
      * @inheritdoc
@@ -63,102 +59,116 @@ final class User extends \yii\db\ActiveRecord {
         return 'User';
     }
 
-//    public function rules() {
-//        return array(
-//            array('email, name', 'required'),
-//            array('name', 'length', 'max' => 150),
-//            array('email', 'email'),
-//            array('email, name', 'unique'),
-//            array('reverseCards, onHoverDetails, showChatTimes', 'boolean'),
-//            array('email, avatar, website, twitter, facebook, googleplus, skype', 'length', 'max' => 255),
-//            array('country', 'length', 'max' => 2),
-//            array('birthyear', 'length', 'max' => 4),
-//            array('role', 'in', 'range' => array('player', 'administrator', 'gamemaster')),
-//            array('handCorner', 'in', 'range' => array('left', 'right')),
-//            array('gender', 'in', 'range' => array('female', 'male')),
-//            //search
-//            array('email, name, role', 'safe', 'on' => 'search'),
-//        );
-//    }
-//    public function relations() {
-//        return array(
-//            'decks' => array(self::HAS_MANY, 'Deck', 'ownerId'),
-//        );
-//    }
-//    public function attributeLabels() {
-//        return array(
-//            'id' => Yii::t('user', 'ID'),
-//            'email' => Yii::t('user', 'E-mail'),
-//            'password' => Yii::t('user', 'Password'),
-//            'name' => Yii::t('user', 'Name'),
-//            'role' => Yii::t('user', 'Role'),
-//            'avatar' => Yii::t('user', 'Avatar'),
-//            'gender' => Yii::t('user', 'Gender'),
-//            'birthyear' => Yii::t('user', 'Birth Year'),
-//            'website' => Yii::t('user', 'Website'),
-//            'twitter' => Yii::t('user', 'Twitter'),
-//            'facebook' => Yii::t('user', 'Facebook'),
-//            'googleplus' => Yii::t('user', 'Google+'),
-//            'skype' => Yii::t('user', 'Skype/MSN'),
-//            'country' => Yii::t('user', 'Country'),
-//            'showChatTimes' => Yii::t('user', 'Show Message Time'),
-//            'reverseCards' => Yii::t('user', 'Reverse Cards'),
-//            'onHoverDetails' => Yii::t('user', 'Details <em>on hover</em>'),
-//            'handCorner' => Yii::t('user', 'Hand Corner')
-//        );
-//    }
-//    /**
-//     * Retrieves all users that were active in the last 15 minutes.
-//     * 
-//     * @return User[]
-//     */
-//    public function findAllAuthenticated() {
-//        return User::model()->with(array(
-//                    'sessions' => array(
-//                        'condition' => 'TOKEN IS NOT NULL AND tokenExpires > NOW() AND lastActivity > DATE_SUB(NOW(), INTERVAL 15 MINUTE)'
-//            )))->findAll();
-//    }
-//
-//    public static function hash($password) {
-//        if (isset(Yii::app()->params['salt'])) {
-//            $password = Yii::app()->params['salt'] . $password . Yii::app()->params['salt'];
-//        }
-//
-//        return hash('sha512', $password);
-//    }
-//
-//    public function beforeSave() {
-//        if (empty($this->password) && empty($this->password2) && !empty($this->hashed)) {
-//            $this->password = $this->password2 = $this->hashed;
-//        }
-//
-//        return parent::beforeSave();
-//    }
-//
-//    public function afterFind() {
-//        $this->hashed = $this->password;
-//        $this->password = null;
-//
-//        parent::afterFind();
-//    }
-//
-//    public final static function rolesArray() {
-//        return array(
-//            'administrator' => Yii::t('user', 'Administrator'),
-//            'player' => Yii::t('user', 'Player'),
-//            'gamemaster' => Yii::t('user', 'Game Master')
-//        );
-//    }
-//
-//    public final function roleName() {
-//        $roles = self::rolesArray();
-//
-//        return $roles[$this->role];
-//    }
-//
-//    public final function getRoleName() {
-//        $roles = self::rolesArray();
-//
-//        return (isset($roles[$this->role]) ? $roles[$this->role] : '');
-//    }
+    /**
+     * @inheritdoc
+     */
+    public function afterFind() {
+        $this->hashed = $this->password;
+        $this->password = null;
+
+        parent::afterFind();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert) {
+        if (parent::beforeSave($insert)) {
+            if (!empty($this->password)) {
+                $this->password = Yii::$app->security->generatePasswordHash($this->password);
+            } else if (!empty($this->hashed)) {
+                $this->password = $this->hashed;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAuthKey() {
+        return md5($this->id . $this->email . $this->hashed);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function validateAuthKey($authKey) {
+        return $authKey == $this->getAuthKey();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentity($id) {
+        return self::findOne((int) $id);
+    }
+
+    /**
+     * @param mixed $token
+     * @param mixed $type
+     * @throws \yii\web\NotSupportedException
+     */
+    public static function findIdentityByAccessToken($token, $type = null) {
+        throw new NotSupportedException();
+    }
+
+    /**
+     * @param string $password
+     * @return boolean
+     */
+    public function checkPassword($password) {
+        try {
+            return Yii::$app->security->validatePassword($password, $this->hashed);
+        } catch (InvalidParamException $ex) {
+            //IGNORE
+        }
+
+        return false;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getRandomPassword() {
+        return Yii::$app->security->generateRandomString(8);
+    }
+
+    /**
+     * @return array
+     */
+    public final static function roleList() {
+        return [
+            self::ROLE_ADMINISTRATOR => Yii::t('sandscape', 'Administrator'),
+            self::ROLE_PLAYER => Yii::t('sandscape', 'Player'),
+            self::ROLE_GAMEMASTER => Yii::t('sandscape', 'Game Master')
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public final function roleLabel() {
+        $roles = self::rolesArray();
+
+        return $roles[$this->role];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDecks() {
+        return $this->hasMany(Deck::className(), ['ownerId' => 'id'])->inverseOf('owner');
+    }
+
 }

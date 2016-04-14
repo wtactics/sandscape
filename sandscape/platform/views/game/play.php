@@ -1,7 +1,7 @@
 <div class="opponent-area">
     <div class="opponent-play-area"></div>
     <div class="opponent-card-preview">
-        <img src="<?php echo Yii::app()->baseUrl; ?>/data/cards/cardback-standard.png" />
+        <!-- <img src="/data/cards/cardback-standard.png" /> -->
     </div>
 </div>
 

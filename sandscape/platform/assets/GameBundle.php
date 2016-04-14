@@ -1,7 +1,7 @@
 <?php
 
 /*
- * PlatformBundle.php
+ * GameBundle.php
  * 
  * This file is part of Sandscape, a virtual, browser based, table allowing 
  * people to play a customizable card games (CCG) online.
@@ -30,29 +30,21 @@ use yii\web\AssetBundle;
  * @author Sérgio Lopes <knitter.is@gmail.com>
  * @copyright (c) 2016, WTactics Project
  */
-class PlatformBundle extends AssetBundle {
+class GameBundle extends AssetBundle {
 
     public $basePath = '@webroot';
     public $baseUrl = '@web';
-    public $css = [
-        'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'
-    ];
-    public $js = [
-    ];
-    public $depends = [
-        'yii\web\YiiAsset',
-        'yii\web\JqueryAsset',
-        'yii\bootstrap\BootstrapAsset',
-        'yii\bootstrap\BootstrapPluginAsset'
-    ];
+    public $css = [];
+    public $js = [];
+    public $depends = [ 'yii\web\JqueryAsset'];
 
     public function __construct($config = []) {
         if (defined('YII_ENV') && YII_ENV == 'dev') {
-            $this->js[] = 'js/scripts.js';
-            $this->css[] = 'css/styles.css';
+            $this->js[] = 'js/game.js';
+            $this->css[] = 'css/game.css';
         } else {
-            $this->js[] = 'js/scripts.min.js';
-            $this->css[] = 'css/styles.min.css';
+            $this->js[] = 'js/game.min.js';
+            $this->css[] = 'css/game.min.css';
         }
 
         parent::__construct($config);

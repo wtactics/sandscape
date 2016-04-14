@@ -29,8 +29,17 @@ namespace app\controllers;
  */
 final class GameController extends \yii\web\Controller {
 
+    public function __construct($id, $module, $config = array()) {
+        parent::__construct($id, $module, $config);
+
+        $this->layout = 'game';
+    }
+
+    /**
+     * @return string
+     */
     public function actionIndex() {
-        
+        return $this->render('play');
     }
 
 }

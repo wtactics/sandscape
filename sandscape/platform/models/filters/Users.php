@@ -42,12 +42,17 @@ final class Users extends \yii\base\Model {
     /** @var string */
     public $email;
 
+    /** @var string */
+    public $role;
+
     /**
      * @inheritdoc
      */
     public function rules() {
         return [
-            [['name', 'email'], 'string', 'max' => 255]
+            [['name', 'email'], 'string', 'max' => 255],
+            //TODO: use in array instead
+            [['role'], 'safe']
         ];
     }
 
@@ -71,7 +76,9 @@ final class Users extends \yii\base\Model {
 
         //TODO: search filter
         $query->andFilterWhere(['like', 'name', $this->name])
-                ->andFilterWhere(['like', 'email', $this->email]);
+                ->andFilterWhere(['like', 'email', $this->email])
+                ->andFilterWhere(['role' => $this->role]);
+
 
         return $provider;
     }

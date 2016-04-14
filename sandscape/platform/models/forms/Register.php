@@ -23,47 +23,65 @@
 
 namespace app\models\forms;
 
+use common\models\User;
+
 /**
  * @property string $email
  * @property string $password
- * @property string $password2
  * @property string $name
  * 
  * @author Sérgio Lopes <knitter.is@gmail.com>
  * @copyright (c) 2016, WTactics Project
  */
 class Register extends yii\base\Model {
-//    public $email;
-//    public $password;
-//    public $password2;
-//    public $name;
-//    public function rules() {
-//        return array(
-//            array('name, email, password, password2', 'required'),
-//            array('email', 'email'),
-//            array('email, name', 'unique', 'className' => 'User'),
-//            array('password', 'compare', 'compareAttribute' => 'password2'),
-//            array('name', 'length', 'max' => 150),
-//        );
-//    }
-//    public function attributeLabels() {
-//        return array(
-//            'email' => Yii::t('sandscape', 'E-mail'),
-//            'password' => Yii::t('sandscape', 'Password'),
-//            'password2' => Yii::t('regsandscapeister', 'Repeat Password'),
-//            'name' => Yii::t('sandscape', 'Name')
-//        );
-//    }
-//    public function register() {
-//        if ($this->validate()) {
-//            $user = new User();
-//
-//            $user->email = $this->email;
-//            $user->password = User::hash($this->password);
-//            $user->name = $this->name;
-//
-//            return $user->save();
-//        }
-//        return false;
-//    }
+
+    /** @var string */
+    public $email;
+
+    /** @var string */
+    public $password;
+
+    /** @var string */
+    public $name;
+
+    /**
+     * @inheritdoc
+     */
+    public function rules() {
+        return [
+            [['name', 'email', 'password'], 'required'],
+            [['name', 'email'], 'string', 'max' => 255],
+            [['email'], 'email']
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels() {
+        return array(
+            'email' => Yii::t('sandscape', 'E-mail'),
+            'password' => Yii::t('sandscape', 'Password'),
+            'name' => Yii::t('sandscape', 'Name')
+        );
+    }
+
+    /**
+     * @return boolean
+     */
+    public function register() {
+        //TODO: e-mail user ...
+        if (!$this->validate()) {
+            return false;
+        }
+
+        $user = new User();
+        $user->email = $this->email;
+        $user->password = $this->password;
+        $user->name = $this->name;
+        $user->role = User::ROLE_PLAYER;
+
+        return $user->save();
+    }
+
 }

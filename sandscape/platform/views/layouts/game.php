@@ -1,31 +1,41 @@
 <?php
-/* @var $this BaseController */
-$baseUrl = Yii::app()->baseUrl;
+
+use yii\helpers\Html;
+use yii\helpers\Url;
+//-
+use app\assets\GameBundle;
+
+/* @var $this yii\web\View */
+/* @var $content string */
+/* @var $user yii\web\User */
+
+GameBundle::register($this);
+
+$user = Yii::$app->user;
+
+$this->beginPage();
+//TODO: sandscape.initBoard();
 ?>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8" />
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-        <link type="text/css" rel="stylesheet" href="<?php echo $baseUrl; ?>/css/game.css">
+        <?= Html::csrfMetaTags() ?>
 
-        <title><?php echo CHtml::encode($this->title); ?></title>
+        <title><?= Html::encode($this->title) ?></title>
+
+        <?php $this->head() ?>
     </head>
 
     <body>
+        <?php $this->beginBody() ?>
+
         <?php echo $content; ?>
 
-        <script src="<?php echo $baseUrl; ?>/js/zepto-1.1.3.min.js"></script>
-        <script src="<?php echo $baseUrl; ?>/js/fx.min.js"></script>
-        <script src="<?php echo $baseUrl; ?>/js/fx-methods.min.js"></script>
-        <script src="<?php echo $baseUrl; ?>/js/sandscape.js"></script>
-
-        <script type="text/javascript">
-            /*<![CDATA[*/
-            $(function($) {
-                sandscape.initBoard();
-            });
-            /*]]>*/
-        </script>
+        <?php $this->endBody() ?>
     </body>
 </html>
+<?php
+$this->endPage();

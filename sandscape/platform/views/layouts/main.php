@@ -10,7 +10,7 @@ use app\assets\PlatformBundle;
 /* @var $user yii\web\User */
 /* @var $tab string */
 
-\app\assets\PlatformBundle::register($this);
+PlatformBundle::register($this);
 
 $user = Yii::$app->user;
 $tab = isset($this->params['tab']) ? $this->params['tab'] : null;
@@ -30,7 +30,7 @@ $this->beginPage();
         <?php $this->head() ?>
     </head>
 
-    <body class="skin-red">
+    <body>
         <?php $this->beginBody() ?>
 
         <div id="top-nav" class="navbar navbar-inverse navbar-static-top">
