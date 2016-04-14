@@ -13,6 +13,7 @@ Thumbs.db
 *~
 *.orig
 database.seed.sql
+_dev-ignore
 
 # Vendor & Tools
 /vendor
